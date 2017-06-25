@@ -684,6 +684,32 @@ public class BiddingTransactionDao extends DBConnection {
 		
 	}
 	
+	public int insertBiddingTransaction(Integer lotId, BigDecimal amountBid, BigDecimal amountBuy, Integer actionTaken, Integer userId) {
+		
+		int i = 0;
+		
+		try {
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			Statement stmt = conn.createStatement();
+			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`, `action_taken`, `user_id`) "+
+					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"');";
+			i = stmt.executeUpdate(Sql);
+			
+			
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		} 
+		return i;
+	}
 	
 	public List<BiddingTransaction> getBiddingTransactionList(){
 

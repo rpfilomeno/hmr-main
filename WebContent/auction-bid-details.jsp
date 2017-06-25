@@ -23,10 +23,20 @@
 	String msgInfo = request.getAttribute("msgInfo")!=null ? (String)request.getAttribute("msgInfo") : null;
 	String msgbgcol = request.getAttribute("msgbgcol")!=null ? (String)request.getAttribute("msgbgcol") : "";
 	
+	//TODO: messages displayed on page should be session based only to avoid XSS
+	if(msgInfo==null) {
+		msgInfo = (String)request.getSession().getAttribute("msgInfo")!=null ? (String)request.getSession().getAttribute("msgInfo") :null;
+		msgbgcol = (String)request.getSession().getAttribute("msgbgcol")!=null ? (String)request.getSession().getAttribute("msgbgcol") :"";
+	}
+	request.getSession().removeAttribute("msgInfo");
+	request.getSession().removeAttribute("msgbgcol");
+	
+	
 	String firstName = (String)request.getSession().getAttribute("firstName");
 	String lastName = (String)request.getSession().getAttribute("lastName");
 	String fullName = (String)request.getSession().getAttribute("fullName");
 	String userId = (String)request.getSession().getAttribute("userId");
+	String aid = (String)request.getSession().getAttribute("auctionId");
 	
 	// IDs
 	Integer user_id = request.getSession().getAttribute("user-id")!=null ? (Integer)request.getSession().getAttribute("user-id") : null;
@@ -353,11 +363,11 @@
 							                                <div class="media">
                                 								<% if(user_id != null && user_role_id > 0){ %>
                                 									<% if(l.getIs_bid() == 1){ %>
-                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%> </a>
-                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>')">SET MAXIMUM BID</a>
+                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_no()%>')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%> </a>
+                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_no()%>')">SET MAXIMUM BID</a>
                                    	 								<% }else {  } %>
                                    	 								<% if(l.getIs_buy() == 1){ %>
-                                								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></a>
+                                								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_no()%>')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></a>
                                 									<% }else{ } %>
                                    	 							<% }else if(user_id == null && user_role_id == 0){ %>
 																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
@@ -1215,7 +1225,7 @@
         </section>
         <!-- /PAGE -->
 --%>
-        <!-- PAGE -->
+        
         <section class="page-section">
             <div class="container">
                 <h2 class="section-title"><span>Brand &amp; Clients</span></h2>
@@ -1461,7 +1471,7 @@
     </div>
     <!-- /CONTENT AREA -->
 
-    <!-- FOOTER -->
+    <!-- PAGE --><!-- FOOTER -->
 	<jsp:include page="hmr-footer.jsp" />
     <!-- /FOOTER -->
 
@@ -1528,11 +1538,20 @@ setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
 
 setTimeout(onLoadPage,3000);
 
+function submitPage(action, value, lot) {
+	$('input[name="doaction"]').val(action);
+	$('input[name="amount"]').val(value);
+	$('input[name="lotId"]').val(lot);
+	$( "#frm" ).submit();
+}
+
 </script>
 
-<form action="bid" name="frm" action="post">
-   <input type="hidden" name="manager" id="manager" value=""/>
-   <input type="hidden" name="action" id="action" value=""/>
+<form action="" id="frm" name="frm" method="post">
+   <input type="hidden" name="manager" id="manager" value="bid-manager"/>
+   <input type="hidden" name="doaction" id="doaction" value=""/>
+   <input type="hidden" name="lotId" id="lotId" value=""/>
+   <input type="hidden" name="amount" id="amount" value=""/>
    <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
    <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
 </form>

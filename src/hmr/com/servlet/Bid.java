@@ -49,6 +49,7 @@ import hmr.com.bean.AuctionRange;
 import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
 import hmr.com.bean.User;
+import hmr.com.dao.UserDao;
 
 @SuppressWarnings("serial")
 public class Bid extends HttpServlet {
@@ -62,9 +63,12 @@ public class Bid extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		
 		doProcess(req, resp);
+
 	}
 	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
@@ -193,7 +197,7 @@ public class Bid extends HttpServlet {
 	        } catch (IOException e1) {
 	            e1.printStackTrace();
 	        }
-		}
+		}//company name
 		
 
     
@@ -385,7 +389,7 @@ public class Bid extends HttpServlet {
             	req.setAttribute("message", "File Upload Failed due to " + ex);
             }          
          
-        }
+        }//file uploads
 		
 		
 		System.out.println("Paramerters - start");
@@ -423,7 +427,7 @@ public class Bid extends HttpServlet {
         
 
 		
-		
+		//all page get requests
 		if(manager.equals("get")){
 			
 			if("login".equals(action)){
@@ -463,8 +467,7 @@ public class Bid extends HttpServlet {
 				UserManager uMngr = new UserManager(req,res);
 				page = uMngr.doUserManager();
 			}else if("auctionBidDetails".equals(action)){
-				
-				
+	
 				AuctionManager aMngr = new AuctionManager(req,res);
 				AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
 				LotManager lMngr = new LotManager(req,res);
@@ -526,52 +529,7 @@ public class Bid extends HttpServlet {
 					lList.add(lot);
 					
 				}
-				
-				
-				
-				
-				
-				
-				//List<Item> iaList = new ArrayList<Item>();
-				
-				
-				/*
-				for(Item i : iList){
 
-					BigDecimal amount_bid_next = new BigDecimal(0);
-					
-					boolean isStop = false;
-					
-					for(AuctionRange ar : arList){
-						
-						System.out.println("ITEM : "+i.getItem_desc());
-						System.out.println("NEXT BID :  "+ar.getRange_start().doubleValue()+" - "+ar.getRange_end().doubleValue());
-						System.out.println("AMOUNT : "+ar.getIncrement_amount()+" - "+isStop);
-						
-						BigDecimal itemAmountBid = new BigDecimal("0");
-						if(i.getAmount_bid()!=null){
-							itemAmountBid = i.getAmount_bid();
-						}
-						
-						if(i.getAmount_bid().doubleValue() >= ar.getRange_start().doubleValue() && 
-								i.getAmount_bid().doubleValue() <= ar.getRange_end().doubleValue() &&	
-								!isStop){
-
-							amount_bid_next = ar.getIncrement_amount().add(itemAmountBid);
-							isStop = true;
-
-						}else if(i.getAmount_bid().doubleValue()==0 && !isStop){
-							amount_bid_next = ar.getIncrement_amount().add(itemAmountBid);
-							isStop = true;
-						}
-						
-					}
-					
-					i.setAmount_bid_next(amount_bid_next);
-					
-					iaList.add(i);
-				}
-				*/
 				req.setAttribute("auction", a);
 				req.setAttribute("lotHM", lotHM);
 				req.setAttribute("lList", lList);
@@ -579,21 +537,44 @@ public class Bid extends HttpServlet {
 				
 				req.setAttribute("auction-item", a);
 				page ="auction-bid-details.jsp";
+			}else if("auctionBidDetailsDoBid".equals(action)){
+				BiddingTransactionManager bMngr = new BiddingTransactionManager();
+				bMngr.doBiddingTransactionManager();
 			}
 			
-		}
+		}//page get requests
 
+		//all non-page get requests
 		if(userId!=null && !"".equals(userId) && !manager.equals("get")){
 			
-			//String lastAction = (String)req.getSession().getAttribute("userLastAction_"+sid);
-			//System.out.println("lastAction :"+lastAction);
-			/*
-			if("signIn".equals(lastAction) ){
-				System.out.println("reSignIn");
-				action = "reSignIn";
-			}
-			*/
-			if(manager.equals("login-manager")){
+			if(manager.equals("bid-manager")) {
+				String doAction = req.getParameter("doaction")!=null ? (String)req.getParameter("doaction") : "";
+				String reqlotId = req.getParameter("lotId")!=null ? (String)req.getParameter("lotId") : "";
+				String reqamount = req.getParameter("amount")!=null ? (String)req.getParameter("amount") : "";
+
+				
+				
+				if(reqlotId!="" && reqamount!="") {
+					UserDao ud = new UserDao();
+					User u = ud.getUser(userId);
+					
+					BiddingTransactionManager btMngr = new BiddingTransactionManager();
+					Integer lotId = Integer.valueOf(reqlotId);
+					BigDecimal amount = new BigDecimal(reqamount);
+			
+					//BID and BUY button clicks
+					if(doAction.equals("BID")) {
+						btMngr.insertBiddingTransactionMakeBid(lotId, amount, u.getId());
+					}else if(doAction.equals("BUY")) {
+						btMngr.insertBiddingTransactionMakeBuy(lotId, amount, u.getId());
+					}
+					req.getSession(true).setAttribute("msgInfo", "Bid Submitted");	
+					req.getSession(true).setAttribute("msgbgcol", "#65f442");
+					page = "index.jsp";
+					
+					
+				}
+			} else if(manager.equals("login-manager")){
 				LoginManager liMngr = new LoginManager(req,res);
 				page = liMngr.doLoginManager();
 				
@@ -673,7 +654,7 @@ public class Bid extends HttpServlet {
 				BiddingTransactionManager btMngr = new BiddingTransactionManager(req,res);
 				
 				page = btMngr.doBiddingTransactionManager();
-			
+
 			}
 			else 
 			{
@@ -748,12 +729,12 @@ public class Bid extends HttpServlet {
 				}
 			}
 			
-			}else{
+		}else{
 				
 
 	
 	
-			}
+		}
 		
 		if(manager.equals("") && action.equals("")){
 			page = "index.jsp";

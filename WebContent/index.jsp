@@ -17,6 +17,15 @@
 	String msgInfo = request.getAttribute("msgInfo")!=null ? (String)request.getAttribute("msgInfo") : null;
 	String msgbgcol = request.getAttribute("msgbgcol")!=null ? (String)request.getAttribute("msgbgcol") : "";
 	  
+	//TODO: messages displayed on page should be session based only to avoid XSS
+		if(msgInfo==null) {
+			msgInfo = (String)request.getSession().getAttribute("msgInfo")!=null ? (String)request.getSession().getAttribute("msgInfo") :null;
+			msgbgcol = (String)request.getSession().getAttribute("msgbgcol")!=null ? (String)request.getSession().getAttribute("msgbgcol") :"";
+		}
+		request.getSession().removeAttribute("msgInfo");
+		request.getSession().removeAttribute("msgbgcol");
+	
+	
 	String firstName = (String)request.getSession().getAttribute("firstName");
 	String lastName = (String)request.getSession().getAttribute("lastName");
 	String fullName = (String)request.getSession().getAttribute("fullName");
