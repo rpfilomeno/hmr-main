@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>GMB200 - Store Locator - Andre Ceasar Dacanay</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 80%;
+      }
+      
+      
+#panel {
+  position: absolute;
+  top: 10px;
+  left: 25%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+}
+
+/**
+ * Provide the following styles for both ID and class, where ID represents an
+ * actual existing "panel" with JS bound to its name, and the class is just
+ * non-map content that may already have a different ID with JS bound to its
+ * name.
+ */
+
+#panel, .panel {
+  font-family: 'Roboto','sans-serif';
+  line-height: 30px;
+  padding-left: 10px;
+}
+
+#panel select, #panel input, .panel select, .panel input {
+  font-size: 15px;
+}
+
+#panel select, .panel select {
+  width: 100%;
+}
+
+#panel i, .panel i {
+  font-size: 12px;
+}
+
+      #directions-panel {
+        height: 100%;
+        float: right;
+        width: 390px;
+        overflow: auto;
+      }
+
+      #map {
+        margin-right: 400px;
+      }
+
+      #control {
+        background: #fff;
+        padding: 5px;
+        font-size: 14px;
+        font-family: Arial;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
+        display: none;
+      }
+
+      #panel select, .panel select {
+        display: block;
+      }
+
+      @media print {
+        #map {
+          height: 200px;
+          margin: 0;
+        }
+
+        #directions-panel {
+          float: none;
+          width: auto;
+        }
+      }
+      
+    </style>
+  </head>
+  <body>
+  	<div>Google Map</div>
+    <div>Base address with proximity : <input type="text" id="addressInput" size="100"/>
+    <select id="radiusSelect">
+    <option value="1" selected>1mi</option>
+    <option value="2" >2mi</option>
+      <option value="25" >25mi</option>
+      <option value="100">100mi</option>
+      <option value="200">200mi</option>
+      <option value="300">300mi</option>
+      <option value="400">400mi</option>
+      <option value="500">500mi</option>
+      <option value="600">600mi</option>
+      <option value="700">700mi</option>
+      <option value="800">800mi</option>
+      <option value="900">900mi</option>
+      <option value="1000">1000mi</option>
+      <option value="1100">1100mi</option>
+      <option value="5100">5100mi</option>
+      <option value="11100">11100mi</option>
+      <option value="21100">21100mi</option>
+    </select>
+    <input type="button" onclick="searchLocations()" value="Search"/>
+    <!--  <input type="button" onclick="searchLocations2()" value="Search2"/> -->
+    </div>
+    <div><select id="locationSelect" style="width:100%;visibility:hidden"></select></div>
+    
+    
+
+    <div> Geocoder Component</div>
+    <div id="addressUser"></div>
+    <!-- <div id="addressUser">User Address : Ayala Ave Makati City Metro Manila PH</div> -->
+    <div id="addressUserGeocoded"></div>
+    <div><input type="text" id="geocodeAddress" name="geocodeAddress"><input type="button" onclick="doGeocodeAddress()" value="Geocode"/></div>
+    <div id="addressGeocoded"></div>
+    <div id="addressStoreGeocoded"></div>
+
+
+	<div id="control" class="panel">
+      <strong>User</strong>
+      <select id="start">
+       <!--  <option value="(14.554729000000002,121.02444519999999)">Andre Ceasar Dacanay</option> -->
+      	
+      <!-- 
+        <option value="chicago, il">Chicago</option>
+        <option value="st louis, mo">St Louis</option>
+        <option value="joplin, mo">Joplin, MO</option>
+        <option value="oklahoma city, ok">Oklahoma City</option>
+        <option value="amarillo, tx">Amarillo</option>
+        <option value="gallup, nm">Gallup, NM</option>
+        <option value="flagstaff, az">Flagstaff, AZ</option>
+        <option value="winona, az">Winona</option>
+        <option value="kingman, az">Kingman</option>
+        <option value="barstow, ca">Barstow</option>
+        <option value="san bernardino, ca">San Bernardino</option>
+        <option value="los angeles, ca">Los Angeles</option> -->
+      </select>
+      <strong>End:</strong>
+      <select id="end">
+      <!-- 
+      <option value="(14.5613455,121.01556170000003)">IP Converge Data Services</option>
+      <option value="(14.5715516,121.0062289)">Store Sample</option>
+      <option value="(14.5563759,121.02186890000007)">Shangri La</option>
+      -->
+      <!-- 
+        <option value="chicago, il">Chicago</option>
+        <option value="st louis, mo">St Louis</option>
+        <option value="joplin, mo">Joplin, MO</option>
+        <option value="oklahoma city, ok">Oklahoma City</option>
+        <option value="amarillo, tx">Amarillo</option>
+        <option value="gallup, nm">Gallup, NM</option>
+        <option value="flagstaff, az">Flagstaff, AZ</option>
+        <option value="winona, az">Winona</option>
+        <option value="kingman, az">Kingman</option>
+        <option value="barstow, ca">Barstow</option>
+        <option value="san bernardino, ca">San Bernardino</option>
+        <option value="los angeles, ca">Los Angeles</option> -->
+      </select>
+   
+    </div>
+
+    
+    <div id="directions-panel" class="panel"></div>
+    <div id="map" style="width: 70%; height: 80%"></div>
+    
+    
+    
+    
+	<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	
+	
+    <script>
+
+	 var jsonArray = new Array();
+	 jsonArray[0] = "stores.json";
+	 var markers = [];
+	 var gmap;
+	 var infoWindow;
+	 var infoWindowUser;
+	 var geocoder;
+	 var directionsDisplay;
+	 var directionsService;
+	 
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    	  infoWindow.setPosition(pos);
+    	  infoWindow.setContent(browserHasGeolocation ?
+    	                        'Error: The Geolocation service failed.' :
+    	                        'Error: Your browser doesn\'t support geolocation.');
+    	}
+    
+    
+    
+	  function viewGeocodedAddress(pAddress){
+		  
+		  
+		  var retLatLng;
+		  var geocoder = new google.maps.Geocoder();
+		  
+		     geocoder.geocode({address: pAddress}, function(results, status) {
+		       if (status == google.maps.GeocoderStatus.OK) {
+
+		    	   
+		    	   
+		    	   retLatLng = results[0].geometry.location;
+
+
+		       } else {
+		         retLatLng = pAddress + ' not found';
+		       }
+		     });
+		     
+		     return retLatLng;
+		  
+	  }
+	  
+	  //$( document ).ready(function() {
+	 // var x = viewGeocodedAddress('Ayala Ave Makati City Metro Manila PH');
+	 // alert(x);
+   // });
+
+    
+	  
+	function initMap() {
+		
+
+	  //var myLatLng = {lat: 37.386337, lng: -122.085823};
+	  var myLatLng;
+	  geocoder = new google.maps.Geocoder();
+	  directionsDisplay = new google.maps.DirectionsRenderer;
+	  directionsService = new google.maps.DirectionsService;
+	  
+	  
+	  gmap = new google.maps.Map(document.getElementById('map'), {
+		    zoom: 4,
+		    mapTypeId: 'roadmap',
+	        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
+		  });
+	  
+	  
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          myLatLng = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+
+		  var markerUser = new google.maps.Marker({
+			    map: gmap,
+			    position: myLatLng
+			  });
+          
+		  
+          infoWindowUser = new google.maps.InfoWindow();
+          infoWindowUser.setPosition(myLatLng);
+		  
+		  google.maps.event.addListener(markerUser, 'click', function() {
+			  
+			  reverseGeocodeAddress(myLatLng.lat+','+myLatLng.lng);
+			  
+			  
+			     var html = "<b>Andre Ceasar Dacanay</b> <br> Generated By navigator.geolocation : " + myLatLng.lat+','+myLatLng.lng+"<br>";
+			    infoWindow.setContent(html);
+			    infoWindow.open(gmap, markerUser);
+			    
+			    createOptionUser("Andre Ceasar Dacanay", markerUser.position);
+			    
+			    //var userAddress = 'Ayala Ave Makati City Metro Manila PH';
+			    //geocodeAddress(userAddress);
+			  });
+	
+          gmap.setCenter(myLatLng);
+          
+        }, function() {
+          handleLocationError(true, infoWindowUser, gmap.getCenter());
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, gmap.getCenter());
+      }
+	  
+
+	  infoWindow = new google.maps.InfoWindow();
+
+      locationSelect = document.getElementById("locationSelect");
+      locationSelect.onchange = function() {
+        var markerNum = locationSelect.options[locationSelect.selectedIndex].value;
+        if (markerNum != "none"){
+          google.maps.event.trigger(markers[markerNum], 'click');
+        }
+      };
+      
+      
+
+      directionsDisplay.setMap(gmap);
+      directionsDisplay.setPanel(document.getElementById('directions-panel'));
+
+      var control = document.getElementById('control');
+      control.style.display = 'block';
+      gmap.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+      var onChangeHandler = function() {
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
+      };
+      //document.getElementById('start').addEventListener('change', onChangeHandler); 
+      document.getElementById('end').addEventListener('change', onChangeHandler);
+      
+	}
+	
+	  function searchLocations() {
+		     var address = document.getElementById("addressInput").value;
+		     var geocoder = new google.maps.Geocoder();
+		     geocoder.geocode({address: address}, function(results, status) {
+		       if (status == google.maps.GeocoderStatus.OK) {
+		        searchLocationsNear(results[0].geometry.location);
+		       } else {
+		         alert(address + ' not found');
+		       }
+		     });
+		   }
+
+	  
+
+	  
+	  function searchLocations2() {
+		     var address = document.getElementById("addressInput").value;
+		     var geocoder = new google.maps.Geocoder();
+		     geocoder.geocode({address: address}, function(results, status) {
+		       if (status == google.maps.GeocoderStatus.OK) {
+		        searchLocationsNear2(results[0].geometry.location);
+		       } else {
+		         alert(address + ' not found');
+		       }
+		     });
+		   }
+	  
+	  
+		   function clearLocations() {
+		     infoWindow.close();
+		     for (var i = 0; i < markers.length; i++) {
+		       markers[i].setMap(null);
+		     }
+		     markers.length = 0;
+		     locationSelect.innerHTML = "";
+		     var option = document.createElement("option");
+		     option.value = "none";
+		     option.innerHTML = "See all results:";
+		     locationSelect.appendChild(option);
+		   }
+		   
+		   
+		    function downloadUrl(url, callback) {
+		        var request = window.ActiveXObject ?
+		            new ActiveXObject('Microsoft.XMLHTTP') :
+		            new XMLHttpRequest;
+		        request.onreadystatechange = function() {
+		          if (request.readyState == 4) {
+		            request.onreadystatechange = doNothing;
+		            callback(request.responseText, request.status);
+		          }
+		        };
+		        request.open('GET', url, true);
+		        request.send(null);
+		      }
+		      function parseXml(str) {
+		        if (window.ActiveXObject) {
+		          var doc = new ActiveXObject('Microsoft.XMLDOM');
+		          doc.loadXML(str);
+		          return doc;
+		        } else if (window.DOMParser) {
+		          return (new DOMParser).parseFromString(str, 'text/xml');
+		        }
+		      }
+		   
+		   
+		   function searchLocationsNear(center) {
+		     clearLocations(); 
+		     var radius = document.getElementById('radiusSelect').value;
+			 var searchUrl = 'controller?lat=' + center.lat() + '&lng=' + center.lng() + '&radius=' + radius;
+		     //var searchUrl = "stores.xml";
+
+		     
+		     
+		     downloadUrl(searchUrl, function(data) {
+		       var xml = parseXml(data);
+		       alert(xml);
+		       
+		       var markerNodes = xml.documentElement.getElementsByTagName("marker");
+		       var bounds = new google.maps.LatLngBounds();
+		       
+		       var storeSelect = document.getElementById("end");
+		       storeSelect.innerHTML = "";
+		       for (var i = 0; i < markerNodes.length; i++) {
+		    	 
+		    	 console.debug(markerNodes[i].getAttribute("name"));
+		         var name = markerNodes[i].getAttribute("name");
+		         var address = markerNodes[i].getAttribute("address");
+		         var distance = parseFloat(markerNodes[i].getAttribute("distance"));
+		         var latlng = new google.maps.LatLng(
+		              parseFloat(markerNodes[i].getAttribute("lat")),
+		              parseFloat(markerNodes[i].getAttribute("lng")));
+		         createOption(name, distance, i);
+		         
+		         createOptionStore(name,address);
+		         
+		         //createMarker(latlng, name, address);
+		         createMarker2(latlng, name, address, distance);
+		         bounds.extend(latlng);
+		       }
+		       
+		       gmap.fitBounds(bounds);
+		       locationSelect.style.visibility = "visible";
+		       locationSelect.onchange = function() {
+		         var markerNum = locationSelect.options[locationSelect.selectedIndex].value;
+		         google.maps.event.trigger(markers[markerNum], 'click');
+		       }
+		      });
+		    
+		     
+		     
+		   }
+		   
+		   
+		   function searchLocationsNear2(center) {
+			     clearLocations(); 
+			     var radius = document.getElementById('radiusSelect').value;
+				 //var searchUrl = 'phpsqlsearch_genxml.php?lat=' + center.lat() + '&lng=' + center.lng() + '&radius=' + radius;
+			     var searchUrl = "stores2.xml";
+
+			     downloadUrl(searchUrl, function(data) {
+			       var xml = parseXml(data);
+			       var markerNodes = xml.documentElement.getElementsByTagName("marker");
+			       var bounds = new google.maps.LatLngBounds();
+			       
+			       
+			       for (var i = 0; i < markerNodes.length; i++) {
+			         var name = markerNodes[i].getAttribute("name");
+			         var address = markerNodes[i].getAttribute("address");
+			         var distance = parseFloat(markerNodes[i].getAttribute("distance"));
+			         var latlng = new google.maps.LatLng(
+			              parseFloat(markerNodes[i].getAttribute("lat")),
+			              parseFloat(markerNodes[i].getAttribute("lng")));
+			         
+			         
+			         
+					  var geocoder = new google.maps.Geocoder();
+					  
+					  
+					 // setTimeout(function(){
+					  
+					  var retLatLng;
+					     geocoder.geocode({address: address}, function(results, status) {
+					       if (status == google.maps.GeocoderStatus.OK) {
+					    	   retLatLng = results[0].geometry.location;
+					    	   //alert(retLatLng);
+					       } else {
+					         retLatLng = address + ' not found';
+					       }
+					     });
+			         
+					     
+					  
+					 
+					 //}, 2000);  
+					     
+			         createOption(name, distance, i);
+			         //createMarker(latlng, name, address);
+			         createMarker2(latlng, name, address, distance);
+			         bounds.extend(latlng);
+			         
+
+			         
+			         //alert(retLatLng);
+			         //alert(viewGeocodedAddress(address));
+			       }
+			       
+			       gmap.fitBounds(bounds);
+			       locationSelect.style.visibility = "visible";
+			       locationSelect.onchange = function() {
+			         var markerNum = locationSelect.options[locationSelect.selectedIndex].value;
+			         google.maps.event.trigger(markers[markerNum], 'click');
+			       }
+			      });
+			    
+			     
+			     
+			   }
+		   
+    function createOption(name, distance, num) {
+        var option = document.createElement("option");
+        option.value = num;
+        option.innerHTML = name + "(" + distance.toFixed(1) + ")";
+        locationSelect.appendChild(option);
+      }
+    
+    function createOptionUser(name, val) {
+        var option = document.createElement("option");
+        option.value = val;
+        option.innerText = name;
+        //option.innerHTML = name;
+        var userSelect = document.getElementById("start");
+        
+        userSelect.innerHTML = "";
+        userSelect.appendChild(option);
+      }
+    
+    function createOptionStore(name, val) {
+        var option = document.createElement("option");
+        option.value = val;
+        option.innerText = name;
+        var storeSelect = document.getElementById("end");
+        storeSelect.appendChild(option);
+      }
+    
+	 function createMarker(latlng, name, address) {
+		 
+		 //var geocodedAddress = geocodeAddress(address);
+		 
+		 
+		 
+		  var html = "<b>" + name + "</b> <br><b>" + address+ "</b> <br>Database Values :" + latlng;
+		  
+		  
+		  //html = html + "<br><input type=\"button\" onclick=\"doGeocodeStoreAddress("+address+")\" value='Geocode'/>";
+		  
+		  var marker = new google.maps.Marker({
+		    map: gmap,
+		    position: latlng
+		  });
+
+		  google.maps.event.addListener(marker, 'click', function() {
+		    infoWindow.setContent(html);
+		    infoWindow.open(gmap, marker);
+		  });
+		  markers.push(marker);
+	}
+	 
+	 function createMarker2(latlng, name, address, distance) {
+		  var html = "<b>" + name + "</b> <br>" + address+ "</b>";
+		  html = html +"<br>Coordinates (lat,lng) : " + latlng;
+		  html = html +"<br>Distance From User : " + distance;
+		  var marker = new google.maps.Marker({
+		    map: gmap,
+		    position: latlng
+		  });
+
+		  google.maps.event.addListener(marker, 'click', function() {
+		    infoWindow.setContent(html);
+		    infoWindow.open(gmap, marker);
+		  });
+		  markers.push(marker);
+	}
+	 
+	 
+	  function downloadUrl(url, callback) {
+	      var request = window.ActiveXObject ?
+	          new ActiveXObject('Microsoft.XMLHTTP') :
+	          new XMLHttpRequest;
+	      request.onreadystatechange = function() {
+	        if (request.readyState == 4) {
+	          request.onreadystatechange = doNothing;
+	          callback(request.responseText, request.status);
+	        }
+	      };
+	      request.open('GET', url, true);
+	      request.send(null);
+	    }
+	    function parseXml(str) {
+	        if (window.ActiveXObject) {
+	          var doc = new ActiveXObject('Microsoft.XMLDOM');
+	          doc.loadXML(str);
+	          return doc;
+	        } else if (window.DOMParser) {
+	          return (new DOMParser).parseFromString(str, 'text/xml');
+	        }
+	      }
+	    
+	    
+
+	    
+	    
+	function doNothing() {}
+	
+	
+	
+	
+	function doGeocodeStoreAddress(){
+		var pAddress = document.getElementById('geocodeAddress').value;
+		geocoder.geocode({address: pAddress}, function(results, status) {
+		      if (status == google.maps.GeocoderStatus.OK) {
+		   	   //alert('');
+		   	   var loc = results[0].geometry.location;
+		   	   //alert(locUser);
+		   	   document.getElementById('addressStoreGeocoded').innerHTML="Store Geocoded : <b>"+loc+"</b>";
+		      } else {
+		   	   retLatLngUser = pAddress + ' not found';
+		      }
+		    });
+	}
+	
+	function doGeocodeAddress(){
+		var pAddress = document.getElementById('geocodeAddress').value;
+		geocoder.geocode({address: pAddress}, function(results, status) {
+		      if (status == google.maps.GeocoderStatus.OK) {
+		   	   //alert('');
+		   	   var loc = results[0].geometry.location;
+		   	   //alert(locUser);
+		   	   document.getElementById('addressGeocoded').innerHTML="Address Geocoded : <b>"+loc+"</b>";
+		      } else {
+		   	   retLatLngUser = pAddress + ' not found';
+		      }
+		    });
+	}
+	
+	function geocodeAddress(pAddress) {
+	
+    //var userAddress = 'Ayala Ave Makati City Metro Manila PH'; 
+    //alert('userAddress '+userAddress);
+    
+    var retLatLngUser;
+
+    geocoder.geocode({address: pAddress}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+   	   //alert('');
+   	   var locUser = results[0].geometry.location;
+   	   //alert(locUser);
+   	   document.getElementById('addressUser').innerHTML="User Geocoded : <b>"+locUser+"</b>";
+      } else {
+   	   retLatLngUser = pAddress + ' not found';
+      }
+    });
+    
+	}
+	
+	function reverseGeocodeAddress(pLatlng) {
+		
+		//var input = document.getElementById('latlngUser').value;
+		  var latlngStr = pLatlng.split(',', 2);
+		  var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+	    var retLatLngUser;
+
+	    geocoder.geocode({'location': latlng}, function(results, status) {
+	      if (status == google.maps.GeocoderStatus.OK) {
+	    	  if (results[1]) {
+	    		  
+	    		  
+	    		  document.getElementById('addressInput').value = results[1].formatted_address;
+	    		  //document.getElementById('geocodeAddress').value = results[1].formatted_address;
+	    		  document.getElementById('addressUserGeocoded').innerHTML="Reverse Geocoded Address: <b>"+results[1].formatted_address+"</b>";
+	    	  } else {
+	    	        alert('No results found');
+	    	        
+	    	  }
+	   	   //alert(locUser);
+	   	   
+	      } else {
+	    	  alert('Geocoder failed due to: ' + status);
+	      }
+	    });
+	    
+		}
+	
+	
+	function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+		  var start = document.getElementById('start').value;
+		  
+		  //var start =  "14.561345, 121.01556400000004";
+		  
+		  var end = document.getElementById('end').value;
+		  
+		  alert(start+' to '+end);
+		  
+		  directionsService.route({
+		    origin: start,
+		    destination: end,
+		    optimizeWaypoints: true,
+		    travelMode: google.maps.TravelMode.DRIVING
+		  }, function(response, status) {
+		    if (status === google.maps.DirectionsStatus.OK) {
+		      directionsDisplay.setDirections(response);
+		    } else {
+		      window.alert('Directions request failed due to ' + status);
+		    }
+		  });
+		}
+	
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACerw9YBHJWClAnpibbFdW9MONtSVXpTM&callback=initMap&sensor=true"></script>
+  </body>
+</html>
