@@ -37,6 +37,7 @@ import hmr.com.manager.BiddingTransactionManager;
 import hmr.com.manager.ItemManager;
 import hmr.com.manager.LoginManager;
 import hmr.com.manager.LotManager;
+import hmr.com.manager.LotRangeManager;
 import hmr.com.manager.UploadAuctionManager;
 import hmr.com.manager.UserManager;
 import bizoncloudone.com.manager.ParamsLovManager;
@@ -223,11 +224,7 @@ public class Bid extends HttpServlet {
             try {
             	
             	//final Part filePart = req.getPart("myFileSmall");
-            	
-
                 List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
-
-
                 for(FileItem item : multiparts){
                     if(!item.isFormField()){
                     	
@@ -525,9 +522,7 @@ public class Bid extends HttpServlet {
 					}
 					
 					lot.setAmount_bid_next(amount_bid_next);
-					
 					lList.add(lot);
-					
 				}
 
 				req.setAttribute("auction", a);
@@ -551,9 +546,6 @@ public class Bid extends HttpServlet {
 				String doAction = req.getParameter("doaction")!=null ? (String)req.getParameter("doaction") : "";
 				String reqlotId = req.getParameter("lotId")!=null ? (String)req.getParameter("lotId") : "";
 				String reqamount = req.getParameter("amount")!=null ? (String)req.getParameter("amount") : "";
-
-				
-				
 				if(reqlotId!="" && reqamount!="") {
 					UserDao ud = new UserDao();
 					User u = ud.getUser(userId);
@@ -583,36 +575,27 @@ public class Bid extends HttpServlet {
 				UserManager uMngr = new UserManager(req,res);
 				page = uMngr.doUserManager();
 				
-			}else if(manager.equals("auction-manager")){
-				
-				System.out.println("11111");
-				
+			}else if(manager.equals("auction-manager")){		
 				AuctionManager aMngr = new AuctionManager(req,res);
-				
-				
 				if("saveAuctionImage".equals(action) && (auction_file_small!=null || auction_file!=null) ){
-					
 					System.out.println("BID saveAuctionImage "+auction_file_small+" - "+auction_file);
-
 					page = aMngr.doAuctionManager(auction_file_small, auction_file, action, auctionId_wip);
 				}else{
 					page = aMngr.doAuctionManager();
 				}
 			}else if(manager.equals("auction-range-manager")){
-				
 				System.out.println("BID auction-range-manager");
-				
 				AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
-
 				page = arMngr.doAuctionRangeManager();
 				
 			}else if(manager.equals("lot-manager")){
-				
-				System.out.println("BID - Lot Manager");
-				
+				System.out.println("BID - Lot Manager");		
 				LotManager lMngr = new LotManager(req,res);
-				
-				page = lMngr.doLotManager();
+				page = lMngr.doLotManager();		
+			} else if(manager.equals("lot-range-manager")){
+				System.out.println("BID lot-range-manager");
+				LotRangeManager lrMngr = new LotRangeManager(req,res);
+				page = lrMngr.doLotRangeManager();
 				
 			}else if(manager.equals("item-manager")){
 				

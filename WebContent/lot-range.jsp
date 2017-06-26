@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <%@ page import="hmr.com.bean.User"
-		 import="hmr.com.bean.Auction"
 		 import="hmr.com.bean.Lot"
+		 import="hmr.com.bean.LotRange"
 		 import="hmr.com.bean.Lov"
-		 import="java.util.HashMap" 
+		 import="java.util.List" 
+		 import="java.math.BigDecimal" 
 		 
-		 import="java.math.BigDecimal"
 		 import="java.util.ArrayList"  
 		 import="javax.servlet.RequestDispatcher"
 		 import="java.text.SimpleDateFormat"
@@ -16,7 +16,7 @@
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<%
-	
+	System.out.println("PAGE lot-range.jsp");
 	
 		String COMPANY_NAME = request.getSession().getAttribute("COMPANY_NAME")!=null ? (String)request.getSession().getAttribute("COMPANY_NAME") :"HMR Auctions";
 
@@ -32,29 +32,28 @@
 		  
 		//IDS
 		Integer user_id = request.getAttribute("user-id")!=null ? (Integer)request.getAttribute("user-id") : (Integer)request.getSession().getAttribute("user-id");
-		
-		BigDecimal auctionId_wip = request.getAttribute("auctionId_wip")!=null ? (BigDecimal)request.getAttribute("auctionId_wip") : null;
+		BigDecimal lotId_wip = request.getAttribute("lotId_wip")!=null && !request.getAttribute("lotId_wip").equals("") ? new BigDecimal(request.getAttribute("lotId_wip").toString()) : new BigDecimal(request.getSession().getAttribute("lotId_wip").toString());
 
 		System.out.println("userId : "+userId);
 		System.out.println("user_id : "+user_id);
+		System.out.println("lotId_wip : "+lotId_wip);
+		
 		/*
 		List<User> uList =(ArrayList<User>) request.getAttribute("userList");
 		System.out.println("ulList "+uList.size());
 		*/
 		
-		//ArrayList<Lov> userRoleList = (ArrayList<Lov>) request.getSession().getAttribute("USER-ROLE-LIST");
-		//ArrayList<Lov> genderList = (ArrayList<Lov>) request.getSession().getAttribute("GENDER-LIST");
-		//ArrayList<Lov> userStatusList = (ArrayList<Lov>) request.getSession().getAttribute("USER-STATUS-LIST");
+		ArrayList<Lov> userRoleList = (ArrayList<Lov>) request.getSession().getAttribute("USER-ROLE-LIST");
+		ArrayList<Lov> genderList = (ArrayList<Lov>) request.getSession().getAttribute("GENDER-LIST");
+		ArrayList<Lov> userStatusList = (ArrayList<Lov>) request.getSession().getAttribute("USER-STATUS-LIST");
 		
 		
-		Lot lot = request.getAttribute("lot")!=null ? (Lot)request.getAttribute("lot") : (Lot)request.getSession().getAttribute("lot");
-		
-		HashMap<Integer,User> bidderUserHM = request.getAttribute("BIDDER-USER-HM")!=null ? (HashMap<Integer,User>)request.getAttribute("BIDDER-USER-HM") : (HashMap<Integer,User>)request.getSession().getAttribute("BIDDER-USER-HM");
-		
-		
-		System.out.println("PAGE bidderUserHM : "+bidderUserHM);
 		//ArrayList<User> userCoordinatorList = (ArrayList<User>) request.getSession().getAttribute("USER-COORDINATOR-LIST");
-		//ArrayList<User> userCoordinatorList = (ArrayList<User>) request.getAttribute("userCoordinatorList");
+		ArrayList<User> userCoordinatorList = (ArrayList<User>) request.getAttribute("userCoordinatorList");
+		
+		//Lot lot = request.getAttribute("lot")!=null ? (Lot)request.getAttribute("lot") : (Lot)request.getSession().getAttribute("lot");
+		LotRange lotRange = request.getAttribute("lotRange")!=null ? (LotRange)request.getAttribute("lotRange") : (LotRange)request.getSession().getAttribute("lotRange");
+		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 			
@@ -165,13 +164,13 @@
         
         
  	        <form action="bid" name="frm" id="frm" method="post">
-		       <input type="hidden" name="manager" id="manager" value="lot-manager"/>
+		       <input type="hidden" name="manager" id="manager" value="lot-range-manager"/>
 		       <input type="hidden" name="action" id="action" value=""/>
 		       <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
 		       <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
-		       <input type="hidden" name="auctionId_wip" id="auctionId_wip" value="<%=auctionId_wip%>"/>
-		       <input type="hidden" name="lotId_wip" id="lotId_wip" value="<%=lot.getId()%>"/>
-		       <input type="hidden" name="lot_id" id="lot_id" value="<%=lot.getId()%>"/>
+		       <input type="hidden" name="lotId_wip" id="lotId_wip" value="<%=lotId_wip%>"/>
+		       <input type="hidden" name="lot_id" id="lot_id" value="<%=lotId_wip%>"/>
+		       <input type="hidden" name="lotRangeId_wip" id="lotRangeId_wip" value="<%=lotRange.getId()%>"/>
 		       
         <section class="page-section color" style="padding:15px;">
         
@@ -179,7 +178,7 @@
                 <div class="row" >
 
                     <div class="col-sm-12">
-                        <h3 class="block-title"><span>Lots  <label>Details </label></span></h3>
+                        <h3 class="block-title"><span>Lot Ranges  <label>details </label></span></h3>
                         <div id="msgDiv"></div>
  					</div>
  					
@@ -202,169 +201,40 @@
                 </div>
               </div><!-- /.box -->
               </div>		
+              
+
+
+              
  					--%>
- 					
- 					
- 	
- 					
- 					
 					<div class="col-sm-4">
 		              <div class="form-group">
-		                <label><b>Auction Id : </b><%=lot.getAuction_id()%></label>
+		                <label><b>Range Start : </b><%=lotRange.getRange_start() %></label>
+						
 		              </div>
+		              <div class="form-group">
+		                <label><b>Range End : </b><%=lotRange.getRange_end() %></label>
+						
+		              </div>
+		              <div class="form-group">
+		                <label><b>Increment Amount : </b><%=lotRange.getIncrement_amount() %></label>
+						
+		              </div>
+		             </div>
 		              
-		              <div class="form-group">
-		                <label><b>Lot Id : </b><%=lot.getLot_id()%></label>
-		              </div>
-		              
-		              <div class="form-group">
-		                <label><b>Lot No : </b><%=lot.getLot_no()%></label>
-		              </div>
-
-		              <div class="form-group">
-		                <label><b>Lot Name : </b><%=lot.getLot_name()%></label>
-		              </div>
-
-
-		              <div class="form-group">
-		                <label><b>Description : </b><%=lot.getLot_desc()%></label>
-		              </div>	
-					</div>
-					
 					
 				
-				<div class="col-sm-4">
-					<div class="form-group">			
-		             	<label><b>Assessment Value : </b><%=lot.getAssessment_value()%></label>
-		           </div>
-		           
-					<div class="form-group">			
-		             	<label><b>Duties : </b><%=lot.getDuties()%></label>
-		           </div>
-		           
-					<div class="form-group">			
-		             	<label><b>VAT : </b><%=lot.getVat()%></label>
-						
-		           </div>
-		           
-					<div class="form-group">			
-		             	<label><b>PREMIUM RATE : </b><%=lot.getPremium_rate()%></label>
-						
-		           </div>
-
-					<div class="form-group">			
-		             <label><b>Active : </b>
-		            <%
-		            	String active = "";
-		            	if(lot.getActive() == 0){
-		            		active = "No";
-		            	}else if(lot.getActive() == 1){
-		            		active = "Yes";
-		            	}
-		            %>	<%=active %>
-		             </label>
-						
-		            </div>
-					<div class="form-group">			
-		             	<label><b>UNIT : </b><%=lot.getUnit()%></label>
-		           </div>
-					<div class="form-group">			
-		             	<label><b>UNIT QTY : </b><%=lot.getUnit_qty()%></label>
-						
-		           	</div>
-		              <div class="form-group">
-		                <label><b>Lot Type Id : </b><%=lot.getLot_type_id()%></label>
-		              </div>
-				</div>
-
-
-				<div class="col-sm-4">	
-
-		              
-		            <div class="form-group">
-		             <label><b>For Buy : </b>
-		            <%
-		            	String is_bid = "";
-		            	if(lot.getIs_bid() == 0){
-		            		is_bid = "No";
-		            	}else if(lot.getIs_bid() == 1){
-		            		is_bid = "Yes";
-		            	}
-		            %>	<%=is_bid %>
-		             </label>
-						
-		            </div>
-		            
-		            
-		            <div class="form-group">
-		             <label><b>For Buy : </b>
-		            <%
-		            	String is_buy = "";
-		            	if(lot.getIs_buy() == 0){
-		            		is_buy = "No";
-		            	}else if(lot.getIs_buy() == 1){
-		            		is_buy = "Yes";
-		            	}
-		            %>	<%=is_buy %>
-		             </label>
-						
-		            </div>
-
-		              <div class="form-group">
-		                <label><b>Lot Increment Time : </b><%=lot.getLot_increment_time()%></label>
-		              </div>
-		              
-			        <div class="form-group">
-		                <label><b>Amount Bid : </b><%=lot.getAmount_bid()%></label>
-						
-		              </div>
-		              <div class="form-group">
-		                <label><b>Amount Buy : </b><%=lot.getAmount_buy()%></label>
-						
-		              </div>
-		              <div class="form-group">
-		             <label><b>Transaction Won : </b><%=lot.getAction_taken()%></label>
-						
-		            </div>
-		              <div class="form-group">
-		                <label><b>Buy Price : </b><%=lot.getBuy_price()%></label>
-					
-		              </div>
-				</div>
-				
-            <div class="col-md-12">
-            
-				
-	            <div class="form-group">
-	              <label><b>Bidder : </b>
-	              <%if(lot.getBidder_id()!=null && lot.getBidder_id()!=0){%>
-	            	   <%=bidderUserHM.get(lot.getBidder_id()).getFirst_name()%> <%=bidderUserHM.get(lot.getBidder_id()).getLast_name()%>
-	              <%}else{ %>
-	              &nbsp;
-	              <%} %>
-	             
-	              
-	              
-	              </label>
-
-	            </div>
-	            </div>
-
 				<div class="col-sm-12">
 					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="createLot()">Create</a>
+					     <a class="btn btn-theme btn-block " href="#" onclick="createLotRange()">Create</a>
 					</div>
 					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="updateLot()">Update</a>
+					     <a class="btn btn-theme btn-block " href="#" onclick="updateLotRange()">Update</a>
 					</div>
-					<%if(auctionId_wip!=null && auctionId_wip.doubleValue() > 0){%>
+					<%if(lotId_wip!=null && lotId_wip.doubleValue() > 0){%>
 					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="viewAuction(<%=auctionId_wip%>)">Auction</a>
+					     <a class="btn btn-theme btn-block " href="#" onclick="viewLot(<%=lotId_wip%>)">Lot</a>
 					</div>
 					<%} %>
-					<div class="col-sm-3">
-					     <a class="btn btn-theme btn-block " href="#" onclick="lotRange()">Lot Range Increment</a>
-					</div>
 				</div>
 					
 
@@ -395,23 +265,15 @@
 
 <!-- JS Local -->
 <script type="text/javascript">
-function createLot(){
-	document.frm.action.value="createLot";
+function createLotRange(){
+	document.frm.action.value="createLotRange";
 	document.frm.submit();
 }
 
-function updateLot(){
-	document.frm.action.value="updateLot";
+function updateLotRange(){
+	document.frm.action.value="updateLotRange";
 	document.frm.submit();
 }
-
-function lotRange(){
-	document.frm.manager.value="lot-range-manager";
-	document.frm.action.value="lotRangeList";
-	document.frm.submit();
-}
-
-
 
 
 function onLoadPage(){
@@ -423,6 +285,58 @@ function onLoadPage(){
 //		< /%}%>
 //	}
 */
+}
+
+function validateSave(){
+	var isSave = true;
+	
+
+	var range_start = document.getElementById("range_start").value;
+	var range_end = document.getElementById("range_end").value;
+	var increment_amount = document.getElementById("increment_amount").value;
+
+	var msgInfo = "";
+	var msgbgcol = "";
+
+	if(range_start==""){
+		msgInfo = "RANGE START IS REQUIRED.";
+		msgbgcol = "red";
+		document.frm.range_start.focus();
+		isSave = false;
+	}else if(range_end==""){
+		msgInfo = "RANGE END IS REQUIRED.";
+		msgbgcol = "red";
+		document.frm.range_end.focus();
+		isSave = false;
+	}else if(increment_amount==""){
+		msgInfo = "INCREMENT AMOUNT IS REQUIRED.";
+		msgbgcol = "red";
+		document.frm.increment_amount.focus();
+		isSave = false;
+	}
+
+	if(isSave==false){
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+	}
+	return isSave;
+}
+
+function clearLotRange(){
+	document.getElementById("range_start").value="";
+	document.getElementById("range_end").value="";
+	document.getElementById("increment_amount").value="";
+}
+
+function saveLotRange(){
+	if(validateSave()){
+		document.frm.action.value="saveLotRange";
+		document.frm.submit();
+	}
+	setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
+	//	alert('s');
 }
 
 <%if(msgInfo!=null){%>
@@ -441,12 +355,10 @@ setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
 
 setTimeout(onLoadPage,3000);
 
-
-
-function viewAuction(id){
-	document.getElementById("action").value="viewAuction";
-	document.getElementById("manager").value="auction-manager";
-	document.getElementById("auctionId_wip").value=id;
+function viewLot(id){
+	document.getElementById("action").value="viewLot";
+	document.getElementById("manager").value="lot-manager";
+	document.getElementById("lotId_wip").value=id;
 	document.frm.submit();
 }
 
@@ -478,17 +390,12 @@ function viewAuction(id){
 <!--<![endif]-->
 
 <!-- DataTables -->
-
-
-<!-- 
 <script src="plugins/datatables/jquery.dataTables.js"></script>
 <script src="plugins/datatables/dataTables.bootstrap.js"></script>
 
--->
-<!-- 
 <script src="js/jquery.datetimepicker.full.js"></script>
 <script type="text/javascript" src="js/select2.full.js"></script>
--->
+
 <%--
     <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
@@ -497,14 +404,85 @@ function viewAuction(id){
     <!-- FastClick -->
     <script src="plugins/fastclick/fastclick.min.js"></script>
     --%>
+	<%--
 	<script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
-	
+	--%>
 	<!-- Bootstrap WYSIHTML5 -->
 	    <!-- bootstrap wysihtml5 - text editor -->
-    <!-- 
+    <%--
     <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
 	<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
--->
+--%>
+<script>
 
+var range_start = document.getElementById("range_start").value;
+var range_end = document.getElementById("range_end").value;
+var increment_amount = document.getElementById("increment_amount").value;
+
+$(document).ready(function() {
+ 	    $("#range_start").keydown(function (e) {
+ 	        // Allow: backspace, delete, tab, escape, enter and .
+ 	        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+ 	             // Allow: Ctrl+A
+ 	            (e.keyCode == 65 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+C
+ 	            (e.keyCode == 67 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+X
+ 	            (e.keyCode == 88 && e.ctrlKey === true) ||
+ 	             // Allow: home, end, left, right
+ 	            (e.keyCode >= 35 && e.keyCode <= 39)) {
+ 	                 // let it happen, don't do anything
+ 	                 return;
+ 	        }
+ 	        // Ensure that it is a number and stop the keypress
+ 	        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+ 	            e.preventDefault();
+ 	        }
+ 	    });
+
+
+ 	    $("#range_end").keydown(function (e) {
+ 	        // Allow: backspace, delete, tab, escape, enter and .
+ 	        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+ 	             // Allow: Ctrl+A
+ 	            (e.keyCode == 65 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+C
+ 	            (e.keyCode == 67 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+X
+ 	            (e.keyCode == 88 && e.ctrlKey === true) ||
+ 	             // Allow: home, end, left, right
+ 	            (e.keyCode >= 35 && e.keyCode <= 39)) {
+ 	                 // let it happen, don't do anything
+ 	                 return;
+ 	        }
+ 	        // Ensure that it is a number and stop the keypress
+ 	        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+ 	            e.preventDefault();
+ 	        }
+ 	    });
+
+
+ 	    $("#increment_amount").keydown(function (e) {
+ 	        // Allow: backspace, delete, tab, escape, enter and .
+ 	        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+ 	             // Allow: Ctrl+A
+ 	            (e.keyCode == 65 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+C
+ 	            (e.keyCode == 67 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+X
+ 	            (e.keyCode == 88 && e.ctrlKey === true) ||
+ 	             // Allow: home, end, left, right
+ 	            (e.keyCode >= 35 && e.keyCode <= 39)) {
+ 	                 // let it happen, don't do anything
+ 	                 return;
+ 	        }
+ 	        // Ensure that it is a number and stop the keypress
+ 	        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+ 	            e.preventDefault();
+ 	        }
+ 	    });
+
+ 
+</script>
 </body>
 </html>
