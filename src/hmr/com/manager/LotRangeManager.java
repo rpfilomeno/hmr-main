@@ -248,4 +248,13 @@ public class LotRangeManager {
 		
 		return lr;
 	}
+	
+	public BigDecimal getIncrementAmountByLotId(BigDecimal lot_id, BigDecimal amount_bid) {
+		LotRangeDao ld = new LotRangeDao();
+		LotRange lr = ld.getLotRangeByLotIdAndBidAmount(lot_id, amount_bid);
+		if(lr !=null) {
+			return lr.getIncrement_amount();
+		}
+		return BigDecimal.ZERO;
+	}
 }

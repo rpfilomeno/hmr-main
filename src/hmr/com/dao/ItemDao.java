@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.util.DBConnection;
 import hmr.com.bean.Item;
+import hmr.com.bean.Lot;
 import hmr.com.util.StringUtil;
 
 public class ItemDao extends DBConnection {
@@ -1064,6 +1065,88 @@ public class ItemDao extends DBConnection {
 		}
 		
 		return aList;
+	}
+	
+	
+	public List<Item> getLotItemsById(BigDecimal lot_id){
+
+		List<Item> iL = new ArrayList<Item>();
+		
+
+		StringBuilder sb = new StringBuilder("Select id, lot_id, auction_id, item_id, reference_no, target_price");
+
+		sb.append(", reserve_price, amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price");
+		
+		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date");
+		
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		
+		sb.append(" from item where lot_id="+lot_id.toString());
+		
+		sb.append(" order by item_desc");
+
+		try {
+			conn = getConnection();
+
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			Item i = null;
+
+			while(rs.next()){
+				i = new Item();
+				i.setId(rs.getBigDecimal("id"));
+				i.setLot_id(rs.getBigDecimal("lot_id"));
+				i.setItem_id(rs.getBigDecimal("item_id"));
+				i.setAuction_id(rs.getBigDecimal("auction_id"));
+				i.setReference_no(rs.getBigDecimal("reference_no"));
+				i.setTarget_price(rs.getBigDecimal("target_price"));
+				i.setReserve_price(rs.getBigDecimal("reserve_price"));
+				i.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				i.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				i.setAction_taken(rs.getInt("action_taken"));
+				i.setIs_buy(rs.getInt("is_buy"));
+				i.setIs_bid(rs.getInt("is_bid"));
+				i.setBuy_price(rs.getBigDecimal("buy_price"));
+				i.setBidder_id(rs.getInt("bidder_id"));
+				i.setItem_increment_time(rs.getInt("item_increment_time"));
+				i.setItem_desc(rs.getString("item_desc"));
+				i.setImageBytes(rs.getBytes("image"));
+				i.setCategory_level_1(rs.getInt("category_level_1"));
+				i.setCategory_level_2(rs.getInt("category_level_2"));
+				i.setCategory_level_3(rs.getInt("category_level_3"));
+				i.setCurrency(rs.getInt("currency"));
+				i.setBid_count(rs.getInt("bid_count"));
+				i.setSynched_date(rs.getTimestamp("synched_date"));
+				
+				
+				//SystemBean - start
+				i.setDate_created(rs.getTimestamp("date_created"));
+				i.setDate_updated(rs.getTimestamp("date_updated"));
+				i.setCreated_by(rs.getInt("created_by"));
+				i.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				iL.add(i);
+
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return iL;
 	}
 	
 	

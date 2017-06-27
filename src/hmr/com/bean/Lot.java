@@ -30,12 +30,14 @@ public class Lot extends SystemBean {
 	BigDecimal amount_bid_next;
 	Integer currency;
 	Integer bid_count;
+	Timestamp end_date_time;
 	
 	BigDecimal srp_total;
 	BigDecimal target_price_total;
 	BigDecimal reserve_price_total;
 	BigDecimal assess_value_total;
 	Timestamp date_sync;
+	
 	
 	public BigDecimal getId() {
 		return id;
@@ -186,6 +188,12 @@ public class Lot extends SystemBean {
 	}
 	public void setBid_count(Integer bid_count) {
 		this.bid_count = bid_count;
+	}
+	public void setEnd_date_time(Timestamp end_date_time) {
+		this.end_date_time = end_date_time;
+	}
+	public Timestamp getEnd_date_time() {
+		return end_date_time;
 	}
 	public BigDecimal getSrp_total() {
 		return srp_total;

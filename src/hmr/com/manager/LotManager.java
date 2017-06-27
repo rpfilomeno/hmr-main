@@ -18,6 +18,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.api.gbase.client.GmAttributes.GmAttribute.Importance;
+
+import hmr.com.bean.Auction;
+import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
 import hmr.com.bean.User;
 import hmr.com.dao.LotDao;
@@ -105,6 +109,51 @@ public class LotManager {
 
 			page ="lot-list.jsp";
 		
+		}else if("lotBidDetails".equals(action)){
+			System.out.println("lotBidDetails");
+			lotId_wip = req.getParameter("lotId_wip")!=null ? new BigDecimal(req.getParameter("lotId_wip")): new BigDecimal(0);
+			
+			System.out.println("lotId_wip : "+lotId_wip);
+			
+			AuctionManager aMngr = new AuctionManager(req,res);
+			AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
+			LotManager lMngr = new LotManager(req,res);
+			ItemManager iMngr = new ItemManager(req,res);
+			LotRangeManager lrMngr = new LotRangeManager();
+			
+			Lot l = lMngr.getLotById(lotId_wip);
+			Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
+			
+			BigDecimal increment_amount = BigDecimal.ZERO;
+
+			//Check if there is lot level bid increment else use auction level value
+			increment_amount = lrMngr.getIncrementAmountByLotId(l.getLot_id(), l.getAmount_bid());
+			if(increment_amount.equals(BigDecimal.ZERO)) {
+				System.out.println("Using auction bid increment on lot");
+				increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), l.getAmount_bid());
+			}
+			BigDecimal amount_bid_next=  increment_amount.add(l.getAmount_bid());
+			l.setAmount_bid_next(amount_bid_next);
+			
+			//Check if there is lot level bid increment else use auction level value
+			if(l.getEnd_date_time() == null) {
+				l.setEnd_date_time(a.getEnd_date_time());
+			}
+			
+			//check if the end time is expired
+			if(l.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+				l.setIs_bid(0);
+				l.setIs_buy(0);
+			} 
+			
+			List<Item> iL = iMngr.getLotItemsById(l.getLot_id());
+			
+			req.setAttribute("lot", l);
+			req.setAttribute("items", iL);
+			req.setAttribute("auction", a);
+
+			page ="lot-bid-details.jsp";
+			
 		}else if("createLot".equals(action)){
 			
 			System.out.println("createLot");

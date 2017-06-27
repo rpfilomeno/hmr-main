@@ -843,6 +843,11 @@ public class ItemManager {
 		
 	}
 	
+	public List<Item> getLotItemsById(BigDecimal lot_id) {
+		ItemDao ad = new ItemDao();
+		return ad.getLotItemsById(lot_id);
+	}
+	
 	/*
 	public List<Item> getItemListByTypeAndActive(Integer itemType){
 		

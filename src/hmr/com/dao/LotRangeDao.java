@@ -386,4 +386,44 @@ public class LotRangeDao extends DBConnection {
 		return lr;
 	}
 	
+	public LotRange getLotRangeByLotIdAndBidAmount(BigDecimal lot_id, BigDecimal bid_amount) {
+		LotRange lr = null;
+		try {
+			conn = getConnection();
+			Statement stmt = conn.createStatement();	
+		    stmt = conn.createStatement();
+		    String sql ="SELECT * FROM lot_range WHERE"+
+		    		" lot_id = "+lot_id.toString()+
+		    		" AND "+bid_amount.toString()+" >= range_start"+
+		    		" AND "+bid_amount+" <= range_end;";
+		    System.out.println("sql : "+sql);
+		    
+		    ResultSet rs = stmt.executeQuery(sql);
+		    
+		    while(rs.next()){
+				lr = new LotRange();
+				lr.setId(rs.getBigDecimal("id"));
+				lr.setLot_id(rs.getBigDecimal("lot_id"));	
+				lr.setRange_start(rs.getBigDecimal("range_start"));
+				lr.setRange_end(rs.getBigDecimal("range_end"));
+				lr.setIncrement_amount(rs.getBigDecimal("increment_amount"));
+				lr.setDate_created(rs.getTimestamp("date_created"));
+				lr.setCreated_by(rs.getInt("created_by"));
+				lr.setUpdated_by(rs.getInt("updated_by"));
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return lr;
+	}
+	
 }
