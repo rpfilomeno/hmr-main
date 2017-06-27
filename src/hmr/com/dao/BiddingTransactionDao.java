@@ -694,8 +694,8 @@ public class BiddingTransactionDao extends DBConnection {
 			conn = dbConn.getConnection();
 			
 			Statement stmt = conn.createStatement();
-			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`, `action_taken`, `user_id`) "+
-					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"');";
+			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`, `action_taken`, `user_id`, `date_created`) "+
+					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"',NOW());";
 			i = stmt.executeUpdate(Sql);
 			
 			
