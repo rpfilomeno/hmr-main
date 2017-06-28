@@ -12,6 +12,8 @@ public class BiddingTransaction extends SystemBean {
 	Integer action_taken;
 	Integer status;
 	Integer user_id;
+	Integer is_extended;
+	Integer qty;
 	
 	public BigDecimal getId() {
 		return id;
@@ -55,6 +57,18 @@ public class BiddingTransaction extends SystemBean {
 	}
 	public void setAction_taken(Integer action_taken) {
 		this.action_taken = action_taken;
+	}
+	public Integer getIs_extended() {
+		return is_extended;
+	}
+	public void setIs_extended(Integer is_extended) {
+		this.is_extended = is_extended;
+	}
+	public Integer getQty() {
+		return qty;
+	}
+	public void setQty(Integer qty) {
+		this.qty = qty;
 	}
 
 }

@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import hmr.com.util.DBConnection;
 import hmr.com.bean.Auction;
 import hmr.com.util.StringUtil;
+import sun.java2d.pipe.SpanShapeRenderer.Simple;
 
 public class AuctionDao extends DBConnection {
 
@@ -1637,6 +1639,118 @@ public class AuctionDao extends DBConnection {
 			java.sql.Statement stmt = conn.createStatement();
 
 			//System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}else{
+				
+			}
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			Auction a = null;
+
+			while(rs.next()){
+				a = new Auction();
+				a.setId(rs.getBigDecimal("id"));
+				a.setAuction_name(rs.getString("auction_name"));
+				a.setAuction_no(rs.getBigDecimal("auction_no"));
+				a.setLocation(rs.getString("location"));
+				a.setBid_deposit_amount(rs.getBigDecimal("bid_deposit_amount"));
+				a.setStart_date_time(rs.getTimestamp("start_date_time"));
+				a.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				a.setAuction_desc(rs.getString("auction_desc"));
+				a.setTerms_and_condition(rs.getString("terms_and_conditions"));	
+				a.setCoordinator(rs.getInt("coordinator"));
+				a.setVisibility(rs.getInt("visibility"));
+				a.setAuction_item_closing(rs.getInt("auction_item_closing"));
+				a.setAuction_type(rs.getInt("auction_type"));
+				a.setAuction_id(rs.getBigDecimal("auction_id"));
+            	a.setStatus(rs.getInt("status"));
+            	a.setActive(rs.getInt("active"));
+				a.setNo_of_lots(rs.getInt("no_of_lots"));
+				a.setNo_of_items(rs.getInt("no_of_items"));
+				a.setAuction_item_increment_time(rs.getInt("auction_item_increment_time"));
+				a.setBid_deposit(rs.getInt("bid_deposit"));
+				a.setDate_sync(rs.getTimestamp("date_sync"));
+				a.setCategory_level_1(rs.getInt("category_level_1"));
+				a.setOne_lot_per_bidder(rs.getInt("one_lot_per_bidder"));
+				a.setOne_start_bid(rs.getInt("one_start_bid"));
+				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+				
+				
+            	a.setImageBytes(rs.getBytes("image"));
+            	a.setImageSmallBytes(rs.getBytes("image_small"));
+
+				//SystemBean - start
+				a.setDate_created(rs.getTimestamp("date_created"));
+				a.setDate_updated(rs.getTimestamp("date_updated"));
+				a.setCreated_by(rs.getInt("created_by"));
+				a.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				aList.add(a);
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return aList;
+	}
+	
+	
+	public List<Auction> getAuctionListEndingTodayActiveOpen(){
+		
+		Date dtNow = new Date();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String dtToday = sdf.format(dtNow);
+
+		List<Auction> aList = new ArrayList<Auction>();
+		
+		StringBuilder sb = new StringBuilder("Select id, auction_name, auction_no, location, bid_deposit_amount, start_date_time, end_date_time");
+	
+		sb.append(", auction_desc, terms_and_conditions, coordinator, visibility, auction_item_closing, auction_type, active, auction_id");
+		
+		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, category_level_1, one_lot_per_bidder");
+		
+		sb.append(", one_start_bid, bid_qualifier_price");
+		
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		
+		sb.append(" from auction where active = 1 and status = 30 and end_date_time between '"+dtToday+" 00:00:01' and '"+dtToday+" 23:59:59' and start_date_time is not null and end_date_time is not null");
+		
+		sb.append(" order by end_date_time asc");
+
+		try {
+			DBConnection dbConn = new DBConnection();
+			
+			
+			
+			//System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}else{
+				conn = dbConn.getConnection();
+			}
+		
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
 			
 			if(stmt==null || stmt.isClosed()){
 				stmt = conn.createStatement();

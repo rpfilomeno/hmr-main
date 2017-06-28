@@ -9,6 +9,7 @@ import java.io.OutputStream;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,7 @@ import hmr.com.bean.Auction;
 import hmr.com.bean.AuctionRange;
 import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
+import hmr.com.bean.LotRange;
 import hmr.com.bean.User;
 import hmr.com.dao.UserDao;
 
@@ -460,78 +462,75 @@ public class Bid extends HttpServlet {
 
 				page ="index.jsp";
 			}else if("verifyEmail".equals(action)){
-				
 				UserManager uMngr = new UserManager(req,res);
 				page = uMngr.doUserManager();
+				
 			}else if("auctionBidDetails".equals(action)){
-	
 				AuctionManager aMngr = new AuctionManager(req,res);
 				AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
 				LotManager lMngr = new LotManager(req,res);
 				ItemManager iMngr = new ItemManager(req,res);
-				
+				List<Lot> lList = new ArrayList<Lot>();
+				List<Lot> lListExpired = new ArrayList<Lot>();
+				LotRangeManager lrMngr = new LotRangeManager();
 				
 				Auction a = aMngr.getAuctionById(new BigDecimal(aid));
-				
-				//AuctionRange ar = new AuctionRange();
-				
-				
-				List<AuctionRange> arList = arMngr.getAuctionRangeListByAuctionId(a.getAuction_id());
-				
-				List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
-				
-				HashMap<BigDecimal, Lot> lotHM  = lMngr.getLotHMByAuctionId(a.getAuction_id());
-				
-				//List<Item> iList = iMngr.getItemListByAuctionId(a.getAuction_id());
-				
 				iMngr.setLovValuesCurrency(req, res);
 				
-				List<Lot> lList = new ArrayList<Lot>();
+				//AuctionRange ar = new AuctionRange();
+				//List<AuctionRange> arList = arMngr.getAuctionRangeListByAuctionId(a.getAuction_id());
+				//HashMap<BigDecimal, Lot> lotHM  = lMngr.getLotHMByAuctionId(a.getAuction_id());
+				//List<Item> iList = iMngr.getItemListByAuctionId(a.getAuction_id());
 				
+				List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
 				for(Lot lot : lotList){
-					
-					BigDecimal amount_bid_next = new BigDecimal(0);
-					
-					boolean isStop = false;
-					
-					for(AuctionRange ar : arList){
-						
-						System.out.println("LOT DESC : "+lot.getLot_desc());
-						System.out.println("NEXT BID :  "+ar.getRange_start().doubleValue()+" - "+ar.getRange_end().doubleValue());
-						System.out.println("AMOUNT : "+ar.getIncrement_amount()+" - "+isStop);
-						
-						BigDecimal lotAmountBid = new BigDecimal("0");
-						if(lot.getAmount_bid()!=null){
-							lotAmountBid = lot.getAmount_bid();
-						}else{
-							lot.setAmount_bid(new BigDecimal("0"));
-						}
-						
-						if(lot.getAmount_bid().doubleValue() >= ar.getRange_start().doubleValue() && 
-								lot.getAmount_bid().doubleValue() <= ar.getRange_end().doubleValue() &&	
-								!isStop){
+					BigDecimal increment_amount = BigDecimal.ZERO;
 
-							amount_bid_next = ar.getIncrement_amount().add(lotAmountBid);
-							isStop = true;
+					//Check if there is lot level bid increment else use auction level value
+					increment_amount = lrMngr.getIncrementAmountByLotId(lot.getLot_id(), lot.getAmount_bid());
+					if(increment_amount.equals(BigDecimal.ZERO)) {
+						System.out.println("Using auction bid increment on lot");
+						increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), lot.getAmount_bid());
+					}
+					BigDecimal amount_bid_next=  increment_amount.add(lot.getAmount_bid());
+					lot.setAmount_bid_next(amount_bid_next);
 
-						}else if(lot.getAmount_bid().doubleValue()==0 && !isStop){
-							amount_bid_next = ar.getIncrement_amount().add(lotAmountBid);
-							isStop = true;
-						}
-						
+					
+					//check of there is lot level end_date_time
+					if(lot.getEnd_date_time()==null) {
+						System.out.println("Using auction end date time on lot");
+						lot.setEnd_date_time(a.getEnd_date_time());
 					}
 					
-					lot.setAmount_bid_next(amount_bid_next);
-					lList.add(lot);
+					//check if the end time is expired
+					if(lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+						lot.setIs_bid(0);
+						lot.setIs_buy(0);
+						lListExpired.add(lot);
+					} else {
+						lList.add(lot);
+					}
+					
+					//append the expired lots to end
+					if(!lListExpired.isEmpty()) lList.addAll(lListExpired);
+					
+					System.out.println("AUCTION End Date : " + a.getEnd_date_time().toString());
+					System.out.println("LOT End Date : " + lot.getEnd_date_time().toString());
+					System.out.println("LOT ID : " + lot.getLot_id().toString());
+					System.out.println("LOT DESC : " + lot.getLot_desc());
+					System.out.println("LOT NEXT BID : " + lot.getAmount_bid_next().toString());
+					System.out.println("LOT AMOUNT BID: " + lot.getAmount_bid().toString());
+							
 				}
-
-				req.setAttribute("auction", a);
-				req.setAttribute("lotHM", lotHM);
-				req.setAttribute("lList", lList);
-				req.setAttribute("arList", arList);
 				
-				req.setAttribute("auction-item", a);
+				req.setAttribute("lList", lList);
+				req.setAttribute("auction", a);
+				//req.setAttribute("auction-item", a);
+				//req.setAttribute("lotHM", lotHM);
+				//req.setAttribute("arList", arList);
+				
 				page ="auction-bid-details.jsp";
+				
 			}else if("auctionBidDetailsDoBid".equals(action)){
 				BiddingTransactionManager bMngr = new BiddingTransactionManager();
 				bMngr.doBiddingTransactionManager();
@@ -560,9 +559,56 @@ public class Bid extends HttpServlet {
 					}else if(doAction.equals("BUY")) {
 						btMngr.insertBiddingTransactionMakeBuy(lotId, amount, u.getId());
 					}
-					req.getSession(true).setAttribute("msgInfo", "Bid Submitted");	
-					req.getSession(true).setAttribute("msgbgcol", "#65f442");
-					page = "index.jsp";
+					
+					BigDecimal lotId_wip = req.getParameter("lotId_wip")!=null ? new BigDecimal(req.getParameter("lotId_wip")): new BigDecimal(0);
+					
+					System.out.println("lotId_wip : "+lotId_wip);
+					
+					AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
+					ItemManager iMngr = new ItemManager(req,res);
+					LotRangeManager lrMngr = new LotRangeManager();
+					
+					LotManager lMngr = new LotManager();
+					Lot l = lMngr.getLotById(lotId_wip);
+					
+					AuctionManager aMngr = new AuctionManager();
+					Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
+					
+
+					BigDecimal increment_amount = BigDecimal.ZERO;
+
+					//Check if there is lot level bid increment else use auction level value
+					increment_amount = lrMngr.getIncrementAmountByLotId(l.getLot_id(), l.getAmount_bid());
+					if(increment_amount.equals(BigDecimal.ZERO)) {
+						System.out.println("Using auction bid increment on lot");
+						increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), l.getAmount_bid());
+					}
+					BigDecimal amount_bid_next=  increment_amount.add(l.getAmount_bid());
+					l.setAmount_bid_next(amount_bid_next);
+					
+					//Check if there is lot level bid increment else use auction level value
+					if(l.getEnd_date_time() == null) {
+						
+						l.setEnd_date_time(a.getEnd_date_time());
+					}
+					
+					//check if the end time is expired
+					if(l.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+						l.setIs_bid(0);
+						l.setIs_buy(0);
+					} 
+					
+					List<Item> iL = iMngr.getLotItemsById(l.getLot_id());
+					
+					req.setAttribute("msgbgcol", "green");
+					req.setAttribute("msgInfo", "Bid Submitted.");
+					
+					req.setAttribute("lot", l);
+					req.setAttribute("items", iL);
+					req.setAttribute("auction", a);
+					
+					
+					page = "lot-bid-details.jsp";
 					
 					
 				}

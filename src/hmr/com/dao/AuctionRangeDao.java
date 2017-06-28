@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import hmr.com.util.DBConnection;
 import hmr.com.bean.AuctionRange;
+import hmr.com.bean.LotRange;
 
 public class AuctionRangeDao extends DBConnection {
 
@@ -372,6 +373,49 @@ public class AuctionRangeDao extends DBConnection {
 			}
 		}
 		
+		return ar;
+	}
+	
+	public AuctionRange getAuctionRangeByAuctionIdAndBidAmount(BigDecimal auction_id, BigDecimal bid_amount) {
+		AuctionRange ar = null;
+		if(bid_amount.compareTo(BigDecimal.ZERO) == 0) {
+			bid_amount = BigDecimal.ONE;
+		}
+		try {
+			conn = getConnection();
+			Statement stmt = conn.createStatement();	
+		    stmt = conn.createStatement();
+		    String sql ="SELECT * FROM auction_range WHERE"+
+		    		" auction_id = "+auction_id.toString()+
+		    		" AND "+bid_amount.toString()+" >= range_start"+
+		    		" AND "+bid_amount+" <= range_end;";
+		    System.out.println("sql : "+sql);
+		    
+		    ResultSet rs = stmt.executeQuery(sql);
+		    
+		    while(rs.next()){
+		    	ar = new AuctionRange();
+		    	ar.setId(rs.getBigDecimal("id"));
+		    	ar.setAuction_id(rs.getBigDecimal("auction_id"));	
+		    	ar.setRange_start(rs.getBigDecimal("range_start"));
+		    	ar.setRange_end(rs.getBigDecimal("range_end"));
+		    	ar.setIncrement_amount(rs.getBigDecimal("increment_amount"));
+		    	ar.setDate_created(rs.getTimestamp("date_created"));
+		    	ar.setCreated_by(rs.getInt("created_by"));
+		    	ar.setUpdated_by(rs.getInt("updated_by"));
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 		return ar;
 	}
 	

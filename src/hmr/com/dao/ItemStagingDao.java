@@ -725,8 +725,15 @@ public class ItemStagingDao extends DBConnection {
 			}else{
 				stmt = conn.prepareStatement(sql);
 			}
+			
+
 	        
 			if((stmt==null || stmt.isClosed()) && conn!=null && !conn.isClosed()){
+				stmt = conn.prepareStatement(sql);
+			}
+			
+			if(conn.isClosed()){
+				conn = dbConn.getConnection();
 				stmt = conn.prepareStatement(sql);
 			}
 

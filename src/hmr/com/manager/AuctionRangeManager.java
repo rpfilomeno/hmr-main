@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.bean.Auction;
 import hmr.com.bean.AuctionRange;
+import hmr.com.bean.LotRange;
 import hmr.com.bean.User;
 import hmr.com.dao.AuctionDao;
 import hmr.com.dao.AuctionRangeDao;
+import hmr.com.dao.LotRangeDao;
 import hmr.com.dao.UserDao;
 
 public class AuctionRangeManager {
@@ -401,6 +403,15 @@ public class AuctionRangeManager {
 		
 		return aList;
 		
+	}
+	
+	public BigDecimal getIncrementAmountByAuctionId(BigDecimal auction_id, BigDecimal amount_bid) {
+		AuctionRangeDao ad = new AuctionRangeDao();
+		AuctionRange ar = ad.getAuctionRangeByAuctionIdAndBidAmount(auction_id, amount_bid);
+		if(ar !=null) {
+			return ar.getIncrement_amount();
+		}
+		return BigDecimal.ZERO;
 	}
 	
 	

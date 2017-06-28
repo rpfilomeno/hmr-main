@@ -694,10 +694,8 @@ public class BiddingTransactionDao extends DBConnection {
 			conn = dbConn.getConnection();
 			
 			Statement stmt = conn.createStatement();
-			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`, `action_taken`, `user_id`) "+
-					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"');";
-			
-			System.out.println("Sql "+Sql);
+			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`, `action_taken`, `user_id`, `date_created`) "+
+					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"',NOW());";
 			i = stmt.executeUpdate(Sql);
 			
 			
@@ -954,5 +952,138 @@ public class BiddingTransactionDao extends DBConnection {
 		
 	}
 	
+	public HashMap<BigDecimal, BiddingTransaction> getBiddingTransactionHMByLotId(BigDecimal lot_id){
 
+		//List<BiddingTransaction> btList = new ArrayList<BiddingTransaction>();
+		
+		HashMap<BigDecimal, BiddingTransaction> btHM = new HashMap<BigDecimal, BiddingTransaction>();
+		
+		StringBuilder sb = new StringBuilder("Select id, lot_id, amount_bid, amount_buy, action_taken");
+
+		sb.append(", status, user_id, is_extended, qty");
+		
+		sb.append(", date_created, date_updated, created_by, updated_by");
+		
+		sb.append(" from bidding_transaction where lot_id="+lot_id);
+		
+		sb.append(" order by id desc limit 1");
+
+		try {
+			conn = getConnection();
+
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			BiddingTransaction bt = null;
+
+			while(rs.next()){
+				bt = new BiddingTransaction();
+				bt.setId(rs.getBigDecimal("id"));
+				bt.setLot_id(rs.getBigDecimal("lot_id"));
+				bt.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				bt.setAmount_buy(rs.getBigDecimal("amount_buy"));
+
+				bt.setAction_taken(rs.getInt("action_taken"));
+				bt.setStatus(rs.getInt("status"));
+				bt.setUser_id(rs.getInt("user_id"));
+				bt.setIs_extended(rs.getInt("is_extended"));
+				bt.setQty(rs.getInt("qty"));
+				
+				
+				
+				//SystemBean - start
+				bt.setDate_created(rs.getTimestamp("date_created"));
+				bt.setDate_updated(rs.getTimestamp("date_updated"));
+				bt.setCreated_by(rs.getInt("created_by"));
+				bt.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				//btList.add(bt);
+				btHM.put(bt.getLot_id(), bt);
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return btHM;
+	}
+	
+	
+	public BiddingTransaction updateBiddingTransaction_is_extended_OnBatchBiddingExtend(
+				Integer is_extended,
+				Integer user_id,
+				BigDecimal biddingTransactionId_wip
+	
+			){
+		
+		Connection conn = null;
+		
+		int affectedRows = 0;
+		
+		BiddingTransaction bt = null;
+	
+		try {
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+		      
+			StringBuilder sb = new StringBuilder("Update bidding_transaction SET is_extended=?");
+
+			sb.append(", date_updated=?, updated_by=?");
+			
+			sb.append(" where id="+biddingTransactionId_wip);
+	
+		    String sql = sb.toString();
+		    
+	        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        
+	        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+	
+	        stmt.setInt(1, is_extended);
+	        stmt.setTimestamp(2, sqlDate_t);
+	        stmt.setInt(3, user_id);
+	        
+		    System.out.println("sql : "+sql);
+		    
+		    affectedRows = stmt.executeUpdate();
+		    
+		    if (affectedRows == 0) {
+		    	bt = null;
+	        }else{
+	        	bt = new BiddingTransaction(); 
+	        	
+	        	bt.setId(biddingTransactionId_wip);
+	        	
+	        }
+		    
+	
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	
+		return bt;
+	}
+	
+	
 }

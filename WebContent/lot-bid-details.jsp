@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<%@ page import="hmr.com.bean.Auction"
-		 import="hmr.com.bean.Lot"
+<%@ page import="hmr.com.bean.Lot"
+		 import="hmr.com.bean.Auction"
 		 import="hmr.com.bean.Lov"
 		 import="hmr.com.bean.Item"
 		 import="java.util.List"  
@@ -15,7 +15,7 @@
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<%
-	System.out.println("PAGE auction-bid-details.jsp");
+	System.out.println("PAGE lot-bid-details.jsp");
 
 	String COMPANY_NAME = (String)request.getSession().getAttribute("COMPANY_NAME")!=null ? (String)request.getSession().getAttribute("COMPANY_NAME") :"HMR Auctions";
 	String COMPANY_NAME_ACRONYM = (String)request.getSession().getAttribute("COMPANY_NAME_ACRONYM");
@@ -23,20 +23,13 @@
 	String msgInfo = request.getAttribute("msgInfo")!=null ? (String)request.getAttribute("msgInfo") : null;
 	String msgbgcol = request.getAttribute("msgbgcol")!=null ? (String)request.getAttribute("msgbgcol") : "";
 	
-	//TODO: messages displayed on page should be session based only to avoid XSS
-	if(msgInfo==null) {
-		msgInfo = (String)request.getSession().getAttribute("msgInfo")!=null ? (String)request.getSession().getAttribute("msgInfo") :null;
-		msgbgcol = (String)request.getSession().getAttribute("msgbgcol")!=null ? (String)request.getSession().getAttribute("msgbgcol") :"";
-	}
-	request.getSession().removeAttribute("msgInfo");
-	request.getSession().removeAttribute("msgbgcol");
-	
 	
 	String firstName = (String)request.getSession().getAttribute("firstName");
 	String lastName = (String)request.getSession().getAttribute("lastName");
 	String fullName = (String)request.getSession().getAttribute("fullName");
 	String userId = (String)request.getSession().getAttribute("userId");
 	String aid = (String)request.getSession().getAttribute("auctionId");
+	String currency = "PHP";
 	
 	// IDs
 	Integer user_id = request.getSession().getAttribute("user-id")!=null ? (Integer)request.getSession().getAttribute("user-id") : null;
@@ -45,12 +38,11 @@
 	System.out.println("PAGE user_id :"+user_id);
 	System.out.println("PAGE user_role_id : "+user_role_id);
 	
-	List<Auction> activeOnlineAuctionList = request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-ONLINE-AUCTION-LIST");
-	List<Auction> activeNegotiatedAuctionList = request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST");
-	List<Auction> activeLiveAuctionList = request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-ONLINE-AUCTION-LIST");
-
+	Lot lot = request.getAttribute("lot")!=null ? (Lot)request.getAttribute("lot") : (Lot)request.getSession().getAttribute("lot");
+	List<Item> items = request.getAttribute("items")!=null ? (List<Item>)request.getAttribute("items") : (List<Item>)request.getSession().getAttribute("items");
+	
 	Auction auction = request.getAttribute("auction")!=null ? (Auction)request.getAttribute("auction") : (Auction)request.getSession().getAttribute("auction");
-	List<Lot> lList = request.getAttribute("lList")!=null ? (List<Lot>)request.getAttribute("lList") : (List<Lot>)request.getSession().getAttribute("lList");
+	
 	HashMap<Integer, Lov> currencyLovHM  = request.getAttribute("CURRENCY-HM")!=null ? (HashMap<Integer, Lov>)request.getAttribute("CURRENCY-HM") : (HashMap<Integer, Lov>)request.getSession().getAttribute("CURRENCY-HM");
 	
 	//HashMap<BigDecimal, Lot> lotHM  = request.getAttribute("lotHM")!=null ? (HashMap<BigDecimal, Lot>)request.getAttribute("lotHM") : (HashMap<BigDecimal, Lot>)request.getSession().getAttribute("lotHM");
@@ -188,7 +180,7 @@
             		<div class="col-md-12">
 		                <div class="message-box">
 		                    <div class="message-box-inner">
-		                        <h2><%=auction.getAuction_name()%></h2>
+		                        <h2><%=lot.getLot_name()%></h2>
 		                    </div>
 		                </div>
 		                
@@ -225,13 +217,12 @@
 	                    <div class="col-md-12">
 	                        <div class="tabs-wrapper content-tabs">
 	                            <ul class="nav nav-tabs">
-	                                <li><a href="#auction-description" data-toggle="tab">Details</a></li>
-	                                <li class="active"><a href="#auction-lots" data-toggle="tab">Lots</a></li>
-	                                <!-- <li><a href="#items-list" data-toggle="tab">Items</a></li> --->
+	                                <li class="active"><a href="#auction-description" data-toggle="tab">Details</a></li>
+	                                <li><a href="#auction-lots" data-toggle="tab">Items</a></li>
 	                                <li><a href="#terms-and-conditions" data-toggle="tab">Terms and Conditions</a></li>
 	                            </ul>
 	                            <div class="tab-content">
-	                                <div class="tab-pane fade" id="auction-description">
+	                                <div class="tab-pane fade in active" id="auction-description">
 
 
 							        <section class="page-section">
@@ -241,28 +232,47 @@
 							                	
 							                	
 							                	
-							                    <div class="col-md-10">
+							                    <div class="col-md-7">
 							                            
 							
 							                            <div class="media" style="height: 210px;">
 							                               <a class="pull-left media-link" href="#" >
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=auction.getAuction_id()%>&t=a" alt="">
+							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=lot.getAuction_id()%>&t=a" alt="">
 							                                    
 							                                    <!-- <i class="fa fa-eye"></i> -->
 							                                </a>
 							                                <div class="media-body">
-																<h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red"><%=auction.getAuction_desc()%></a></h4>
-							                                	<div><label>LOCATION : </label> &nbsp;&nbsp; <label><%=auction.getLocation()%></label></div>
-							                                    
-							                                    <div><label>START : </label> &nbsp;&nbsp; <label><%=sdf.format(auction.getStart_date_time()) %></label></div>
-                                    							<div><label>CLOSING : </label>&nbsp;&nbsp; <label><%=sdf.format(auction.getEnd_date_time()) %></label></div>
-
+																<h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red"><%=lot.getLot_desc()%></a></h4>
+							                                	<div><label>HIGHEST BID : <%=df.format(lot.getAmount_bid())%> <%=currency%></label></div>
+							                                	<div><label>ASKING BID : <%=df.format(lot.getAmount_bid_next())%> <%=currency%></label></div>
+							                                    <div><label>BIDS : <%=lot.getBid_count()%></label></div>
+																<div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=lot.getId()%>"></label></div>
 							                                </div>
 							                            </div>
-							                           
+							                            <script>setCountDownTimer('cdTimer-<%=lot.getId()%>', '<%=lot.getEnd_date_time()%>')</script>
+							                    </div>
+							                    
+							                    <div class="col-md-3">
 							                            
 							
-							                        
+							                            <div class="media" style="height: 210px;">
+							                         
+							                                <div class="media">
+                                								<% if(user_id != null && user_role_id > 0){ %>
+                                									<% if(lot.getIs_bid() == 1){ %>
+                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>')">BID <%=df.format(lot.getAmount_bid_next())%> <%=currency%> </a>
+                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_no()%>','<%=lot.getId()%>')">SET MAXIMUM BID</a>
+                                   	 								<% }else {  } %>
+                                   	 								<% if(lot.getIs_buy() == 1){ %>
+                                								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=lot.getBuy_price()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>')">BUY <%=df.format(lot.getBuy_price())%> <%=currency%></a>
+                                									<% }else{ } %>
+                                   	 							<% }else if(user_id == null && user_role_id == 0 && (lot.getIs_bid() == 1 || lot.getIs_buy() == 1) ){ %>
+																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
+																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
+																<% } %>
+							                                </div>
+							                            </div>
+				
 							                    </div>
 												
 												
@@ -284,13 +294,13 @@
 
 
 	                                </div>
-	                                <div class="tab-pane fade in active" id="auction-lots">
+	                                <div class="tab-pane fade" id="auction-lots">
 
 							        <!-- PAGE -->
 							        <section class="page-section">
 							            <div class="container">
 							                <div class="row">
-							                	<%for(Lot l : lList) {%>
+							                	<%for(Item i : items) {%>
 							                	
 							                	
 
@@ -298,66 +308,25 @@
 							                    <div class="col-md-7">
 
 							                            <div class="media" style="height: 210px;">
-							                               <a class="pull-left media-link" href="#" onclick="viewLot('<%=l.getId()%>')">
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=l.getId()%>&t=i" alt="">
+							                               <a class="pull-left media-link" href="#">
+							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=lot.getId()%>&t=i" alt="">
 							                                    
 							                                    <!-- <i class="fa fa-eye"></i> -->
 							                                </a>
 							                                <div class="media-body">
 							                                
-							                                    <h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red" onclick="viewLot('<%=l.getId()%>')">#<%=l.getLot_no()%>: <%=l.getLot_name()%></a></h4>
-							                                  
-							                                    
-							                                    <div><label><%=l.getLot_desc()%></label></div>
-							                                    
-							                                    <div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=l.getId()%>"></label></div>
-                                    							
-                                    							<%
-                                    							String currency = "PHP";
-                                    								//if(currencyLovHM.get(l.getCurrency())!=null){
-                                    								//	currency = currencyLovHM.get(l.getCurrency()).getValue();
-                                    								//}
-                                    							%>
-                                    							
-                                    							<div><label>Highest Bid : <%=df.format(l.getAmount_bid())%> <%=currency%></label></div>
-							                                    <div><label>Asking Bid : <%=df.format(l.getAmount_bid_next())%> <%=currency%></label></div>
-							                                    <div><label>Bids : <%=l.getBid_count()%></label></div>
-							                                    <%-- <div><label>Bids : < /%=l.getBid_count()%></label></div> --%>
-							                                   
-							                                   
-							                                   
-							                                   
+							                                    <h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red">#<%=i.getReference_no()%></a></h4>
+							                                    <div><label><%=i.getItem_desc()%></label></div>
 							                                </div>
 							                            </div>
-							                            <script>setCountDownTimer('cdTimer-<%=l.getId()%>', '<%=l.getEnd_date_time()%>')</script>
+							                            
 							                            
 							
 							                        
 							                    </div>
 												
 												
-							                    <div class="col-md-3">
-							                            
-							
-							                            <div class="media" style="height: 210px;">
-							                         
-							                                <div class="media">
-                                								<% if(user_id != null && user_role_id > 0){ %>
-                                									<% if(l.getIs_bid() == 1){ %>
-                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%> </a>
-                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_no()%>','<%=l.getId()%>')">SET MAXIMUM BID</a>
-                                   	 								<% }else {  } %>
-                                   	 								<% if(l.getIs_buy() == 1){ %>
-                                								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></a>
-                                									<% }else{ } %>
-                                   	 							<% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
-																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
-																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
-																<% } %>
-							                                </div>
-							                            </div>
-				
-							                    </div>
+							                    
 												
 							                    
 							                    <%} %>
@@ -895,17 +864,7 @@
         </section>
         <!-- /PAGE -->
 --%>
-        <!-- PAGE -->
-        <section class="page-section">
-            <div class="container">
-                <div class="message-box">
-                    <div class="message-box-inner">
-                        <h2>Wines</h2>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
+
 
 
 
