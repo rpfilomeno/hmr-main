@@ -56,7 +56,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
 		
 		sb.append(" from lot where id ="+id);
 
@@ -112,10 +112,9 @@ public class LotDao extends DBConnection {
 				l.setLot_increment_time(rs.getInt("lot_increment_time"));
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
 				
-			
-				
-				
+
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
             	l.setDate_updated(rs.getTimestamp("date_updated"));
@@ -154,7 +153,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
 		
 		sb.append(" from lot where auction_id ="+auction_id);
 
@@ -210,6 +209,7 @@ public class LotDao extends DBConnection {
 				l.setLot_increment_time(rs.getInt("lot_increment_time"));
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
 				
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
@@ -250,7 +250,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, date_sync, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
 		
 		sb.append(" from lot where auction_id ="+auction_id);
 
@@ -307,6 +307,7 @@ public class LotDao extends DBConnection {
 				l.setDate_sync(rs.getTimestamp("date_sync"));
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
 
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
@@ -407,6 +408,7 @@ public class LotDao extends DBConnection {
 				l.setDate_sync(rs.getTimestamp("date_sync"));
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
 				
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
@@ -1006,7 +1008,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
 		
 		sb.append(" from lot");
 		
@@ -1050,6 +1052,7 @@ public class LotDao extends DBConnection {
 				l.setLot_increment_time(rs.getInt("lot_increment_time"));
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
 
 				//SystemBean - start
 				l.setDate_created(rs.getTimestamp("date_created"));
@@ -1087,7 +1090,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
 		
 		sb.append(" from lot where auction_id= "+auction_id);
 		
@@ -1131,6 +1134,7 @@ public class LotDao extends DBConnection {
 				l.setLot_increment_time(rs.getInt("lot_increment_time"));
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
 				
 
 				//SystemBean - start
@@ -1171,7 +1175,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
 		
 		sb.append(" from lot where auction_type ="+auctionType+" and active = 1");
 		
@@ -1218,6 +1222,7 @@ public class LotDao extends DBConnection {
 				l.setLot_increment_time(rs.getInt("lot_increment_time"));
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
 				
 				//SystemBean - start
 				l.setDate_created(rs.getTimestamp("date_created"));

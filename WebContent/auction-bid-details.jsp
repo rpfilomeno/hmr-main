@@ -345,6 +345,18 @@
                                 								<% if(user_id != null && user_role_id > 0){ %>
                                 									<% if(l.getIs_bid() == 1){ %>
                                    	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%> </a>
+                                   	 							<%  if( l.getIs_available_lot() > 0) { %>
+                                   	 								<% Integer i = l.getUnit_qty(); %>
+                                   	 								<div class="form-group">
+                                   	 								<label>Quantity:</label>
+                                   	 								<select class="form-control" id="unit_qty_<%=l.getId()%>" name="unit_qty_<%=l.getId()%>">
+                                   	 								<% while(i > 0) { %>
+                                   	 									<option value="<%=i%>>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+                                   	 									<% i = i - 1; %>
+                                   	 								<% } %>
+                                   	 								</select>
+                                   	 								</div>
+                                   	 							<% } %>
                                    	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_no()%>','<%=l.getId()%>')">SET MAXIMUM BID</a>
                                    	 								<% }else {  } %>
                                    	 								<% if(l.getIs_buy() == 1){ %>

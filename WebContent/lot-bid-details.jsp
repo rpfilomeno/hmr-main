@@ -243,6 +243,9 @@
 							                                </a>
 							                                <div class="media-body">
 																<h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red"><%=lot.getLot_desc()%></a></h4>
+							                                	<%  if( lot.getIs_available_lot() > 0) { %>
+							                                	<div><label>UNIT QUANTITY : <%=lot.getUnit_qty()%></label></div>
+							                                	<% } %>
 							                                	<div><label>HIGHEST BID : <%=df.format(lot.getAmount_bid())%> <%=currency%></label></div>
 							                                	<div><label>ASKING BID : <%=df.format(lot.getAmount_bid_next())%> <%=currency%></label></div>
 							                                    <div><label>BIDS : <%=lot.getBid_count()%></label></div>
@@ -261,6 +264,19 @@
                                 								<% if(user_id != null && user_role_id > 0){ %>
                                 									<% if(lot.getIs_bid() == 1){ %>
                                    	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>')">BID <%=df.format(lot.getAmount_bid_next())%> <%=currency%> </a>
+                                   	 							<%  if( lot.getIs_available_lot() > 0) { %>
+                                   	 								<% Integer i = lot.getUnit_qty(); %>
+                                   	 								<div class="form-group">
+                                   	 								<label>Quantity:</label>
+                                   	 								<select class="form-control" id="unit_qty_<%=lot.getId()%>" name="unit_qty_<%=lot.getId()%>">
+                                   	 								<% while(i > 0) { %>
+                                   	 									<option value="<%=i%>>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+                                   	 									<% i = i - 1; %>
+                                   	 								<% } %>
+                                   	 								</select>
+                                   	 								</div>
+                                   	 							<% } %>
+                                   	 							
                                    	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_no()%>','<%=lot.getId()%>')">SET MAXIMUM BID</a>
                                    	 								<% }else {  } %>
                                    	 								<% if(lot.getIs_buy() == 1){ %>

@@ -37,6 +37,7 @@ public class Lot extends SystemBean {
 	BigDecimal reserve_price_total;
 	BigDecimal assess_value_total;
 	Timestamp date_sync;
+	Integer is_available_lot;
 	
 	
 	public BigDecimal getId() {
@@ -224,6 +225,12 @@ public class Lot extends SystemBean {
 	}
 	public void setDate_sync(Timestamp date_sync) {
 		this.date_sync = date_sync;
+	}
+	public Integer getIs_available_lot() {
+		return is_available_lot;
+	}
+	public void setIs_available_lot(Integer is_available_lot) {
+		this.is_available_lot = is_available_lot;
 	}
 
 }
