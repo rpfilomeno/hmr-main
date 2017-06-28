@@ -511,8 +511,7 @@ public class Bid extends HttpServlet {
 						lList.add(lot);
 					}
 					
-					//append the expired lots to end
-					if(!lListExpired.isEmpty()) lList.addAll(lListExpired);
+					
 					
 					System.out.println("AUCTION End Date : " + a.getEnd_date_time().toString());
 					System.out.println("LOT End Date : " + lot.getEnd_date_time().toString());
@@ -521,7 +520,10 @@ public class Bid extends HttpServlet {
 					System.out.println("LOT NEXT BID : " + lot.getAmount_bid_next().toString());
 					System.out.println("LOT AMOUNT BID: " + lot.getAmount_bid().toString());
 							
-				}
+				}//for loop
+				
+				//append the expired lots to end
+				if(!lListExpired.isEmpty()) lList.addAll(lListExpired);
 				
 				req.setAttribute("lList", lList);
 				req.setAttribute("auction", a);
