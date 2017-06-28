@@ -1245,6 +1245,97 @@ public class LotDao extends DBConnection {
 	}
 	
 
+	public Lot updateLot_End_date_time_OnBatchBiddingExtend(
+			Timestamp end_date_time,
+			Integer user_id,
+			BigDecimal lotId_wip
+		){
+	
+	Connection conn = null;
+	
+	int affectedRows = 0;
+	
+	Lot l = null;
+
+	try {
+		DBConnection dbConn = new DBConnection();
+		
+		conn = dbConn.getConnection();
+
+		StringBuilder sb = new StringBuilder("Update Lot Set end_date_time=?");
+
+		sb.append(", date_updated=?, updated_by=?");
+		
+		sb.append(" where id="+lotId_wip);
+
+		
+		
+		
+	    String sql = sb.toString();
+	    
+        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        
+        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+        
+        stmt.setTimestamp(1, end_date_time);
+        stmt.setTimestamp(2, sqlDate_t);
+        stmt.setInt(3, user_id);
+
+
+	    System.out.println("sql : "+sql);
+	    
+	    affectedRows = stmt.executeUpdate();
+	    
+	    if (affectedRows == 0) {
+	    	l = null;
+        }else{
+        	l = new Lot(); 
+        	l.setId(lotId_wip);
+        	/*
+        	a.setEmail_address(emailAddress);
+        	a.setFirst_name(firstName);
+        	a.setLast_name(lastName);
+        	a.setMobile_no_1(mobileNo1);
+        	a.setMobile_no_2(mobileNo2);
+        	
+        	a.setGender(gender);
+        	a.setRole(role);
+        	a.setBidder_no(bidderNo);
+        	a.setReserve_bidder_no(reserveBidderNo);
+        	a.setCompany(company);
+        	a.setStatus(userStatus);
+        	a.setActive(active);
+        	a.setLandline_no(landLineNo);
+        	
+        	a.setNews_letter(newsLetter);
+        	a.setNews_letter_registration_date(newsLetterRegistrationDate_t);
+        	a.setVerification_email_key(verificationEmailKey);
+        	a.setDate_registration(registrationDate_t);
+        	a.setDate_password_change(passwordChangeDate_t);
+        	a.setShowChangePasswordNextLogin(showChangePasswordNextLogin);
+        	a.setBirth_date(birthDate_d);
+        	a.setPass_word(passWord);
+        	*/
+        }
+	    
+
+		stmt.close();
+	} catch (SQLException e) {
+		throw new RuntimeException(e);
+	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
+	}
+
+	return l;
+}
+	
+	
  
     /**
      * @param args the command line arguments
