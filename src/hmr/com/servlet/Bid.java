@@ -547,6 +547,8 @@ public class Bid extends HttpServlet {
 				String doAction = req.getParameter("doaction")!=null ? (String)req.getParameter("doaction") : "";
 				String reqlotId = req.getParameter("lotId")!=null ? (String)req.getParameter("lotId") : "";
 				String reqamount = req.getParameter("amount")!=null ? (String)req.getParameter("amount") : "";
+				String requnitqty = req.getParameter("unit_qty")!=null ? (String)req.getParameter("unit_qty") : "0";
+				
 				if(reqlotId!="" && reqamount!="") {
 					UserDao ud = new UserDao();
 					User u = ud.getUser(userId);
@@ -554,12 +556,13 @@ public class Bid extends HttpServlet {
 					BiddingTransactionManager btMngr = new BiddingTransactionManager();
 					Integer lotId = Integer.valueOf(reqlotId);
 					BigDecimal amount = new BigDecimal(reqamount);
+					Integer unit_qty = Integer.valueOf(requnitqty);
 			
 					//BID and BUY button clicks
 					if(doAction.equals("BID")) {
-						btMngr.insertBiddingTransactionMakeBid(lotId, amount, u.getId());
+						btMngr.insertBiddingTransactionMakeBid(lotId, amount, u.getId(), unit_qty);
 					}else if(doAction.equals("BUY")) {
-						btMngr.insertBiddingTransactionMakeBuy(lotId, amount, u.getId());
+						btMngr.insertBiddingTransactionMakeBuy(lotId, amount, u.getId(), unit_qty);
 					}
 					
 					BigDecimal lotId_wip = req.getParameter("lotId_wip")!=null ? new BigDecimal(req.getParameter("lotId_wip")): new BigDecimal(0);

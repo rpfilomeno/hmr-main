@@ -344,20 +344,21 @@
 							                                <div class="media">
                                 								<% if(user_id != null && user_role_id > 0){ %>
                                 									<% if(l.getIs_bid() == 1){ %>
-                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%> </a>
+                                   	 							
                                    	 							<%  if( l.getIs_available_lot() > 0) { %>
                                    	 								<% Integer i = l.getUnit_qty(); %>
                                    	 								<div class="form-group">
                                    	 								<label>Quantity:</label>
-                                   	 								<select class="form-control" id="unit_qty_<%=l.getId()%>" name="unit_qty_<%=l.getId()%>">
+                                   	 								<select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
                                    	 								<% while(i > 0) { %>
-                                   	 									<option value="<%=i%>>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+                                   	 									<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
                                    	 									<% i = i - 1; %>
                                    	 								<% } %>
                                    	 								</select>
                                    	 								</div>
                                    	 							<% } %>
-                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_no()%>','<%=l.getId()%>')">SET MAXIMUM BID</a>
+                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%> </a>
+                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_no()%>','<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAXIMUM BID</a>
                                    	 								<% }else {  } %>
                                    	 								<% if(l.getIs_buy() == 1){ %>
                                 								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></a>
@@ -1538,12 +1539,14 @@ function viewLot(id) {
 	$( "#frm" ).submit();
 }
 
-function submitPage(action, value, lot, id) {
+function submitPage(action, value, lot, id, qtyid) {
+	var unit_qty = $("#"+qtyid+" :selected").attr('value');
 	$('input[name="manager"]').val("bid-manager");
 	$('input[name="doaction"]').val(action);
 	$('input[name="amount"]').val(value);
 	$('input[name="lotId"]').val(lot);
 	$('input[name="lotId_wip"]').val(id);
+	$('input[name="unit_qty"]').val(unit_qty);
 	$( "#frm" ).submit();
 }
 
@@ -1555,6 +1558,7 @@ function submitPage(action, value, lot, id) {
    <input type="hidden" name="doaction" id="doaction" value=""/>
    <input type="hidden" name="lotId" id="lotId" value=""/>
    <input type="hidden" name="lotId_wip" id="lotId_wip" value=""/>
+   <input type="hidden" name="unit_qty" id="unit_qty" value=""/>
    <input type="hidden" name="amount" id="amount" value=""/>
    <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
    <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
