@@ -70,10 +70,17 @@
     <link href="assets/plugins/owl-carousel2/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="assets/plugins/owl-carousel2/assets/owl.theme.default.min.css" rel="stylesheet">
     <link href="assets/plugins/animate/animate.min.css" rel="stylesheet">
+    
 
     <!-- Theme CSS -->
     <link href="assets/css/theme.css" rel="stylesheet">
     <link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+<%--     
+    TODO: These local files seems to be broken
+    <link href="assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="assets/plugins/jquery-ui/jquery-ui.thmemin.css" rel="stylesheet">
+--%>
 
     <!-- Head Libs -->
     <script src="assets/plugins/modernizr.custom.js"></script>
@@ -220,13 +227,7 @@
 							        <section class="page-section">
 							            <div class="container">
 							                <div class="row">
-							                	
-							                	
-							                	
-							                	
 							                    <div class="col-md-7">
-							                            
-							
 							                            <div class="media" style="height: 210px;">
 							                               <a class="pull-left media-link" href="#" >
 							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=lot.getAuction_id()%>&t=a" alt="">
@@ -270,10 +271,11 @@
                                    	 							<% } %>
                                    	 							
                                    	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">BID <%=df.format(lot.getAmount_bid_next())%> <%=currency%> </a>
-                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_no()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">SET MAXIMUM BID</a>
+                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">SET MAXIMUM BID</a>
+                                   	 							 
                                    	 								<% }else {  } %>
                                    	 								<% if(lot.getIs_buy() == 1){ %>
-                                								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=lot.getBuy_price()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>')">BUY <%=df.format(lot.getBuy_price())%> <%=currency%></a>
+                                								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=lot.getBuy_price()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">BUY <%=df.format(lot.getBuy_price())%> <%=currency%></a>
                                 									<% }else{ } %>
                                    	 							<% }else if(user_id == null && user_role_id == 0 && (lot.getIs_bid() == 1 || lot.getIs_buy() == 1) ){ %>
 																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
@@ -367,7 +369,13 @@
 <!-- /WRAPPER -->
 
 <!-- JS Global -->
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<%-- 
+TODO: These local files seems to be broken
 <script src="assets/plugins/jquery/jquery-1.11.1.min.js"></script>
+<script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+--%>
 <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="assets/plugins/superfish/js/superfish.min.js"></script>
@@ -377,6 +385,7 @@
 <script src="assets/plugins/jquery.easing.min.js"></script>
 <script src="assets/plugins/jquery.smoothscroll.min.js"></script>
 <script src="assets/plugins/smooth-scrollbar.min.js"></script>
+
 
 <!-- DataTables -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
@@ -431,15 +440,99 @@ function viewLot(id) {
 	$( "#frm" ).submit();
 }
 
+
+function showMaxBidForm(action, value, lot, id, qtyid) {
+	$('<div id="maxbid-form" title="Set Maximum Bid"></div>').dialog({
+		height: "auto",
+		width: 350,
+		title: "Set Maximum Bid",
+		modal: true,
+		open: function (event, ui) {
+			var dialog_html = '<p id="validateTips">All fields are required.</p><label for="maxbid-'+ id +'">Amount</label><div class="input-group"><span class="input-group-addon">' + "<%=currency%>" + '</span>' +
+			'<input type="text" name="maxbid-'+ id +'" id="maxbid-'+ id +'" placeholder="'+ value +'" class="form-control">' +
+			'</div>';
+			$(this).html(dialog_html);
+			$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+		},
+		buttons: {
+			"Set Max": function(){
+				
+				var maxbid_value = $("#maxbid-"+id).val().trim();
+				if(!maxbid_value || maxbid_value < value) {
+					$("#validateTips" ).text( 'Amount must be greater than ' + value ).addClass( "ui-state-highlight" );
+					setTimeout(function() {	$( "#validateTips" ).removeClass( "ui-state-highlight", 1500 );	}, 500 );
+				} else {				
+					$(this).dialog("close");
+					submitPage(action, maxbid_value, lot, id, qtyid)
+				}
+			},
+			Cancel: function() {
+				$(this).dialog("close");
+			}
+		},
+		close: function() {
+			$("#maxbid-form").remove();
+		}
+	});
+}
+
 function submitPage(action, value, lot, id, qtyid) {
-	var unit_qty = $("#"+qtyid+" :selected").attr('value');
+	var unit_qty = 0;
+	if($("#"+qtyid+" :selected").length ) unit_qty = $("#"+qtyid+" :selected").attr('value');
+	
 	$('input[name="manager"]').val("bid-manager");
 	$('input[name="doaction"]').val(action);
 	$('input[name="amount"]').val(value);
 	$('input[name="lotId"]').val(lot);
 	$('input[name="lotId_wip"]').val(id);
 	$('input[name="unit_qty"]').val(unit_qty);
-	$( "#frm" ).submit();
+	
+	$('<div id="dialog-confirm"></div>').dialog({
+		resizable: false,
+	    height: "auto",
+	    width: 400,
+	    modal: true,
+	    title: "Confirmation",
+	    closeOnEscape: false,
+        open: function (event, ui) {
+        	var dialog_title = "Confirmation";
+        	var currency_html = "<%=currency%>";
+        	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure?</p>';
+        	var unit_qty_html = "";
+        	if(unit_qty>0) unit_qty_html = ' with quantity of ' + unit_qty + ' units';
+        	
+        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+      
+        	if(action=="BID") {
+        		dialog_title = "Bid confirmation";
+        		dialog_html = '<p>You will bid ' + value +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        			'<p>Are you sure?</p>';
+        	}else if(action=="BUY") {
+        		dialog_title = "Buy confirmation";
+        		dialog_html = '<p>You will buy this lot for' + value + ' '+currency_html + unit_qty_html +'.</p>'+
+        			'<p>Are you sure?</p>';
+        	}else if(action=="SET-MAXIMUM-BID") {
+        		dialog_title = "Set maximum bid confirmation";
+        		dialog_html = '<p>You will will set your maximum bid of ' + value + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        			'<p>Are you sure?</p>';
+        	}
+
+            $(this).dialog( "option", "title", dialog_title);
+            $(this).html(dialog_html);
+        },
+        buttons: {
+        	"Yes": function() {
+  	          $( this ).dialog( "close" );
+  	          $( "#frm" ).submit();
+  	        },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        },
+		close: function() {
+			$("#dialog-confirm").remove();
+		}
+    }); //end confirm dialog
 }
 
 </script>
