@@ -563,16 +563,16 @@ public class BiddingTransactionManager {
 	*/
 	
 	
-	public boolean insertBiddingTransactionMakeBid(Integer lotId, BigDecimal amountBid, Integer userId) {	
+	public boolean insertBiddingTransactionMakeBid(Integer lotId, BigDecimal amountBid, Integer userId, Integer qty) {	
 		BiddingTransactionDao btd = new BiddingTransactionDao();
-		if(btd.insertBiddingTransaction(lotId, amountBid, BigDecimal.ZERO, 1,  userId)>0) return true;
+		if(btd.insertBiddingTransaction(lotId, amountBid, BigDecimal.ZERO, 1,  userId, qty)>0) return true;
 		return false;
 	}
 	
 	
-	public boolean insertBiddingTransactionMakeBuy(Integer lotId, BigDecimal amountBuy, Integer userId) {
+	public boolean insertBiddingTransactionMakeBuy(Integer lotId, BigDecimal amountBuy, Integer userId, Integer qty) {
 		BiddingTransactionDao btd = new BiddingTransactionDao();
-		if(btd.insertBiddingTransaction(lotId, BigDecimal.ZERO, amountBuy, 2,  userId)>0) return true;
+		if(btd.insertBiddingTransaction(lotId, BigDecimal.ZERO, amountBuy, 2,  userId, qty)>0) return true;
 		return false;
 	}
 	
