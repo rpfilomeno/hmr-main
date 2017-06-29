@@ -33,6 +33,7 @@ import bizoncloudone.com.bean.UserLogin;
 import bizoncloudone.com.bean.UserRoleLogin;
 import hmr.com.manager.AuctionManager;
 import hmr.com.manager.AuctionRangeManager;
+import hmr.com.manager.AuctionUserBiddingMaxManager;
 import hmr.com.manager.AuctionUserManager;
 import hmr.com.manager.BiddingTransactionManager;
 import hmr.com.manager.ItemManager;
@@ -554,15 +555,18 @@ public class Bid extends HttpServlet {
 					User u = ud.getUser(userId);
 					
 					BiddingTransactionManager btMngr = new BiddingTransactionManager();
+					AuctionUserBiddingMaxManager auMngr = new AuctionUserBiddingMaxManager();
 					Integer lotId = Integer.valueOf(reqlotId);
 					BigDecimal amount = new BigDecimal(reqamount);
 					Integer unit_qty = Integer.valueOf(requnitqty);
 			
-					//BID and BUY button clicks
+					//BID, MAX BID and BUY button clicks
 					if(doAction.equals("BID")) {
 						btMngr.insertBiddingTransactionMakeBid(lotId, amount, u.getId(), unit_qty);
 					}else if(doAction.equals("BUY")) {
 						btMngr.insertBiddingTransactionMakeBuy(lotId, amount, u.getId(), unit_qty);
+					}else if(doAction.equals("SET-MAXIMUM-BID")) {
+						auMngr.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId());
 					}
 					
 					BigDecimal lotId_wip = req.getParameter("lotId_wip")!=null ? new BigDecimal(req.getParameter("lotId_wip")): new BigDecimal(0);
