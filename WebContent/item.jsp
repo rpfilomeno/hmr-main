@@ -438,11 +438,11 @@
 					<div class="col-sm-2">
 					     <a class="btn btn-theme btn-block " href="#" onclick="viewAuction(<%=auctionId_wip%>)">Auction</a>
 					</div>
+					
 					<%} %>
-					<!-- 
 					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="saveItemImage()">Save Image</a>
-					</div> -->
+					     <a class="btn btn-theme btn-block " href="#" onclick="itemImages()">Images</a>
+					</div>
 				</div>
 					
 
@@ -663,6 +663,11 @@ function viewAuction(id){
 	document.frm.submit();
 }
 
+function itemImages(){
+	document.frm.manager.value="image-manager";
+	document.frm.action.value="itemImageUpload";
+	document.frm.submit();
+}
 </script>
 
 

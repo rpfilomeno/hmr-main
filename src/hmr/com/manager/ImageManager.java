@@ -1,6 +1,7 @@
 package hmr.com.manager;
 
 import java.io.File;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -420,17 +421,60 @@ public class ImageManager {
 		
 	}
 	
+	public Image getImageBytesById(BigDecimal image_id) {
+		Image i = new Image();
+
+		ImageDao id = new ImageDao();
+
+		i = id.getImageBytesById(image_id);
+
+		return i;
+	}
+	
+	public Image getImageById(BigDecimal image_id) {
+		ImageDao id = new ImageDao();
+		return id.getImageById(image_id);
+	}
+	
+	public boolean deleteImage(BigDecimal image_id) {
+		ImageDao id = new ImageDao();
+		if(id.deleteImage(image_id)>1)return true;
+		return false;
+	}
+	
 	public Image getImageByItemId(BigDecimal item_id){
 		
 		Image i = new Image();
 
 		ImageDao id = new ImageDao();
 
-		i = id.getImageByLotId(item_id);
+		i = id.getImageByItemId(item_id);
 
 		return i;
 		
 	}
+	
+	public int insertImageInputStream(
+			Integer auction_id,
+			Integer lot_id,
+			Integer item_id,
+			InputStream file,
+			Integer active,
+			Integer user_id
+		){
+	
+		ImageDao id = new ImageDao();
+	
+		return (id.insertImageOnCreate(
+			auction_id,
+			lot_id,
+			item_id,
+			file,
+			active,
+			user_id
+			));
+	
+}
 	
 	
 	public Image insertImageOnCreate(
@@ -552,30 +596,27 @@ public class ImageManager {
 	
 	
 	public List<Image> getImageListByAuctionId(BigDecimal auction_id){
-		
 		List<Image> iList = new ArrayList<Image>();
-
 		ImageDao id = new ImageDao();
-
-		//iList = id.getImageListByAuctionId(auction_id);
-		
+		iList = id.getImageListByAuctionId(auction_id);
 		return iList;
 		
 	}
-	/*
-	public List<Image> getImageListByTypeAndActive(Integer imageType){
-		
+	public List<Image> getImageListByLotId(BigDecimal lot_id){
 		List<Image> iList = new ArrayList<Image>();
-
-		ImageDao id = new ImageDao(req,res);
-
-		iList = id.getImageListByTypeAndActive(imageType);
+		ImageDao id = new ImageDao();
+		iList = id.getImageListByLotId(lot_id);
+		return iList;
 		
+	}
+	public List<Image> getImageListByItemId(BigDecimal item_id){
+		List<Image> iList = new ArrayList<Image>();
+		ImageDao id = new ImageDao();
+		iList = id.getImageListByAuctionId(item_id);
 		return iList;
 		
 	}
 	
-	*/
 	
 	
 	private void setLovValuesCategoryLevel(HttpServletRequest req, HttpServletResponse res){

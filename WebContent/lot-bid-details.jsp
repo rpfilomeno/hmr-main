@@ -303,7 +303,7 @@
 
 							                            <div class="media" style="height: 210px;">
 							                               <a class="pull-left media-link" href="#">
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=lot.getId()%>&t=i" alt="">
+							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=i.getId()%>&t=i" alt="">
 							                                    
 							                                    <!-- <i class="fa fa-eye"></i> -->
 							                                </a>

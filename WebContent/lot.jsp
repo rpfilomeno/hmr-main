@@ -171,7 +171,7 @@
 		       <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
 		       <input type="hidden" name="auctionId_wip" id="auctionId_wip" value="<%=auctionId_wip%>"/>
 		       <input type="hidden" name="lotId_wip" id="lotId_wip" value="<%=lot.getId()%>"/>
-		       <input type="hidden" name="lot_id" id="lot_id" value="<%=lot.getId()%>"/>
+		       <input type="hidden" name="lot_id" id="lot_id" value="<%=lot.getLot_id()%>"/>
 		       
         <section class="page-section color" style="padding:15px;">
         
@@ -365,6 +365,10 @@
 					<div class="col-sm-3">
 					     <a class="btn btn-theme btn-block " href="#" onclick="lotRange()">Lot Range Increment</a>
 					</div>
+					<div class="col-sm-2">
+					     <a class="btn btn-theme btn-block " href="#" onclick="lotImages()">Images</a>
+					</div>
+					
 				</div>
 					
 
@@ -408,6 +412,12 @@ function updateLot(){
 function lotRange(){
 	document.frm.manager.value="lot-range-manager";
 	document.frm.action.value="lotRangeList";
+	document.frm.submit();
+}
+
+function lotImages(){
+	document.frm.manager.value="image-manager";
+	document.frm.action.value="lotImageUpload";
 	document.frm.submit();
 }
 

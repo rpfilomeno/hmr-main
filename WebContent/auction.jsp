@@ -488,18 +488,17 @@
               </div>
               --%>
 				
-					<div class="col-sm-3">
+					<div class="col-sm-2">
 					     <a class="btn btn-theme btn-block " href="#" onclick="createAuction()">Create</a>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-2">
 					     <a class="btn btn-theme btn-block " href="#" onclick="updateAuction()">Update</a>
 					</div>
-					<!-- 
-					<div class="col-sm-3">
-					     <a class="btn btn-theme btn-block " href="#" onclick="saveAuctionImage()">Save Images</a>
-					</div> -->
 					<div class="col-sm-3">
 					     <a class="btn btn-theme btn-block " href="#" onclick="auctionRange()">Auction Range Increment</a>
+					</div>
+					<div class="col-sm-2">
+					     <a class="btn btn-theme btn-block " href="#" onclick="auctionImages()">Images</a>
 					</div>
 				
 					
@@ -903,6 +902,12 @@ function saveAuctionImage(){
 function auctionRange(){
 	document.frm.manager.value="auction-range-manager";
 	document.frm.action.value="auctionRangeList";
+	document.frm.submit();
+}
+
+function auctionImages(){
+	document.frm.manager.value="image-manager";
+	document.frm.action.value="auctionImageUpload";
 	document.frm.submit();
 }
 

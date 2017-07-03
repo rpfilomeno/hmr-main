@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.util.DBConnection;
 import hmr.com.bean.Image;
+import hmr.com.bean.Lot;
 import hmr.com.util.StringUtil;
 
 public class ImageDao extends DBConnection {
@@ -41,6 +42,130 @@ public class ImageDao extends DBConnection {
 	public ImageDao(HttpServletRequest req, HttpServletResponse res){
 		this.req = req;
 		this.res = res;
+	}
+	
+	public List<Image> getImageListByAuctionId(BigDecimal auction_id) {
+		List<Image> iList= new ArrayList<Image>();
+		StringBuilder sb = new StringBuilder("Select id, auction_id, lot_id, item_id, active, image");
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		sb.append(" from image where auction_id ="+  auction_id);
+		try {
+			conn = getConnection();
+			java.sql.Statement stmt = conn.createStatement();
+			System.out.println("sql : "+sb.toString());		
+			ResultSet rs = stmt.executeQuery(sb.toString());
+			Image i = null;
+			while(rs.next()){
+				i = new Image();
+				i.setId(rs.getBigDecimal("id"));
+				i.setAuction_id(rs.getBigDecimal("auction_id"));
+				i.setLot_id(rs.getBigDecimal("lot_id"));
+				i.setItem_id(rs.getBigDecimal("item_id"));
+				i.setActive(rs.getInt("active"));
+				i.setImageBytes(rs.getBytes("image"));
+				iList.add(i);
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return iList;
+	}
+	public List<Image> getImageListByLotId(BigDecimal lot_id) {
+		List<Image> iList= new ArrayList<Image>();
+		StringBuilder sb = new StringBuilder("Select id, auction_id, lot_id, item_id, active, image");
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		sb.append(" from image where lot_id ="+  lot_id);
+		try {
+			conn = getConnection();
+			java.sql.Statement stmt = conn.createStatement();
+			System.out.println("sql : "+sb.toString());		
+			ResultSet rs = stmt.executeQuery(sb.toString());
+			Image i = null;
+			while(rs.next()){
+				i = new Image();
+				i.setId(rs.getBigDecimal("id"));
+				i.setAuction_id(rs.getBigDecimal("auction_id"));
+				i.setLot_id(rs.getBigDecimal("lot_id"));
+				i.setItem_id(rs.getBigDecimal("item_id"));
+				i.setActive(rs.getInt("active"));
+				i.setImageBytes(rs.getBytes("image"));
+				iList.add(i);
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return iList;
+	}
+	public List<Image> getImageListByItemId(BigDecimal item_id) {
+		List<Image> iList= new ArrayList<Image>();
+		StringBuilder sb = new StringBuilder("Select id, auction_id, lot_id, item_id, active, image");
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		sb.append(" from image where item_id ="+  item_id);
+		try {
+			conn = getConnection();
+			java.sql.Statement stmt = conn.createStatement();
+			System.out.println("sql : "+sb.toString());		
+			ResultSet rs = stmt.executeQuery(sb.toString());
+			Image i = null;
+			while(rs.next()){
+				i = new Image();
+				i.setId(rs.getBigDecimal("id"));
+				i.setAuction_id(rs.getBigDecimal("auction_id"));
+				i.setLot_id(rs.getBigDecimal("lot_id"));
+				i.setItem_id(rs.getBigDecimal("item_id"));
+				i.setActive(rs.getInt("active"));
+				i.setImageBytes(rs.getBytes("image"));
+				iList.add(i);
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return iList;
+	}
+	
+	public int deleteImage(BigDecimal image_id) {
+		Connection conn = null;
+		int affectedRows = 0;
+		try {
+			DBConnection dbConn = new DBConnection();
+			conn = dbConn.getConnection();
+			Statement stmt = conn.createStatement();
+			String Sql ="DELETE FROM `image` WHERE `id`='"+image_id.toString()+"'";
+			affectedRows = stmt.executeUpdate(Sql);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return affectedRows;
 	}
 
 	public Image getImageById(BigDecimal id){
@@ -93,6 +218,62 @@ public class ImageDao extends DBConnection {
             	i.setDate_updated(rs.getTimestamp("date_updated"));
             	i.setUpdated_by(rs.getInt("updated_by"));
 
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return i;
+	}
+	
+	public Image getImageBytesById(BigDecimal id) {
+		Connection conn = null;
+
+		Image i = null;
+		
+		StringBuilder sb = new StringBuilder("Select image");
+
+		sb.append(" from image where id ="+id);
+
+
+		try {
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}
+
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			while(rs.next()){
+				i = new Image();
+				i.setImageBytes(rs.getBytes("image"));
 			}
 
 			rs.close();
@@ -283,6 +464,62 @@ public class ImageDao extends DBConnection {
 		
 		return i;
 	}
+	
+	public int insertImageOnCreate(
+			Integer auction_id,
+			Integer lot_id,
+			Integer item_id,
+			InputStream file,
+			Integer active,
+			Integer user_id
+		) {
+	
+	Connection conn = null;
+	
+	int affectedRows = 0;
+	
+	Image i = null;
+
+	try {
+		DBConnection dbConn = new DBConnection();
+		conn = dbConn.getConnection();
+		
+		StringBuilder sb = new StringBuilder("INSERT into image (auction_id, lot_id, item_id, active, image");
+		sb.append(", date_created, created_by)");
+		sb.append(" VALUES(");
+		sb.append(" ?, ?, ?, ?, ?");
+		sb.append(",?, ?");
+		sb.append(")");
+		
+	    String sql = sb.toString();
+        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+
+        stmt.setInt(1, auction_id);
+        stmt.setInt(2, lot_id);
+        stmt.setInt(3, item_id);
+        stmt.setInt(4, active);
+        stmt.setBlob (5, file);
+        stmt.setTimestamp(6, sqlDate_t);
+        stmt.setInt(7, user_id);
+
+	    System.out.println("sql : "+sql);
+	    affectedRows = stmt.executeUpdate();
+	    
+	    
+		stmt.close();
+	} catch (SQLException e) {
+		throw new RuntimeException(e);
+	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
+	}
+	return affectedRows;
+}
 	
 	
 	public Image insertImageOnCreate(

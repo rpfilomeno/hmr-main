@@ -8,19 +8,24 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import java.math.BigDecimal;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.Part;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -36,6 +41,7 @@ import hmr.com.manager.AuctionRangeManager;
 import hmr.com.manager.AuctionUserBiddingMaxManager;
 import hmr.com.manager.AuctionUserManager;
 import hmr.com.manager.BiddingTransactionManager;
+import hmr.com.manager.ImageManager;
 import hmr.com.manager.ItemManager;
 import hmr.com.manager.LoginManager;
 import hmr.com.manager.LotManager;
@@ -53,6 +59,7 @@ import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
 import hmr.com.bean.LotRange;
 import hmr.com.bean.User;
+import hmr.com.dao.AuctionDao;
 import hmr.com.dao.UserDao;
 
 @SuppressWarnings("serial")
@@ -211,6 +218,8 @@ public class Bid extends HttpServlet {
 		String userId = req.getParameter("userId")!=null ? (String)req.getParameter("userId") : (String)req.getAttribute("userId");
 		String vek = req.getParameter("vek")!=null ? (String)req.getParameter("vek") : (String)req.getAttribute("vek");
 		String aid = req.getParameter("aid")!=null ? (String)req.getParameter("aid") : (String)req.getAttribute("aid");
+		String action_id = req.getParameter("action_id")!=null ? (String)req.getParameter("action_id") : "";
+		List<FileItem> files = new ArrayList<FileItem>();
 		
 		String page = null;
 
@@ -225,122 +234,29 @@ public class Bid extends HttpServlet {
 		
         if(ServletFileUpload.isMultipartContent(req)){
             try {
-            	
-            	//final Part filePart = req.getPart("myFileSmall");
                 List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
                 for(FileItem item : multiparts){
                     if(!item.isFormField()){
-                    	
                     	System.out.println("item.getFieldName() "+item.getFieldName());
-                    	
-                    	if("myFileSmall".equals(item.getFieldName()) &&  item.getSize() > 0){
-                    		
-                        	out = new FileOutputStream(new File("c:/hmr/tmp/"
-                                    + item.getName()));
-                    	    InputStream filecontent = null;
-                    	    //final PrintWriter writer = res.getWriter();
-                        	
-                    	    filecontent  = item.getInputStream();
-
-                    	    int read = 0;
-                            final byte[] bytes = new byte[1024];
-
-                            while ((read = filecontent.read(bytes)) != -1) {
-                                out.write(bytes, 0, read);
-                            }
-                            
-                        	System.out.println("item.getName() "+item.getName());
-                        	//System.out.println("New file " + fileName + " created at " + path);
-                        	
-                        	//String aaa = item.getString("StoreLocation");
-                        	//System.out.println("StoreLocation "+aaa);
-                        	
-                        	auction_file_small = new File("c:/hmr/tmp/"+item.getName());
-
-                        	System.out.println("file.getCanonicalPath "+auction_file_small.getCanonicalPath());
-                        	System.out.println("file.getAbsolutePath "+auction_file_small.getAbsolutePath());
-                        	System.out.println("file.getPath "+auction_file_small.getPath());
-                    		
-                    	}else if("myFile".equals(item.getFieldName())  &&  item.getSize() > 0 ){
-                    		
-                        	out = new FileOutputStream(new File("c:/hmr/tmp/" + item.getName()));
-                    	    InputStream filecontent = null;
-                    	    //final PrintWriter writer = res.getWriter();
-                        	
-                    	    filecontent  = item.getInputStream();
-
-                    	    int read = 0;
-                            final byte[] bytes = new byte[1024];
-
-                            while ((read = filecontent.read(bytes)) != -1) {
-                                out.write(bytes, 0, read);
-                            }
-                            
-                        	System.out.println("item.getName() "+item.getName());
-                        	//System.out.println("New file " + fileName + " created at " + path);
-                        	
-                        	//String aaa = item.getString("StoreLocation");
-                        	//System.out.println("StoreLocation "+aaa);
-                        	
-                        	auction_file = new File("c:/hmr/tmp/"+item.getName());
-                        	
-                        	//System.out.println("file.getCanonicalPath "+auction_file.getCanonicalPath());
-                        	//System.out.println("file.getAbsolutePath "+auction_file.getAbsolutePath());
-                        	//System.out.println("file.getPath "+auction_file.getPath());
-                    		
-                    	}else if("myFileItem".equals(item.getFieldName())  &&  item.getSize() > 0 ){
-
-                        	out = new FileOutputStream(new File("c:/hmr/tmp/"
-                                    + item.getName()));
-                    	    InputStream filecontent = null;
-                    	    //final PrintWriter writer = res.getWriter();
-                        	
-                    	    filecontent  = item.getInputStream();
-
-                    	    int read = 0;
-                            final byte[] bytes = new byte[1024];
-
-                            while ((read = filecontent.read(bytes)) != -1) {
-                                out.write(bytes, 0, read);
-                            }
-                            
-                        	System.out.println("item.getName() "+item.getName());
-                        	//System.out.println("New file " + fileName + " created at " + path);
-                        	
-                        	//String aaa = item.getString("StoreLocation");
-                        	//System.out.println("StoreLocation "+aaa);
-                        	
-                        	item_file = new File("c:/hmr/tmp/"+item.getName());
-                        	
-                        	//System.out.println("file.getCanonicalPath "+auction_file.getCanonicalPath());
-                        	//System.out.println("file.getAbsolutePath "+auction_file.getAbsolutePath());
-                        	//System.out.println("file.getPath "+auction_file.getPath());
-                    		
+                    	if("file".equals(item.getFieldName()) &&  item.getSize() > 0){
+                    		files.add(item);
                     	}
-
-                        
-                      
-                    }else{
-                    	
+                    }else{                   	
                     	String fieldname = item.getFieldName();
                         String fieldvalue = item.getString();
                         if (fieldname.equals("action")) {
                         	action=fieldvalue;
                         	req.getSession().setAttribute("action", action);
-                        }
-                        if (fieldname.equals("manager")) {
+                        }else if (fieldname.equals("manager")) {
                         	manager=fieldvalue;
                         	req.getSession().setAttribute("manager", manager);
-                        }
-                        if (fieldname.equals("userId")) {
+                        }else if (fieldname.equals("userId")) {
                         	userId=fieldvalue;
                         	req.getSession().setAttribute("userId", userId);
-                        }
-                        if (fieldname.equals("user-id")) {
+                        }else if (fieldname.equals("user-id")) {
                         	user_id=Integer.valueOf(fieldvalue) ;
                         	req.getSession().setAttribute("user-id", user_id);
-                        }
-                        if (fieldname.equals("auctionId_wip")) {
+                        }else if (fieldname.equals("auctionId_wip")) {
                         	if(fieldvalue!=null && !"".equals(fieldvalue)){
                         		auctionId_wip=new BigDecimal(fieldvalue) ;
                         	}else{
@@ -349,46 +265,35 @@ public class Bid extends HttpServlet {
                         	                        	
                         	req.getSession().setAttribute("auctionId-wip", auctionId_wip);
                         	req.setAttribute("auctionId-wip", auctionId_wip);
-                        	//System.out.println("auctionId_wip Session : "+Integer.valueOf(req.getSession().getAttribute("auctionId-wip").toString()) );
-                        	
-                        }
-                        if (fieldname.equals("itemId_wip")) {
+                        }else if (fieldname.equals("itemId_wip")) {
                         	if(fieldvalue!=null && !"".equals(fieldvalue)){
                         		itemId_wip=new BigDecimal(fieldvalue) ;
                         	}else{
                         		itemId_wip = new BigDecimal(0);
                         	}
-                        	
-                        	
                         	req.getSession().setAttribute("itemId-wip", itemId_wip);
-                        	
-                        	//System.out.println("itemId_wip Session : "+Integer.valueOf(req.getSession().getAttribute("itemId-wip").toString()) );
-                        	
-                        }
-                        if (fieldname.equals("auction_id")) {
+                        }else if (fieldname.equals("auction_id")) {
                         	BigDecimal auction_id = new BigDecimal(0);
                         	if(fieldvalue!=null && !"".equals(fieldvalue)){
                         		auction_id=new BigDecimal(fieldvalue) ;
                         	}else{
                         		auction_id = new BigDecimal(0);
                         	}
-
                         	req.getSession().setAttribute("auction_id", auction_id);
                         	req.setAttribute("auction_id", auction_id);
-                        	//System.out.println("itemId_wip Session : "+Integer.valueOf(req.getSession().getAttribute("itemId-wip").toString()) );
-                        	
+                        }else if (fieldname.equals("action_id")) {
+                        	if(fieldvalue!=null && !"".equals(fieldvalue)){
+                        		action_id=fieldvalue;
+                        	}
+                        	req.getSession().setAttribute("action_id", action_id);
+                        	req.setAttribute("action_id", action_id);
                         }
-                        
                     }
-              
                 }
-           
-               
             } catch (Exception ex) {
             	ex.printStackTrace();
             	req.setAttribute("message", "File Upload Failed due to " + ex);
             }          
-         
         }//file uploads
 		
 		
@@ -544,7 +449,130 @@ public class Bid extends HttpServlet {
 		//all non-page get requests
 		if(userId!=null && !"".equals(userId) && !manager.equals("get")){
 			
-			if(manager.equals("bid-manager")) {
+			if(manager.equals("image-manager")) {
+				ImageManager iMngr = new ImageManager();
+				//image listing
+				if("auctionImageDelete".equals(action)) {
+					System.out.println("Auction image deleted");
+					
+					if(iMngr.deleteImage(new BigDecimal(action_id))) {
+						//TODO
+					}
+					
+					String auctionId = req.getParameter("wip_id")!=null ? (String)req.getParameter("wip_id") : (String)req.getParameter("auctionId_wip");
+					req.setAttribute("images", iMngr.getImageListByAuctionId(new BigDecimal(auctionId)));
+					req.setAttribute("action_id", auctionId);
+					req.setAttribute("action", "doAuctionImageUpload");
+					page = "image-upload.jsp";
+					
+				}else if("auctionImageUpload".equals(action)) {
+					String auctionId = req.getParameter("auction_id")!=null ? (String)req.getParameter("auction_id") : (String)req.getParameter("auctionId_wip");
+					req.setAttribute("images", iMngr.getImageListByAuctionId(new BigDecimal(auctionId)));
+					req.setAttribute("action_id", auctionId);
+					req.setAttribute("action", "doAuctionImageUpload");
+					page = "image-upload.jsp";
+				}else if("lotImageUpload".equals(action)) {
+					String lotId = req.getParameter("lot_id")!=null ? (String)req.getParameter("lot_id") : (String)req.getParameter("lotId_wip");
+					req.setAttribute("images", iMngr.getImageListByLotId(new BigDecimal(lotId)));
+					req.setAttribute("action_id", lotId);
+					req.setAttribute("action", "doLotImageUpload");
+					page = "image-upload.jsp";
+				}else if("itemImageUpload".equals(action)) {
+					String itemId = req.getParameter("itemId_wip")!=null ? (String)req.getParameter("itemId_wip") : (String)req.getParameter("itemId");
+					req.setAttribute("images", iMngr.getImageListByItemId(new BigDecimal(itemId)));
+					req.setAttribute("action_id", itemId);
+					req.setAttribute("action", "doItemImageUpload");
+					page = "image-upload.jsp";
+				}
+				
+				//posted
+				if("doAuctionImageUpload".equals(action)) {
+					System.out.println("Auction image uploaded");
+					
+					if(!files.isEmpty()) {
+						for (FileItem item : files) {
+							System.out.println("item.getFieldName() "+item.getFieldName());
+							InputStream inputStream = item.getInputStream();
+                    	    String lot_id = "0";
+                    	    
+                    	    try {
+                    	    	Pattern regex = Pattern.compile("(^\\d+)");
+                    	    	Matcher regexMatcher = regex.matcher(item.getName());
+                    	    	if (regexMatcher.find()) {
+                    	    		lot_id = regexMatcher.group(1);
+                    	    		System.out.println("File is assigned to lot id: " + lot_id);
+                    	    	}
+                    	    } catch (PatternSyntaxException ex) {
+                    	    	// Syntax error in the regular expression
+                    	    }
+                    	    
+                    	    if(iMngr.insertImageInputStream(
+    								Integer.valueOf(action_id),
+    								Integer.valueOf(lot_id),
+    								Integer.valueOf("0"), 
+    								inputStream, 
+    								Integer.valueOf("1"), 
+    								user_id)<1) {
+    							throw new RuntimeException("Image not uploaded.");
+    						}
+						}
+					}
+					page = "blank.jsp";
+				}else if("doLotImageUpload".equals(action)) {
+					System.out.println("Lot image uploaded");
+					if(!files.isEmpty()) {
+						for (FileItem item : files) {
+							System.out.println("item.getFieldName() "+item.getFieldName());
+							InputStream inputStream = item.getInputStream();
+                    	    String item_id = "0";
+                    	    
+                    	    try {
+                    	    	Pattern regex = Pattern.compile("(^\\d+)");
+                    	    	Matcher regexMatcher = regex.matcher(item.getName());
+                    	    	if (regexMatcher.find()) {
+                    	    		item_id = regexMatcher.group(1);
+                    	    		System.out.println("File is assigned to item id: " + item_id);
+                    	    	}
+                    	    } catch (PatternSyntaxException ex) {
+                    	    	// Syntax error in the regular expression
+                    	    }
+                    	    
+                    	    if(iMngr.insertImageInputStream(
+    								Integer.valueOf("0"),
+    								Integer.valueOf(action_id),
+    								Integer.valueOf(item_id), 
+    								inputStream, 
+    								Integer.valueOf("1"), 
+    								user_id)<1) {
+    							throw new RuntimeException("Image not uploaded.");
+    						}
+						}
+					}
+					page = "blank.jsp";
+				}else if("doItemImageUpload".equals(action)) {
+					System.out.println("Item image uploaded");
+					if(!files.isEmpty()) {
+						for (FileItem item : files) {
+							System.out.println("item.getFieldName() "+item.getFieldName());
+							InputStream inputStream = item.getInputStream();
+                    	    if(iMngr.insertImageInputStream(
+    								Integer.valueOf("0"),
+    								Integer.valueOf("0"),
+    								Integer.valueOf(action_id), 
+    								inputStream, 
+    								Integer.valueOf("1"), 
+    								user_id)<1) {
+    							throw new RuntimeException("Image not uploaded.");
+    						}
+						}
+					}
+					page = "blank.jsp";
+				}
+				
+				
+				
+				
+			} else if(manager.equals("bid-manager")) {
 				String doAction = req.getParameter("doaction")!=null ? (String)req.getParameter("doaction") : "";
 				String reqlotId = req.getParameter("lotId")!=null ? (String)req.getParameter("lotId") : "";
 				String reqamount = req.getParameter("amount")!=null ? (String)req.getParameter("amount") : "";
@@ -663,17 +691,7 @@ public class Bid extends HttpServlet {
 				
 				ItemManager iMngr = new ItemManager(req,res);
 				
-				if("saveItemImage".equals(action) && item_file!=null){
-					
-					System.out.println("BID saveItemImage "+item_file);
-
-					page = iMngr.doItemManager(item_file, action, itemId_wip);
-				}else{
-					page = iMngr.doItemManager();
-				}
-				
-				
-				
+				page = iMngr.doItemManager();
 			}else if(manager.equals("upload-auction-manager")){
 				
 				System.out.println("BID - Upload Auction Manager");

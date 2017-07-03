@@ -80,10 +80,11 @@ public class Image extends HttpServlet {
 		BigDecimal id = new BigDecimal(req.getParameter("id")) ;
 		//String s = req.getParameter("s") ;
 		String t = req.getParameter("t") ;
+		
+		ImageManager iMngr = new ImageManager(req, res);
+		hmr.com.bean.Image i = new hmr.com.bean.Image();
 
 		if(t!=null){
-			ImageManager iMngr = new ImageManager(req, res);
-			hmr.com.bean.Image i = new hmr.com.bean.Image();
 			if("i".equals(t)){
 				i = iMngr.getImageByItemId(id);
 			}else if("l".equals(t)){
@@ -91,6 +92,9 @@ public class Image extends HttpServlet {
 			}else if("a".equals(t)){
 				i = iMngr.getImageByAuctionId(id);
 			}
+		} else {
+			 i = iMngr.getImageBytesById(id);
+		}
 
 			if(i!=null){
 				byte barray[] = i.getImageBytes();
@@ -99,15 +103,15 @@ public class Image extends HttpServlet {
 				output.close();
 				res.setContentType("image/jpg");
 			}else{
-				id = new BigDecimal("0");
-				i = iMngr.getImageByAuctionId(id);
+				id = new BigDecimal("1");
+				i = iMngr.getImageBytesById(id);
 				byte barray[] = i.getImageBytes();
 				OutputStream output = res.getOutputStream();
 				output.write(barray);
 				output.close();
 				res.setContentType("image/jpg");
 			}
-		}
+		
 		
 		
 		

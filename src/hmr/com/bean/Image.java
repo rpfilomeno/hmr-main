@@ -8,6 +8,7 @@ public class Image extends SystemBean {
 
 	BigDecimal id;
 	BigDecimal auction_id;
+	BigDecimal lot_id;
 	BigDecimal item_id;
 	InputStream imageInputStream;
 	Integer active;
@@ -48,6 +49,12 @@ public class Image extends SystemBean {
 	}
 	public void setActive(Integer active) {
 		this.active = active;
+	}
+	public BigDecimal getLot_id() {
+		return lot_id;
+	}
+	public void setLot_id(BigDecimal lot_id) {
+		this.lot_id = lot_id;
 	}
 
 }
