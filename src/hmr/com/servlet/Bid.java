@@ -493,18 +493,23 @@ public class Bid extends HttpServlet {
 						for (FileItem item : files) {
 							System.out.println("item.getFieldName() "+item.getFieldName());
 							InputStream inputStream = item.getInputStream();
-                    	    String lot_id = "0";
+                    	    String lot_no = "0";
                     	    
                     	    try {
                     	    	Pattern regex = Pattern.compile("(^\\d+)");
                     	    	Matcher regexMatcher = regex.matcher(item.getName());
                     	    	if (regexMatcher.find()) {
-                    	    		lot_id = regexMatcher.group(1);
-                    	    		System.out.println("File is assigned to lot id: " + lot_id);
+                    	    		lot_no = regexMatcher.group(1);
+                    	    		System.out.println("File is assigned to lot id: " + lot_no);
                     	    	}
                     	    } catch (PatternSyntaxException ex) {
                     	    	// Syntax error in the regular expression
                     	    }
+                    	    
+                    	    //Lets try to find the lot_id given lot_no and action_id=auction_id
+                    	    LotManager ltMngr = new LotManager();
+                    	    Lot lot = ltMngr.getLotByAuctionIdAndLotNo(new BigDecimal(action_id), new BigDecimal(lot_no));
+                    	    String lot_id = ( lot != null ) ? lot.getLot_id().toString() : "0";
                     	    
                     	    if(iMngr.insertImageInputStream(
     								Integer.valueOf(action_id),

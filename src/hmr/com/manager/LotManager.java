@@ -874,4 +874,8 @@ public class LotManager {
 		
 	}
 	
+	public Lot getLotByAuctionIdAndLotNo(BigDecimal auction_id, BigDecimal lot_no) {
+		return new LotDao().getLotByAuctionIdAndLotNo(auction_id, lot_no);
+	}
+	
 }
