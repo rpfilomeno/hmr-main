@@ -337,7 +337,7 @@
 				
 	            <div class="form-group">
 	              <label><b>Bidder : </b>
-	              <%if(lot.getBidder_id()!=null && lot.getBidder_id()!=0){%>
+	              <%if(lot!=null && lot.getBidder_id()!=null && lot.getBidder_id()!=0 && lot.getBidder_id() > 0 && bidderUserHM.get(lot.getBidder_id())!=null){%>
 	            	   <%=bidderUserHM.get(lot.getBidder_id()).getFirst_name()%> <%=bidderUserHM.get(lot.getBidder_id()).getLast_name()%>
 	              <%}else{ %>
 	              &nbsp;
