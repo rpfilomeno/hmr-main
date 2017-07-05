@@ -30,7 +30,7 @@ System.out.println("fullName : "+fullName);
 
     <!-- Theme CSS -->
     <link href="assets/css/theme.css" rel="stylesheet">
-    <link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
+<link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
 
     <!-- Head Libs -->
     <script src="assets/plugins/modernizr.custom.js"></script>

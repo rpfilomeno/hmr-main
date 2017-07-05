@@ -83,13 +83,9 @@
 
     <!-- Theme CSS -->
     <link href="assets/css/theme.css" rel="stylesheet">
-    <link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
-<%--     
-    TODO: These local files seems to be broken
-    <link href="assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-    <link href="assets/plugins/jquery-ui/jquery-ui.thmemin.css" rel="stylesheet">
---%>
+	<link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
+    <link href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
+
     <!-- Head Libs -->
     
     <script src="assets/plugins/modernizr.custom.js"></script>
@@ -268,13 +264,8 @@
 
 
 <!-- JS Global -->
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-<%-- 
-TODO: These local files seems to be broken
-<script src="assets/plugins/jquery/jquery-1.11.1.min.js"></script>
-<script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
---%>
+<script src="assets/plugins/jquery/jquery-2.0.0.min.js"></script>
+<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
 <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="assets/plugins/superfish/js/superfish.min.js"></script>

@@ -88,14 +88,10 @@
 
     <!-- Theme CSS -->
     <link href="assets/css/theme.css" rel="stylesheet">
-    <link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+<link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
+    <link href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/plugins/gridder/jquery.gridder.min.css" />
-<%--     
-    TODO: These local files seems to be broken
-    <link href="assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-    <link href="assets/plugins/jquery-ui/jquery-ui.thmemin.css" rel="stylesheet">
---%>
+
 	<!-- Page Level CSS -->
 	<link rel="stylesheet" href="assets/css/gridder.css" />
 
@@ -1514,13 +1510,8 @@
 <!-- /WRAPPER -->
 
 <!-- JS Global -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-<%-- 
-TODO: These local files seems to be broken
-<script src="assets/plugins/jquery/jquery-1.11.1.min.js"></script>
-<script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
---%>
+<script src="assets/plugins/jquery/jquery-2.0.0.min.js"></script>
+<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
 <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="assets/plugins/superfish/js/superfish.min.js"></script>
@@ -1530,7 +1521,7 @@ TODO: These local files seems to be broken
 <script src="assets/plugins/jquery.easing.min.js"></script>
 <script src="assets/plugins/jquery.smoothscroll.min.js"></script>
 <script src="assets/plugins/smooth-scrollbar.min.js"></script>
-<script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+
 
 <!-- DataTables -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
