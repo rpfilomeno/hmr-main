@@ -11,6 +11,7 @@ public class Image extends SystemBean {
 	BigDecimal lot_id;
 	BigDecimal item_id;
 	InputStream imageInputStream;
+	InputStream thumbnailInputStream;
 	Integer active;
 	byte[] imageBytes;
 	
@@ -55,6 +56,12 @@ public class Image extends SystemBean {
 	}
 	public void setLot_id(BigDecimal lot_id) {
 		this.lot_id = lot_id;
+	}
+	public InputStream getThumbnailInputStream() {
+		return thumbnailInputStream;
+	}
+	public void setThumbnailInputStream(InputStream thumbnailInputStream) {
+		this.thumbnailInputStream = thumbnailInputStream;
 	}
 
 }

@@ -240,12 +240,89 @@ public class ImageDao extends DBConnection {
 	
 	public Image getImageBytesById(BigDecimal id) {
 		Connection conn = null;
+		Image i = null;	
+		StringBuilder sb = new StringBuilder("Select image");
+		sb.append(" from image where id ="+id);
+		try {
+			DBConnection dbConn = new DBConnection();
+			conn = dbConn.getConnection();
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}		
+			java.sql.Statement stmt = conn.createStatement();
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}
+			ResultSet rs = stmt.executeQuery(sb.toString());
+			while(rs.next()){
+				i = new Image();
+				i.setImageBytes(rs.getBytes("image"));
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		return i;
+	}
+	
+	public Image getThumbnailBytesById(BigDecimal id) {
+		Connection conn = null;
+		Image i = null;	
+		StringBuilder sb = new StringBuilder("Select thumbnail");
+		sb.append(" from image where id ="+id);
+		try {
+			DBConnection dbConn = new DBConnection();
+			conn = dbConn.getConnection();
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}		
+			java.sql.Statement stmt = conn.createStatement();
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}
+			ResultSet rs = stmt.executeQuery(sb.toString());
+			while(rs.next()){
+				i = new Image();
+				i.setImageBytes(rs.getBytes("thumbnail"));
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		return i;
+	}
+
+	public Image getImageByAuctionId(BigDecimal auction_id){
+		
+		Connection conn = null;
 
 		Image i = null;
 		
 		StringBuilder sb = new StringBuilder("Select image");
 
-		sb.append(" from image where id ="+id);
+		sb.append(" from image where auction_id ="+auction_id+" LIMIT 1");
 
 
 		try {
@@ -293,16 +370,16 @@ public class ImageDao extends DBConnection {
 		
 		return i;
 	}
-
-	public Image getImageByAuctionId(BigDecimal auction_id){
+	
+public Image getThumbnailByAuctionId(BigDecimal auction_id){
 		
 		Connection conn = null;
 
 		Image i = null;
 		
-		StringBuilder sb = new StringBuilder("Select image");
+		StringBuilder sb = new StringBuilder("Select thumbnail");
 
-		sb.append(" from image where auction_id ="+auction_id);
+		sb.append(" from image where auction_id ="+auction_id+" LIMIT 1");
 
 
 		try {
@@ -330,7 +407,7 @@ public class ImageDao extends DBConnection {
 
 			while(rs.next()){
 				i = new Image();
-				i.setImageBytes(rs.getBytes("image"));
+				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
 
 			rs.close();
@@ -359,7 +436,7 @@ public class ImageDao extends DBConnection {
 		
 		StringBuilder sb = new StringBuilder("Select image");
 
-		sb.append(" from image where lot_id ="+lot_id);
+		sb.append(" from image where lot_id ="+lot_id+" LIMIT 1");
 
 
 		try {
@@ -388,6 +465,63 @@ public class ImageDao extends DBConnection {
 			while(rs.next()){
 				i = new Image();
 				i.setImageBytes(rs.getBytes("image"));
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return i;
+	}
+	
+public Image getThumbnailByLotId(BigDecimal lot_id){
+		
+		Connection conn = null;
+
+		Image i = null;
+		
+		StringBuilder sb = new StringBuilder("Select thumbnail");
+
+		sb.append(" from image where lot_id ="+lot_id+" LIMIT 1");
+
+
+		try {
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}
+
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			while(rs.next()){
+				i = new Image();
+				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
 
 			rs.close();
@@ -416,7 +550,7 @@ public class ImageDao extends DBConnection {
 		
 		StringBuilder sb = new StringBuilder("Select image");
 
-		sb.append(" from image where item_id ="+item_id);
+		sb.append(" from image where item_id ="+item_id+" LIMIT 1");
 
 
 		try {
@@ -465,11 +599,69 @@ public class ImageDao extends DBConnection {
 		return i;
 	}
 	
+public Image getThumbnailByItemId(BigDecimal item_id){
+		
+		Connection conn = null;
+
+		Image i = null;
+		
+		StringBuilder sb = new StringBuilder("Select thumbnail");
+
+		sb.append(" from image where item_id ="+item_id+" LIMIT 1");
+
+
+		try {
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}
+
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			while(rs.next()){
+				i = new Image();
+				i.setImageBytes(rs.getBytes("thumbnail"));
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return i;
+	}
+	
 	public int insertImageOnCreate(
 			Integer auction_id,
 			Integer lot_id,
 			Integer item_id,
-			InputStream file,
+			InputStream image,
+			InputStream thumbnail,
 			Integer active,
 			Integer user_id
 		) {
@@ -484,10 +676,10 @@ public class ImageDao extends DBConnection {
 		DBConnection dbConn = new DBConnection();
 		conn = dbConn.getConnection();
 		
-		StringBuilder sb = new StringBuilder("INSERT into image (auction_id, lot_id, item_id, active, image");
+		StringBuilder sb = new StringBuilder("INSERT into image (auction_id, lot_id, item_id, active, image, thumbnail");
 		sb.append(", date_created, created_by)");
 		sb.append(" VALUES(");
-		sb.append(" ?, ?, ?, ?, ?");
+		sb.append(" ?, ?, ?, ?, ?, ?");
 		sb.append(",?, ?");
 		sb.append(")");
 		
@@ -500,9 +692,10 @@ public class ImageDao extends DBConnection {
         stmt.setInt(2, lot_id);
         stmt.setInt(3, item_id);
         stmt.setInt(4, active);
-        stmt.setBlob (5, file);
-        stmt.setTimestamp(6, sqlDate_t);
-        stmt.setInt(7, user_id);
+        stmt.setBlob (5, image);
+        stmt.setBlob (6, thumbnail);
+        stmt.setTimestamp(7, sqlDate_t);
+        stmt.setInt(8, user_id);
 
 	    System.out.println("sql : "+sql);
 	    affectedRows = stmt.executeUpdate();

@@ -79,7 +79,7 @@
 	%>
     <title><%=COMPANY_NAME%></title>
 
-
+	<!-- Page: auction.jsp -->
 
     <!-- DataTables -->
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">

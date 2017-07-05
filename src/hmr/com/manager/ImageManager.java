@@ -1,6 +1,10 @@
 package hmr.com.manager;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -9,8 +13,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.imgscalr.Scalr;
+
 import hmr.com.bean.Image;
 import hmr.com.bean.Lov;
 import hmr.com.bean.User;
@@ -42,21 +51,6 @@ public class ImageManager {
 		String page = "index.jsp";
 		
 		if(action.equals("saveImageImage")){
-			
-			Image i = new Image();
-			
-			i = updateImageImage(file,1,imageId_wip);
-
-			if(i!=null){
-				//i = getImageById(i.getId());
-				
-				req.setAttribute("msgbgcol", "green");
-				req.setAttribute("msgInfo", "Image images updated succeessful.");
-			}else{
-				//i = getImageById(imageId_wip);
-			}
-			
-			
 			page = "image.jsp";
 		}
 		
@@ -370,65 +364,39 @@ public class ImageManager {
 			 */
 			page= "image.jsp";
 		}
-		
-		
-		
-		
-	
-		
-		System.out.println("Paramerters doImageManager - page : "+page);
-		
+		System.out.println("Paramerters doImageManager - page : "+page);	
 		return page;
 		
 	}
 	
-
-	
-	/*
-	public Image getImage(String imageId){
-		
-		Image i = new Image();
-
-		ImageDao id = new ImageDao();
-
-		i = id.getImage(imageId);
-		
-		return i;
-		
-	}	
-	*/
 	public Image getImageByAuctionId(BigDecimal auction_id){
-		
-		Image i = new Image();
-
 		ImageDao id = new ImageDao();
-
-		i = id.getImageByAuctionId(auction_id);
-
-		return i;
-		
+		return id.getImageByAuctionId(auction_id);
 	}	
+	
+	public Image getThumbnailByAuctionId(BigDecimal auction_id){
+		ImageDao id = new ImageDao();
+		return id.getThumbnailByAuctionId(auction_id);
+	}
 	
 	public Image getImageByLotId(BigDecimal lot_id){
-		
-		Image i = new Image();
-
 		ImageDao id = new ImageDao();
-
-		i = id.getImageByLotId(lot_id);
-
-		return i;
-		
+		return id.getImageByLotId(lot_id);	
+	}
+	
+	public Image getThumbnailByLotId(BigDecimal lot_id){
+		ImageDao id = new ImageDao();
+		return id.getThumbnailByLotId(lot_id);	
 	}
 	
 	public Image getImageBytesById(BigDecimal image_id) {
-		Image i = new Image();
-
 		ImageDao id = new ImageDao();
-
-		i = id.getImageBytesById(image_id);
-
-		return i;
+		return id.getImageBytesById(image_id);
+	}
+	
+	public Image getThumbnailBytesById(BigDecimal image_id) {
+		ImageDao id = new ImageDao();
+		return id.getThumbnailBytesById(image_id);
 	}
 	
 	public Image getImageById(BigDecimal image_id) {
@@ -436,25 +404,25 @@ public class ImageManager {
 		return id.getImageById(image_id);
 	}
 	
+	
+	
+	public Image getImageByItemId(BigDecimal item_id){
+		ImageDao id = new ImageDao();
+		return id.getImageByItemId(item_id);
+	}
+	
+	public Image getThumbnailByItemId(BigDecimal item_id){
+		ImageDao id = new ImageDao();
+		return id.getThumbnailByItemId(item_id);
+	}
+	
 	public boolean deleteImage(BigDecimal image_id) {
 		ImageDao id = new ImageDao();
 		if(id.deleteImage(image_id)>1)return true;
 		return false;
 	}
-	
-	public Image getImageByItemId(BigDecimal item_id){
-		
-		Image i = new Image();
 
-		ImageDao id = new ImageDao();
-
-		i = id.getImageByItemId(item_id);
-
-		return i;
-		
-	}
-	
-	public int insertImageInputStream(
+	public boolean insertImageInputStream(
 			Integer auction_id,
 			Integer lot_id,
 			Integer item_id,
@@ -462,18 +430,41 @@ public class ImageManager {
 			Integer active,
 			Integer user_id
 		){
-	
+		
+		
+		//create a copy of the inputstream so consecutive resizeImageStream
+		// will work
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int len;
+		try {
+			while ((len = file.read(buffer)) > -1 ) {
+			    baos.write(buffer, 0, len);
+			}
+			baos.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		InputStream is1 = new ByteArrayInputStream(baos.toByteArray()); 
+		InputStream is2 = new ByteArrayInputStream(baos.toByteArray()); 
+
+		
+		InputStream image = resizeImageStream(is1,640,480);
+		InputStream thumbnail = resizeImageStream(is2,250,200);
+		
 		ImageDao id = new ImageDao();
-	
-		return (id.insertImageOnCreate(
-			auction_id,
-			lot_id,
-			item_id,
-			file,
-			active,
-			user_id
-			));
-	
+		if(id.insertImageOnCreate(
+				auction_id,
+				lot_id,
+				item_id,
+				image,
+				thumbnail,
+				active,
+				user_id
+				)>0) return true;
+		return false;
+
 }
 	
 	
@@ -526,72 +517,17 @@ public class ImageManager {
 			    item_id,
 			    file,
 			    active,
-
-					user_id,
-					imageId_wip
-				);
-		
-		return i;
-		
-	}
-	
-	
-	
-	public Image updateImageImage(
-			File file,
-			Integer user_id,
-			BigDecimal imageId_wip
-		){
-	
-	Image i = null;
-	
-	ImageDao id = new ImageDao();
-/*
-	i = id.updateImageImage(
-				file,
 				user_id,
 				imageId_wip
-			);
-	*/
-	return i;
-	
-}
-	/*
-	public Image getImageRegistration(String imageId, String vek){
-		
-		Image i = new Image();
-
-		ImageDao id = new ImageDao();
-
-		i = id.getImageRegistration(imageId, vek);
-		
-		return i;
-		
-	}	
-	*/
-	/*
-	public int updatePasswordOnActivation(String imageId, String pw, Integer image_id){
-		
-		int i = 0;
-		
-		ImageDao id = new ImageDao();
-
-		i = id.updatePasswordOnActivation(imageId, pw, image_id);
-		
-		return i;
-		
+				);
+		return i;	
 	}
-	*/
+	
+
 	public List<Image> getImageList(){
-		
-		List<Image> iList = new ArrayList<Image>();
-
 		ImageDao id = new ImageDao();
+		return id.getImageList();
 
-		iList = id.getImageList();
-		
-		return iList;
-		
 	}
 	
 	
@@ -610,10 +546,8 @@ public class ImageManager {
 		
 	}
 	public List<Image> getImageListByItemId(BigDecimal item_id){
-		List<Image> iList = new ArrayList<Image>();
 		ImageDao id = new ImageDao();
-		iList = id.getImageListByAuctionId(item_id);
-		return iList;
+		return id.getImageListByItemId(item_id);
 		
 	}
 	
@@ -734,6 +668,28 @@ public class ImageManager {
 		}
 		
 		
+	}
+	
+	private InputStream resizeImageStream(InputStream file, int width, int height) {
+		InputStream is = null;
+		try {
+		BufferedImage img = ImageIO.read(file);
+		BufferedImage scaledImg = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.AUTOMATIC,  width, height); 
+		
+		//Prevent extra memory use: https://stackoverflow.com/a/12253091
+		final ByteArrayOutputStream output = new ByteArrayOutputStream() {
+		    @Override
+		    public synchronized byte[] toByteArray() {
+		        return this.buf;
+		    }
+		};
+		ImageIO.write(scaledImg, "png", output);
+		is = new ByteArrayInputStream(output.toByteArray());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return is;
 	}
 	
 	

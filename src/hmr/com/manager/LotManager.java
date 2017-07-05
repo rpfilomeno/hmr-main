@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.api.gbase.client.GmAttributes.GmAttribute.Importance;
 
 import hmr.com.bean.Auction;
+import hmr.com.bean.Image;
 import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
 import hmr.com.bean.User;
@@ -148,6 +149,9 @@ public class LotManager {
 			
 			List<Item> iL = iMngr.getLotItemsById(l.getLot_id());
 			
+			List<Image> lot_images = new ImageManager().getImageListByLotId(l.getLot_id());
+			
+			req.setAttribute("lot_images", lot_images);
 			req.setAttribute("lot", l);
 			req.setAttribute("items", iL);
 			req.setAttribute("auction", a);

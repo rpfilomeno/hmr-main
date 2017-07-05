@@ -55,6 +55,7 @@ import bizoncloudone.com.manager.UserLoginManager;
 import bizoncloudone.com.util.DBConnection;
 import hmr.com.bean.Auction;
 import hmr.com.bean.AuctionRange;
+import hmr.com.bean.Image;
 import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
 import hmr.com.bean.LotRange;
@@ -431,8 +432,11 @@ public class Bid extends HttpServlet {
 				//append the expired lots to end
 				if(!lListExpired.isEmpty()) lList.addAll(lListExpired);
 				
+				List<Image> auction_images = new ImageManager().getImageListByAuctionId(a.getAuction_id());
+
 				req.setAttribute("lList", lList);
 				req.setAttribute("auction", a);
+				req.setAttribute("auction_images", auction_images);
 				//req.setAttribute("auction-item", a);
 				//req.setAttribute("lotHM", lotHM);
 				//req.setAttribute("arList", arList);
@@ -465,6 +469,32 @@ public class Bid extends HttpServlet {
 					req.setAttribute("action", "doAuctionImageUpload");
 					page = "image-upload.jsp";
 					
+				}else if("lotImageDelete".equals(action)) {
+					System.out.println("Lot image deleted");
+					
+					if(iMngr.deleteImage(new BigDecimal(action_id))) {
+						//TODO
+					}
+					
+					String lotId = req.getParameter("wip_id")!=null ? (String)req.getParameter("wip_id") : (String)req.getParameter("auctionId_wip");
+					req.setAttribute("images", iMngr.getImageListByLotId(new BigDecimal(lotId)));
+					req.setAttribute("action_id", lotId);
+					req.setAttribute("action", "doLotImageUpload");
+					page = "image-upload.jsp";
+					
+				}else if("itemImageDelete".equals(action)) {
+					System.out.println("Item image deleted");
+					
+					if(iMngr.deleteImage(new BigDecimal(action_id))) {
+						//TODO
+					}
+					
+					String itemId = req.getParameter("wip_id")!=null ? (String)req.getParameter("wip_id") : (String)req.getParameter("auctionId_wip");
+					req.setAttribute("images", iMngr.getImageListByItemId(new BigDecimal(itemId)));
+					req.setAttribute("action_id", itemId);
+					req.setAttribute("action", "doItemImageUpload");
+					page = "image-upload.jsp";
+					
 				}else if("auctionImageUpload".equals(action)) {
 					String auctionId = req.getParameter("auction_id")!=null ? (String)req.getParameter("auction_id") : (String)req.getParameter("auctionId_wip");
 					req.setAttribute("images", iMngr.getImageListByAuctionId(new BigDecimal(auctionId)));
@@ -494,6 +524,8 @@ public class Bid extends HttpServlet {
 							System.out.println("item.getFieldName() "+item.getFieldName());
 							InputStream inputStream = item.getInputStream();
                     	    String lot_no = "0";
+                    	    String lot_id = "0";
+                    	    String auction_id = "0";
                     	    
                     	    try {
                     	    	Pattern regex = Pattern.compile("(^\\d+)");
@@ -509,15 +541,20 @@ public class Bid extends HttpServlet {
                     	    //Lets try to find the lot_id given lot_no and action_id=auction_id
                     	    LotManager ltMngr = new LotManager();
                     	    Lot lot = ltMngr.getLotByAuctionIdAndLotNo(new BigDecimal(action_id), new BigDecimal(lot_no));
-                    	    String lot_id = ( lot != null ) ? lot.getLot_id().toString() : "0";
+                    	    if( lot != null) {
+                    	    	lot_id = lot.getLot_id().toString();
+                    	    } else {
+                    	    	auction_id = action_id;
+                    	    }
+
                     	    
-                    	    if(iMngr.insertImageInputStream(
-    								Integer.valueOf(action_id),
+                    	    if(!iMngr.insertImageInputStream(
+    								Integer.valueOf(auction_id),
     								Integer.valueOf(lot_id),
     								Integer.valueOf("0"), 
     								inputStream, 
     								Integer.valueOf("1"), 
-    								user_id)<1) {
+    								user_id)) {
     							throw new RuntimeException("Image not uploaded.");
     						}
 						}
@@ -530,6 +567,7 @@ public class Bid extends HttpServlet {
 							System.out.println("item.getFieldName() "+item.getFieldName());
 							InputStream inputStream = item.getInputStream();
                     	    String item_id = "0";
+                    	    String lot_id = "0";
                     	    
                     	    try {
                     	    	Pattern regex = Pattern.compile("(^\\d+)");
@@ -541,14 +579,17 @@ public class Bid extends HttpServlet {
                     	    } catch (PatternSyntaxException ex) {
                     	    	// Syntax error in the regular expression
                     	    }
+                    	    if( item_id == "0") {
+                    	    	lot_id = action_id;
+                    	    }
                     	    
-                    	    if(iMngr.insertImageInputStream(
+                    	    if(!iMngr.insertImageInputStream(
     								Integer.valueOf("0"),
-    								Integer.valueOf(action_id),
+    								Integer.valueOf(lot_id),
     								Integer.valueOf(item_id), 
     								inputStream, 
     								Integer.valueOf("1"), 
-    								user_id)<1) {
+    								user_id)) {
     							throw new RuntimeException("Image not uploaded.");
     						}
 						}
@@ -560,13 +601,13 @@ public class Bid extends HttpServlet {
 						for (FileItem item : files) {
 							System.out.println("item.getFieldName() "+item.getFieldName());
 							InputStream inputStream = item.getInputStream();
-                    	    if(iMngr.insertImageInputStream(
+                    	    if(!iMngr.insertImageInputStream(
     								Integer.valueOf("0"),
     								Integer.valueOf("0"),
     								Integer.valueOf(action_id), 
     								inputStream, 
     								Integer.valueOf("1"), 
-    								user_id)<1) {
+    								user_id)) {
     							throw new RuntimeException("Image not uploaded.");
     						}
 						}
@@ -649,10 +690,13 @@ public class Bid extends HttpServlet {
 					List<Item> iL = iMngr.getLotItemsById(l.getLot_id());
 					
 					
+					List<Image> lot_images = new ImageManager().getImageListByLotId(l.getId());
 					
+					req.setAttribute("lot_images", lot_images);
 					req.setAttribute("lot", l);
 					req.setAttribute("items", iL);
 					req.setAttribute("auction", a);
+					
 					
 					
 					page = "lot-bid-details.jsp";

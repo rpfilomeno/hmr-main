@@ -91,7 +91,16 @@ public class Image extends HttpServlet {
 				i = iMngr.getImageByLotId(id);
 			}else if("a".equals(t)){
 				i = iMngr.getImageByAuctionId(id);
+			}else if("it".equals(t)){
+				i = iMngr.getThumbnailByItemId(id);
+			}else if("lt".equals(t)){
+				i = iMngr.getThumbnailByLotId(id);
+			}else if("at".equals(t)){
+				i = iMngr.getThumbnailByAuctionId(id);
+			}else if("t".equals(t)){
+				i = iMngr.getThumbnailBytesById(id);
 			}
+			
 		} else {
 			 i = iMngr.getImageBytesById(id);
 		}
@@ -101,7 +110,7 @@ public class Image extends HttpServlet {
 				OutputStream output = res.getOutputStream();
 				output.write(barray);
 				output.close();
-				res.setContentType("image/jpg");
+				res.setContentType("image/png");
 			}else{
 				id = new BigDecimal("1");
 				i = iMngr.getImageBytesById(id);

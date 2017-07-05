@@ -359,7 +359,7 @@
                             <div class="media">
                                <a class="pull-left media-link" href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeOnlineAuction.getId()%>">
                                     <!-- <img class="media-object" src="image?id=< / %=activeOnlineAuction.getId()%>&s=s" alt=""> -->
-                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeOnlineAuction.getAuction_id()%>&t=a" alt="">
+                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeOnlineAuction.getAuction_id()%>&t=at" alt="">
                                     <!-- <i class="fa fa-eye"></i> -->
                                 </a>
                                 <div class="media-body">
@@ -392,7 +392,7 @@
                             <div class="media">
                                <a class="pull-left media-link" href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>">
                                     <!-- <img class="media-object" src="image?id=< / %=activeNegotiatedAuction.getId()%>&s=s" alt=""> -->
-                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeNegotiatedAuction.getAuction_id()%>&t=a" alt="">
+                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeNegotiatedAuction.getAuction_id()%>&t=at" alt="">
                                     
                                     
                                     <!-- <i class="fa fa-eye"></i> -->
@@ -431,11 +431,11 @@
                             <div class="media">
                                <a class="pull-left media-link" href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>">
                                     <!-- <img class="media-object" src="image?id=< / %=activeNegotiatedAuction.getId()%>&s=s" alt=""> -->
-                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeNegotiatedAuction.getAuction_id()%>&t=a" alt="">
+                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeNegotiatedAuction.getAuction_id()%>&t=at" alt="">
                                     
                                     <!-- <i class="fa fa-eye"></i> -->
                                 </a>
-                                <div class="media-body">
+                                <div class="media-body">	
                                     <h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red;"><%=activeNegotiatedAuction.getAuction_name()%></a></h4>
                                     <%--
                                     <div class="rating">

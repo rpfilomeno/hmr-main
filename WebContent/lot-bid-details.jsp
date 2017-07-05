@@ -3,6 +3,8 @@
 		 import="hmr.com.bean.Auction"
 		 import="hmr.com.bean.Lov"
 		 import="hmr.com.bean.Item"
+		 import="hmr.com.bean.Image"
+		 import="hmr.com.manager.ImageManager"
 		 import="java.util.List"  
 		 import="java.math.BigDecimal"  
 		 import="java.util.HashMap"  
@@ -48,8 +50,11 @@
 	//HashMap<BigDecimal, Lot> lotHM  = request.getAttribute("lotHM")!=null ? (HashMap<BigDecimal, Lot>)request.getAttribute("lotHM") : (HashMap<BigDecimal, Lot>)request.getSession().getAttribute("lotHM");
 	//List<Item> iList = request.getAttribute("iList")!=null ? (List<Item>)request.getAttribute("iList") : (List<Item>)request.getSession().getAttribute("iList");
 
+	List<Image> lot_images = (List<Image>)request.getAttribute("lot_images");
+	
     DecimalFormat df = new DecimalFormat("#,###,##0");
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
+	
 	
 	%>
     <title><%=COMPANY_NAME%></title>
@@ -76,11 +81,14 @@
     <link href="assets/css/theme.css" rel="stylesheet">
     <link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+	<link rel="stylesheet" href="assets/plugins/gridder/jquery.gridder.min.css" />
 <%--     
     TODO: These local files seems to be broken
     <link href="assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="assets/plugins/jquery-ui/jquery-ui.thmemin.css" rel="stylesheet">
 --%>
+	<!-- Page Level CSS -->
+	<link rel="stylesheet" href="assets/css/gridder.css" />
 
     <!-- Head Libs -->
     <script src="assets/plugins/modernizr.custom.js"></script>
@@ -230,7 +238,7 @@
 							                    <div class="col-md-7">
 							                            <div class="media" style="height: 210px;">
 							                               <a class="pull-left media-link" href="#" >
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=lot.getAuction_id()%>&t=a" alt="">
+							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=lot.getLot_id()%>&t=lt" alt="">
 							                                    
 							                                    <!-- <i class="fa fa-eye"></i> -->
 							                                </a>
@@ -286,8 +294,59 @@
 				
 							                    </div>
 							                </div>
-						                    
-							            </div>
+												<div class="row">
+													<div class="col-md-11">
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h3 class="panel-title">Gallery</h3>
+															</div>
+															<div class="panel-body">
+																<!-- Gridder navigation -->
+																<ul class="gridder">
+
+																	<%
+																		for (Image i : lot_images) {
+																	%>
+																	<li class="gridder-list"
+																		data-griddercontent="#content<%=i.getId()%>">
+																		<img style="width:150px" class="media-object" src="image?id=<%=i.getId()%>&t=t" />
+																	</li>
+																	<%
+																		}
+																	%>
+
+																</ul>
+
+																<!-- Gridder content -->
+																<%
+																	for (Image i : lot_images) {
+																%>
+																<div id="content<%=i.getId()%>" class="gridder-content">
+																	<img class="media-object" src="image?id=<%=i.getId()%>" />
+																	<div class="media-body">
+																		<h4 class="media-heading">
+																			<a href="#"
+																				style="font-size: 14px; font-weight: bold; color: red">Image
+																				#<%=i.getId()%></a>
+																		</h4>
+																	</div>
+																</div>
+																<%
+																	}
+																%>
+															</div>
+															<div class="panel-footer">
+																<em>Note: Click on image for bigger view.</em>
+															</div>
+														</div>
+
+
+
+
+													</div>
+												</div>
+
+											</div>
 							        </section>
 
 	                                </div>
@@ -299,11 +358,11 @@
 							                <div class="row">
 							                	<%for(Item i : items) {%>
 
-							                    <div class="col-md-7">
-
+							                    <div class="col-md-11">
+													<div class="col-md-6">
 							                            <div class="media" style="height: 210px;">
 							                               <a class="pull-left media-link" href="#">
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=i.getId()%>&t=i" alt="">
+							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=i.getId()%>&t=it" alt="">
 							                                    
 							                                    <!-- <i class="fa fa-eye"></i> -->
 							                                </a>
@@ -313,7 +372,47 @@
 							                                    <div><label><%=i.getItem_desc()%></label></div>
 							                                </div>
 							                            </div>
+							                         </div>
+							                         <div class="col-md-6">
+							                         		<div class="panel panel-default">
+															<div class="panel-body">
+															<!-- Gridder navigation -->
+															<ul class="gridder">
 
+																<%
+																	List<Image> item_images = new ImageManager().getImageListByItemId(i.getId());
+																	for (Image ii : item_images) {
+																%>
+																<li class="gridder-list"
+																	data-griddercontent="#icontent<%=ii.getId()%>">
+																	<img style="width:75px" class="media-object" src="image?id=<%=ii.getId()%>&t=t" />
+																</li>
+																<%
+																	}
+																%>
+
+															</ul>
+
+															<!-- Gridder content -->
+															<%
+																for (Image ii : item_images) {
+															%>
+															<div id="icontent<%=ii.getId()%>" class="gridder-content">
+																<img class="media-object" src="image?id=<%=ii.getId()%>" />
+																<div class="media-body">
+																	<h4 class="media-heading">
+																		<a href="#"
+																			style="font-size: 14px; font-weight: bold; color: red">Image
+																			#<%=ii.getId()%></a>
+																	</h4>
+																</div>
+															</div>
+															<%
+																}
+															%>
+															</div>
+															</div>
+														</div><!-- col6 -->
 							                    </div>
 							                    <%} %>
 							                   
@@ -369,7 +468,7 @@
 <!-- /WRAPPER -->
 
 <!-- JS Global -->
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <%-- 
 TODO: These local files seems to be broken
@@ -393,6 +492,7 @@ TODO: These local files seems to be broken
 
 <!-- JS Page Level -->
 <script src="assets/js/theme.js"></script>
+<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
 
 <!--[if (gte IE 9)|!(IE)]><!-->
 <script src="assets/plugins/jquery.cookie.js"></script>
@@ -400,38 +500,51 @@ TODO: These local files seems to be broken
 <!--<![endif]-->
 
 <script>
-
-function onLoadPage(){
-	
-}
-
-
-$(function () {
-    $("#example1").DataTable({
-      	"order": [[ 4, "desc" ]]
-    });
-  });
-</script>
-<script>
 $(document).ready(function(){
-    $('#myTable').dataTable();
+	<%if(msgInfo!=null){%>
+
+	var msgInfo = "<%=msgInfo%>";
+	var msgbgcol = "<%=msgbgcol%>";
+	var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+	msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+	msgBoxValue = msgBoxValue + '</div>';
+	document.getElementById("msgDiv").innerHTML=msgBoxValue;
+	<%}%>
+	
+	setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
+	// Call Gridder
+    $('.gridder').gridderExpander({
+        scroll: true,
+        scrollOffset: 30,
+        scrollTo: "panel", // panel or listitem
+        animationSpeed: 400,
+        animationEasing: "easeInOutExpo",
+        showNav: true, // Show Navigation
+        nextText: "<span></span>", // Next button text
+        prevText: "<span></span>", // Previous button text
+        closeText: "", // Close button text
+        onStart: function () {
+            //Gridder Inititialized
+            console.log('On Gridder Initialized...');
+
+        },
+        onContent: function () {
+            //Gridder Content Loaded
+        },
+        onClosed: function () {
+            //Gridder Closed
+            console.log('On Gridder Closed...');
+
+        }
+    });
 });
 
-<%if(msgInfo!=null){%>
-
-var msgInfo = "<%=msgInfo%>";
-var msgbgcol = "<%=msgbgcol%>";
-var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-msgBoxValue = msgBoxValue + '</div>';
-document.getElementById("msgDiv").innerHTML=msgBoxValue;
-
-<%}%>
 
 
-setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
 
-setTimeout(onLoadPage,3000);
+
+
+
 
 function viewLot(id) {
 	$('input[name="manager"]').val("lot-manager");
