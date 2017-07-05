@@ -502,7 +502,7 @@ public class Bid extends HttpServlet {
 					req.setAttribute("action", "doAuctionImageUpload");
 					page = "image-upload.jsp";
 				}else if("lotImageUpload".equals(action)) {
-					String lotId = req.getParameter("lot_id")!=null ? (String)req.getParameter("lot_id") : (String)req.getParameter("lotId_wip");
+					String lotId = req.getParameter("lotId_wip")!=null ? (String)req.getParameter("lotId_wip") : (String)req.getParameter("lot_id");
 					req.setAttribute("images", iMngr.getImageListByLotId(new BigDecimal(lotId)));
 					req.setAttribute("action_id", lotId);
 					req.setAttribute("action", "doLotImageUpload");

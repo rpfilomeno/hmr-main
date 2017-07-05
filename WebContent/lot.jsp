@@ -357,11 +357,11 @@
 					<div class="col-sm-2">
 					     <a class="btn btn-theme btn-block " href="#" onclick="updateLot()">Update</a>
 					</div>
-					<%if(auctionId_wip!=null && auctionId_wip.doubleValue() > 0){%>
+
 					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="viewAuction(<%=auctionId_wip%>)">Auction</a>
+					     <a class="btn btn-theme btn-block " href="#" onclick="viewAuction(<%=lot.getAuction_id()%>)">Auction</a>
 					</div>
-					<%} %>
+
 					<div class="col-sm-3">
 					     <a class="btn btn-theme btn-block " href="#" onclick="lotRange()">Lot Range Increment</a>
 					</div>

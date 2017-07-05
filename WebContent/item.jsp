@@ -434,12 +434,12 @@
 					     <a class="btn btn-theme btn-block " href="#" onclick="updateItem()">Update</a>
 					</div>
 					
-					<%if(auctionId_wip!=null && auctionId_wip.doubleValue() > 0){%>
+
 					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="viewAuction(<%=auctionId_wip%>)">Auction</a>
+					     <a class="btn btn-theme btn-block " href="#" onclick="viewAuction(<%=item.getAuction_id()%>)">Auction</a>
 					</div>
 					
-					<%} %>
+
 					<div class="col-sm-2">
 					     <a class="btn btn-theme btn-block " href="#" onclick="itemImages()">Images</a>
 					</div>

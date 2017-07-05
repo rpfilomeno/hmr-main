@@ -148,8 +148,8 @@ public class LotManager {
 			} 
 			
 			List<Item> iL = iMngr.getLotItemsById(l.getLot_id());
-			
-			List<Image> lot_images = new ImageManager().getImageListByLotId(l.getLot_id());
+				
+			List<Image> lot_images = new ImageManager().getImageListByLotId(l.getId());
 			
 			req.setAttribute("lot_images", lot_images);
 			req.setAttribute("lot", l);

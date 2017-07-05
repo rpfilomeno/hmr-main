@@ -6,6 +6,7 @@
 		 import="hmr.com.bean.Lot"
 		 import="hmr.com.bean.Item"
 		 import="hmr.com.bean.Image"
+		 import="hmr.com.manager.LotManager"
 		 
 		 import="java.util.HashMap" 
 		 import="java.util.List" 
@@ -195,19 +196,19 @@
 															if(action.equals("doAuctionImageUpload")) {
 															%>
 															<a class="media-link" href="#" onclick="deleteImage(<%=im.getId().toString()%>,'auctionImageDelete',<%=action_id%>)">
-																<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=im.getId().toString()%>" alt="">
+																<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=im.getId().toString()%>&t=t" alt="">
 							                                </a>
 															<%
 															}else if(action.equals("doLotImageUpload")) {
 															%>
 															<a class="media-link" href="#" onclick="deleteImage(<%=im.getId().toString()%>,'lotImageDelete',<%=action_id%>)">
-																<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=im.getId().toString()%>" alt="">
+																<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=im.getId().toString()%>&t=t" alt="">
 							                                </a>
 															<%
 															}else if(action.equals("doItemImageUpload")) {
 															%>
 															<a class="media-link" href="#" onclick="deleteImage(<%=im.getId().toString()%>,'itemImageDelete',<%=action_id%>)">
-																<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=im.getId().toString()%>" alt="">
+																<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=im.getId().toString()%>&t=t" alt="">
 							                                </a>
 															<% } %>
 
@@ -237,6 +238,19 @@
 								</div>
                             </div>
 						</div>
+						<% if(action.equals("doAuctionImageUpload")) {	%>
+						<div class="col-sm-2">
+					     	<a class="btn btn-theme btn-block " href="#" onclick="backToAuction()">Auction</a>
+						</div>
+						<% }else if(action.equals("doLotImageUpload")) { %>
+						<div class="col-sm-2">
+					     	<a class="btn btn-theme btn-block " href="#" onclick="backToLot()">Lot</a>
+						</div>
+						<% }else if(action.equals("doItemImageUpload")) { %>
+						<div class="col-sm-2">
+					     	<a class="btn btn-theme btn-block " href="#" onclick="backToItem()">Item</a>
+						</div>
+						<% } %>
 					</div>
                 </div>
             </div>
@@ -260,6 +274,14 @@
        <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
        <input type="hidden" name="action_id" id="action_id" value=""/>
        <input type="hidden" name="wip_id" id="wip_id" value=""/>
+       <!-- For reloading -->
+       <input type="hidden" name="auction_id" id="auction_id" value=""/>
+       <input type="hidden" name="lot_id" id="lot_id" value=""/>
+       <input type="hidden" name="itemId_wip" id="itemId_wip" value=""/>
+       <!--  For back button -->
+       <input type="hidden" name="auctionId_wip" id="auctionId_wip" value=""/>
+       <input type="hidden" name="lotId_wip" id="lotId_wip" value=""/>
+       <input type="hidden" name="itemId_wip" id="itemId_wip" value=""/>
 </form>
 
 
@@ -301,6 +323,31 @@ setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
 
 
 <script>
+
+function backToAuction(){
+	$('#frm input[name="manager"]').val("auction-manager");
+	$('#frm input[name="action"]').val("viewAuction");
+	$('#frm input[name="auctionId_wip"]').val("<%=action_id%>");
+	$( "#frm" ).submit();
+}
+
+function backToLot(){
+
+	$('#frm input[name="manager"]').val("lot-manager");
+	$('#frm input[name="action"]').val("viewLot");
+	$('#frm input[name="lotId_wip"]').val("<%=action_id%>");
+	$( "#frm" ).submit();
+}
+
+function backToItem(){
+	$('#frm input[name="manager"]').val("item-manager");
+	$('#frm input[name="action"]').val("viewItem");
+	$('#frm input[name="itemId_wip"]').val("<%=action_id%>");
+	$( "#frm" ).submit();
+}
+
+
+
 function deleteImage(image_id,action,  wip_id){
 	$('#frm input[name="action_id"]').val(image_id);
 	$('#frm input[name="action"]').val(action);

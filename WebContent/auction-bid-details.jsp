@@ -345,7 +345,7 @@
 
 							                            <div class="media" style="height: 210px;">
 							                               <a class="pull-left media-link" href="#" onclick="viewLot('<%=l.getId()%>')">
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=l.getLot_id()%>&t=l" alt="">
+							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=l.getId()%>&t=lt" alt="">
 							                                    
 							                                    <!-- <i class="fa fa-eye"></i> -->
 							                                </a>

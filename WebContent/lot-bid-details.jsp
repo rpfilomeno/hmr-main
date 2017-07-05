@@ -234,7 +234,7 @@
 							                    <div class="col-md-7">
 							                            <div class="media" style="height: 210px;">
 							                               <a class="pull-left media-link" href="#" >
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=lot.getLot_id()%>&t=lt" alt="">
+							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=lot.getId()%>&t=lt" alt="">
 							                                    
 							                                    <!-- <i class="fa fa-eye"></i> -->
 							                                </a>
