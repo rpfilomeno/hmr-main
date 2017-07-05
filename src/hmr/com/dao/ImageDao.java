@@ -322,7 +322,7 @@ public class ImageDao extends DBConnection {
 		
 		StringBuilder sb = new StringBuilder("Select image");
 
-		sb.append(" from image where auction_id ="+auction_id+" LIMIT 1");
+		sb.append(" from image where auction_id ="+auction_id+" ORDER BY id LIMIT 1");
 
 
 		try {
@@ -436,7 +436,7 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 		
 		StringBuilder sb = new StringBuilder("Select image");
 
-		sb.append(" from image where lot_id ="+lot_id+" LIMIT 1");
+		sb.append(" from image where lot_id ="+lot_id+" ORDER BY id LIMIT 1");
 
 
 		try {
@@ -550,7 +550,7 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 		
 		StringBuilder sb = new StringBuilder("Select image");
 
-		sb.append(" from image where item_id ="+item_id+" LIMIT 1");
+		sb.append(" from image where item_id ="+item_id+" ORDER BY id LIMIT 1");
 
 
 		try {
