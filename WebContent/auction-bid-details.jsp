@@ -1608,9 +1608,11 @@ function showMaxBidForm(action, value, lot, id, qtyid) {
 		},
 		buttons: {
 			"Set Max": function(){
-				
-				var maxbid_value = $("#maxbid-"+id).val().trim();
-				if(!maxbid_value || maxbid_value < value) {
+				value = parseFloat(parseFloat(value).toFixed(2));
+				var maxbid_value = parseFloat(parseFloat($("#maxbid-"+id).val().trim()).toFixed(2));
+
+				if(isNaN(maxbid_value)) maxbid_value = 0;
+				if(maxbid_value <= value) {
 					$("#validateTips" ).text( 'Amount must be greater than ' + value ).addClass( "ui-state-highlight" );
 					setTimeout(function() {	$( "#validateTips" ).removeClass( "ui-state-highlight", 1500 );	}, 500 );
 				} else {				
@@ -1665,7 +1667,7 @@ function submitPage(action, value, lot, id, qtyid) {
         			'<p>Are you sure?</p>';
         	}else if(action=="SET-MAXIMUM-BID") {
         		dialog_title = "Set maximum bid confirmation";
-        		dialog_html = '<p>You will will set your maximum bid of ' + value + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will will set your maximum bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}
 
