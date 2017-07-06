@@ -1127,22 +1127,25 @@ function Download(url) {
 
 $(function () {
     $("#table1").DataTable({
+    	"pageLength": 100,
       	"order": [[ 2, "asc" ]],
-      	"lengthMenu": [[5, 25, 50, 100], [5, 25, 50, 100]]
+      	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });
   });
   
 $(function () {
     $("#table2").DataTable({
+    	"pageLength": 100,
       	"order": [[ 4, "asc" ]],
-      	"lengthMenu": [[5, 25, 50, 100], [5, 25, 50, 100]]
+      	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });
   });
   
 $(function () {
     $("#table3").DataTable({
+    	"pageLength": 100,
       	"order": [[ 4, "asc" ]],
-      	"lengthMenu": [[5, 25, 50, 100], [5, 25, 50, 100]]
+      	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });
   });
   

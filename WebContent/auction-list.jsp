@@ -400,8 +400,9 @@ function auctionImages(auctionId){
 <script>
 $(function () {
     $("#table1").DataTable({
+    	"pageLength": 100,
       	"order": [[ 11, "desc" ]],
-      	"lengthMenu": [[5, 25, 50, 100], [5, 25, 50, 100]]
+      	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });
   });
   
