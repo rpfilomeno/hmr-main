@@ -457,10 +457,10 @@ public class Bid extends HttpServlet {
 				ImageManager iMngr = new ImageManager();
 				//image listing
 				if("auctionImageDelete".equals(action)) {
-					System.out.println("Auction image deleted");
-					
 					if(iMngr.deleteImage(new BigDecimal(action_id))) {
-						//TODO
+						System.out.println("Auction image deleted"+action_id);
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "Auction image deleted.");
 					}
 					
 					String auctionId = req.getParameter("wip_id")!=null ? (String)req.getParameter("wip_id") : (String)req.getParameter("auctionId_wip");
@@ -470,10 +470,10 @@ public class Bid extends HttpServlet {
 					page = "image-upload.jsp";
 					
 				}else if("lotImageDelete".equals(action)) {
-					System.out.println("Lot image deleted");
-					
 					if(iMngr.deleteImage(new BigDecimal(action_id))) {
-						//TODO
+						System.out.println("Lot image deleted"+action_id);
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "Lot image deleted.");
 					}
 					
 					String lotId = req.getParameter("wip_id")!=null ? (String)req.getParameter("wip_id") : (String)req.getParameter("auctionId_wip");
@@ -483,12 +483,11 @@ public class Bid extends HttpServlet {
 					page = "image-upload.jsp";
 					
 				}else if("itemImageDelete".equals(action)) {
-					System.out.println("Item image deleted");
-					
 					if(iMngr.deleteImage(new BigDecimal(action_id))) {
-						//TODO
+						System.out.println("Item image deleted"+action_id);
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "Item image deleted.");
 					}
-					
 					String itemId = req.getParameter("wip_id")!=null ? (String)req.getParameter("wip_id") : (String)req.getParameter("auctionId_wip");
 					req.setAttribute("images", iMngr.getImageListByItemId(new BigDecimal(itemId)));
 					req.setAttribute("action_id", itemId);

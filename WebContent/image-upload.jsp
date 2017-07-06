@@ -238,6 +238,9 @@
 								</div>
                             </div>
 						</div>
+						<div class="col-sm-2">
+					     	<a class="btn btn-theme btn-block " href="#" onclick="uploadQueue()">Upload</a>
+						</div>
 						<% if(action.equals("doAuctionImageUpload")) {	%>
 						<div class="col-sm-2">
 					     	<a class="btn btn-theme btn-block " href="#" onclick="backToAuction()">Auction</a>
@@ -269,7 +272,7 @@
 
 <form action="bid" name="frm" id="frm" method="post">
        <input type="hidden" name="manager" id="manager" value="image-manager"/>
-       <input type="hidden" name="action" id="action" value="auctionImageDelete"/>
+       <input type="hidden" name="action" id="action" value=""/>
        <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
        <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
        <input type="hidden" name="action_id" id="action_id" value=""/>
@@ -324,6 +327,8 @@ setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
 
 <script>
 
+var myDropzone;
+
 function backToAuction(){
 	$('#frm input[name="manager"]').val("auction-manager");
 	$('#frm input[name="action"]').val("viewAuction");
@@ -352,6 +357,7 @@ function deleteImage(image_id,action,  wip_id){
 	$('#frm input[name="action_id"]').val(image_id);
 	$('#frm input[name="action"]').val(action);
 	$('#frm input[name="wip_id"]').val(wip_id);
+	$('#frm input[name="action"]').val("auctionImageDelete");
 	
 	
 	$('<div id="dialog-confirm"></div>').dialog({
@@ -381,15 +387,20 @@ function deleteImage(image_id,action,  wip_id){
     }); //end confirm dialog
 }
 
+function uploadQueue(){
+	myDropzone.processQueue();
+}
+
 
  $(document).ready(function() {
 	Dropzone.autoDiscover = false;
-	var myDropzone = new Dropzone("#image-uploader", { 
+	myDropzone = new Dropzone("#image-uploader", { 
 		url: 'bid',
 		acceptedFiles: 'image/*',
 		resizeWidth: 400,
 		resizeHeight: 400,
 		resizeMethod: 'crop',
+		autoProcessQueue: false,
 		maxFilesize: 2,
 		init: function() {
 	    	this.on("sending", function(file, xhr, formData){
@@ -398,6 +409,19 @@ function deleteImage(image_id,action,  wip_id){
 	        	formData.append("action_id", "<%=action_id%>");
 	        	formData.append("user-id", "<%=user_id%>");
 	        	formData.append("userId", "<%=userId%>");
+	    	});
+	    	this.on("queuecomplete", function (file) {
+		    		<% if (action == "doAuctionImageUpload") {%>
+		    		$('#frm input[name="action"]').val("auctionImageUpload");
+		    		$('#frm input[name="auction_id"]').val("<%=action_id%>");
+		    		<% } else if (action == "doLotImageUpload") {%>
+		    		$('#frm input[name="action"]').val("lotImageUpload");
+		    		$('#frm input[name="lotId_wip"]').val("<%=action_id%>");
+		    		<% } else if (action == "doItemImageUpload") {%>
+		    		$('#frm input[name="action"]').val("itemImageUpload");
+		    		$('#frm input[name="itemId_wip"]').val("<%=action_id%>");
+		    		<% } %>
+		    		$( "#frm" ).submit();
 	    	});
 	    }
 	});
