@@ -86,6 +86,9 @@
     <link href="assets/css/theme.css" rel="stylesheet">
 	<link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
     <link href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
+    
+    <!-- Page Level CSS -->
+	<link rel="stylesheet" href="assets/css/gridder.css" />
 
     <!-- Head Libs -->
     
@@ -188,38 +191,48 @@
 									<section class="page-section">
 								    	<div class="container">
 								        	<div class="row">
-								        		<div class="col-sm-10">
-								        			<% for(Image im : images){ %>
-								        			<div class="col-sm-4">
-								        				<div class="media" style="height: 210px;">
-								        					<%
-															if(action.equals("doAuctionImageUpload")) {
-															%>
-															<a class="media-link" href="#" onclick="deleteImage(<%=im.getId().toString()%>,'auctionImageDelete',<%=action_id%>)">
-																<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=im.getId().toString()%>&t=t" alt="">
-							                                </a>
-															<%
-															}else if(action.equals("doLotImageUpload")) {
-															%>
-															<a class="media-link" href="#" onclick="deleteImage(<%=im.getId().toString()%>,'lotImageDelete',<%=action_id%>)">
-																<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=im.getId().toString()%>&t=t" alt="">
-							                                </a>
-															<%
-															}else if(action.equals("doItemImageUpload")) {
-															%>
-															<a class="media-link" href="#" onclick="deleteImage(<%=im.getId().toString()%>,'itemImageDelete',<%=action_id%>)">
-																<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=im.getId().toString()%>&t=t" alt="">
-							                                </a>
+								        		<div class="col-sm-11">
+								        			<div class="panel panel-default">
+									        			<div class="panel-body">
+									        				<!-- Gridder navigation -->
+									        				<ul class="gridder">
+									        					<%	for (Image im : images) { %>
+																		<li class="gridder-list"
+																			data-griddercontent="#content<%=im.getId()%>">
+																			<img style="width:150px" class="media-object" src="image?id=<%=im.getId()%>&t=t" />
+																		</li>
+																		<%
+																			}
+																%>
+									        				</ul>
+									        				<!-- Gridder content -->
+									        				<%	for (Image im : images) { %>
+															<div id="content<%=im.getId()%>" class="gridder-content">
+																<img class="media-object" src="image?id=<%=im.getId()%>" />
+																<div class="media-body">
+																	<h4 class="media-heading">
+																		<a href="#"	style="font-size: 14px; font-weight: bold; color: red">Image #<%=im.getId()%></a>
+																	</h4>
+																	<% if(action.equals("doAuctionImageUpload")) { %>
+																	<button type="button" class="btn btn-labeled btn-danger" onclick="deleteImage(<%=im.getId().toString()%>,'auctionImageDelete',<%=action_id%>)">
+																		<span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>&nbsp;&nbsp;Delete
+																	</button>
+																	<% }else if(action.equals("doLotImageUpload")) { %>
+																	<button type="button" class="btn btn-labeled btn-danger" onclick="deleteImage(<%=im.getId().toString()%>,'lotImageDelete',<%=action_id%>)">
+																		<span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>&nbsp;&nbsp;Delete
+																	</button>				
+																	<% }else if(action.equals("doItemImageUpload")) { %>
+																	<button type="button" class="btn btn-labeled btn-danger" onclick="deleteImage(<%=im.getId().toString()%>,'itemImageDelete',<%=action_id%>)">
+																		<span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>&nbsp;&nbsp;Delete
+																	</button>
+																	<% } %>
+																	
+																</div>
+															</div>
 															<% } %>
-
-							                                <div class="media-body">
-																<h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold;">Image #<%=im.getId().toString() %></a></h4>
-							                                	
-							                                	
-							                                </div>
-							                            </div>
+									        			</div>
+									        			<div class="panel-footer"><em>Note: Click on image for bigger view and option to delete.</em></div>
 								        			</div>
-								        			<% } %>
 								        		</div>
 								        	</div>
 								        </div>
@@ -227,19 +240,27 @@
 								</div>
 	                        	<div class="tab-pane fade" id="image-upload">
 									<section class="page-section">
-								    	<div class="container">
+								    	<div class="container col-sm-12">
 								        	<div class="row">
 								            	
 								 				<div class="col-sm-12 dz-max-files-reached"></div>
 								                <div id="image-uploader" class="col-sm-12 dropzone" style="height:350px;"></div>
 								        	</div>
+								        	<div class="row col-sm-12 text-center">
+								        			
+									        			<button type="button" class="btn btn-lg btn-labeled btn-warning" onclick="clearQueue()">
+															<span class="btn-label"><i class="glyphicon glyphicon-refresh"></i></span>&nbsp;&nbsp;Clear
+														</button>
+
+										        		<button type="button" class="btn btn-lg btn-labeled btn-success" onclick="uploadQueue()">
+															<span class="btn-label"><i class="glyphicon glyphicon-upload"></i></span>&nbsp;&nbsp;Upload
+														</button>
+													
+								        	</div>
 								    	</div>
 									</section>
 								</div>
                             </div>
-						</div>
-						<div class="col-sm-2">
-					     	<a class="btn btn-theme btn-block " href="#" onclick="uploadQueue()">Upload</a>
 						</div>
 						<% if(action.equals("doAuctionImageUpload")) {	%>
 						<div class="col-sm-2">
@@ -316,6 +337,7 @@ setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
 <!-- /JS Local -->
 
 <!-- JS Page Level -->
+<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
 <script src="assets/plugins/dropzone.js"></script>
 <script src="assets/js/theme.js"></script>
 
@@ -365,7 +387,7 @@ function deleteImage(image_id,action,  wip_id){
 	    height: "auto",
 	    width: 400,
 	    modal: true,
-	    title: "Confirmation",
+	    title: "Delete Confirmation",
 	    closeOnEscape: false,
         open: function (event, ui) {
         	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This will delete the Image #'+image_id+'. Are you sure?</p>';       	
@@ -388,7 +410,61 @@ function deleteImage(image_id,action,  wip_id){
 }
 
 function uploadQueue(){
-	myDropzone.processQueue();
+	$('<div id="dialog-confirm"></div>').dialog({
+		resizable: false,
+	    height: "auto",
+	    width: 400,
+	    modal: true,
+	    title: "Upload Confirmation",
+	    closeOnEscape: false,
+        open: function (event, ui) {
+        	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This will upload all the images in the queue. Are you sure?</p>';       	
+        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+            $(this).html(dialog_html);
+        },
+        buttons: {
+        	"Yes": function() {
+  	          $( this ).dialog( "close" );
+  	        myDropzone.processQueue();
+  	        },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        },
+		close: function() {
+			$("#dialog-confirm").remove();
+		}
+    }); //end confirm dialog
+	
+}
+
+function clearQueue() {
+	$('<div id="dialog-confirm"></div>').dialog({
+		resizable: false,
+	    height: "auto",
+	    width: 400,
+	    modal: true,
+	    title: "Clear Confirmation",
+	    closeOnEscape: false,
+        open: function (event, ui) {
+        	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This will remove all images in the queue. Are you sure?</p>';       	
+        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+            $(this).html(dialog_html);
+        },
+        buttons: {
+        	"Yes": function() {
+  	          $( this ).dialog( "close" );
+  	        myDropzone.removeAllFiles( true );
+  	        },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        },
+		close: function() {
+			$("#dialog-confirm").remove();
+		}
+    }); //end confirm dialog
+	
 }
 
 
@@ -425,6 +501,32 @@ function uploadQueue(){
 	    	});
 	    }
 	});
+	
+	// Call Gridder
+    $('.gridder').gridderExpander({
+        scroll: true,
+        scrollOffset: 30,
+        scrollTo: "panel", // panel or listitem
+        animationSpeed: 400,
+        animationEasing: "easeInOutExpo",
+        showNav: true, // Show Navigation
+        nextText: "<span></span>", // Next button text
+        prevText: "<span></span>", // Previous button text
+        closeText: "", // Close button text
+        onStart: function () {
+            //Gridder Inititialized
+            console.log('On Gridder Initialized...');
+
+        },
+        onContent: function () {
+            //Gridder Content Loaded
+        },
+        onClosed: function () {
+            //Gridder Closed
+            console.log('On Gridder Closed...');
+
+        }
+    });
  });
 </script>
 
