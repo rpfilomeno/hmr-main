@@ -6,7 +6,9 @@
 		 import="hmr.com.bean.Lot"
 		 import="hmr.com.bean.Item"
 		 import="hmr.com.bean.Image"
+		 import="hmr.com.manager.AuctionManager"
 		 import="hmr.com.manager.LotManager"
+		 import="hmr.com.manager.ItemManager"
 		 
 		 import="java.util.HashMap" 
 		 import="java.util.List" 
@@ -57,6 +59,7 @@
 		String action_id = request.getAttribute("action_id")!=null ? (String)request.getAttribute("action_id") : "";
 		List<Image> images = request.getAttribute("images")!=null ? (ArrayList<Image>)request.getAttribute("images") : null;
 		String t = "a";
+		
 	%>
     <title><%=COMPANY_NAME%></title>
 
@@ -143,18 +146,34 @@
             	<div class="row" >
 						<%
 							if(action.equals("doAuctionImageUpload")) {
+								Auction a = new AuctionManager().getAuctionByAuctionId(new BigDecimal(action_id));
 								t="a";
+								
 						%>
 						<div class="col-sm-10">
 							<h3 class="block-title">
 								<span>Auction <label>Upload Images</label></span>
 							</h3>
 						</div>
-						<div class="col-sm-10">
-							<label><b>Auction Id : </b><%=action_id%></label>
+						<div class="col-sm-5">
+							<div class="form-group">
+								<label><b>Auction ID: </b><%=a.getAuction_id()%></label>
+							</div>
+							<div class="form-group">
+								<label><b>Auction No: </b><%=a.getAuction_no()%></label>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<div class="form-group">
+								<label><b>Auction Name: </b><%=a.getAuction_name()%></label>
+							</div>
+							<div class="form-group">
+								<label><b>Auction Description: </b><%=a.getAuction_name()%></label>
+							</div>
 						</div>
 						<%
 							} else if (action.equals("doLotImageUpload")) {
+								Lot l = new LotManager().getLotById(new BigDecimal(action_id));
 								t="l";
 						%>
 						<div class="col-sm-10">
@@ -162,11 +181,28 @@
 								<span>Lot <label>Upload Images</label></span>
 							</h3>
 						</div>
-						<div class="col-sm-10">
-							<label><b>Lot Id : </b><%=action_id%></label>
+						<div class="col-sm-5">
+							<div class="form-group">
+								<label><b>Lot ID: </b><%=l.getLot_id()%></label>
+							</div>
+							<div class="form-group">
+								<label><b>Lot No: </b><%=l.getLot_no()%></label>
+							</div>
+							<div class="form-group">							
+								<label><b>Auction No: </b><%=l.getAuction_id()%></label>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<div class="form-group">
+								<label><b>Lot Name: </b><%=l.getLot_name()%></label>
+							</div>
+							<div class="form-group">
+								<label><b>Lot Description: </b><%=l.getLot_desc()%></label>
+							</div>
 						</div>
 						<%
 							} else if (action.equals("doItemImageUpload")) {
+								Item i = new ItemManager().getItemById(new BigDecimal(action_id));
 								t="i";
 						%>
 						<div class="col-sm-10">
@@ -174,8 +210,21 @@
 								<span>Item <label>Upload Images</label></span>
 							</h3>
 						</div>
-						<div class="col-sm-10">
-							<label><b>Item Id : </b><%=action_id%></label>
+						<div class="col-sm-5">
+							<div class="form-group">
+								<label><b>Item ID: </b><%=i.getId()%></label>
+							</div>
+							<div class="form-group">
+								<label><b>Item No: </b><%=i.getItem_id()%></label>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<div class="form-group">
+								<label><b>Item Reference: </b><%=i.getReference_no()%></label>
+							</div>
+							<div class="form-group">
+								<label><b>Item Description: </b><%=i.getItem_desc()%></label>
+							</div>
 						</div>
 						<%
 							}

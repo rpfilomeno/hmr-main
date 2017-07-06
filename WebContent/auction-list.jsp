@@ -5,6 +5,7 @@
 		 import="java.util.ArrayList"  
 		 import="javax.servlet.RequestDispatcher"
 		 import="java.text.SimpleDateFormat"
+		 import="hmr.com.manager.ImageManager"
 %>
 <html lang="en">
 <head>
@@ -138,6 +139,7 @@
 		
 		                    <thead>
 		                      <tr>
+		                        <th>Main Image</th>
 		                        <th>Auction ID</th>
 		                        <th>Auction No</th>
 		                        <th>Auction Name</th>
@@ -204,6 +206,16 @@
                             }
                       %>
 		                  <tr>
+		                  	<td width="75px">
+			                    <div class="media">
+								  <a class="pull-left" href="#" onclick="auctionImages('<%=a.getAuction_id()%>')">
+								      <img class="media-object" style="width:75px; " src="image?id=<%=a.getAuction_id()%>&t=at" alt="Click to upload image" />
+								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
+								      	<%= new ImageManager().getImageListByAuctionId(a.getAuction_id()).size() %>
+								      </span>
+								  </a>
+								</div>
+		                    </td>
                             <td width="15px"><a href="#" onclick="view('<%=a.getAuction_id()%>')"><%=a.getAuction_id()%></a></td>
                             <td width="15px"><%=a.getAuction_no()%></td>
                             <td width="15px"><%=a.getAuction_name()%></td>
@@ -345,7 +357,13 @@ setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
 
 setTimeout(onLoadPage,3000);
 
-
+function auctionImages(auctionId){
+	document.frm.manager.value="image-manager";
+	document.frm.action.value="auctionImageUpload";
+	document.frm.auction_id.value=auctionId;
+	document.frm.auctionId_wip.value=auctionId;
+	document.frm.submit();
+}
 
 </script>
 
@@ -421,6 +439,7 @@ function resizeTable() {
        <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
        <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
        <input type="hidden" name="auctionId_wip" id="auctionId_wip" value=""/>
+       <input type="hidden" name="auction_id" id="auction_id" value=""/>
     </form>
 </body>
 </html>

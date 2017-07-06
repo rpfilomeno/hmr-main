@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<%@ page import="hmr.com.bean.User"
+<%@ page import="hmr.com.manager.ImageManager"
+         import="hmr.com.bean.Image"
+         import="hmr.com.bean.User"
 		 import="hmr.com.bean.Auction"
 		 import="hmr.com.bean.AuctionUser"
 		 import="hmr.com.bean.Lov"
@@ -193,6 +195,7 @@
 		       <input type="hidden" name="auctionId_wip" id="auctionId_wip" value="<%=auction.getAuction_id()%>"/>
 		       <input type="hidden" name="auction_id" id="auction_id" value="<%=auction.getAuction_id()%>"/>
 		       <input type="hidden" name="lotId_wip" id="lotId_wip" value=""/>
+		       <input type="hidden" name="lot_id" id="lot_id" value=""/>
 		       <input type="hidden" name="itemId_wip" id="itemId_wip" value=""/>
 		       <input type="hidden" name="auctionUserId_wip" id="auctionUserId_wip" value=""/>
 		       
@@ -534,6 +537,7 @@
 		
 		                    <thead>
 		                      <tr>
+		                        <th>Main Image</th>
 		                        <th>Lot ID</th>
 		                        <th>Auction ID</th>
 		                        <th>Lot No</th>
@@ -563,6 +567,16 @@
 
                       %>
 		                  <tr>
+		                    <td width="75px">
+			                    <div class="media">
+								  <a class="pull-left" href="#" onclick="lotImages('<%=l.getId()%>')">
+								      <img class="media-object" style="width:75px; " src="image?id=<%=l.getId()%>&t=lt" alt="Click to upload image" />
+								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
+								      	<%= new ImageManager().getImageListByLotId(l.getId()).size() %>
+								      </span>
+								  </a>
+								</div>
+		                    </td>
                             <td width="15px"><a href="#" onclick="viewLot('<%=l.getId()%>')"><%=l.getLot_id()%></a></td>
                             <td width="15px"><%=l.getAuction_id()%></td>
                             <td width="15px"><%=l.getLot_no()%></td>
@@ -637,6 +651,7 @@
 		
 		                    <thead>
 		                      <tr>
+		                      	<th>Main Image</th>
 		                        <th>Item ID</th>
 		                        <th>Auction ID</th>
 		                        <th>Lot ID</th>
@@ -685,6 +700,16 @@
                             */
                       %>
 		                  <tr>
+		                  	<td width="75px">
+			                    <div class="media">
+								  <a class="pull-left" href="#" onclick="itemImages('<%=i.getId()%>')">
+								      <img class="media-object" style="width:75px; " src="image?id=<%=i.getId()%>&t=it" alt="Click to upload image" />
+								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
+								      	<%= new ImageManager().getImageListByItemId(i.getId()).size() %>
+								      </span>
+								  </a>
+								</div>
+		                    </td>
                             <td width="15px"><a href="#" onclick="viewItem('<%=i.getId()%>')"><%=i.getItem_id()%></a></td>
                             <td width="15px"><%=i.getAuction_id()%></td>
                             <td width="15px"><%=i.getLot_id()%></td>
@@ -911,6 +936,21 @@ function auctionImages(){
 	document.frm.submit();
 }
 
+function lotImages(lotId){
+	document.frm.manager.value="image-manager";
+	document.frm.action.value="lotImageUpload";
+	document.frm.lotId_wip.value=lotId;
+	document.frm.lot_id.value=lotId;
+	document.frm.submit();
+}
+
+function itemImages(itemId){
+	document.frm.manager.value="image-manager";
+	document.frm.action.value="itemImageUpload";
+	document.frm.itemId_wip.value=itemId;
+	document.frm.submit();
+}
+
 
 
 function onLoadPage(){
@@ -996,7 +1036,7 @@ setTimeout(onLoadPage,3000);
     <!-- FastClick -->
     <script src="plugins/fastclick/fastclick.min.js"></script>
     --%>
-        <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+
 	<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 	<!-- <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script> -->
 

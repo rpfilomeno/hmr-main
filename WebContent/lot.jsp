@@ -172,6 +172,7 @@
 		       <input type="hidden" name="auctionId_wip" id="auctionId_wip" value="<%=auctionId_wip%>"/>
 		       <input type="hidden" name="lotId_wip" id="lotId_wip" value="<%=lot.getId()%>"/>
 		       <input type="hidden" name="lot_id" id="lot_id" value="<%=lot.getLot_id()%>"/>
+		    </form>
 		       
         <section class="page-section color" style="padding:15px;">
         
@@ -382,7 +383,7 @@
 	            </div>
             </div>
         </section>
-        </form>
+        
         <!-- /PAGE -->
         
     </div>
