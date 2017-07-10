@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="hmr.com.bean.BiddingTransaction"%>
 <%@ page import="hmr.com.bean.Lot"
 		 import="hmr.com.bean.Auction"
 		 import="hmr.com.bean.Lov"
@@ -52,9 +53,12 @@
 
 	List<Image> lot_images = (List<Image>)request.getAttribute("lot_images");
 	
+	List<BiddingTransaction> bidding_transactions = (List<BiddingTransaction>)request.getAttribute("bidding_transactions");
+	
     DecimalFormat df = new DecimalFormat("#,###,##0");
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
 	
+	String bAmount = "0";
 	
 	%>
     <title><%=COMPANY_NAME%></title>
@@ -222,6 +226,7 @@
 	                            <ul class="nav nav-tabs">
 	                                <li class="active"><a href="#auction-description" data-toggle="tab">Details</a></li>
 	                                <li><a href="#auction-lots" data-toggle="tab">Items</a></li>
+	                                <li><a href="#bidding_transactions" data-toggle="tab">Latest Bids</a></li>
 	                                <li><a href="#terms-and-conditions" data-toggle="tab">Terms and Conditions</a></li>
 	                            </ul>
 	                            <div class="tab-content">
@@ -417,6 +422,54 @@
 							            </div>
 							        </section>
 							        <!-- /PAGE -->
+	                                </div>
+	                                <div class="tab-pane fade" id="bidding_transactions">
+	                                    <section class="page-section">
+								            <div class="container">
+								                <div class="row">
+								                	<!--start main contain of page-->
+						                            <div class="col-md-12">
+						                                
+						                                <div class="details-wrap">                                    
+						                                    <div class="details-box orders">
+						                                        <table class="table">
+						                                            <thead>
+						                                                <tr>
+						                                                    <th>User</th>
+						                                                    <th>ID</th>
+						                                                    <th>Amount</th>
+						                                                    <th>Date</th>
+						                                                </tr>
+						                                            </thead>
+						                                            <tbody>
+						                                            	<% for(BiddingTransaction bidding_transaction : bidding_transactions ) { %>
+						                                                <tr>
+						                                                	
+						                                                	<% bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) == 0) ? df.format(bidding_transaction.getAmount_buy()) : df.format(bidding_transaction.getAmount_bid()); %>
+						                                                    <td class="image">
+						                                                    	<a href="#" class="media-link"><img alt="" src="assets/img/default_avatar.png"></a>
+						                                                    </td>
+						                                                    <td>
+						                                                    	<% if(user_id == bidding_transaction.getUser_id()) { %>
+						                                                    	<div>You</div>
+						                                                    	<% } else { %>
+						                                                    	<div>User #<%=bidding_transaction.getUser_id() %></div>
+						                                                    	<% } %>
+						                                                    </td>
+						                                                    <td class="total"><%=currency%>&nbsp;<%=bAmount%> </td>
+						                                                    <td class="diliver-date"> <%=sdf.format(bidding_transaction.getDate_created()) %> </td>
+						                                                    
+						                                                </tr>
+						                                                <% } %>
+						                                            </tbody>
+						                                        </table>
+						                                    </div>
+						                                </div>                                
+						                            </div>
+						                            <!--end main contain of page-->
+								                </div>
+								            </div>
+								        </section>
 	                                </div>
 	                                <div class="tab-pane fade" id="terms-and-conditions">
 	                                    <p><%=auction.getTerms_and_conditions()%></p>

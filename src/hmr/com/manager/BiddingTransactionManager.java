@@ -690,6 +690,10 @@ public class BiddingTransactionManager {
 }
 	*/
 
+	public List<BiddingTransaction> getLatestBiddingTransactionLotId(BigDecimal lot_id){
+		return new BiddingTransactionDao().getLatestBiddingTransactionLotId(lot_id);
+		
+	}
 	
 	public List<BiddingTransaction> getBiddingTransactionList(){
 		
