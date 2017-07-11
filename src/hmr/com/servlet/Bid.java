@@ -55,6 +55,7 @@ import bizoncloudone.com.manager.UserLoginManager;
 import bizoncloudone.com.util.DBConnection;
 import hmr.com.bean.Auction;
 import hmr.com.bean.AuctionRange;
+import hmr.com.bean.BiddingTransaction;
 import hmr.com.bean.Image;
 import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
@@ -646,6 +647,10 @@ public class Bid extends HttpServlet {
 						auMngr.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId());
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Maximum bid submitted.");
+					}else if(doAction.equals("PRE-BID")) {
+						auMngr.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId());
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "Pre-bid submitted.");
 					}
 					
 					BigDecimal lotId_wip = req.getParameter("lotId_wip")!=null ? new BigDecimal(req.getParameter("lotId_wip")): new BigDecimal(0);
@@ -691,6 +696,8 @@ public class Bid extends HttpServlet {
 					
 					List<Image> lot_images = new ImageManager().getImageListByLotId(l.getId());
 					
+					List<BiddingTransaction> bidding_transactions = new BiddingTransactionManager().getLatestBiddingTransactionLotId(l.getLot_id());
+					req.setAttribute("bidding_transactions", bidding_transactions);
 					req.setAttribute("lot_images", lot_images);
 					req.setAttribute("lot", l);
 					req.setAttribute("items", iL);

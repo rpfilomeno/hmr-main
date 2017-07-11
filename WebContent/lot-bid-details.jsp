@@ -58,6 +58,9 @@
     DecimalFormat df = new DecimalFormat("#,###,##0");
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
 	
+	ImageManager iMngr = new ImageManager();
+	List<Image> item_images = null;
+	
 	String bAmount = "0";
 	
 	%>
@@ -378,12 +381,11 @@
 							                         		<div class="panel panel-default">
 															<div class="panel-body">
 															<!-- Gridder navigation -->
+															<%  item_images = iMngr.getImageListByItemId(i.getId()); %>
 															<ul class="gridder">
 
-																<%
-																	List<Image> item_images = new ImageManager().getImageListByItemId(i.getId());
-																	for (Image ii : item_images) {
-																%>
+																
+																<% for (Image ii : item_images) { %>
 																<li class="gridder-list"
 																	data-griddercontent="#icontent<%=ii.getId()%>">
 																	<img style="width:75px" class="media-object" src="image?id=<%=ii.getId()%>&t=t" />
@@ -415,7 +417,10 @@
 															</div>
 														</div><!-- col6 -->
 							                    </div>
+							                    <% item_images.clear(); %>
 							                    <%} %>
+							                    <% iMngr = null; %>
+							                    
 							                   
 							                </div>
 							                    
@@ -451,7 +456,7 @@
 						                                                    </td>
 						                                                    <td>
 						                                                    	<% if(user_id == bidding_transaction.getUser_id()) { %>
-						                                                    	<div>You</div>
+						                                                    	<div>You</div> 
 						                                                    	<% } else { %>
 						                                                    	<div>User #<%=bidding_transaction.getUser_id() %></div>
 						                                                    	<% } %>

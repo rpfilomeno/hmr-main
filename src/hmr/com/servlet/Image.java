@@ -1,5 +1,7 @@
 package hmr.com.servlet;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -77,6 +80,10 @@ public class Image extends HttpServlet {
 		System.out.println("Controller - start");
 		System.out.println("");
 		
+		OutputStream output = res.getOutputStream();
+		
+		try {
+		
 		BigDecimal id = new BigDecimal(req.getParameter("id")) ;
 		//String s = req.getParameter("s") ;
 		String t = req.getParameter("t") ;
@@ -107,89 +114,32 @@ public class Image extends HttpServlet {
 
 			if(i!=null){
 				byte barray[] = i.getImageBytes();
-				OutputStream output = res.getOutputStream();
 				output.write(barray);
-				output.close();
 				res.setContentType("image/png");
 			}else{
 				id = new BigDecimal("1");
 				i = iMngr.getImageBytesById(id);
 				byte barray[] = i.getImageBytes();
-				OutputStream output = res.getOutputStream();
 				output.write(barray);
-				output.close();
-				res.setContentType("image/jpg");
+				res.setContentType("image/png");
 			}
-		
-		
-		
-		
-		/*
-		
-		if(t!=null && t.equals("i")){
-			
-			ItemManager iMngr = new ItemManager(req, res);
-			
-			
-			
-			Item i = iMngr.getItemById(new BigDecimal(id));
-			//InputStream input = a.getImageInputStream();
-			
-			if(i!=null){
-				
-				byte barray[] = null;
-				if("s".equals(s)){
-					//barray = i.getImageSmallBytes();
-				}else{
-					barray = i.getImageBytes();
-				}
-				
-				
-				
-				
-				OutputStream output = res.getOutputStream();
-				output.write(barray);
-				//output.write(input.available());
-				output.close();
-				res.setContentType("image/jpg");
-				//res.setHeader("Content-disposition","attachment; filename=" +"c:\\hmr-image-"+id);
-				//res.getOutputStream().write(barray,0,a.getImageSmallBytes().length); 
+		} catch (Exception ex) {
+			BufferedImage originalImage = ImageIO.read(new File(getClass().getClassLoader().getResource("hmr.jpg").getFile()));
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write( originalImage, "jpg", baos );
+			baos.flush();
+			byte[] imageInByte = baos.toByteArray();
+			baos.close();
+			output.write(imageInByte);
+			res.setContentType("image/jpg");
 
-				//res.getOutputStream().flush();  
-
-			}
-			
-			
-		}else{
-			
-			AuctionManager aMngr = new AuctionManager(req, res);
-			Auction a = aMngr.getAuctionById(new BigDecimal(id));
-			//InputStream input = a.getImageInputStream();
-			
-			if(a!=null){
-				
-				byte barray[] = null;
-				if("s".equals(s)){
-					barray = a.getImageSmallBytes();
-				}else{
-					barray = a.getImageBytes();
-				}
-				OutputStream output = res.getOutputStream();
-				output.write(barray);
-				//output.write(input.available());
-				output.close();
-				res.setContentType("image/jpg");
-				//res.setHeader("Content-disposition","attachment; filename=" +"c:\\hmr-image-"+id);
-				//res.getOutputStream().write(barray,0,a.getImageSmallBytes().length); 
-
-				//res.getOutputStream().flush();  
-
-			}
-			
-			
+		} finally {
+			output.close();
 		}
 		
-*/
+		
+		
+		
 
 		//res.set
 		System.out.println("");
