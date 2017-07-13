@@ -46,11 +46,14 @@ import hmr.com.manager.ItemManager;
 import hmr.com.manager.LoginManager;
 import hmr.com.manager.LotManager;
 import hmr.com.manager.LotRangeManager;
+import hmr.com.manager.RunnableNegotiatedBidManager;
 import hmr.com.manager.UploadAuctionManager;
 import hmr.com.manager.UserManager;
+import hmr.com.util.EmailUtil;
 import bizoncloudone.com.manager.ParamsLovManager;
 import bizoncloudone.com.manager.RequestManager;
 import bizoncloudone.com.manager.RoleLoginManager;
+import bizoncloudone.com.manager.RunnableEmailManager;
 import bizoncloudone.com.manager.UserLoginManager;
 import bizoncloudone.com.util.DBConnection;
 import hmr.com.bean.Auction;
@@ -623,6 +626,7 @@ public class Bid extends HttpServlet {
 				String reqlotId = req.getParameter("lotId")!=null ? (String)req.getParameter("lotId") : "";
 				String reqamount = req.getParameter("amount")!=null ? (String)req.getParameter("amount") : "";
 				String requnitqty = req.getParameter("unit_qty")!=null ? (String)req.getParameter("unit_qty") : "0";
+				String note = req.getParameter("note")!=null ? (String)req.getParameter("note") : "";
 				
 				if(reqlotId!="" && reqamount!="") {
 					UserDao ud = new UserDao();
@@ -644,13 +648,46 @@ public class Bid extends HttpServlet {
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Buy submitted.");
 					}else if(doAction.equals("SET-MAXIMUM-BID")) {
-						auMngr.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId());
+						auMngr.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId(),unit_qty);
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Maximum bid submitted.");
 					}else if(doAction.equals("PRE-BID")) {
-						auMngr.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId());
+						auMngr.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId(),unit_qty);
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Pre-bid submitted.");
+					}else if(doAction.equals("NEGOTIATED")) {
+						btMngr.insertBiddingTransactionNegotiated(lotId, amount, u.getId(), unit_qty, note);
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "Negotiated bid submitted.");
+						
+						
+						LotManager lMngr = new LotManager();
+						AuctionManager aMngr = new AuctionManager();
+						
+						Lot lot = lMngr.getLotByLotId(new BigDecimal(lotId));
+						Auction auction = aMngr.getAuctionByAuctionId(lot.getAuction_id());
+						
+						RunnableNegotiatedBidManager adminRNBM = new RunnableNegotiatedBidManager(
+								"HMR Auctions : Negotiated Bid Admin Notification", 
+								"rpfilomeno@gmail.com", "rpfilomeno@gmail.com", 
+								lot.getAuction_id().toString(), auction.getAuction_name(), auction.getAuction_desc(), 
+								lot.getId().toString(), lot.getLot_no().toString(), lot.getLot_name(), lot.getLot_desc(), 
+								u.getId().toString(), u.getFirst_name(), u.getLast_name(), u.getEmail_address(), 
+								amount.toString(), note, unit_qty.toString());
+						adminRNBM.start();
+						
+						RunnableNegotiatedBidManager bidderRNB = new RunnableNegotiatedBidManager(
+								"HMR Auctions : Negotiated Bid User Notification", 
+								"rpfilomeno@gmail.com", "rpfilomeno@gmail.com", 
+								lot.getAuction_id().toString(), auction.getAuction_name(), auction.getAuction_desc(), 
+								lot.getId().toString(), lot.getLot_no().toString(), lot.getLot_name(), lot.getLot_desc(), 
+								u.getId().toString(), u.getFirst_name(), u.getLast_name(), u.getEmail_address(), 
+								amount.toString(), note, unit_qty.toString());
+						bidderRNB.start();
+						
+						
+						
+						
 					}
 					
 					BigDecimal lotId_wip = req.getParameter("lotId_wip")!=null ? new BigDecimal(req.getParameter("lotId_wip")): new BigDecimal(0);

@@ -398,7 +398,7 @@
                                     <!-- <i class="fa fa-eye"></i> -->
                                 </a>
                                 <div class="media-body">
-                                    <h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red;"><%=activeNegotiatedAuction.getAuction_name()%></a></h4>
+                                    <h4 class="media-heading"><a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>" style="font-size: 14px; font-weight: bold; color: red;"><%=activeNegotiatedAuction.getAuction_name()%></a></h4>
                                     <%--
                                     <div class="rating">
                                         <span class="star"></span><!--

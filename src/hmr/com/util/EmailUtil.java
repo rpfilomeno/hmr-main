@@ -256,6 +256,136 @@ public class EmailUtil {
 		      }
 	   }
 	   
+	   public static void sendNegotiatedBidEmailAdmin(
+			   String to, String cc,
+			   String AuctionId, String AuctionName, String AuctionDescription,
+			   String LotId, String LotNumber, String LotName, String LotDescription,
+			   String BidderId, String BidderFirstName, String BidderLastName, String BidderEmail,
+			   String OfferAmount, String OfferNote) {
+		   
+		   	  String from = "noreplyhmrauctions@gmail.com";
+		      final String username = "noreplyhmrauctions@gmail.com";
+		      final String password = "hmrAuctions";
+		      String host = "smtp.gmail.com";
+		      String port = "587";
+
+		      Properties props = new Properties();
+		      props.put("mail.smtp.auth", "true");
+		      props.put("mail.smtp.starttls.enable", "true");
+		      props.put("mail.smtp.host", host);
+		      props.put("mail.smtp.port", port);
+
+		      Session session = Session.getInstance(props,
+		         new javax.mail.Authenticator() {
+		            protected PasswordAuthentication getPasswordAuthentication() {
+		               return new PasswordAuthentication(username, password);
+		            }
+		         });
+
+		      try {
+
+		         Message message = new MimeMessage(session);
+		         message.setFrom(new InternetAddress(from));
+		         message.setRecipients(Message.RecipientType.TO,
+		            InternetAddress.parse(to));
+		         message.setSubject("HMR Auctions : Negotiated Bid Admin Notification");
+
+		         MimeMultipart multipart = new MimeMultipart("related");
+		         BodyPart messageBodyPart = new MimeBodyPart();
+		         
+		         String htmlText = EmailMessage.getNegotiatedBidEmailAdmin( 
+		         		AuctionId, AuctionName, AuctionDescription,
+		        		LotId, LotNumber, LotName, LotDescription,
+		        		BidderId, BidderFirstName, BidderLastName, BidderEmail,
+		        		OfferAmount, OfferNote);
+		         
+		         System.out.println("html "+htmlText);
+
+		         messageBodyPart.setContent(htmlText, "text/html");
+		         // add it
+		         multipart.addBodyPart(messageBodyPart);
+		         messageBodyPart = new MimeBodyPart();
+		         DataSource fds3 = new FileDataSource(
+		        		getSERVER_DIRECTORY()+"header_5.png");
+		         messageBodyPart.setDataHandler(new DataHandler(fds3));
+		         messageBodyPart.setHeader("Content-ID", "<image1>");
+
+		         message.setContent(multipart);
+		         Transport.send(message);
+
+		         System.out.println("Sent message successfully....");
+
+		      } catch (MessagingException e) {
+		         throw new RuntimeException(e);
+		      }
+		   
+	   }
+	   
+	   public static void sendNegotiatedBidEmailBidder(
+			   String to, String cc,
+			   String AuctionId, String AuctionName, String AuctionDescription,
+			   String LotId, String LotNumber, String LotName, String LotDescription,
+			   String BidderId, String BidderFirstName, String BidderLastName, String BidderEmail,
+			   String OfferAmount, String OfferNote) {
+		   
+		   	  String from = "noreplyhmrauctions@gmail.com";
+		      final String username = "noreplyhmrauctions@gmail.com";
+		      final String password = "hmrAuctions";
+		      String host = "smtp.gmail.com";
+		      String port = "587";
+
+		      Properties props = new Properties();
+		      props.put("mail.smtp.auth", "true");
+		      props.put("mail.smtp.starttls.enable", "true");
+		      props.put("mail.smtp.host", host);
+		      props.put("mail.smtp.port", port);
+
+		      Session session = Session.getInstance(props,
+		         new javax.mail.Authenticator() {
+		            protected PasswordAuthentication getPasswordAuthentication() {
+		               return new PasswordAuthentication(username, password);
+		            }
+		         });
+
+		      try {
+
+		         Message message = new MimeMessage(session);
+		         message.setFrom(new InternetAddress(from));
+		         message.setRecipients(Message.RecipientType.TO,
+		            InternetAddress.parse(to));
+		         message.setSubject("HMR Auctions : Negotiated Bid Bidder Notification");
+
+		         MimeMultipart multipart = new MimeMultipart("related");
+		         BodyPart messageBodyPart = new MimeBodyPart();
+		         
+		         String htmlText = EmailMessage.getNegotiatedBidEmailBidder( 
+		         		AuctionId, AuctionName, AuctionDescription,
+		        		LotId, LotNumber, LotName, LotDescription,
+		        		BidderId, BidderFirstName, BidderLastName, BidderEmail,
+		        		OfferAmount, OfferNote);
+		         
+		         System.out.println("html "+htmlText);
+
+		         messageBodyPart.setContent(htmlText, "text/html");
+		         // add it
+		         multipart.addBodyPart(messageBodyPart);
+		         messageBodyPart = new MimeBodyPart();
+		         DataSource fds3 = new FileDataSource(
+		        		getSERVER_DIRECTORY()+"header_5.png");
+		         messageBodyPart.setDataHandler(new DataHandler(fds3));
+		         messageBodyPart.setHeader("Content-ID", "<image1>");
+
+		         message.setContent(multipart);
+		         Transport.send(message);
+
+		         System.out.println("Sent message successfully....");
+
+		      } catch (MessagingException e) {
+		         throw new RuntimeException(e);
+		      }
+		   
+	   }
+	   
 	   
 	   
 	   

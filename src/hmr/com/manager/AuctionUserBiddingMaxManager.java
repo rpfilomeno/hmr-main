@@ -29,9 +29,9 @@ public class AuctionUserBiddingMaxManager {
 		return page;
 	}
 	
-	public boolean insertAuctionUserBiddingMaxManager(Integer lot_id, BigDecimal amount, Integer bidder_id) {
+	public boolean insertAuctionUserBiddingMaxManager(Integer lot_id, BigDecimal amount, Integer bidder_id, Integer qty) {
 		AuctionUserBiddingMaxDao aud = new AuctionUserBiddingMaxDao();
-		if(aud.insertAuctionUserBiddingMax(lot_id, amount, bidder_id)>0) return true;
+		if(aud.insertAuctionUserBiddingMax(lot_id, amount, BigDecimal.ZERO, BigDecimal.ZERO,  qty, bidder_id)>0) return true;
 		return false;
 	}
 	

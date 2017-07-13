@@ -580,6 +580,18 @@ public class LotManager {
 		
 	}	
 	
+	public Lot getLotByLotId(BigDecimal id){
+		
+		Lot l = new Lot();
+
+		LotDao ld = new LotDao();
+
+		l = ld.getLotByLotId(id);
+		
+		return l;
+		
+	}	
+	
 	public HashMap<BigDecimal, Lot> getLotHMByAuctionId(BigDecimal auction_id){
 		
 		HashMap<BigDecimal, Lot> lotHM = new HashMap<BigDecimal, Lot>();

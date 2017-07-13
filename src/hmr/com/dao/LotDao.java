@@ -140,6 +140,102 @@ public class LotDao extends DBConnection {
 		return l;
 	}
 	
+	public Lot getLotByLotId(BigDecimal id){
+		
+		Connection conn = null;
+
+		Lot l = null;
+		
+		StringBuilder sb = new StringBuilder("SELECT id, lot_name, lot_no, lot_id, auction_id, lot_desc, assessment_value");
+
+		sb.append(", duties, vat, unit, premium_rate, lot_type_id, active, unit_qty");
+		
+		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
+
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		
+		sb.append(" from lot where lot_id ="+id);
+
+
+		try {
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			while(rs.next()){
+				l = new Lot();
+
+				l.setId(rs.getBigDecimal("id"));
+				l.setLot_name(rs.getString("lot_name"));
+				l.setLot_no(rs.getBigDecimal("lot_no"));
+				l.setLot_id(rs.getBigDecimal("lot_id"));
+				l.setAuction_id(rs.getBigDecimal("auction_id"));
+				l.setLot_desc(rs.getString("lot_desc"));
+				l.setAssessment_value(rs.getBigDecimal("assessment_value"));
+				l.setDuties(rs.getBigDecimal("duties"));
+				l.setVat(rs.getBigDecimal("vat"));
+				l.setUnit(rs.getString("unit"));
+				l.setPremium_rate(rs.getBigDecimal("premium_rate"));
+				l.setLot_type_id(rs.getInt("lot_type_id"));
+				l.setActive(rs.getInt("active"));
+				l.setUnit_qty(rs.getInt("unit_qty"));
+				
+				l.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				l.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				l.setAction_taken(rs.getInt("action_taken"));
+				l.setIs_buy(rs.getInt("is_buy"));
+				l.setIs_bid(rs.getInt("is_bid"));
+				l.setBuy_price(rs.getBigDecimal("buy_price"));
+				l.setBidder_id(rs.getInt("bidder_id"));
+				l.setLot_increment_time(rs.getInt("lot_increment_time"));
+				l.setBid_count(rs.getInt("bid_count"));
+				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
+				
+
+            	l.setDate_created(rs.getTimestamp("date_created"));
+            	l.setCreated_by(rs.getInt("created_by"));
+            	l.setDate_updated(rs.getTimestamp("date_updated"));
+            	l.setUpdated_by(rs.getInt("updated_by"));
+            	
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return l;
+	}
+	
 	
 	public Lot getLotByAuctionId(BigDecimal auction_id){
 		

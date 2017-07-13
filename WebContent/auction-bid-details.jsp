@@ -407,15 +407,20 @@
 		                                   	 								</div>
 		                                   	 							<% } %>
 		                                   	 							
-		                                   	 							<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
-		                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</a>
-		                                   	 							<% } else { %>
-		                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%> </a>
-		                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAXIMUM BID</a>
+		                                   	 							<% if(auction.getAuction_type() == 15){ %>
+			                                   	 							<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
+			                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</a>
+			                                   	 							<% } else { %>
+				                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%> </a>
+				                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAXIMUM BID</a>
+				                                   	 							
+			                                   	 							<% } %>
+		                                   	 							<% } else if(auction.getAuction_type() == 16){ %>
+		                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</a>
 		                                   	 							<% } %>
                                    	 								<% }else {  } %>
                                    	 								<% if(l.getIs_buy() == 1){ %>
-                                								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></a>
+                                										<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></a>
                                 									<% }else{ } %>
                                    	 							<% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
 																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
@@ -1617,7 +1622,7 @@ function showMaxBidForm(action, value, lot, id, qtyid) {
 					setTimeout(function() {	$( "#validateTips" ).removeClass( "ui-state-highlight", 1500 );	}, 500 );
 				} else {				
 					$(this).dialog("close");
-					submitPage(action, maxbid_value, lot, id, qtyid)
+					submitPage(action, maxbid_value, lot, id, qtyid,'')
 				}
 			},
 			Cancel: function() {
@@ -1627,7 +1632,7 @@ function showMaxBidForm(action, value, lot, id, qtyid) {
 		close: function() {
 			$("#maxbid-form").remove();
 		}
-	});
+	}).dialog('widget').position({ my: 'center', at: 'center', of: $(this) });
 }
 
 function showPreBidForm(action, value, lot, id, qtyid) {
@@ -1654,7 +1659,7 @@ function showPreBidForm(action, value, lot, id, qtyid) {
 					setTimeout(function() {	$( "#validateTips" ).removeClass( "ui-state-highlight", 1500 );	}, 500 );
 				} else {				
 					$(this).dialog("close");
-					submitPage(action, prebid_value, lot, id, qtyid)
+					submitPage(action, prebid_value, lot, id, qtyid,'')
 				}
 			},
 			Cancel: function() {
@@ -1664,10 +1669,52 @@ function showPreBidForm(action, value, lot, id, qtyid) {
 		close: function() {
 			$("#prebid-form").remove();
 		}
-	});
+	}).dialog('widget').position({ my: 'center', at: 'center', of: $(this) });
 }
 
-function submitPage(action, value, lot, id, qtyid) {
+
+function showNegotiatedBidForm(action, value, lot, id, qtyid) {
+	$('<div id="negotiated-form" title="Pre-Bid"></div>').dialog({
+		height: "auto",
+		width: 350,
+		title: "Make Offer",
+		modal: true,
+		open: function (event, ui) {
+			var dialog_html = '<p id="validateTips">All fields are required.</p><label for="negotiated-'+ id +'">Amount</label><div class="input-group"><span class="input-group-addon">' + "<%=currency%>" + '</span>' +
+			'<input type="text" name="negotiated-'+ id +'" id="negotiated-'+ id +'" placeholder="'+ value +'" class="form-control">' +
+			'</div>'+
+			'<label for="negotiated-note-'+ id +'">Note</label>'+
+			'<textarea maxlength="50" class="form-control" rows="5" id="negotiated-note-'+ id +'"></textarea>';
+			$(this).html(dialog_html);
+			$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+		},
+		buttons: {
+			"Send Offer": function(){
+				value = parseFloat(parseFloat(value).toFixed(2));
+				var negotiated_value = parseFloat(parseFloat($("#negotiated-"+id).val().trim()).toFixed(2));
+				var negotiated_note = $("#negotiated-note-"+id).val();
+				
+
+				if(isNaN(negotiated_value)) negotiated_value = 0;
+				if(negotiated_value <= 0) {
+					$("#validateTips" ).text( 'Amount must be greater than 0' ).addClass( "ui-state-highlight" );
+					setTimeout(function() {	$( "#validateTips" ).removeClass( "ui-state-highlight", 1500 );	}, 500 );
+				} else {				
+					$(this).dialog("close");
+					submitPage(action, negotiated_value, lot, id, qtyid, negotiated_note);
+				}
+			},
+			Cancel: function() {
+				$(this).dialog("close");
+			}
+		},
+		close: function() {
+			$("#negotiated-form").remove();
+		}
+	}).dialog('widget').position({ my: 'center', at: 'center', of: $(this) });
+}
+
+function submitPage(action, value, lot, id, qtyid, note) {
 	var unit_qty = 0;
 	if($("#"+qtyid+" :selected").length ) unit_qty = $("#"+qtyid+" :selected").attr('value');
 	
@@ -1677,6 +1724,7 @@ function submitPage(action, value, lot, id, qtyid) {
 	$('input[name="lotId"]').val(lot);
 	$('input[name="lotId_wip"]').val(id);
 	$('input[name="unit_qty"]').val(unit_qty);
+	$('input[name="note"]').val(note);
 	
 	$('<div id="dialog-confirm"></div>').dialog({
 		resizable: false,
@@ -1706,9 +1754,13 @@ function submitPage(action, value, lot, id, qtyid) {
         		dialog_title = "Set maximum bid confirmation";
         		dialog_html = '<p>You will will set your maximum bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
-        	}else if(action=="SET-MAXIMUM-BID") {
-        		dialog_title = "Set pre-bid confirmation";
-        		dialog_html = '<p>You will will set your pre-bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        	}else if(action=="NEGOTIATED") {
+        		dialog_title = "Offer bid confirmation";
+        		dialog_html = '<p>You will will set your offer bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        			'<p>Are you sure?</p>';
+        	}else if(action=="PRE-BID") {
+        		dialog_title = "Pre-bid confirmation";
+        		dialog_html = '<p>You will will set pre-bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}
 
@@ -1727,7 +1779,7 @@ function submitPage(action, value, lot, id, qtyid) {
 		close: function() {
 			$("#dialog-confirm").remove();
 		}
-    }); //end confirm dialog
+    }).dialog('widget').position({ my: 'center', at: 'center', of: $(this) }); //end confirm dialog
 }
 
 </script>
@@ -1739,6 +1791,7 @@ function submitPage(action, value, lot, id, qtyid) {
    <input type="hidden" name="lotId" id="lotId" value=""/>
    <input type="hidden" name="lotId_wip" id="lotId_wip" value=""/>
    <input type="hidden" name="unit_qty" id="unit_qty" value=""/>
+   <input type="hidden" name="note" id="note" value=""/>
    <input type="hidden" name="amount" id="amount" value=""/>
    <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
    <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>

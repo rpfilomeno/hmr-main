@@ -9,11 +9,13 @@ public class BiddingTransaction extends SystemBean {
 	BigDecimal lot_id;
 	BigDecimal amount_bid;
 	BigDecimal amount_buy;
+	BigDecimal amount_offer;
 	Integer action_taken;
 	Integer status;
 	Integer user_id;
 	Integer is_extended;
 	Integer qty;
+	String note_offer;
 	
 	public BigDecimal getId() {
 		return id;
@@ -69,6 +71,18 @@ public class BiddingTransaction extends SystemBean {
 	}
 	public void setQty(Integer qty) {
 		this.qty = qty;
+	}
+	public String getNote_offer() {
+		return note_offer;
+	}
+	public void setNote_offer(String note_offer) {
+		this.note_offer = note_offer.substring(0,160);
+	}
+	public BigDecimal getAmount_offer() {
+		return amount_offer;
+	}
+	public void setAmount_offer(BigDecimal amount_offer) {
+		this.amount_offer = amount_offer;
 	}
 
 }

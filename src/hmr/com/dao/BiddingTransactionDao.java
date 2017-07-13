@@ -356,86 +356,8 @@ public class BiddingTransactionDao extends DBConnection {
 		
 	}
 	
-	/*
 	
-	public int insertBiddingTransactionOnCreate(
-				String firstName,
-				String lastName,
-				String birthDate,
-				Integer gender,
-				String company,
-				String emailAddress,
-				String passWord,
-				Integer userStatus,
-				Integer active,
-				Integer role,
-				Integer newsLetter,
-				String newsLetterRegistrationDate,
-				String registrationDate,
-				String passwordChangeDate,
-				Integer mobileNo1,
-				Integer mobileNo2,
-				Integer landLineNo,
-				Integer bidderNo,
-				Integer reserveBidderNo,
-				String verificationEmailKey,
-				Integer showChangePasswordNextLogin,
-				Integer user_id,
-				String a
-			){
-		
-		int i = 0;
-		
-		try {
-			 conn = getConnection();
-
-			java.sql.Statement stmt = conn.createStatement();
-			
-		      stmt = conn.createStatement();
-		      
-				StringBuilder sb = new StringBuilder("INSERT INTO user (email_address, first_name, last_name, mobile_no_1, mobile_no_2");
-
-				sb.append(", gender, role, bidder_no, reserve_bidder_no, company, status, active, landline_no");
-				
-				sb.append(", news_letter, news_letter_registration_date, verification_email_key, date_registration");
-		      
-				sb.append(", date_password_change, show_change_password_next_login, birth_date");
-				
-				sb.append(", date_created, created_by)");
-				
-				sb.append(" VALUES(");
-				
-				sb.append("'"+emailAddress+"', '"+firstName+"', '"+lastName+"' ,"+ mobileNo1+", "+mobileNo2+"");
-				sb.append(", "+gender+", "+role+", "+bidderNo+" ,"+ reserveBidderNo+", '"+company+"' ,"+ userStatus+", "+active+", "+landLineNo);
-				sb.append(", "+newsLetter+", '"+newsLetterRegistrationDate+"', '"+verificationEmailKey+"' ,'"+ registrationDate+"'");
-				sb.append(", '"+passwordChangeDate+"', "+showChangePasswordNextLogin+", '"+birthDate+"'");
-				
-				sb.append("now(),"+user_id);
-				
-				sb.append(")");
-		      
-		      
-		      String sql = sb.toString();
-		      
-		      
-		      System.out.println("sql : "+sql);
-		      i = stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
-		}
-
-		return i;
-		
-	}
-	*/
-
+	
 	public BiddingTransaction insertBiddingTransactionOnCreate(
 			BigDecimal lot_id,
 			BigDecimal amount_bid,
@@ -685,7 +607,7 @@ public class BiddingTransactionDao extends DBConnection {
 		
 	}
 	
-	public int insertBiddingTransaction(Integer lotId, BigDecimal amountBid, BigDecimal amountBuy, Integer actionTaken, Integer userId, Integer qty) {
+	public int insertBiddingTransaction(Integer lotId, BigDecimal amountBid, BigDecimal amountBuy,BigDecimal amountOffer, Integer actionTaken, Integer userId, Integer qty, String offerNote) {
 		
 		int i = 0;
 		
@@ -695,8 +617,8 @@ public class BiddingTransactionDao extends DBConnection {
 			conn = dbConn.getConnection();
 			
 			Statement stmt = conn.createStatement();
-			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`, `action_taken`, `user_id`, `qty`, `date_created`) "+
-					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"','"+ qty.toString() +"',NOW());";
+			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`,`amount_offer`, `action_taken`, `user_id`, `qty`, `date_created`,`note_offer`) "+
+					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+amountOffer.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"','"+ qty.toString() +"',NOW(),'"+offerNote+"');";
 			i = stmt.executeUpdate(Sql);
 			
 			
@@ -715,7 +637,7 @@ public class BiddingTransactionDao extends DBConnection {
 	public List<BiddingTransaction> getLatestBiddingTransactionLotId(BigDecimal lot_id) {
 		List<BiddingTransaction> btList = new ArrayList<BiddingTransaction>();
 		
-		StringBuilder sb = new StringBuilder("Select id, lot_id, amount_bid, amount_buy, action_taken");
+		StringBuilder sb = new StringBuilder("Select id, lot_id, amount_bid, amount_buy, amount_offer, action_taken");
 
 		sb.append(", status, user_id");
 		
@@ -746,6 +668,7 @@ public class BiddingTransactionDao extends DBConnection {
 				bt.setLot_id(rs.getBigDecimal("lot_id"));
 				bt.setAmount_bid(rs.getBigDecimal("amount_bid"));
 				bt.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				bt.setAmount_offer(rs.getBigDecimal("amount_offer"));
 
 				bt.setAction_taken(rs.getInt("action_taken"));
 				bt.setStatus(rs.getInt("status"));

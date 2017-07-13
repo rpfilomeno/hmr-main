@@ -32,7 +32,7 @@ public class AuctionUserBiddingMaxDao extends DBConnection {
 		return au;
 	}
 	
-	public int insertAuctionUserBiddingMax(Integer lot_id, BigDecimal amount, Integer bidder_id) {
+	public int insertAuctionUserBiddingMax(Integer lot_id, BigDecimal amount_bid, BigDecimal amount_buy, BigDecimal amount_offer, Integer qty,Integer bidder_id) {
 		int i = 0;
 		
 		try {
@@ -41,8 +41,8 @@ public class AuctionUserBiddingMaxDao extends DBConnection {
 			  Statement stmt = conn.createStatement();
 			
 		      stmt = conn.createStatement();
-		      String sql = "INSERT INTO `auction_user_bidding_max` (`id`, `lot_id`, `amount`, `auction_id`, `date_created`, `date_updated`, `updated_by`, `created_by`, `bidder_id`) " +
-		                   "VALUES (NULL, '"+lot_id.toString()+"', '"+amount.toString()+"', NULL, now(), NULL, NULL, NULL, '"+bidder_id.toString()+"')";
+		      String sql = "INSERT INTO `auction_user_bidding_max` (`id`, `lot_id`, `qty`, `auction_id`, `date_created`, `date_updated`, `updated_by`, `created_by`, `bidder_id`,`amount_bid`,`amount_buy`,`amount_offer`) " +
+		                   "VALUES (NULL, '"+lot_id.toString()+"', '"+qty.toString()+"', NULL, now(), NULL, NULL, NULL, '"+bidder_id.toString()+"','"+amount_bid.toString()+"','"+amount_buy.toString()+"','"+amount_offer+"')";
 
 		      System.out.println("sql : "+sql);
 		      i = stmt.executeUpdate(sql);
