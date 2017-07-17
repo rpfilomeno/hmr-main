@@ -2,6 +2,7 @@
 <%@ page import="hmr.com.bean.User"
 		 import="java.util.List"
 		 import="java.math.BigDecimal"
+		 import="java.time.Year"
 		   
 %>
 <html lang="en">
@@ -19,6 +20,12 @@
 	  String lastName = request.getAttribute("lastName")!=null ? (String)request.getAttribute("lastName") : "";
 	  String userId = request.getAttribute("userId")!=null ? (String)request.getAttribute("userId") : "";
 	  BigDecimal mobileNo = request.getAttribute("mobileNo")!=null ? (BigDecimal)request.getAttribute("mobileNo") : null;
+	  
+	  String addressStreetNo = request.getAttribute("addressStreetNo")!=null ? (String)request.getAttribute("addressStreetNo") : "";
+	  String addressBaranggay = request.getAttribute("addressBaranggay")!=null ? (String)request.getAttribute("addressBaranggay") : "";
+	  String addressCity = request.getAttribute("addressCity")!=null ? (String)request.getAttribute("addressCity") : "";
+	  String addressProvince = request.getAttribute("addressProvince")!=null ? (String)request.getAttribute("addressProvince") : "";
+	  String addressZipCode = request.getAttribute("addressZipCode")!=null ? (String)request.getAttribute("addressZipCode") : "";
 	  
 	  
 	  //IDS
@@ -153,6 +160,297 @@
                                     
                                     <div class="form-group"><input class="form-control" type="text" name="mobileNo"  placeholder="Mobile No" maxlength="15" value="<%if(mobileNo!=null){ %><%=mobileNo%><%}%>"  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 13; submitOnEnter(event)" /></div>
                                 </div>
+                                
+                                <div class="col-md-12">
+										<div class="form-group">
+												<select class="form-control" id="gender" name="gender">
+													<option value="" disabled selected>Your Gender?</option>
+													<option value="13">I'm Male</option>
+													<option value="14">I'm Female</option>
+												</select>
+										</div>
+								</div>
+								
+								<div class="col-md-12">
+									<div class="form-group">
+										<div class="input-group">
+    										<span class="input-group-addon" title="* Birth Date" id="priceLabel">Birth Date</span>
+    										<select class="form-control" id="dobmonth" name="dobmonth">
+												<option value="" disabled selected>Month?</option>
+												<option value="1">January</option>
+												<option value="2">February</option>
+												<option value="3">March</option>
+												<option value="4">April</option>
+												<option value="5">May</option>
+												<option value="6">June</option>
+												<option value="7">July</option>
+												<option value="8">August</option>
+												<option value="9">September</option>
+												<option value="10">October</option>
+												<option value="11">November</option>
+												<option value="12">December</option>
+											</select>
+											<span class="input-group-addon" style="width:0px; padding-left:0px; padding-right:0px; border:none;"></span>
+											<select class="form-control" id="dobday" name="dobday">
+												<option value="" disabled selected>Day?</option>
+												<% for(int i = 1; i < 32 ; i++) {  %>
+												<option value="<%=i %>"><%=i %></option>
+												<% } %>
+											</select>
+											<span class="input-group-addon" style="width:0px; padding-left:0px; padding-right:0px; border:none;"></span>
+											<select class="form-control" id="dobyear" name="dobyear">
+												<option value="" disabled selected>Year?</option>
+												<% int year = Year.now().getValue(); %>
+												<% for(int i = (year-110); i < year ; i++) {  %>
+												<option value="<%=i %>"><%=i %></option>
+												<% } %>
+											</select>
+    									</div>
+									</div>
+								</div>
+								
+								<div class="col-md-12">
+                                    
+                                    <div class="form-group"><input class="form-control" type="text" name="addressStreetNo"  placeholder="Street Number" maxlength="15" value="<%if(addressStreetNo!=null){ %><%=addressStreetNo%><%}%>"  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 13; submitOnEnter(event)" /></div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    
+                                    <div class="form-group"><input class="form-control" type="text" name="addressBaranggay"  placeholder="Baranggay" maxlength="50" value="<%if(addressBaranggay!=null){ %><%=addressBaranggay%><%}%>"   /></div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    
+                                    <div class="form-group"><input class="form-control" type="text" name="addressCity"  placeholder="City/Town" maxlength="50" value="<%if(addressCity!=null){ %><%=addressCity%><%}%>"   /></div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    
+                                    <div class="form-group"><input class="form-control" type="text" name="addressProvince"  placeholder="Province" maxlength="50" value="<%if(addressProvince!=null){ %><%=addressProvince%><%}%>"   /></div>
+                                </div>
+                                
+                                <div class="col-md-12">
+										<div class="form-group">
+												<select class="form-control" id="addressCountry" name="addressCountry">
+													<option selected>Philippines</option>
+													<option>United States</option>
+													<option value="" disabled>---------------------</option>
+													<option>Afghanistan</option>
+													<option>Albania</option>
+													<option>Algeria</option>
+													<option>Andorra</option>
+													<option>Angola</option>
+													<option>Antigua &amp; Deps</option>
+													<option>Argentina</option>
+													<option>Armenia</option>
+													<option>Australia</option>
+													<option>Austria</option>
+													<option>Azerbaijan</option>
+													<option>Bahamas</option>
+													<option>Bahrain</option>
+													<option>Bangladesh</option>
+													<option>Barbados</option>
+													<option>Belarus</option>
+													<option>Belgium</option>
+													<option>Belize</option>
+													<option>Benin</option>
+													<option>Bhutan</option>
+													<option>Bolivia</option>
+													<option>Bosnia Herzegovina</option>
+													<option>Botswana</option>
+													<option>Brazil</option>
+													<option>Brunei</option>
+													<option>Bulgaria</option>
+													<option>Burkina</option>
+													<option>Burundi</option>
+													<option>Cambodia</option>
+													<option>Cameroon</option>
+													<option>Canada</option>
+													<option>Cape Verde</option>
+													<option>Central African Rep</option>
+													<option>Chad</option>
+													<option>Chile</option>
+													<option>China</option>
+													<option>Colombia</option>
+													<option>Comoros</option>
+													<option>Congo</option>
+													<option>Congo {Democratic Rep}</option>
+													<option>Costa Rica</option>
+													<option>Croatia</option>
+													<option>Cuba</option>
+													<option>Cyprus</option>
+													<option>Czech Republic</option>
+													<option>Denmark</option>
+													<option>Djibouti</option>
+													<option>Dominica</option>
+													<option>Dominican Republic</option>
+													<option>East Timor</option>
+													<option>Ecuador</option>
+													<option>Egypt</option>
+													<option>El Salvador</option>
+													<option>Equatorial Guinea</option>
+													<option>Eritrea</option>
+													<option>Estonia</option>
+													<option>Ethiopia</option>
+													<option>Fiji</option>
+													<option>Finland</option>
+													<option>France</option>
+													<option>Gabon</option>
+													<option>Gambia</option>
+													<option>Georgia</option>
+													<option>Germany</option>
+													<option>Ghana</option>
+													<option>Greece</option>
+													<option>Grenada</option>
+													<option>Guatemala</option>
+													<option>Guinea</option>
+													<option>Guinea-Bissau</option>
+													<option>Guyana</option>
+													<option>Haiti</option>
+													<option>Honduras</option>
+													<option>Hungary</option>
+													<option>Iceland</option>
+													<option>India</option>
+													<option>Indonesia</option>
+													<option>Iran</option>
+													<option>Iraq</option>
+													<option>Ireland {Republic}</option>
+													<option>Israel</option>
+													<option>Italy</option>
+													<option>Ivory Coast</option>
+													<option>Jamaica</option>
+													<option>Japan</option>
+													<option>Jordan</option>
+													<option>Kazakhstan</option>
+													<option>Kenya</option>
+													<option>Kiribati</option>
+													<option>Korea North</option>
+													<option>Korea South</option>
+													<option>Kosovo</option>
+													<option>Kuwait</option>
+													<option>Kyrgyzstan</option>
+													<option>Laos</option>
+													<option>Latvia</option>
+													<option>Lebanon</option>
+													<option>Lesotho</option>
+													<option>Liberia</option>
+													<option>Libya</option>
+													<option>Liechtenstein</option>
+													<option>Lithuania</option>
+													<option>Luxembourg</option>
+													<option>Macedonia</option>
+													<option>Madagascar</option>
+													<option>Malawi</option>
+													<option>Malaysia</option>
+													<option>Maldives</option>
+													<option>Mali</option>
+													<option>Malta</option>
+													<option>Marshall Islands</option>
+													<option>Mauritania</option>
+													<option>Mauritius</option>
+													<option>Mexico</option>
+													<option>Micronesia</option>
+													<option>Moldova</option>
+													<option>Monaco</option>
+													<option>Mongolia</option>
+													<option>Montenegro</option>
+													<option>Morocco</option>
+													<option>Mozambique</option>
+													<option>Myanmar, {Burma}</option>
+													<option>Namibia</option>
+													<option>Nauru</option>
+													<option>Nepal</option>
+													<option>Netherlands</option>
+													<option>New Zealand</option>
+													<option>Nicaragua</option>
+													<option>Niger</option>
+													<option>Nigeria</option>
+													<option>Norway</option>
+													<option>Oman</option>
+													<option>Pakistan</option>
+													<option>Palau</option>
+													<option>Panama</option>
+													<option>Papua New Guinea</option>
+													<option>Paraguay</option>
+													<option>Peru</option>
+													<option>Philippines</option>
+													<option>Poland</option>
+													<option>Portugal</option>
+													<option>Qatar</option>
+													<option>Romania</option>
+													<option>Russian Federation</option>
+													<option>Rwanda</option>
+													<option>St Kitts &amp; Nevis</option>
+													<option>St Lucia</option>
+													<option>Saint Vincent &amp; the Grenadines</option>
+													<option>Samoa</option>
+													<option>San Marino</option>
+													<option>Sao Tome &amp; Principe</option>
+													<option>Saudi Arabia</option>
+													<option>Senegal</option>
+													<option>Serbia</option>
+													<option>Seychelles</option>
+													<option>Sierra Leone</option>
+													<option>Singapore</option>
+													<option>Slovakia</option>
+													<option>Slovenia</option>
+													<option>Solomon Islands</option>
+													<option>Somalia</option>
+													<option>South Africa</option>
+													<option>South Sudan</option>
+													<option>Spain</option>
+													<option>Sri Lanka</option>
+													<option>Sudan</option>
+													<option>Suriname</option>
+													<option>Swaziland</option>
+													<option>Sweden</option>
+													<option>Switzerland</option>
+													<option>Syria</option>
+													<option>Taiwan</option>
+													<option>Tajikistan</option>
+													<option>Tanzania</option>
+													<option>Thailand</option>
+													<option>Togo</option>
+													<option>Tonga</option>
+													<option>Trinidad &amp; Tobago</option>
+													<option>Tunisia</option>
+													<option>Turkey</option>
+													<option>Turkmenistan</option>
+													<option>Tuvalu</option>
+													<option>Uganda</option>
+													<option>Ukraine</option>
+													<option>United Arab Emirates</option>
+													<option>United Kingdom</option>
+													<option>United States</option>
+													<option>Uruguay</option>
+													<option>Uzbekistan</option>
+													<option>Vanuatu</option>
+													<option>Vatican City</option>
+													<option>Venezuela</option>
+													<option>Vietnam</option>
+													<option>Yemen</option>
+													<option>Zambia</option>
+													<option>Zimbabwe</option>
+												</select>
+										</div>
+								</div>
+                                
+                                
+                                
+                                <div class="col-md-12">
+                                    
+                                    <div class="form-group"><input class="form-control" type="text" name="addressZipCode"  placeholder="ZipCode" maxlength="50" value="<%if(addressZipCode!=null){ %><%=addressZipCode%><%}%>"   /></div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    
+                                    <input type="checkbox" name="receiveNotification" id="receiveNotification" autocomplete="off" checked />
+							        Receive Notification
+                                </div>
+                                
+                                
+                                
+                                
                                 
                                 <%--
                                 <div class="col-md-12 col-lg-6">
@@ -346,7 +644,111 @@ function validateSignUp(){
 		document.getElementById("msgDiv").innerHTML=msgBoxValue;
 		document.frm.mobileNo.focus();
 		isSignUp = false;
-	}else if(!ValidateEmail(document.frm.userId.value)){
+	}
+	
+	
+	else if(document.frm.gender.options[document.frm.gender.selectedIndex].value==""){
+		var msgInfo = "Gender is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	else if(document.frm.dobmonth.options[document.frm.dobmonth.selectedIndex].value==""){
+		var msgInfo = "Month is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	else if(document.frm.dobday.options[document.frm.dobday.selectedIndex].value==""){
+		var msgInfo = "Day is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	else if(document.frm.dobyear.options[document.frm.dobyear.selectedIndex].value==""){
+		var msgInfo = "Year is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	else if(document.frm.addressStreetNo.value==""){
+		var msgInfo = "Street Number is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	else if(document.frm.addressBaranggay.value==""){
+		var msgInfo = "Baranggay is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	else if(document.frm.addressCity.value==""){
+		var msgInfo = "City is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	else if(document.frm.addressZipCode.value==""){
+		var msgInfo = "ZipCode is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	else if(document.frm.addressProvince.value==""){
+		var msgInfo = "Province is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	
+	
+	else if(!ValidateEmail(document.frm.userId.value)){
 		var msgInfo = "Email is invalid.";
 		var msgbgcol = "red";
 		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
@@ -374,6 +776,63 @@ function validateSignUp(){
 		document.frm.lastName.focus();
 		isSignUp = false;
 	}
+	
+	else if(ValidateText(document.frm.addressStreetNo.value)){
+		var msgInfo = "Street Number is invalid.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.lastName.focus();
+		isSignUp = false;
+	}
+	
+	else if(ValidateText(document.frm.addressBaranggay.value)){
+		var msgInfo = "Baranggay is invalid.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.lastName.focus();
+		isSignUp = false;
+	}
+	
+	else if(ValidateText(document.frm.addressCity.value)){
+		var msgInfo = "City is invalid.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.lastName.focus();
+		isSignUp = false;
+	}
+	
+	else if(ValidateText(document.frm.addressProvince.value)){
+		var msgInfo = "Province is invalid.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.lastName.focus();
+		isSignUp = false;
+	}
+	
+	else if(ValidateText(document.frm.addressZipCode.value)){
+		var msgInfo = "Zip Code is invalid.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.lastName.focus();
+		isSignUp = false;
+	}
+	
+	
 	
 	
 	return isSignUp;
