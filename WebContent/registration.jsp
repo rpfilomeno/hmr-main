@@ -2,7 +2,7 @@
 <%@ page import="hmr.com.bean.User"
 		 import="java.util.List"
 		 import="java.math.BigDecimal"
-		 import="java.time.Year"
+		 
 		   
 %>
 <html lang="en">
@@ -200,7 +200,7 @@
 											<span class="input-group-addon" style="width:0px; padding-left:0px; padding-right:0px; border:none;"></span>
 											<select class="form-control" id="dobyear" name="dobyear">
 												<option value="" disabled selected>Year?</option>
-												<% int year = Year.now().getValue(); %>
+												<% int year = 2017; %>
 												<% for(int i = (year-110); i < year ; i++) {  %>
 												<option value="<%=i %>"><%=i %></option>
 												<% } %>
