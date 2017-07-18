@@ -118,7 +118,7 @@ public class ImageDao extends DBConnection {
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		sb.append(" from image where item_id ="+  item_id);
 		try {
-			conn = getConnection();
+			conn = getConnection2();
 			java.sql.Statement stmt = conn.createStatement();
 			System.out.println("sql : "+sb.toString());		
 			ResultSet rs = stmt.executeQuery(sb.toString());

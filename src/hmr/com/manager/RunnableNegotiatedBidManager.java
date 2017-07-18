@@ -6,7 +6,7 @@ public class RunnableNegotiatedBidManager implements Runnable {
 	   private Thread t;
 	   private String threadName;
 	   
-	   String to;
+	   private String to;
 	   String cc;
 	   String AuctionId;
 	   String AuctionName;
@@ -31,6 +31,12 @@ public class RunnableNegotiatedBidManager implements Runnable {
 			   String BidderId, String BidderFirstName, String BidderLastName, String BidderEmail,
 			   String OfferAmount, String OfferNote, String Qty){
 		   threadName = name;
+		   this.to =to;
+		   this.cc=cc;
+		   this.AuctionId=AuctionId; 
+		   this.AuctionName=AuctionName; this.AuctionDescription=AuctionDescription; this.LotId=LotId; this.LotNumber=LotNumber;
+		   this.LotName=LotName; this.LotDescription=LotDescription; this.BidderId=BidderId; this.BidderFirstName=BidderFirstName; this.BidderLastName=BidderLastName; this.BidderEmail=BidderEmail; this.OfferAmount=OfferAmount; this.OfferNote=OfferNote;
+		   
 	       System.out.println("Creating " +  threadName );
 	   }
 	   

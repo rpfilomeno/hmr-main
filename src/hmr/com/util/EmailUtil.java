@@ -48,7 +48,9 @@ public class EmailUtil {
 			  last_name = "Dacanay";
 			  String access_key = "123";
 
-			  sendVerifyEmailUser(to,cc,first_name,last_name,"asdfasd");
+			  //sendVerifyEmailUser(to,cc,first_name,last_name,"asdfasd");
+			  
+			  sendNegotiatedBidEmailAdmin("noreplyhmrauctions@gmail.com", "sadf", "123", "12312", "AuctionDescription", "12312", "123123", "LotName", "LotDescription", "123123", "BidderFirstName", "BidderLastName", "noreplyhmrauctions@gmail.com", "1000", "asdfasd");
 
 		   }
 	
@@ -315,7 +317,8 @@ public class EmailUtil {
 
 		         System.out.println("Sent message successfully....");
 
-		      } catch (MessagingException e) {
+		      } catch (Exception e) {
+		    	  System.out.println("Exception on Email "+e.getMessage());
 		         throw new RuntimeException(e);
 		      }
 		   
@@ -334,6 +337,7 @@ public class EmailUtil {
 		      String host = "smtp.gmail.com";
 		      String port = "587";
 
+		      System.out.println("to : "+to);
 		      Properties props = new Properties();
 		      props.put("mail.smtp.auth", "true");
 		      props.put("mail.smtp.starttls.enable", "true");
@@ -380,7 +384,9 @@ public class EmailUtil {
 
 		         System.out.println("Sent message successfully....");
 
-		      } catch (MessagingException e) {
+		      } catch (Exception e) {
+		    	  System.out.println("Exception on Email "+e.getMessage());
+		    	  e.printStackTrace();
 		         throw new RuntimeException(e);
 		      }
 		   
