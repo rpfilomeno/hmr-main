@@ -19,6 +19,7 @@ import javax.sql.DataSource;
 public class DBConnection {
 
     private static Connection connection = null;
+    private static Connection connection2 = null;
     private static Connection connection_mssql = null;
 
     public Connection getConnection() throws SQLException {
@@ -45,6 +46,34 @@ public class DBConnection {
             //    e.printStackTrace();
             }
             return connection;
+        }
+
+    }
+
+    public Connection getConnection2() throws SQLException {
+        if (connection2 != null && !connection2.isClosed())
+            return connection2;
+        else {
+            try {
+                Properties prop = new Properties();
+                InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream("db.properties");
+                prop.load(inputStream);
+                String driver = prop.getProperty("driver");
+                String url = prop.getProperty("url");
+                String user = prop.getProperty("user");
+                String password = prop.getProperty("password");
+                Class.forName(driver);
+                connection2 = DriverManager.getConnection(url, user, password);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+            //    e.printStackTrace();
+            }
+            return connection2;
         }
 
     }
