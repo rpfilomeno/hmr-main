@@ -419,7 +419,76 @@ public class UserDao extends DBConnection {
 	}
 	
 	
-	public int insertUserOnRegistration(String firstName, String lastName, String userId, BigDecimal mobileNo, String verification_email_key){
+	public int insertUserOnRegistration(
+			String firstName, 
+			String lastName, 
+			String userId, 
+			BigDecimal mobileNo, 
+			Integer gender, 
+			Integer dobmonth,
+			Integer dobday,
+			Integer dobyear,
+			String addressStreetNo,
+			String addressBaranggay,
+			String addressCity,
+			String addressProvince,
+			String addressCountry,
+			String addressZipCode,
+			String companyName,
+			String verification_email_key){
+		
+		int i = 0;
+		int last_inserted_id = 0;
+		String dob = dobyear+"/"+String.format("%02d", dobmonth)+"/"+String.format("%02d", dobday);
+		
+		try {
+			  conn = getConnection();
+
+			  Statement stmt = conn.createStatement();
+		      String sql = "INSERT INTO user (first_name, last_name, email_address, mobile_no_1, verification_email_key, role, status, birth_date, company) " +
+		                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		      
+		      PreparedStatement prest = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		      prest.setString(1,firstName);
+		      prest.setString(2,lastName);
+		      prest.setString(3,userId);
+		      prest.setString(4,mobileNo.toString());
+		      prest.setString(5,verification_email_key);
+		      prest.setInt(6,2);
+		      prest.setInt(7,12);
+		      prest.setString(8,dob);
+		      prest.setString(9,companyName);
+		      prest.executeUpdate();
+		      ResultSet rs = prest.getGeneratedKeys();
+              if(rs.next()) last_inserted_id = rs.getInt(1);
+
+		      
+		      System.out.println("sql : "+sql);		      
+
+		      
+
+		      sql ="INSERT INTO `user_address` (`user_id`, `address_line_1`, `baranggay`, `city`, `country`, `address_type`, `postal_code`, `date_created`) "+
+		      "VALUES ('"+last_inserted_id+"', '"+addressStreetNo+"', '"+addressBaranggay+"', '"+addressCity+"', '"+addressCountry+"', '1', '"+addressZipCode+"', NOW());";
+		      
+		      System.out.println("sql : "+sql);		      
+		      i = stmt.executeUpdate(sql);
+		      
+		      stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+
+		return i;
+		
+	}
+	
+public int insertUserOnRegistration(String firstName, String lastName, String userId, BigDecimal mobileNo, String verification_email_key){
 		
 		int i = 0;
 		

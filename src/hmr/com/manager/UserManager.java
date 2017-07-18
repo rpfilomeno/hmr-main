@@ -73,6 +73,18 @@ public class UserManager {
 			String lastName = req.getParameter("lastName");
 			String userId = req.getParameter("userId");
 			BigDecimal mobileNo = new BigDecimal(req.getParameter("mobileNo"));
+			Integer gender = Integer.parseInt(req.getParameter("gender"));
+			Integer dobmonth = Integer.parseInt(req.getParameter("dobmonth"));
+			Integer dobday = Integer.parseInt(req.getParameter("dobday"));
+			Integer dobyear = Integer.parseInt(req.getParameter("dobyear"));
+			String addressStreetNo = req.getParameter("addressStreetNo");
+			String addressBaranggay = req.getParameter("addressBaranggay");
+			String addressCity = req.getParameter("addressCity");
+			String addressProvince = req.getParameter("addressProvince");
+			String addressCountry = req.getParameter("addressCountry");
+			String addressZipCode = req.getParameter("addressZipCode");
+			String companyName = req.getParameter("companyName");
+			String receiveNotification = req.getParameter("receiveNotification");
 			
 			User u = new User();
 			
@@ -86,7 +98,19 @@ public class UserManager {
 				
 				String verification_email_key = StringUtil.generateRandomKey();
 				
-				int i = insertUserOnRegistration(firstName, lastName, userId, mobileNo, verification_email_key);
+				int i =  insertUserOnRegistration(firstName, lastName, userId, mobileNo, 
+						gender, 
+						dobmonth,
+						dobday,
+						dobyear,
+						addressStreetNo,
+						addressBaranggay,
+						addressCity,
+						addressProvince,
+						addressCountry,
+						addressZipCode,
+						companyName,
+						verification_email_key);
 				
 				if(i==0){	
 					req.setAttribute("msgbgcol", "red");
@@ -573,6 +597,46 @@ public class UserManager {
 		UserDao ud = new UserDao();
 
 		i = ud.insertUserOnRegistration(firstName, lastName, userId, mobileNo, verification_email_key);
+		
+		return i;
+		
+	}
+	
+public int insertUserOnRegistration(String firstName, String lastName, String userId, BigDecimal mobileNo, 
+		Integer gender, 
+		Integer dobmonth,
+		Integer dobday,
+		Integer dobyear,
+		String addressStreetNo,
+		String addressBaranggay,
+		String addressCity,
+		String addressProvince,
+		String addressCountry,
+		String addressZipCode,
+		String companyName,
+		String verification_email_key){
+		
+		int i = 0;
+		
+		UserDao ud = new UserDao();
+
+		i = ud.insertUserOnRegistration(
+				firstName, 
+				lastName, 
+				userId, 
+				mobileNo, 
+				gender, 
+				dobmonth,
+				dobday,
+				dobyear,
+				addressStreetNo,
+				addressBaranggay,
+				addressCity,
+				addressProvince,
+				addressCountry,
+				addressZipCode,
+				companyName,
+				verification_email_key);
 		
 		return i;
 		

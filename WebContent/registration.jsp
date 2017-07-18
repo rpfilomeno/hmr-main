@@ -26,7 +26,7 @@
 	  String addressCity = request.getAttribute("addressCity")!=null ? (String)request.getAttribute("addressCity") : "";
 	  String addressProvince = request.getAttribute("addressProvince")!=null ? (String)request.getAttribute("addressProvince") : "";
 	  String addressZipCode = request.getAttribute("addressZipCode")!=null ? (String)request.getAttribute("addressZipCode") : "";
-	  
+	  String companyName = request.getAttribute("companyName")!=null ? (String)request.getAttribute("companyName") : "";
 	  
 	  //IDS
 	  Integer user_id = request.getAttribute("user_id")!=null ? (Integer)request.getAttribute("user_id") : null;
@@ -211,7 +211,7 @@
 								
 								<div class="col-md-12">
                                     
-                                    <div class="form-group"><input class="form-control" type="text" name="addressStreetNo"  placeholder="Street Number" maxlength="15" value="<%if(addressStreetNo!=null){ %><%=addressStreetNo%><%}%>"  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 13; submitOnEnter(event)" /></div>
+                                    <div class="form-group"><input class="form-control" type="text" name="addressStreetNo"  placeholder="Street/Number" maxlength="50" value="<%if(addressStreetNo!=null){ %><%=addressStreetNo%><%}%>"  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 13; submitOnEnter(event)" /></div>
                                 </div>
                                 
                                 <div class="col-md-12">
@@ -440,6 +440,11 @@
                                 <div class="col-md-12">
                                     
                                     <div class="form-group"><input class="form-control" type="text" name="addressZipCode"  placeholder="ZipCode" maxlength="50" value="<%if(addressZipCode!=null){ %><%=addressZipCode%><%}%>"   /></div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    
+                                    <div class="form-group"><input class="form-control" type="text" name="companyName"  placeholder="Company" maxlength="160" value="<%if(companyName!=null){ %><%=companyName%><%}%>"   /></div>
                                 </div>
                                 
                                 <div class="col-md-12">
@@ -747,6 +752,18 @@ function validateSignUp(){
 	}
 	
 	
+	else if(document.frm.companyName.value==""){
+		var msgInfo = "Company is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.mobileNo.focus();
+		isSignUp = false;
+	}
+	
+	
 	
 	else if(!ValidateEmail(document.frm.userId.value)){
 		var msgInfo = "Email is invalid.";
@@ -778,7 +795,7 @@ function validateSignUp(){
 	}
 	
 	else if(ValidateText(document.frm.addressStreetNo.value)){
-		var msgInfo = "Street Number is invalid.";
+		var msgInfo = "Street/Number is invalid.";
 		var msgbgcol = "red";
 		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
 		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
@@ -831,6 +848,19 @@ function validateSignUp(){
 		document.frm.lastName.focus();
 		isSignUp = false;
 	}
+	
+	else if(ValidateText(document.frm.companyName.value)){
+		var msgInfo = "Company is invalid.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.lastName.focus();
+		isSignUp = false;
+	}
+	
+	
 	
 	
 	
