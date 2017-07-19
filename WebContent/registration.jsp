@@ -27,6 +27,7 @@
 	  String addressProvince = request.getAttribute("addressProvince")!=null ? (String)request.getAttribute("addressProvince") : "";
 	  String addressZipCode = request.getAttribute("addressZipCode")!=null ? (String)request.getAttribute("addressZipCode") : "";
 	  String companyName = request.getAttribute("companyName")!=null ? (String)request.getAttribute("companyName") : "";
+	  Integer currentYear = request.getAttribute("currentYear")!=null ? (Integer)request.getAttribute("currentYear") : 2017;
 	  
 	  //IDS
 	  Integer user_id = request.getAttribute("user_id")!=null ? (Integer)request.getAttribute("user_id") : null;
@@ -193,6 +194,7 @@
 											<span class="input-group-addon" style="width:0px; padding-left:0px; padding-right:0px; border:none;"></span>
 											<select class="form-control" id="dobday" name="dobday">
 												<option value="" disabled selected>Day?</option>
+												
 												<% for(int i = 1; i < 32 ; i++) {  %>
 												<option value="<%=i %>"><%=i %></option>
 												<% } %>
@@ -200,15 +202,15 @@
 											<span class="input-group-addon" style="width:0px; padding-left:0px; padding-right:0px; border:none;"></span>
 											<select class="form-control" id="dobyear" name="dobyear">
 												<option value="" disabled selected>Year?</option>
-												<% int year = 2017; %>
-												<% for(int i = (year-110); i < year ; i++) {  %>
+
+												<% for(int i = (currentYear-110); i < currentYear ; i++) {  %>
 												<option value="<%=i %>"><%=i %></option>
 												<% } %>
 											</select>
     									</div>
 									</div>
 								</div>
-								
+							
 								<div class="col-md-12">
                                     
                                     <div class="form-group"><input class="form-control" type="text" name="addressStreetNo"  placeholder="Street/Number" maxlength="50" value="<%if(addressStreetNo!=null){ %><%=addressStreetNo%><%}%>"  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 13; submitOnEnter(event)" /></div>

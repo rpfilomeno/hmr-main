@@ -140,7 +140,7 @@ public class UserManager {
 					
 					
 				}
-				
+				req.setAttribute("currentYear", Calendar.getInstance().get(Calendar.YEAR));
 				page ="registration.jsp";
 				
 			}else{
@@ -154,7 +154,7 @@ public class UserManager {
 				
 				req.setAttribute("msgbgcol", "red");
 				req.setAttribute("msgInfo", "Registration Failed.<br>Email already exist.");
-				
+				req.setAttribute("currentYear", Calendar.getInstance().get(Calendar.YEAR));
 				page ="registration.jsp";
 				
 			}
