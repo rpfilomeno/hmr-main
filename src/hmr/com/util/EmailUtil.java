@@ -321,7 +321,7 @@ public class EmailUtil {
 		    	  System.out.println("Exception on Email "+e.getMessage());
 		         throw new RuntimeException(e);
 		      }
-		   
+
 	   }
 	   
 	   public static void sendNegotiatedBidEmailBidder(

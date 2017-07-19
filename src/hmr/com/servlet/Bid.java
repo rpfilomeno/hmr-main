@@ -669,7 +669,7 @@ public class Bid extends HttpServlet {
 						
 						RunnableNegotiatedBidManager adminRNBM = new RunnableNegotiatedBidManager(
 								"HMR Auctions : Negotiated Bid Admin Notification", 
-								"rpfilomeno@gmail.com", "rpfilomeno@gmail.com", 
+								"noreplyhmrauctions@gmail.com", "", 
 								lot.getAuction_id().toString(), auction.getAuction_name(), auction.getAuction_desc(), 
 								lot.getId().toString(), lot.getLot_no().toString(), lot.getLot_name(), lot.getLot_desc(), 
 								u.getId().toString(), u.getFirst_name(), u.getLast_name(), u.getEmail_address(), 
@@ -678,7 +678,7 @@ public class Bid extends HttpServlet {
 						
 						RunnableNegotiatedBidManager bidderRNB = new RunnableNegotiatedBidManager(
 								"HMR Auctions : Negotiated Bid User Notification", 
-								"rpfilomeno@gmail.com", "rpfilomeno@gmail.com", 
+								u.getEmail_address(), "", 
 								lot.getAuction_id().toString(), auction.getAuction_name(), auction.getAuction_desc(), 
 								lot.getId().toString(), lot.getLot_no().toString(), lot.getLot_name(), lot.getLot_desc(), 
 								u.getId().toString(), u.getFirst_name(), u.getLast_name(), u.getEmail_address(), 
