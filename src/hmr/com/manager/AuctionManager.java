@@ -286,12 +286,12 @@ public class AuctionManager {
 			
 
 		
-		}else if("viewAuction".equals(action)){
+		}else if("viewAuction".equals(action) || "viewAuctionPrivateInvites".equals(action)){
 			
 			System.out.println("viewAuction");
 
 			auctionId_wip = !req.getParameter("auctionId_wip").equals("") ? new BigDecimal(req.getParameter("auctionId_wip")) : new BigDecimal(0);
-			if(auctionId_wip.floatValue() > 0){
+
 				
 				//Auction a = getAuctionById(auctionId_wip);
 				Auction a = getAuctionByAuctionId(auctionId_wip);
@@ -366,7 +366,6 @@ public class AuctionManager {
 					req.setAttribute("BIDDER-USER-LIST", bidderUserList);
 				}
 				
-				
 				AuctionUserManager auMngr = new AuctionUserManager(req, res);
 				List<AuctionUser> auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
 
@@ -374,9 +373,13 @@ public class AuctionManager {
 				
 				setLovAuctionUserValues(req, res);
 				
-				page ="auction.jsp";
+				if("viewAuctionPrivateInvites".equals(action)) {
+					page ="auction-private.jsp";
+				} else {
+					page ="auction.jsp";
+				}
 				
-			}
+			
 
 		}else if("updateAuction".equals(action)){
 			

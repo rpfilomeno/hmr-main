@@ -313,6 +313,8 @@ public class AuctionUserDao extends DBConnection {
 		
 		sb.append(", date_created, date_updated, created_by, updated_by");
 		
+		sb.append(", company_id_no, image_1");
+		
 		sb.append(" from auction_user where auction_id ="+auction_id);
 		
 		sb.append(" order by id desc");
@@ -335,6 +337,8 @@ public class AuctionUserDao extends DBConnection {
             	u.setUser_id(rs.getInt("user_id"));
             	u.setStatus(rs.getInt("status"));
             	u.setActive(rs.getInt("active"));
+            	u.setCompany_id_no(rs.getString("company_id_no"));
+            	u.setImageBytes(rs.getBytes("image_1"));
 
 
 				//SystemBean - start

@@ -9,6 +9,8 @@ public class AuctionUser extends SystemBean {
 	Integer user_id;
 	Integer status;
 	Integer active;
+	String company_id_no;
+	byte[] imageBytes;
 	
 	public BigDecimal getId() {
 		return id;
@@ -39,6 +41,18 @@ public class AuctionUser extends SystemBean {
 	}
 	public void setActive(Integer active) {
 		this.active = active;
+	}
+	public String getCompany_id_no() {
+		return company_id_no;
+	}
+	public void setCompany_id_no(String company_id_no) {
+		this.company_id_no = company_id_no;
+	}
+	public byte[] getImageBytes() {
+		return imageBytes;
+	}
+	public void setImageBytes(byte[] imageBytes) {
+		this.imageBytes = imageBytes;
 	}
 	
 }

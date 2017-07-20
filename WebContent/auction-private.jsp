@@ -34,6 +34,7 @@
 		String userId = request.getAttribute("userId")!=null ? (String)request.getAttribute("userId") : (String)request.getSession().getAttribute("userId");
 		BigDecimal mobileNo = request.getAttribute("mobileNo")!=null ? (BigDecimal)request.getAttribute("mobileNo") : null;
 		  
+		  
 		//IDS
 		Integer user_id = request.getAttribute("user-id")!=null ? (Integer)request.getAttribute("user-id") : (Integer)request.getSession().getAttribute("user-id");
 		  
@@ -48,23 +49,22 @@
 		
 		
 		List<AuctionUser> auList =(ArrayList<AuctionUser>) request.getAttribute("auctionUserList");
-		System.out.println("auList "+auList.size());
+		List<AuctionUser> auListPending = new ArrayList<AuctionUser>();
+		List<AuctionUser> auListRegistered = new ArrayList<AuctionUser>();
+		List<AuctionUser> auListDisqualified = new ArrayList<AuctionUser>();
 		
-		
-		System.out.println("userId : "+userId);
-		System.out.println("user_id : "+user_id);
-		
-		
+		for(AuctionUser au : auList){
+			if( au.getStatus() == 26 ) {
+				auListPending.add(au);
+			}else if( au.getStatus() == 25 ){
+				auListRegistered.add(au);
+			}else if( au.getStatus() == 28 ){
+				auListDisqualified.add(au);
+			}
+		}
+
 		List<Lot> lList =(ArrayList<Lot>) request.getAttribute("lotList");
 		List<Item> iList =(ArrayList<Item>) request.getAttribute("itemList");
-		//System.out.println("iList "+iList.size());
-		//System.out.println("lList "+lList.size());
-		//System.out.println("auction : "+auction.getAuction_type());
-		
-		/*
-		List<User> uList =(ArrayList<User>) request.getAttribute("userList");
-		System.out.println("ulList "+uList.size());
-		*/
 		
 		ArrayList<Lov> userRoleList = (ArrayList<Lov>) request.getSession().getAttribute("USER-ROLE-LIST");
 		ArrayList<Lov> genderList = (ArrayList<Lov>) request.getSession().getAttribute("GENDER-LIST");
@@ -80,7 +80,7 @@
 	%>
     <title><%=COMPANY_NAME%></title>
 
-	<!-- Page: auction.jsp -->
+	<!-- Page: auction-private.jsp -->
 
     <!-- DataTables -->
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
@@ -139,40 +139,7 @@
 <!-- WRAPPER -->
 <div class="wrapper">
 
-    <!-- Popup: Shopping cart items -->
-    <div class="modal fade popup-cart" id="popup-cart" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="container">
-                <div class="cart-items">
-                    <div class="cart-items-inner">
-                        <div class="media">
-                            <a class="pull-left" href="#"><img class="media-object item-image" src="assets/img/preview/shop/order-1s.jpg" alt=""></a>
-                            <p class="pull-right item-price">$450.00</p>
-                            <div class="media-body">
-                                <h4 class="media-heading item-title"><a href="#">1x Standard Product</a></h4>
-                                <p class="item-desc">Lorem ipsum dolor</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <p class="pull-right item-price">$450.00</p>
-                            <div class="media-body">
-                                <h4 class="media-heading item-title summary">Subtotal</h4>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <div class="media-body">
-                                <div>
-                                    <a href="#" class="btn btn-theme btn-theme-dark" data-dismiss="modal">Close</a><!--
-                                    --><a href="shopping-cart.html" class="btn btn-theme btn-theme-transparent btn-call-checkout">Checkout</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Popup: Shopping cart items -->
+    
 
     <!-- HEADER -->
 	<jsp:include page="hmr-header.jsp" />
@@ -197,6 +164,7 @@
 		       <input type="hidden" name="lot_id" id="lot_id" value=""/>
 		       <input type="hidden" name="itemId_wip" id="itemId_wip" value=""/>
 		       <input type="hidden" name="auctionUserId_wip" id="auctionUserId_wip" value=""/>
+		     </form>
 		       
 		       
         <section class="page-section color" style="padding:15px;">
@@ -209,22 +177,7 @@
                         <div id="msgDiv"></div>
  					</div>
 
-              <%-- 	
-            <div class="col-md-12">
-              <div class="box box-info">
-                <div class="box-header">
-                  <h3 class="box-title"><label><b>Terms and Conditions : </b></label></h3>
-                </div><!-- /.box-header -->
-                <div class="box-body pad">
-                  
-                    <textarea id="editor-2" name="editor-2" rows="10" cols="80">
-                                            
-                    </textarea>
-                  
-                </div>
-              </div><!-- /.box -->
-              </div>		
- 					--%>
+
 					<div class="col-sm-4">
 		              <div class="form-group">
 		                <label><b>Auction Name : </b><%=auction.getAuction_name()%></label>
@@ -446,151 +399,11 @@
                 </div><!-- /.box-header -->
 
 
-              </div>
-              
-				<iframe id="my_iframe" style="display:none;"></iframe>
-				
-	
-				
-					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="createAuction()">Create</a>
-					</div>
-					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="updateAuction()">Update</a>
-					</div>
-					<div class="col-sm-3">
-					     <a class="btn btn-theme btn-block " href="#" onclick="auctionRange()">Auction Range Increment</a>
-					</div>
-					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="auctionImages()">Images</a>
-					</div>
-					
-					<%if(auction.getVisibility()==34){%>
-					<div class="col-sm-2">
-					     <a class="btn btn-theme btn-block " href="#" onclick="auctionPrivateInvites()">Invites</a>
-					</div>
-					<% } %>
-				
-	                
-	            </div>
+            </div>
+            </div>
             </div>
             </div>
         </section>
-        
-        
-        
-
-        <!-- PAGE -->
-        <section class="page-section color" style="padding:15px;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h3 class="block-title"><span>  <label>Lots</label></span></h3>
- 						
-
- 		                <div id="tableDiv1" class="box-body table-responsive">
-										
-						  <!-- <div id="msgDiv"></div> -->
-						  			  
-		                  <table id="table1" class="table table-bordered table-striped no-margin">
-		
-		                    <thead>
-		                      <tr>
-		                        <th>Main Image</th>
-		                        <th>Lot ID</th>
-		                        <th>Auction ID</th>
-		                        <th>Lot No</th>
-		                        <th>Description</th>
-		                        <th>Active</th>
-		                        <th>Date Created</th>
-		                        <th>Date Updated</th>
-		                      </tr>
-		                    </thead>
-		                    <tbody>
-                      <%
-                      	for(Lot l : lList){
-                            String date_created = "";
-                            if(l.getDate_created()!=null){
-                            	date_created = sdf.format(l.getDate_created());
-                            }
-
-                            String date_updated = "";
-                            if(l.getDate_updated()!=null){
-                            	date_updated = sdf.format(l.getDate_updated());
-                            }
-   
-                            active = "Yes";
-                            if(l.getActive()==0){
-                            	active = "No";
-                            }
-
-                      %>
-		                  <tr>
-		                    <td width="75px">
-			                    <div class="media">
-								  <a class="pull-left" href="#" onclick="lotImages('<%=l.getId()%>')">
-								      <img class="media-object" style="width:75px; " src="image?id=<%=l.getLot_id()%>&t=lt" alt="Click to upload image" />
-								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
-								      	<%= new ImageManager().getImageListByLotId(l.getLot_id()).size() %> 
-								      </span>
-								  </a>
-								</div>
-		                    </td>
-                            <td width="15px"><a href="#" onclick="viewLot('<%=l.getId()%>')"><%=l.getLot_id()%></a></td>
-                            <td width="15px"><%=l.getAuction_id()%></td>
-                            <td width="15px"><%=l.getLot_no()%></td>
-                            <td><%=l.getLot_desc()%></td>
-                            <td width="15px"><%=active%></td> 
-                            <td width="150px"><%=date_created%></td>
-                            <td width="150px"><%=date_updated%></td>
-                            
-		                  </tr>    
-		             <%} %>         
-		                          
-		                          
-		                    </tbody>
-		
-		                    <!-- 
-		
-		                    <tfoot>
-		
-		                      <tr>
-		
-		                        <th>Email Address</th>
-		
-		                        <th>Last Name</th>
-		
-		                        <th>First Name</th>
-		
-		                        <th>Active</th>
-		
-		                        <th>Date Created</th>
-		
-		                        <th>Date Updated</th>
-		
-		                      </tr>
-		
-		                    </tfoot>  -->
-		
-		                  </table>
-		
-		                  </div><!-- /.table-responsive -->
-
-                    </div>
-                    
-                    <div class="col-sm-2">
-                        <a class="btn btn-theme btn-block " href="#" onclick="createLot()">Create</a>
-                    </div>
-                    <!-- 
-                    <div class="col-sm-2">
-                        <a class="btn btn-theme btn-block " href="#" onclick="clearLogin()">Clear</a>
-                    </div>
-        --->
-                    
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
         
         
         
@@ -599,143 +412,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="block-title"><span>  <label>Items </label></span></h3>
- 						
-
- 		                <div id="tableDiv2" class="box-body table-responsive">
-										
-						  <!-- <div id="msgDiv"></div> -->
-						  			  
-		                  <table id="table2" class="table table-bordered table-striped no-margin">
-		
-		                    <thead>
-		                      <tr>
-		                      	<th>Main Image</th>
-		                        <th>Item ID</th>
-		                        <th>Auction ID</th>
-		                        <th>Lot ID</th>
-		                        <th>Description</th>
-		                        <th>Reference No</th>
-		                        <th>Target Price</th>
-		                        <th>Reserve Price</th>
-		                        <th>Date Created</th>
-		                        <th>Date Updated</th>                  
-		                      </tr>
-		                    </thead>
-		                    <tbody>
-                      <%
-                      	for(Item i : iList){
-                            String date_created = "";
-                            if(i.getDate_created()!=null){
-                            	date_created = sdf.format(i.getDate_created());
-                            }
-
-                            String date_updated = "";
-                            if(i.getDate_updated()!=null){
-                            	date_updated = sdf.format(i.getDate_updated());
-                            }
-                            
-                            //String date_registration = "";
-                            //if(a.getDate_registration()!=null){
-                            //	date_registration = sdf.format(a.getDate_registration());
-                            //}
-                            
-                         
-                            /*
-                            String active = "Yes";
-                            if(i.getActive()==0){
-                            	active = "No";
-                            }
-                            */
-                            /*
-                            String status = "";
-                            if(a.getStatus()==10){
-                            	status = "Banned";
-                            }else if(a.getStatus()==11){
-                            	status = "Registered";
-                            } else if(a.getStatus()==12){
-                            	status = "For Email Verification";
-                            }
-                            */
-                      %>
-		                  <tr>
-		                  	<td width="75px">
-			                    <div class="media">
-								  <a class="pull-left" href="#" onclick="itemImages('<%=i.getId()%>')">
-								      <img class="media-object" style="width:75px; " src="image?id=<%=i.getId()%>&t=it" alt="Click to upload image" />
-								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
-								      	<%= new ImageManager().getImageListByItemId(i.getId()).size() %>
-								      </span>
-								  </a>
-								</div>
-		                    </td>
-                            <td width="15px"><a href="#" onclick="viewItem('<%=i.getId()%>')"><%=i.getItem_id()%></a></td>
-                            <td width="15px"><%=i.getAuction_id()%></td>
-                            <td width="15px"><%=i.getLot_id()%></td>
-                            <td><%=i.getItem_desc()%></td>
-                            <td><%=i.getReference_no()%></td>
-                            <td><%=i.getTarget_price()%></td>
-                            <td><%=i.getReserve_price()%></td>
-                            <td width="100px"><%=date_created%></td>
-                            <td width="100px"><%=date_updated%></td>
-		                  </tr>    
-		             <%} %>         
-		                          
-		                          
-		                    </tbody>
-		
-		                    <!-- 
-		
-		                    <tfoot>
-		
-		                      <tr>
-		
-		                        <th>Email Address</th>
-		
-		                        <th>Last Name</th>
-		
-		                        <th>First Name</th>
-		
-		                        <th>Active</th>
-		
-		                        <th>Date Created</th>
-		
-		                        <th>Date Updated</th>
-		
-		                      </tr>
-		
-		                    </tfoot>  -->
-		
-		                  </table>
-		
-		                  </div><!-- /.table-responsive -->
-
-                    </div>
-                    
-                    <div class="col-sm-2">
-                        <a class="btn btn-theme btn-block " href="#" onclick="createItem()">Create</a>
-                    </div>
-        
-                    
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
-        
-        <%if(auction.getVisibility()==34){%>
-
-        <!-- PAGE -->
-        <section class="page-section color" style="padding:15px;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h3 class="block-title"><span>  <label>Users </label></span></h3>
+                        <h3 class="block-title"><span>  <label>Pending Users</label></span></h3>
 
  		                <div id="tableDiv3" class="box-body table-responsive">
 										
 						  <!-- <div id="msgDiv"></div> -->
 						  			  
-		                  <table id="table3" class="table table-bordered table-striped no-margin">
+		                  <table id="table1" class="table table-bordered table-striped no-margin">
 		
 		                    <thead>
 		                      <tr>
@@ -747,11 +430,13 @@
 		                        <th>Auction ID</th>
 		                        <th>Date Created</th>
 		                        <th>Date Updated</th>
+		                        <th>Company ID</th>
+		                        <th>Approve?</th>
+		                        
 		                      </tr>
 		                    </thead>
 		                    <tbody>
-                      <%
-                      	for(AuctionUser au : auList){
+                      <% for(AuctionUser au : auListPending){
                             String date_created = "";
                             if(au.getDate_created()!=null){
                             	date_created = sdf.format(au.getDate_created());
@@ -783,6 +468,8 @@
                             	fn = bidderUserHM.get(au.getUser_id()).getFirst_name();
                             }
                             
+                            String company_id_no = au.getCompany_id_no() != null ? au.getCompany_id_no() : "";
+                            
                             
                       %>
 		                  <tr>
@@ -794,34 +481,229 @@
                             <td><%=au.getAuction_id()%></td> 
                             <td><%=date_created%></td>
                             <td><%=date_updated%></td>
+                            <td><%=company_id_no%></td>
+                            <td>
+	                            <div class="input-group">
+	  								<div class="input-group-btn">
+		                            	<button type="button" class="btn btn-labeled btn-success btn-xs">
+		                					<span class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>&nbsp;Yes</button>
+		            					<button type="button" class="btn btn-labeled btn-danger btn-xs">
+		                					<span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>&nbsp;No</button>
+	                            	</div>
+	                            </div>
+                            </td>
 		                  </tr>    
 		             <%} %>         
 		                          
 		                          
 		                    </tbody>
 		
-		                    <!-- 
+		                    		
+		                  </table>
 		
-		                    <tfoot>
+		                  </div><!-- /.table-responsive -->
+
+                    </div>
+                    
+                  
+                    
+                </div>
+            </div>
+        </section>
+        <!-- /PAGE -->
+        
+        
+
+
+        <!-- PAGE -->
+        <section class="page-section color" style="padding:15px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="block-title"><span>  <label>Registered Users </label></span></h3>
+
+ 		                <div id="tableDiv3" class="box-body table-responsive">
+										
+						  <!-- <div id="msgDiv"></div> -->
+						  			  
+		                  <table id="table2" class="table table-bordered table-striped no-margin">
 		
+		                    <thead>
 		                      <tr>
-		
-		                        <th>Email Address</th>
-		
+		                        <th>Email</th>
 		                        <th>Last Name</th>
-		
 		                        <th>First Name</th>
-		
 		                        <th>Active</th>
-		
+		                        <th>Status</th>
+		                        <th>Auction ID</th>
 		                        <th>Date Created</th>
-		
 		                        <th>Date Updated</th>
-		
+		                        <th>Company ID</th>
+		                        <th>Option</th>
 		                      </tr>
+		                    </thead>
+		                    <tbody>
+                      <% for(AuctionUser au : auListRegistered){
+                            String date_created = "";
+                            if(au.getDate_created()!=null){
+                            	date_created = sdf.format(au.getDate_created());
+                            }
+
+                            String date_updated = "";
+                            if(au.getDate_updated()!=null){
+                            	date_updated = sdf.format(au.getDate_updated());
+                            }
+                            
+                          
+                            active = "Yes";
+                            if(au.getActive()==0){
+                            	active = "No";
+                            }
+                            
+    		            	String auctionUserStatus = "";
+    		            	if(auctionUserStatusHM.get( au.getStatus())!=null){
+    		            		auctionUserStatus = auctionUserStatusHM.get(au.getStatus()).getValue();
+    		            	}
+                            
+                            
+                            String email = "";
+                            String ln = "";
+                            String fn = "";
+                            if(bidderUserHM.get(au.getUser_id())!=null){
+                            	email = bidderUserHM.get(au.getUser_id()).getEmail_address();
+                            	ln = bidderUserHM.get(au.getUser_id()).getLast_name();
+                            	fn = bidderUserHM.get(au.getUser_id()).getFirst_name();
+                            }
+                            
+                            String company_id_no = au.getCompany_id_no() != null ? au.getCompany_id_no() : "";
+                            
+                            
+                      %>
+		                  <tr>
+                            <td><a href="#" onclick="viewAuctionUser('<%=au.getId()%>')"><%=email%></a></td>
+                            <td><%=ln%></td>
+                            <td><%=fn%></td>
+                            <td><%=active%></td> 
+                            <td><%=auctionUserStatus%></td> 
+                            <td><%=au.getAuction_id()%></td> 
+                            <td><%=date_created%></td>
+                            <td><%=date_updated%></td>
+                            <td><%=company_id_no %></td>
+                            <td>
+	                            <div class="input-group">
+	  								<div class="input-group-btn">
+		                            	<button type="button" class="btn btn-labeled btn-warning btn-xs">
+		                					<span class="btn-label"><i class="glyphicon glyphicon-repeat"></i></span>&nbsp;Reset</button>
+	                            	</div>
+	                            </div>
+                            </td>
+		                  </tr>    
+		             <%} %>         
+		                          
+		                          
+		                    </tbody>
 		
-		                    </tfoot>  -->
+		                    		
+		                  </table>
 		
+		                  </div><!-- /.table-responsive -->
+
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        <!-- /PAGE -->
+        
+        <!-- PAGE -->
+        <section class="page-section color" style="padding:15px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="block-title"><span>  <label>Rejected Users </label></span></h3>
+
+ 		                <div id="tableDiv3" class="box-body table-responsive">
+										
+						  <!-- <div id="msgDiv"></div> -->
+						  			  
+		                  <table id="table3" class="table table-bordered table-striped no-margin">
+		
+		                    <thead>
+		                      <tr>
+		                        <th>Email</th>
+		                        <th>Last Name</th>
+		                        <th>First Name</th>
+		                        <th>Active</th>
+		                        <th>Status</th>
+		                        <th>Auction ID</th>
+		                        <th>Date Created</th>
+		                        <th>Date Updated</th>
+		                        <th>Company ID</th>
+		                        <th>Option</th>
+		                      </tr>
+		                    </thead>
+		                    <tbody>
+                      <% for(AuctionUser au : auListDisqualified){
+                            String date_created = "";
+                            if(au.getDate_created()!=null){
+                            	date_created = sdf.format(au.getDate_created());
+                            }
+
+                            String date_updated = "";
+                            if(au.getDate_updated()!=null){
+                            	date_updated = sdf.format(au.getDate_updated());
+                            }
+                            
+                          
+                            active = "Yes";
+                            if(au.getActive()==0){
+                            	active = "No";
+                            }
+                            
+    		            	String auctionUserStatus = "";
+    		            	if(auctionUserStatusHM.get( au.getStatus())!=null){
+    		            		auctionUserStatus = auctionUserStatusHM.get(au.getStatus()).getValue();
+    		            	}
+                            
+                            
+                            String email = "";
+                            String ln = "";
+                            String fn = "";
+                            if(bidderUserHM.get(au.getUser_id())!=null){
+                            	email = bidderUserHM.get(au.getUser_id()).getEmail_address();
+                            	ln = bidderUserHM.get(au.getUser_id()).getLast_name();
+                            	fn = bidderUserHM.get(au.getUser_id()).getFirst_name();
+                            }
+                            
+                            String company_id_no = au.getCompany_id_no() != null ? au.getCompany_id_no() : "";
+                            
+                            
+                      %>
+		                  <tr>
+                            <td><a href="#" onclick="viewAuctionUser('<%=au.getId()%>')"><%=email%></a></td>
+                            <td><%=ln%></td>
+                            <td><%=fn%></td>
+                            <td><%=active%></td> 
+                            <td><%=auctionUserStatus%></td> 
+                            <td><%=au.getAuction_id()%></td> 
+                            <td><%=date_created%></td>
+                            <td><%=date_updated%></td>
+                            <td><%=company_id_no %></td>
+                            <td>
+	                            <div class="input-group">
+	  								<div class="input-group-btn">
+		                            	<button type="button" class="btn btn-labeled btn-warning btn-xs">
+		                					<span class="btn-label"><i class="glyphicon glyphicon-repeat"></i></span>&nbsp;Reset</button>
+	                            	</div>
+	                            </div>
+                            </td>
+		                  </tr>    
+		             <%} %>         
+		                          
+		                          
+		                    </tbody>
+		
+		                    		
 		                  </table>
 		
 		                  </div><!-- /.table-responsive -->
@@ -829,21 +711,16 @@
                     </div>
                     
                     <div class="col-sm-2">
-                        <a class="btn btn-theme btn-block " href="#" onclick="createAuctionUser()">Create</a>
+                        <a class="btn btn-theme btn-block " href="bid?mngr=auction-manager&a=auctionList&uid=<%=userId %>">Auctions</a>
                     </div>
-                    <!-- 
-                    <div class="col-sm-2">
-                        <a class="btn btn-theme btn-block " href="#" onclick="clearLogin()">Clear</a>
-                    </div>
-        --->
+
                     
                 </div>
             </div>
         </section>
         <!-- /PAGE -->
-        <%}%>
+      
         
-        </form>
         <!-- /PAGE -->
         
     </div>
@@ -867,12 +744,6 @@ function createAuction(){
 
 function updateAuction(){
 	document.frm.action.value="updateAuction";
-	document.frm.submit();
-}
-
-
-function auctionPrivateInvites(){
-	document.frm.action.value="viewAuctionPrivateInvites";
 	document.frm.submit();
 }
 
@@ -919,29 +790,12 @@ function itemImages(itemId){
 
 
 function onLoadPage(){
-	//document.frm.userId.focus();	
-/*	
-//	if(document.frm.userId.value!=""){
-//		< /%if(userId!=null){ %>
-//			document.frm.pw.focus();
-//		< /%}%>
-//	}
-*/
 
-
-//alert("</%=auction.getTerms_and_conditions()%>");
-//document.getElementById("terms_and_conditions").innerHTML="</%=auction.getTerms_and_conditions()%>";
-
-
-
-//$('#terms_and_conditions').val('sadfsd');
-
-	//document.frm..value=;
 	
 }
 
 
-<%if(msgInfo!=null){%>
+ <% if(msgInfo!=null){ %>
 	
 	var msgInfo = "<%=msgInfo%>";
 	var msgbgcol = "<%=msgbgcol%>";
@@ -950,7 +804,7 @@ function onLoadPage(){
 	msgBoxValue = msgBoxValue + '</div>';
 	document.getElementById("msgDiv").innerHTML=msgBoxValue;
 
-<%}%>
+	<% }%>
 
 
 setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
@@ -960,7 +814,6 @@ setTimeout(onLoadPage,3000);
 
 
 </script>
-
 
 
 <!-- /JS Local -->
@@ -983,7 +836,6 @@ setTimeout(onLoadPage,3000);
 
 <!--[if (gte IE 9)|!(IE)]><!-->
 <script src="assets/plugins/jquery.cookie.js"></script>
-<!--  <script src="assets/js/theme-config.js"></script>  -->
 <!--<![endif]-->
 
 <!-- DataTables -->
@@ -993,123 +845,34 @@ setTimeout(onLoadPage,3000);
 <script src="js/jquery.datetimepicker.full.js"></script>
 <script type="text/javascript" src="js/select2.full.js"></script>
 
-<%--
-    <!-- jQuery 2.1.4 -->
-    <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
-    <!-- Bootstrap 3.3.5 -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="plugins/fastclick/fastclick.min.js"></script>
-    --%>
+<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
-	<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-	<!-- <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script> -->
 
 <script>
 
 
 
-function createLot(){
-	document.getElementById("action").value="createLot";
-	document.getElementById("manager").value="lot-manager";
-	document.frm.submit();
-}
-
-function viewLot(id){
-	document.getElementById("action").value="viewLot";
-	document.getElementById("manager").value="lot-manager";
-	document.getElementById("lotId_wip").value=id;
-	document.frm.submit();
-}
-
-
-function createItem(){
-	document.getElementById("action").value="createItem";
-	document.getElementById("manager").value="item-manager";
-	document.frm.submit();
-}
-
-
-function createAuctionUser(){
-	document.getElementById("action").value="createAuctionUser";
-	document.getElementById("manager").value="auction-user-manager";
-	document.frm.submit();
-}
-
-function viewItem(id){
-	document.getElementById("action").value="viewItem";
-	document.getElementById("manager").value="item-manager";
-	document.getElementById("itemId_wip").value=id;
-	document.frm.submit();
-}
-
-function viewAuctionUser(id){
-	document.getElementById("action").value="viewAuctionUser";
-	document.getElementById("manager").value="auction-user-manager";
-	document.getElementById("auctionUserId_wip").value=id;
-	document.frm.submit();
-}
 
  $(document).ready(function() {
-	 
-	 /*
-	 $(function () {
-	     // Replace the <textarea id="editor1"> with a CKEditor
-	     // instance, using default configuration.
-	     CKEDITOR.replace('terms_and_conditions');
-	     //bootstrap WYSIHTML5 - text editor
-	     $(".textarea").wysihtml5();
-	   });
-	 
-	 */
-	 
-	 /*
-	 $(function () {
-	     // Replace the <textarea id="editor1"> with a CKEditor
-	     // instance, using default configuration.
-	     CKEDITOR.replace('editor-2');
-	     //bootstrap WYSIHTML5 - text editor
-	     $(".textarea").wysihtml5();
-	   });
-	 */
+
  });
-
-	// document.getElementById("terms_and_conditions").value="< / %=auction.getTerms_and_conditions()!=null ? auction.getTerms_and_conditions() : ""%>";
 	
-	document.getElementById("terms_and_conditions_div").innerHTML = "<%=auction.getTerms_and_conditions()!=null ? "Yes" : "No"%>";
-	
-	//CKEDITOR.instances.editor1.setData(t);
-	//document.getElementById("terms_and_conditions").value="<p>a</p><p>asdfsadfasdf</p>";
-</script>
-<script>
-/*
-function Download(url) {
-	//alert(url);
-    document.getElementById('my_iframe').src = url;
-};
-*/
 
-
+  
 $(function () {
     $("#table1").DataTable({
     	"pageLength": 100,
-      	"order": [[ 2, "asc" ]],
+      	"order": [[ 1, "asc" ]],
       	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });
-  });
-  
-$(function () {
     $("#table2").DataTable({
     	"pageLength": 100,
-      	"order": [[ 4, "asc" ]],
+      	"order": [[ 1, "asc" ]],
       	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });
-  });
-  
-$(function () {
     $("#table3").DataTable({
     	"pageLength": 100,
-      	"order": [[ 4, "asc" ]],
+      	"order": [[ 1, "asc" ]],
       	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });
   });
