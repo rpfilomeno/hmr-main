@@ -20,6 +20,11 @@ public class DBConnection {
 
     private static Connection connection = null;
     private static Connection connection2 = null;
+    private static Connection connection3 = null;
+    private static Connection connection4 = null;
+    private static Connection connection5 = null;
+    private static Connection connection6 = null;
+    private static Connection connection7 = null;
     private static Connection connection_mssql = null;
 
     public Connection getConnection() throws SQLException {
@@ -74,6 +79,146 @@ public class DBConnection {
             //    e.printStackTrace();
             }
             return connection2;
+        }
+
+    }
+    
+    public Connection getConnection3() throws SQLException {
+        if (connection3 != null && !connection3.isClosed())
+            return connection3;
+        else {
+            try {
+                Properties prop = new Properties();
+                InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream("db.properties");
+                prop.load(inputStream);
+                String driver = prop.getProperty("driver");
+                String url = prop.getProperty("url");
+                String user = prop.getProperty("user");
+                String password = prop.getProperty("password");
+                Class.forName(driver);
+                connection3 = DriverManager.getConnection(url, user, password);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+            //    e.printStackTrace();
+            }
+            return connection3;
+        }
+
+    }
+    
+    public Connection getConnection4() throws SQLException {
+        if (connection4 != null && !connection4.isClosed())
+            return connection4;
+        else {
+            try {
+                Properties prop = new Properties();
+                InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream("db.properties");
+                prop.load(inputStream);
+                String driver = prop.getProperty("driver");
+                String url = prop.getProperty("url");
+                String user = prop.getProperty("user");
+                String password = prop.getProperty("password");
+                Class.forName(driver);
+                connection4 = DriverManager.getConnection(url, user, password);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+            //    e.printStackTrace();
+            }
+            return connection4;
+        }
+
+    }
+    
+    public Connection getConnection5() throws SQLException {
+        if (connection5 != null && !connection5.isClosed())
+            return connection5;
+        else {
+            try {
+                Properties prop = new Properties();
+                InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream("db.properties");
+                prop.load(inputStream);
+                String driver = prop.getProperty("driver");
+                String url = prop.getProperty("url");
+                String user = prop.getProperty("user");
+                String password = prop.getProperty("password");
+                Class.forName(driver);
+                connection5 = DriverManager.getConnection(url, user, password);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+            //    e.printStackTrace();
+            }
+            return connection5;
+        }
+
+    }
+    
+    public Connection getConnection6() throws SQLException {
+        if (connection6 != null && !connection6.isClosed())
+            return connection6;
+        else {
+            try {
+                Properties prop = new Properties();
+                InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream("db.properties");
+                prop.load(inputStream);
+                String driver = prop.getProperty("driver");
+                String url = prop.getProperty("url");
+                String user = prop.getProperty("user");
+                String password = prop.getProperty("password");
+                Class.forName(driver);
+                connection6 = DriverManager.getConnection(url, user, password);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+            //    e.printStackTrace();
+            }
+            return connection6;
+        }
+
+    }
+    
+    public Connection getConnection7() throws SQLException {
+        if (connection7 != null && !connection7.isClosed())
+            return connection7;
+        else {
+            try {
+                Properties prop = new Properties();
+                InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream("db.properties");
+                prop.load(inputStream);
+                String driver = prop.getProperty("driver");
+                String url = prop.getProperty("url");
+                String user = prop.getProperty("user");
+                String password = prop.getProperty("password");
+                Class.forName(driver);
+                connection7 = DriverManager.getConnection(url, user, password);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+            //    e.printStackTrace();
+            }
+            return connection7;
         }
 
     }

@@ -334,7 +334,15 @@ public class Bid extends HttpServlet {
         }
         
         
-        
+        List<Auction> activeLiveAuctionList = null;
+        if(req.getSession().getAttribute("ACTIVE-LIVE-AUCTION-LIST")==null){
+        	activeLiveAuctionList = aucMngr.getAuctionListByTypeAndActive(16);
+        	req.getSession().setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
+        	req.setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
+        }else{
+        	activeLiveAuctionList = aucMngr.getAuctionListByTypeAndActive(185);
+        	req.setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
+        }
 
 		
 		//all page get requests

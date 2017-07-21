@@ -1299,7 +1299,7 @@ public class AuctionDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection2();
 
 			StringBuilder sb = new StringBuilder("Update auction SET auction_id=?, auction_no=?, start_date_time=?, end_date_time=?, location=?, default_premium=?, date_sync=?");
 

@@ -649,7 +649,7 @@ public class ItemStagingDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection3();
 
 
 			StringBuilder sb = new StringBuilder("INSERT into item_staging (item_id, lot_id, status_id, reference_no, pullout_id,");
@@ -676,17 +676,35 @@ public class ItemStagingDao extends DBConnection {
 		    String sql = sb.toString();
 	        PreparedStatement stmt = null;
 	        
+	        
+			try{
+				stmt = conn.prepareStatement(sql);
+			}catch(Exception ex){
+				conn = dbConn.getConnection3();
+				//stmt = conn.prepareStatement(sql);
+				
+				try{
+					stmt = conn.prepareStatement(sql);
+				}catch(Exception ex1){
+					conn = dbConn.getConnection2();
+					stmt = conn.prepareStatement(sql);
+				}
+				
+			}
+	        
+	        
+	        
 			if(conn!=null && !conn.isClosed()){
 				try{
 					stmt = conn.prepareStatement(sql);
 				}catch(Exception ex){
-					conn = dbConn.getConnection();
+					conn = dbConn.getConnection2();
 					stmt = conn.prepareStatement(sql);
 				}
 				
 			}else{
 				dbConn = new DBConnection();
-				conn = dbConn.getConnection();
+				conn = dbConn.getConnection3();
 				stmt = conn.prepareStatement(sql);
 			}
 			
@@ -696,7 +714,7 @@ public class ItemStagingDao extends DBConnection {
 					stmt = conn.prepareStatement(sql);
 				}else{
 					dbConn = new DBConnection();
-					conn = dbConn.getConnection();
+					conn = dbConn.getConnection4();
 					stmt = conn.prepareStatement(sql);
 				}
 			}else{
@@ -865,7 +883,7 @@ public class ItemStagingDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection4();
 
 			StringBuilder sb = new StringBuilder("Update auction SET auction_no=?, location=?, bid_deposit_amount=?, start_date_time=?, end_date_time=?");
 
@@ -1159,13 +1177,13 @@ public class ItemStagingDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection4();
 			
 			//System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
-				conn = dbConn.getConnection();
+				conn = dbConn.getConnection4();
 			}
 		
 			java.sql.Statement stmt = conn.createStatement();

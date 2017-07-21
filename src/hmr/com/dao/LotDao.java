@@ -529,7 +529,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, date_sync, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
 		
 		sb.append(" from lot where auction_id ="+auction_id);
 
@@ -538,13 +538,13 @@ public class LotDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection2();
 			
 			System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
-				conn = dbConn.getConnection();
+				conn = dbConn.getConnection3();
 			}
 
 			java.sql.Statement stmt = conn.createStatement();
@@ -801,7 +801,7 @@ public class LotDao extends DBConnection {
 	try {
 		DBConnection dbConn = new DBConnection();
 		
-		conn = dbConn.getConnection();
+		conn = dbConn.getConnection3();
 		
 		StringBuilder sb = new StringBuilder("INSERT into lot (lot_id, auction_id, lot_no");
 	
@@ -1081,7 +1081,7 @@ public class LotDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection4();
 
 			StringBuilder sb = new StringBuilder("Update Lot Set lot_id=?, auction_id=?, lot_no=?");
 	

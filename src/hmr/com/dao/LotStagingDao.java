@@ -641,7 +641,7 @@ public class LotStagingDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection7();
 
 
 			StringBuilder sb = new StringBuilder("INSERT into lot_staging (lot_id, auction_id, lot_number, is_available_lot, lot_description,");
@@ -1080,9 +1080,9 @@ public class LotStagingDao extends DBConnection {
 			java.sql.Statement stmt = null;
 			
 			if(conn!=null && !conn.isClosed()){
-				conn = getConnection();
+				conn = getConnection3();
 			}else{
-				conn = dbConn.getConnection();
+				conn = dbConn.getConnection3();
 				//conn = getConnection();
 			}
 			

@@ -221,7 +221,7 @@ public class ItemDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection6();
 			
 
 			String SERVER_DIRECTORY_HMR_IMAGES = (String)req.getSession().getAttribute("SERVER_DIRECTORY_HMR_IMAGES");
@@ -384,7 +384,7 @@ public class ItemDao extends DBConnection {
 	try {
 		DBConnection dbConn = new DBConnection();
 		
-		conn = dbConn.getConnection();
+		conn = dbConn.getConnection5();
 		
 
 		String SERVER_DIRECTORY_HMR_IMAGES = null;
@@ -691,7 +691,7 @@ public class ItemDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection2();
 	
 			StringBuilder sb = new StringBuilder("UPDATE item SET item_id=?, lot_id=?, status_id=?, reference_no=?, pullout_id=?, target_price=?");
 	
@@ -1367,7 +1367,7 @@ public class ItemDao extends DBConnection {
 		sb.append(" order by item_desc");
 
 		try {
-			conn = getConnection();
+			conn = getConnection7();
 
 			java.sql.Statement stmt = null;
 			
@@ -1375,7 +1375,7 @@ public class ItemDao extends DBConnection {
 				stmt = conn.createStatement();
 			}else{
 				DBConnection dbConn = new DBConnection();
-				conn = dbConn.getConnection();
+				conn = dbConn.getConnection7();
 				stmt = conn.createStatement();
 			}
 			
@@ -1384,7 +1384,7 @@ public class ItemDao extends DBConnection {
 				stmt = conn.createStatement();
 			}else{
 				//DBConnection dbConn = new DBConnection();
-				conn = dbConn.getConnection();
+				conn = dbConn.getConnection5();
 				stmt = conn.createStatement();
 			}
 			

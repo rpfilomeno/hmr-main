@@ -1171,7 +1171,7 @@ public class AuctionStagingDao extends DBConnection {
 		sb.append(" order by auction_id desc");
 
 		try {
-			conn = getConnection();
+			conn = getConnection2();
 
 			java.sql.Statement stmt = conn.createStatement();
 
