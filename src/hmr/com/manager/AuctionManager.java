@@ -1,24 +1,14 @@
 package hmr.com.manager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +24,8 @@ import hmr.com.bean.Lov;
 import hmr.com.bean.User;
 import hmr.com.dao.AuctionDao;
 import hmr.com.dao.UserDao;
+import hmr.com.util.Hash;
+
 
 public class AuctionManager {
 
@@ -85,42 +77,26 @@ public class AuctionManager {
 		
 		
 		String action = req.getParameter("action")!=null ? req.getParameter("action") : (String)req.getSession().getAttribute("action");
-		//String file_name = "";
 		Integer user_id = 0;
-		BigDecimal auctionId_wip = new BigDecimal(0);
-		//String manager = "";
-		//String userId = "";
+		BigDecimal auctionId_wip = req.getParameter("auctionId_wip")!=null && !"".equals(req.getParameter("auctionId_wip"))  ? new BigDecimal(req.getParameter("auctionId_wip")): new BigDecimal(0);
+		//auctionId_wip = !req.getParameter("auctionId_wip").equals("") ? new BigDecimal(req.getParameter("auctionId_wip")) : new BigDecimal(0);
 		
-		System.out.println("Paramerters doAuctionManager - start");
-		System.out.println("action : "+action);
-		try{
-			System.out.println("auctionId_wip Session : "+Integer.valueOf(req.getSession().getAttribute("auctionId-wip").toString()) );
-		}catch(Exception exx){}
 		
-		System.out.println("Paramerters doAuctionManager - end");
-		System.out.println("");
-		
+		AuctionUserManager auMngr = new AuctionUserManager(req, res);
 		
 		if("auctionList".equals(action)){
 			
 			System.out.println("auctionList");
-
 			List<Auction> aList = getAuctionList();
-			
 			req.setAttribute("auctionList", aList);
-
 			page ="auction-list.jsp";
 		
 		}else if("createAuction".equals(action)){
 			
 			System.out.println("createAuction");
-			
 			UserDao ud = new UserDao();
-			
 			List<User> userCoordinatorList = ud.getUserListByRole(5);
-
 			req.setAttribute("userCoordinatorList", userCoordinatorList);
-
 			page ="auction-create.jsp";
 		
 		}else if("saveAuction".equals(action)){
@@ -258,16 +234,10 @@ public class AuctionManager {
 				setLovValuesCurrency(req, res);
 				
 				req.getSession().setAttribute("auction", a);
-				
-				req.setAttribute("auction", a);
-				
+				req.setAttribute("auction", a);				
 				page ="auction.jsp";
-				
-				
-				
-				
+
 			}else if("auctionBidDetails".equals(action)){
-				
 				page ="auction-bid-details.jsp";
 			}else{
 				/*
@@ -286,26 +256,28 @@ public class AuctionManager {
 			
 
 		
-		}else if("viewAuction".equals(action) || "viewAuctionPrivateInvites".equals(action)){
+		}else if("viewAuction".equals(action) || 
+				"viewAuctionPrivateInvites".equals(action) ||
+				"USER-APPROVE".equals(action) ||
+				"USER-REJECT".equals(action) ||
+				"USER-APPROVE-TO-PENDING".equals(action) ||
+				"USER-REJECTED-TO-PENDING".equals(action)
+				){
 			
-			System.out.println("viewAuction");
+				System.out.println("viewAuction");
 
-			auctionId_wip = !req.getParameter("auctionId_wip").equals("") ? new BigDecimal(req.getParameter("auctionId_wip")) : new BigDecimal(0);
+				Integer auctionUserId_wip = (req.getParameter("auctionUserId_wip")!=null && !"".equals(req.getParameter("auctionUserId_wip"))) ? Integer.valueOf(req.getParameter("auctionUserId_wip")): 0;	
 
-				
 				//Auction a = getAuctionById(auctionId_wip);
 				Auction a = getAuctionByAuctionId(auctionId_wip);
 				
-				setLovValuesCategoryLevel(req,res);
-				setLovValuesCurrency(req, res);
+				
 				
 				req.getSession().setAttribute("auction", a);
-				
 				req.setAttribute("auction", a);
 
-				LotManager lMngr = new LotManager();
 				
-				List<Lot> lList = lMngr.getLotListByAuctionId(auctionId_wip);
+				List<Lot> lList = new LotManager().getLotListByAuctionId(auctionId_wip);
 				
 				req.setAttribute("lotList", lList);
 				
@@ -366,20 +338,63 @@ public class AuctionManager {
 					req.setAttribute("BIDDER-USER-LIST", bidderUserList);
 				}
 				
-				AuctionUserManager auMngr = new AuctionUserManager(req, res);
-				List<AuctionUser> auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
-
-				req.setAttribute("auctionUserList", auctionUserList);
+				
+				
+				
 				
 				setLovAuctionUserValues(req, res);
+				setLovValuesCategoryLevel(req,res);
+				setLovValuesCurrency(req, res);
+				List<AuctionUser> auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
+				req.setAttribute("auctionUserList", auctionUserList);
+				
 				
 				if("viewAuctionPrivateInvites".equals(action)) {
+					auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
+					req.setAttribute("auctionUserList", auctionUserList);
 					page ="auction-private.jsp";
+				
+				}else if("USER-APPROVE".equals(action)){
+					AuctionUser au = auMngr.getAuctionUserById(auctionUserId_wip);
+					au = auMngr.updateAuctionUserOnUpdate(auctionId_wip, au.getUser_id(), 25, au.getActive(), user_id, au.getId(), au.getCompany_id_no());
+					req.setAttribute("msgbgcol", "green");
+					req.setAttribute("msgInfo", "Auction user has been approved.");
+					auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
+					req.setAttribute("auctionUserList", auctionUserList);
+					page ="auction-private.jsp";
+
+				}else if("USER-REJECT".equals(action)){
+					AuctionUser au = auMngr.getAuctionUserById(auctionUserId_wip);
+					au = auMngr.updateAuctionUserOnUpdate(auctionId_wip, au.getUser_id(), 28, au.getActive(), user_id, au.getId(), au.getCompany_id_no());
+					req.setAttribute("msgbgcol", "red");
+					req.setAttribute("msgInfo", "Auction user has been rejected.");
+					auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
+					req.setAttribute("auctionUserList", auctionUserList);
+					page ="auction-private.jsp";
+					
+				}else if("USER-APPROVE-TO-PENDING".equals(action)){
+					AuctionUser au = auMngr.getAuctionUserById(auctionUserId_wip);
+					au = auMngr.updateAuctionUserOnUpdate(auctionId_wip, au.getUser_id(), 26, au.getActive(), user_id, au.getId(), au.getCompany_id_no());
+					req.setAttribute("msgbgcol", "yellow");
+					req.setAttribute("msgInfo", "Approved auction user has been set to pending status.");
+					auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
+					req.setAttribute("auctionUserList", auctionUserList);
+					page ="auction-private.jsp";
+					
+				}else if("USER-REJECTED-TO-PENDING".equals(action)){
+					AuctionUser au = auMngr.getAuctionUserById(auctionUserId_wip);
+					au = auMngr.updateAuctionUserOnUpdate(auctionId_wip, au.getUser_id(), 26, au.getActive(), user_id, au.getId(), au.getCompany_id_no());
+					req.setAttribute("msgbgcol", "yellow");
+					req.setAttribute("msgInfo", "Approved auction user has been set to pending status.");
+					auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
+					req.setAttribute("auctionUserList", auctionUserList);
+					page ="auction-private.jsp";
+					
 				} else {
 					page ="auction.jsp";
 				}
 				
-			
+
 
 		}else if("updateAuction".equals(action)){
 			
@@ -582,14 +597,10 @@ public class AuctionManager {
 					req.setAttribute("BIDDER-USER-LIST", bidderUserList);
 				}
 				
-				
-				AuctionUserManager auMngr = new AuctionUserManager(req, res);
-				List<AuctionUser> auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
 
+				List<AuctionUser> auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
 				req.setAttribute("auctionUserList", auctionUserList);
-				
 				setLovAuctionUserValues(req,res);
-				
 				page ="auction.jsp";
 				
 			}else{
@@ -597,11 +608,8 @@ public class AuctionManager {
 				a = new Auction();
 				req.setAttribute("msgbgcol", "red");
 				req.setAttribute("msgInfo", "Auction update failed.<br>Please contact your administrator.");
-				
 				req.getSession().setAttribute("auction", a);
-				
 				req.setAttribute("auction", a);
-				
 				page ="auction-list.jsp";
 				
 			}
@@ -633,12 +641,8 @@ public class AuctionManager {
 		
 		
 		req.getSession().setAttribute("auctionId_wip", auctionId_wip);
-		
 		req.setAttribute("auctionId_wip", auctionId_wip);
 
-		
-		System.out.println("Paramerters doAuctionManager - page : "+page);
-		
 		return page;
 		
 	}
@@ -960,6 +964,8 @@ public class AuctionManager {
 	}
 	
 	
+	
+	
 	private void setLovValuesCategoryLevel(HttpServletRequest req, HttpServletResponse res){
 		
 
@@ -1086,11 +1092,9 @@ public class AuctionManager {
 		List<Lov> auctionUserStatusLovList = null;
 	
 		try {
-			
 
 			System.out.println("AUCTION-USER-STATUS-HM : " + req.getSession().getAttribute("AUCTION-USER-STATUS-HM"));
 			System.out.println("AUCTION-USER-STATUS-LIST : " + req.getSession().getAttribute("AUCTION-USER-STATUS-LIST"));
-
 			
 			if(req.getSession().getAttribute("AUCTION-USER-STATUS-HM")==null ){
 				auctionUserStatusLovHM = lovMngr.getLovHM("AUCTION-USER-STATUS");
@@ -1107,14 +1111,25 @@ public class AuctionManager {
 				auctionUserStatusLovList = (List<Lov>)req.getSession().getAttribute("AUCTION-USER-STATUS-LIST");
 				req.setAttribute("AUCTION-USER-STATUS-LIST", auctionUserStatusLovList);
 			}
-
-
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+
+	}
+	
+	public String generateAuctionPrivateToken(BigDecimal auctionId){
+		String token = getAuctionById(auctionId).getToken();
+		if(token == null) {
+			token = Hash.md5(auctionId.toString()+"hrm2017salt");
+			new AuctionDao().updateToken(auctionId, token);
+		}
+		return token;
+	}
+	
+	public Auction getAuctionByToken(String token) {
+		return new AuctionDao().getAuctionByToken(token);
+				
 	}
 	
 }

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <%@ page import="hmr.com.bean.User"
-		 import="java.util.List"  
+		 import="java.util.List"
+		 import="hmr.com.bean.Auction"
+		 import="java.text.DecimalFormat"
+		 import="java.text.SimpleDateFormat"
 %>
 <html lang="en">
 <head>
@@ -13,8 +16,12 @@
 	  String msgbgcol = request.getAttribute("msgbgcol")!=null ? (String)request.getAttribute("msgbgcol") : "";
 	  
 	  
-	  String firstName = request.getAttribute("firstName")!=null ? (String)request.getAttribute("firstName") : "";
+	  String companyIdNo = request.getAttribute("companyIdNo")!=null ? (String)request.getAttribute("companyIdNo") : "";
+	  String privateInviteId = request.getAttribute("privateInviteId")!=null ? (String)request.getAttribute("privateInviteId") : "";
+	  Auction auction = (Auction) request.getAttribute("auction");
+	  
 	  String lastName = request.getAttribute("lastName")!=null ? (String)request.getAttribute("lastName") : "";
+	  String firstName = request.getAttribute("firstName")!=null ? (String)request.getAttribute("firstName") : "";
 	  String userId = request.getAttribute("userId")!=null ? (String)request.getAttribute("userId") : "";
 	  //Integer mobileNo = request.getAttribute("mobileNo")!=null ? (Integer)request.getAttribute("mobileNo") : null;
 	  
@@ -22,6 +29,9 @@
 	  //IDS
 	  Integer user_id = request.getAttribute("user_id")!=null ? (Integer)request.getAttribute("user_id") : null;
 	
+	  DecimalFormat df = new DecimalFormat("#,###,##0");
+	  SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
+		
 	%>
     <title><%=COMPANY_NAME%></title>
 
@@ -64,6 +74,24 @@
 
     <!-- CONTENT AREA -->
     <div class="content-area">
+    
+    	<!-- PAGE -->
+        <section class="page-section">
+            <div class="container">
+            	<div class="row ">
+            		<div class="col-md-12">
+		                <div class="message-box">
+		                    <div class="message-box-inner">
+		                        <h2><%=auction.getAuction_name()%></h2>
+		                    </div>
+		                </div>
+		                
+		                <div id="msgDiv"></div>
+		             </div>
+               </div>
+            </div>
+        </section>
+        <!-- /PAGE -->
 
 
 
@@ -71,27 +99,52 @@
         <section class="page-section color" style="padding:15px;">
             <div class="container">
                 <div class="row">
+                	<div class="col-sm-6">
+                		<div class="row">
+                				
+                                
+                                <div class="col-md-12">
+
+							    	<div class="media" style="height: 210px;">
+							        	<a class="pull-left media-link" href="#" >
+							            	<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=auction.getAuction_id()%>&t=at" alt="">
+								        </a>
+							            <div class="media-body">
+											<h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red"><%=auction.getAuction_desc()%></a></h4>
+							                <div><label>LOCATION : </label> &nbsp;&nbsp; <label><%=auction.getLocation()%></label></div>
+							           		<div><label>START : </label> &nbsp;&nbsp; <label><%=sdf.format(auction.getStart_date_time()) %></label></div>
+                                    		<div><label>CLOSING : </label>&nbsp;&nbsp; <label><%=sdf.format(auction.getEnd_date_time()) %></label></div>
+
+							        	</div>
+							    	</div>
+							    </div>
+                		</div>
+                	</div>
                     <div class="col-sm-6">
-                        <h3 class="block-title"><span>Login</span></h3>
                         <form action="bid" class="form-login" name="frm" method="post">
                             <div class="row">
-                            	<!-- 
-                            	<div class="message-box" style="background-color: light-red">
-				                    <div class="message-box-inner2" >
-				                        <h2 style="font-size: 12px; background-color: red">Login Failed</h2>
-				                    </div>
-				                </div> 
-				                
-			                    <div class="message-box" style="font-size: 12px; background-color: red">
-			                        <h2 style="font-size: 12px; background-color: red">Login Failed</h2>
-			                    </div>
-				                
-				                -->
-				                <div id="msgDiv"></div>
-                            	
+
+                                
+                                
                                 <div class="col-md-12 hello-text-wrap">
-                                    <span class="hello-text text-thin">Hello, welcome to HMR Auctions</span>
+                                    <span class="hello-text text-thin">Hello, you have been invited to bid on a Private Auction.</span>
                                 </div>
+                                <div class="col-md-12 hello-text-wrap">
+                                    <span class="hello-text text-thin">You must provide the following information required to join:</span>
+                                </div>
+                                
+                                
+                                 <div class="col-md-12">
+                                    <div class="form-group"><input class="form-control" type="text" id="companyIdNo" name="companyIdNo" placeholder="Company ID Number" maxlength="50" value="<%if(companyIdNo!=null){ %><%=companyIdNo%><%}%>"></div>
+                                </div>
+                                
+                                <input class="form-control" type="hidden" id="privateInviteId" name="privateInviteId" value="<%=auction.getToken()%>">
+                                
+                                
+                                <div class="col-md-12 hello-text-wrap">
+                                    <span class="hello-text text-thin">Continue by logging into your account now.</span>
+                                </div>
+                                
                                
                                 <div class="col-md-12">
                                     <div class="form-group"><input class="form-control" type="text" id="userId" name="userId" placeholder="Email" maxlength="50" value="<%if(userId!=null){ %><%=userId%><%}else{%><%}%>"></div>
@@ -99,19 +152,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group"><input class="form-control" id="pw" name="pw" type="password" placeholder="Password" maxlength="15" value=""></div>
                                 </div>
-                                <!--
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="checkbox">
-                                        <label><input type="checkbox"> Remember me</label>
-                                    </div>
-                                </div> 
-                                -->
-                                <%-- 
-								<div class="col-md-6 col-lg-6 text-left-lg">
-                                    	<!-- <a class="forgot-password" href="bid?mngr=get&a=changePassword">&nbsp;</a> -->
-                                        <a class="forgot-password" href="#">&nbsp;</a>
-                                    
-                                </div> --%>
+                                
                                 <div class="col-md-12 col-lg-12 text-left-lg">
                                     <a class="forgot-password" href="bid?mngr=get&a=forgotPassword">forgot password?</a>
                                 </div>
@@ -127,79 +168,13 @@
                             <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
                         </form>
                     </div>
-                    <!-- 
-                    <div class="col-sm-6">
-                        <h3 class="block-title"><span>Create New Account</span></h3>
-                        <form action="#" class="create-account">
-                            <div class="row">
-                                <div class="col-md-12 hello-text-wrap">
-                                    <span class="hello-text text-thin">Create Your Account on Bellashop</span>
-                                </div>
-                                <div class="col-md-12">
-                                    <h3 class="block-title">Signup Today and You'll be able to</h3>
-                                    <ul class="list-check">
-                                        <li>Online Order Status</li>
-                                        <li>See Ready Hot Deals</li>
-                                        <li>Love List</li>
-                                        <li>Sign up to receive exclusive news and private sales</li>
-                                        <li>Quick Buy Stuffs</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-6">
-                                    <a class="btn btn-block btn-theme btn-theme-dark btn-create" href="#">Create Account</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div> 
-                    -->
+                    
                 </div>
             </div>
         </section>
         <!-- /PAGE -->
 
-        <!-- PAGE -->
-        <!-- 
-        <section class="page-section">
-            <div class="container">
-                <div class="row blocks shop-info-banners">
-                    <div class="col-md-4">
-                        <div class="block">
-                            <div class="media">
-                                <div class="pull-right"><i class="fa fa-gift"></i></div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Buy 1 Get 1</h4>
-                                    Proin dictum elementum velit. Fusce euismod consequat ante.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="block">
-                            <div class="media">
-                                <div class="pull-right"><i class="fa fa-comments"></i></div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Call to Free</h4>
-                                    Proin dictum elementum velit. Fusce euismod consequat ante.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="block">
-                            <div class="media">
-                                <div class="pull-right"><i class="fa fa-trophy"></i></div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Money Back!</h4>
-                                    Proin dictum elementum velit. Fusce euismod consequat ante.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        -->
-        <!-- /PAGE -->
+        
 
 
     </div>
@@ -230,7 +205,7 @@ function onLoadPage(){
 	document.frm.userId.value ="administrator@hmrauctions.com.ph";
 	document.frm.pw.value = "administrator";
 	document.frm.userId.focus();
-	document.frm.submit();
+	//document.frm.submit();
 	
 	if(document.frm.userId.value!=""){
 		<%if(userId!=null){ %>
@@ -242,7 +217,16 @@ function onLoadPage(){
 
 function validateLogin(){
 	var isLogin = true;
-	if(document.frm.userId.value==""){
+	if(document.frm.companyIdNo.value==""){
+		var msgInfo = "Company ID number is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.userId.focus();
+		isLogin = false;
+	}else if(document.frm.userId.value==""){
 		var msgInfo = "Email is required.";
 		var msgbgcol = "red";
 		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';

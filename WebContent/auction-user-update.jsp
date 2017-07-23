@@ -254,6 +254,13 @@
 						<select class="activeSel form-control" id="active" name="active" style="height: 45px; size: 25px;"><option value="">ACTIVE</option><option value="1">Yes</option><option value="0">No</option></select>
 		            </div>
 				</div>
+				
+				<div class="col-sm-6">
+					<label><b>Company Id : </b></label>
+						<input type="text" class="form-control" id="companyIdNo">
+		            </div>
+				</div>
+				
 				<div class="col-sm-12">
 					<div class="col-sm-2">
 					     <a class="btn btn-theme btn-block " href="#" onclick="saveUpdateAuctionUser()">Save</a>
@@ -269,11 +276,6 @@
 					<%} %>
 					
 				</div>
-                    <!-- 
-                    <div class="col-sm-2">
-                        <a class="btn btn-theme btn-block " href="#" onclick="clearLogin()">Clear</a>
-                    </div>
-        --->
                     
 	                
 	            </div>

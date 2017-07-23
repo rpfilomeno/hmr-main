@@ -36,6 +36,7 @@ public class Auction extends SystemBean {
 	Integer one_lot_per_bidder;
 	Integer one_start_bid;
 	Integer bid_qualifier_price;
+	String token;
 	
 	public BigDecimal getId() {
 		return id;
@@ -220,5 +221,11 @@ public class Auction extends SystemBean {
 	}
 	public void setBid_qualifier_price(Integer bid_qualifier_price) {
 		this.bid_qualifier_price = bid_qualifier_price;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

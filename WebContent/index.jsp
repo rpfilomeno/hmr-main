@@ -357,26 +357,19 @@
                             <%for(Auction activeOnlineAuction : activeOnlineAuctionList) {%>
 
                             <div class="media">
-                               <a class="pull-left media-link" href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeOnlineAuction.getId()%>">
-                                    <!-- <img class="media-object" src="image?id=< / %=activeOnlineAuction.getId()%>&s=s" alt=""> -->
-                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeOnlineAuction.getAuction_id()%>&t=at" alt="">
-                                    <!-- <i class="fa fa-eye"></i> -->
-                                </a>
+                               	<div style="position: relative">
+	                               	<a class="pull-left media-link" href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeOnlineAuction.getId()%>">
+	                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeOnlineAuction.getAuction_id()%>&t=at" alt="">
+	                                </a>
+	                                <% if(activeOnlineAuction.getVisibility() == 34) {%>
+	                                <span class="glyphicon glyphicon-eye-close" style="position: absolute; top: 5px; left: 5px; background-color: red; padding: 3px; color: white;"></span>
+                                	<% } %>
+                                </div>
                                 <div class="media-body">
                                     <h4 class="media-heading"><a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeOnlineAuction.getId()%>" style="font-size: 14px; font-weight: bold; color: red;"><%=activeOnlineAuction.getAuction_name()%></a></h4>
-                                    <%--
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div> --%>
                                     <div><label><%=activeOnlineAuction.getLocation()%></label></div>
-                                    <%-- <div><label>Closing : <% /=sdf.format(activeOnlineAuction.getEnd_date_time()) %></label></div> --%>
                                     <div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=activeOnlineAuction.getId()%>"></label></div>
                                     <script>setCountDownTimer('cdTimer-<%=activeOnlineAuction.getId()%>', '<%=activeOnlineAuction.getEnd_date_time()%>')</script>
-                                    <%-- <div class="price"><ins><%=activeOnlineAuction.getNo_of_items()%></ins></div> --%>
                                 </div>
                             </div>
                             <%} %>
@@ -390,28 +383,20 @@
                             <%for(Auction activeNegotiatedAuction : activeNegotiatedAuctionList) {%>
 
                             <div class="media">
-                               <a class="pull-left media-link" href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>">
-                                    <!-- <img class="media-object" src="image?id=< / %=activeNegotiatedAuction.getId()%>&s=s" alt=""> -->
-                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeNegotiatedAuction.getAuction_id()%>&t=at" alt="">
-                                    
-                                    
-                                    <!-- <i class="fa fa-eye"></i> -->
-                                </a>
+                            	<div style="position: relative">
+	                               	<a class="pull-left media-link" href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>">
+	                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeNegotiatedAuction.getAuction_id()%>&t=at" alt="">
+	                                </a>
+	                                <% if(activeNegotiatedAuction.getVisibility() == 34) {%>
+	                                <span class="glyphicon glyphicon-eye-close" style="position: absolute; top: 5px; left: 5px; background-color: red; padding: 3px; color: white;"></span>
+                                	<% } %>
+                                </div>
                                 <div class="media-body">
                                     <h4 class="media-heading"><a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>" style="font-size: 14px; font-weight: bold; color: red;"><%=activeNegotiatedAuction.getAuction_name()%></a></h4>
-                                    <%--
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div> --%>
+                                    
                                     <div><label><%=activeNegotiatedAuction.getLocation()%></label></div>
-                                    <%-- <div><label>Closing : <% /=sdf.format(activeOnlineAuction.getEnd_date_time()) %></label></div> --%>
                                     <div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=activeNegotiatedAuction.getId()%>"></label></div>
                                     <script>setCountDownTimer('cdTimer-<%=activeNegotiatedAuction.getId()%>', '<%=activeNegotiatedAuction.getEnd_date_time()%>')</script>
-                                    <%-- <div class="price"><ins><%=activeOnlineAuction.getNo_of_items()%></ins></div> --%>
                                 </div>
                             </div>
                             
@@ -425,31 +410,24 @@
 					<div class="col-md-4">
                         <div class="product-list">
                             <a class="btn btn-theme btn-title-more" href="#">See All</a>
-                            <h4 class="block-title"><span>Live Auctions</span></h4>
-                            <%for(Auction activeNegotiatedAuction : activeNegotiatedAuctionList) {%>
+                            <h4 class="block-title"><span>Live Auction</span></h4>
+                            <%for(Auction activeLiveAuction : activeLiveAuctionList) {%>
 
                             <div class="media">
-                               <a class="pull-left media-link" href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>">
-                                    <!-- <img class="media-object" src="image?id=< / %=activeNegotiatedAuction.getId()%>&s=s" alt=""> -->
-                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeNegotiatedAuction.getAuction_id()%>&t=at" alt="">
-                                    
-                                    <!-- <i class="fa fa-eye"></i> -->
-                                </a>
+                            	<div style="position: relative">
+	                               	<a class="pull-left media-link" href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeLiveAuction.getId()%>">
+	                                    <img  class="media-object" style="height: <%=imgHeight%>px; size: <%=imgSize%>px;" src="image?id=<%=activeLiveAuction.getAuction_id()%>&t=at" alt="">
+	                                </a>
+	                                <% if(activeLiveAuction.getVisibility() == 34) {%>
+	                                <span class="glyphicon glyphicon-eye-close" style="position: absolute; top: 5px; left: 5px; background-color: red; padding: 3px; color: white;"></span>
+                                	<% } %>
+                                </div>
                                 <div class="media-body">	
-                                    <h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red;"><%=activeNegotiatedAuction.getAuction_name()%></a></h4>
-                                    <%--
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div> --%>
-                                    <div><label><%=activeNegotiatedAuction.getLocation()%></label></div>
-                                    <%-- <div><label>Closing : <% /=sdf.format(activeOnlineAuction.getEnd_date_time()) %></label></div> --%>
-                                    <div><i class="fa fa-clock-o"></i> <label id="cdTimerla-<%=activeNegotiatedAuction.getId()%>"></label></div>
-                                    <script>setCountDownTimer('cdTimerla-<%=activeNegotiatedAuction.getId()%>', '<%=activeNegotiatedAuction.getEnd_date_time()%>')</script>
-                                    <%-- <div class="price"><ins><%=activeOnlineAuction.getNo_of_items()%></ins></div> --%>
+                                    <h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red;"><%=activeLiveAuction.getAuction_name()%></a></h4>
+                                    
+                                    <div><label><%=activeLiveAuction.getLocation()%></label></div>
+                                    <div><i class="fa fa-clock-o"></i> <label id="cdTimerla-<%=activeLiveAuction.getId()%>"></label></div>
+                                    <script>setCountDownTimer('cdTimerla-<%=activeLiveAuction.getId()%>', '<%=activeLiveAuction.getEnd_date_time()%>')</script>
                                 </div>
                             </div>
                             

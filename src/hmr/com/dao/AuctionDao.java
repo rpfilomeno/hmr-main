@@ -167,6 +167,115 @@ public class AuctionDao extends DBConnection {
 	}	
 	*/
 	
+public Auction getAuctionByToken(String token){
+		
+		Connection conn = null;
+
+		Auction a = null;
+		
+		StringBuilder sb = new StringBuilder("Select id, auction_no, location, bid_deposit_amount, start_date_time, end_date_time");
+
+		sb.append(", auction_desc, terms_and_conditions, coordinator, visibility, auction_item_closing, auction_type, active, auction_id");
+		
+		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, auction_name, category_level_1, one_lot_per_bidder");
+		
+		sb.append(", one_start_bid, bid_qualifier_price, token");
+		
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		
+		sb.append(" from auction where token = '"+token+"'");
+
+
+		try {
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}
+			
+			
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			while(rs.next()){
+				a = new Auction();
+
+				a.setId(rs.getBigDecimal("id"));
+
+				a.setAuction_name(rs.getString("auction_name"));	
+				a.setAuction_no(rs.getBigDecimal("auction_no"));
+				a.setLocation(rs.getString("location"));
+				a.setBid_deposit_amount(rs.getBigDecimal("bid_deposit_amount"));
+				a.setStart_date_time(rs.getTimestamp("start_date_time"));
+				a.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				a.setAuction_desc(rs.getString("auction_desc"));
+				a.setTerms_and_condition(rs.getString("terms_and_conditions"));	
+				a.setCoordinator(rs.getInt("coordinator"));
+				a.setVisibility(rs.getInt("visibility"));
+				a.setAuction_item_closing(rs.getInt("auction_item_closing"));
+				a.setAuction_type(rs.getInt("auction_type"));
+				a.setAuction_id(rs.getBigDecimal("auction_id"));
+            	a.setStatus(rs.getInt("status"));
+            	a.setActive(rs.getInt("active"));
+				a.setNo_of_lots(rs.getInt("no_of_lots"));
+				a.setNo_of_items(rs.getInt("no_of_items"));
+				a.setAuction_item_increment_time(rs.getInt("auction_item_increment_time"));
+				a.setBid_deposit(rs.getInt("bid_deposit"));
+				a.setDate_sync(rs.getTimestamp("date_sync"));
+				a.setCategory_level_1(rs.getInt("category_level_1"));
+				a.setOne_lot_per_bidder(rs.getInt("one_lot_per_bidder"));
+				a.setOne_start_bid(rs.getInt("one_start_bid"));
+				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+				a.setToken(rs.getString("token"));
+
+            	a.setDate_created(rs.getTimestamp("date_created"));
+            	a.setCreated_by(rs.getInt("created_by"));
+            	a.setDate_updated(rs.getTimestamp("date_updated"));
+            	a.setUpdated_by(rs.getInt("updated_by"));
+            	
+            	//InputStream binaryStream = rs.getBinaryStream("image");
+            	//a.setImageInputStream(binaryStream);
+            	
+            	a.setImageBytes(rs.getBytes("image"));
+            	a.setImageSmallBytes(rs.getBytes("image_small"));
+            	
+            	//a.
+            	//binaryStream.
+
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return a;
+	}
+	
 	public Auction getAuctionById(Integer id){
 		
 		Connection conn = null;
@@ -179,7 +288,7 @@ public class AuctionDao extends DBConnection {
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, auction_name, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price");
+		sb.append(", one_start_bid, bid_qualifier_price, token");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -240,6 +349,7 @@ public class AuctionDao extends DBConnection {
 				a.setOne_lot_per_bidder(rs.getInt("one_lot_per_bidder"));
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+				a.setToken(rs.getString("token"));
 
             	a.setDate_created(rs.getTimestamp("date_created"));
             	a.setCreated_by(rs.getInt("created_by"));
@@ -288,7 +398,7 @@ public class AuctionDao extends DBConnection {
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, auction_name, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price");
+		sb.append(", one_start_bid, bid_qualifier_price, token");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -349,6 +459,7 @@ public class AuctionDao extends DBConnection {
 				a.setOne_lot_per_bidder(rs.getInt("one_lot_per_bidder"));
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+				a.setToken(rs.getString("token"));
 				
             	a.setDate_created(rs.getTimestamp("date_created"));
             	a.setCreated_by(rs.getInt("created_by"));
@@ -398,7 +509,7 @@ public class AuctionDao extends DBConnection {
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, auction_name, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price");
+		sb.append(", one_start_bid, bid_qualifier_price, token");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -460,6 +571,7 @@ public class AuctionDao extends DBConnection {
 				
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+				a.setToken(rs.getString("token"));
 	
             	a.setDate_created(rs.getTimestamp("date_created"));
             	a.setCreated_by(rs.getInt("created_by"));
@@ -1532,7 +1644,7 @@ public class AuctionDao extends DBConnection {
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price");
+		sb.append(", one_start_bid, bid_qualifier_price, token");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -1578,6 +1690,7 @@ public class AuctionDao extends DBConnection {
 				a.setOne_lot_per_bidder(rs.getInt("one_lot_per_bidder"));
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+				a.setToken(rs.getString("token"));
 
 				//SystemBean - start
 				a.setDate_created(rs.getTimestamp("date_created"));
@@ -1614,7 +1727,7 @@ public class AuctionDao extends DBConnection {
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price");
+		sb.append(", one_start_bid, bid_qualifier_price, token");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -1679,6 +1792,7 @@ public class AuctionDao extends DBConnection {
 				a.setOne_lot_per_bidder(rs.getInt("one_lot_per_bidder"));
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+				a.setToken(rs.getString("token"));
 				
 				
             	a.setImageBytes(rs.getBytes("image"));
@@ -1726,7 +1840,7 @@ public class AuctionDao extends DBConnection {
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price");
+		sb.append(", one_start_bid, bid_qualifier_price, token");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -1791,6 +1905,7 @@ public class AuctionDao extends DBConnection {
 				a.setOne_lot_per_bidder(rs.getInt("one_lot_per_bidder"));
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+				a.setToken(rs.getString("token"));
 				
 				
             	a.setImageBytes(rs.getBytes("image"));
@@ -1819,6 +1934,27 @@ public class AuctionDao extends DBConnection {
 		}
 		
 		return aList;
+	}
+	
+	public int updateToken(BigDecimal id, String token){
+		StringBuilder sb = new StringBuilder("UPDATE `auction`");
+		sb.append(" SET `token` = '" + token + "' ");
+		sb.append("WHERE `auction`.`id` = "+ id.toString());
+		try {
+			DBConnection dbConn = new DBConnection();
+			conn = dbConn.getConnection();
+			java.sql.Statement stmt = conn.createStatement();
+			System.out.println("sql : "+sb.toString());
+			return stmt.executeUpdate(sb.toString());
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 	
 

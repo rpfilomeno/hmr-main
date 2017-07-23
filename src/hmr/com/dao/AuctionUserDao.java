@@ -87,6 +87,164 @@ public class AuctionUserDao extends DBConnection {
 	}
 	
 	
+	public AuctionUser getAuctionUserByUserIdAndAuctionIdAndStatus(BigDecimal user_id, BigDecimal auction_id, Integer status){
+		
+		Connection conn = null;
+
+		AuctionUser u = null;
+		
+
+		
+		StringBuilder sb = new StringBuilder("Select id, auction_id, user_id, status, active");
+
+		sb.append(", company_id_no, image_1");
+		
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		
+		sb.append(" from auction_user where user_id ="+user_id+" AND auction_id="+auction_id + " AND status= " + status);
+
+
+		try {
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			System.out.println("conn : "+conn);
+
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			while(rs.next()){
+				u = new AuctionUser();
+
+            	u.setId(rs.getBigDecimal("id"));
+            	u.setAuction_id(rs.getBigDecimal("auction_id"));
+            	u.setUser_id(rs.getInt("user_id"));
+            	u.setStatus(rs.getInt("status"));
+            	u.setActive(rs.getInt("active"));
+            	u.setCompany_id_no(rs.getString("company_id_no"));
+            	u.setImageBytes(rs.getBytes("image_1"));
+
+            	u.setDate_created(rs.getTimestamp("date_created"));
+            	u.setCreated_by(rs.getInt("created_by"));
+            	u.setDate_updated(rs.getTimestamp("date_updated"));
+            	u.setUpdated_by(rs.getInt("updated_by"));
+            	
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return u;
+	}
+	
+	
+	
+	
+	public AuctionUser insertAuctionUserOnCreate(
+			BigDecimal auction_id,
+			Integer bidder_id,
+			Integer status,
+			Integer active,
+			Integer user_id,
+			String company_id_no 
+		){
+	
+	Connection conn = null;
+	
+	int affectedRows = 0;
+	
+	AuctionUser u = null;
+
+	try {
+		DBConnection dbConn = new DBConnection();
+		
+		conn = dbConn.getConnection();
+	      
+		StringBuilder sb = new StringBuilder("INSERT INTO auction_user (auction_id, user_id, status, active, company_id_no");
+
+		sb.append(", date_created, created_by)");
+		
+		sb.append(" VALUES(");
+		
+		sb.append(" ?, ?, ?, ?, ?");
+		sb.append(", ?, ?");
+		
+		sb.append(")");
+		
+		
+	    String sql = sb.toString();
+        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        
+        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+
+
+        stmt.setBigDecimal(1, auction_id);
+        stmt.setInt(2, bidder_id);
+        stmt.setInt(3, status);
+        stmt.setInt(4, active);
+        stmt.setString(5, company_id_no);
+
+        stmt.setTimestamp(6, sqlDate_t);
+        stmt.setInt(7, user_id);
+
+	      
+	    System.out.println("sql : "+sql);
+	    
+	    affectedRows = stmt.executeUpdate();
+	    
+	    if (affectedRows == 0) {
+            throw new SQLException("Creating auctionUser failed, no rows affected.");
+        }
+	    
+        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+            	u = new AuctionUser(); 
+            	u.setId(generatedKeys.getBigDecimal(1));
+            	u.setAuction_id(auction_id);
+            	u.setUser_id(bidder_id);
+            	u.setStatus(status);
+            	u.setActive(active);
+            	u.setCreated_by(user_id);
+            	
+            }
+            else {
+                throw new SQLException("Creating auctionUser failed, no ID obtained.");
+            }
+        }
+	    
+		stmt.close();
+	} catch (SQLException e) {
+		throw new RuntimeException(e);
+	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
+	}
+
+	return u;
+}
+	
+	
 	
 	public AuctionUser insertAuctionUserOnCreate(
 				BigDecimal auction_id,
@@ -180,7 +338,8 @@ public class AuctionUserDao extends DBConnection {
 				Integer status,
 				Integer active,
 				Integer user_id,
-				BigDecimal auctionUserId_wip
+				BigDecimal auctionUserId_wip,
+				String company_id_no
 			){
 		
 		Connection conn = null;
@@ -194,7 +353,7 @@ public class AuctionUserDao extends DBConnection {
 			
 			conn = dbConn.getConnection();
 		      
-			StringBuilder sb = new StringBuilder("Update auction_user SET auction_id=?, user_id=?, status=?, active=?");
+			StringBuilder sb = new StringBuilder("Update auction_user SET auction_id=?, user_id=?, status=?, active=?, company_id_no=?");
 			
 			sb.append(", date_updated=?, updated_by=?");
 			
@@ -212,9 +371,9 @@ public class AuctionUserDao extends DBConnection {
 	        stmt.setInt(2, bidder_id);
 	        stmt.setInt(3, status);
 	        stmt.setInt(4, active);
-
-	        stmt.setTimestamp(5, sqlDate_t);
-	        stmt.setInt(6, user_id);
+	        stmt.setString(5, company_id_no);
+	        stmt.setTimestamp(6, sqlDate_t);
+	        stmt.setInt(7, user_id);
 		      
 		    System.out.println("sql : "+sql);
 		    
@@ -256,6 +415,8 @@ public class AuctionUserDao extends DBConnection {
 		
 		sb.append(", date_created, date_updated, created_by, updated_by");
 		
+		sb.append(", company_id_no, image_1");
+		
 		sb.append(" from auction_user");
 		
 		sb.append(" order by id desc");
@@ -278,6 +439,8 @@ public class AuctionUserDao extends DBConnection {
             	u.setUser_id(rs.getInt("user_id"));
             	u.setStatus(rs.getInt("status"));
             	u.setActive(rs.getInt("active"));
+            	u.setCompany_id_no(rs.getString("company_id_no"));
+            	u.setImageBytes(rs.getBytes("image_1"));
 
 
 				//SystemBean - start
@@ -365,6 +528,10 @@ public class AuctionUserDao extends DBConnection {
 		
 		return uList;
 	}
+	
+
+	
+
 	
 	
 }

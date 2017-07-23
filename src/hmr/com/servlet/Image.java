@@ -47,7 +47,7 @@ import hmr.com.bean.User;
 
 @SuppressWarnings("serial")
 public class Image extends HttpServlet {
-	
+	 
 	//String emaidAddPost = null;
 	//String emaidAddGet = null;
 	

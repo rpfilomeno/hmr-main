@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bizoncloudone.com.manager.RunnableEmailManager;
+import hmr.com.bean.Auction;
 import hmr.com.bean.Lov;
 import hmr.com.bean.User;
 import hmr.com.dao.UserDao;
@@ -36,7 +37,13 @@ public class LoginManager {
 			String userId = req.getParameter("userId");
 			String pw = req.getParameter("pw");
 			
+			String companyIdNo = req.getParameter("companyIdNo")!=null ? (String)req.getParameter("companyIdNo") : "";
+			String privateInviteId = req.getParameter("privateInviteId")!=null ? (String)req.getParameter("privateInviteId") : ""; 
+			
 			User u = getUserOnLogin(userId, pw);
+			
+			
+			
 
 			if(u!=null){
 				
@@ -51,6 +58,7 @@ public class LoginManager {
 				req.getSession().setAttribute("lastName", u.getLast_name());
 				req.getSession().setAttribute("fullName", u.getFirst_name()+" "+u.getLast_name());
 				req.getSession().setAttribute("user-role-id", u.getRole());
+				req.getSession().setAttribute("user-id", u.getId());
 				
 				//req.getSession().setAttribute("user-lov-role", lovRole);
 				
@@ -64,6 +72,23 @@ public class LoginManager {
 				if(pw.equals(u.getNew_password())){
 					updateUserPassword(userId, pw);
 				}
+				
+				//Check if this is an invite login
+				if(privateInviteId.length()==32 && companyIdNo.length()>0) {
+					
+					//Check valid token
+					Auction a = new AuctionManager().getAuctionByToken(privateInviteId);
+					if(a!=null) {
+						new AuctionUserManager().insertAuctionUserOnCreate(a.getAuction_id(), u.getId(), 26, 1, 0,companyIdNo);
+						req.setAttribute("msgbgcol", "LIGHTGREEN");
+						req.setAttribute("msgInfo", "Your request to bid on a Private Auction has been submitted.");
+					} else {
+						req.setAttribute("msgbgcol", "red");
+						req.setAttribute("msgInfo", "The auction you are invited to is no longer available.");
+					}
+					
+				} 
+				
 				page ="index.jsp";
 				
 			}else{

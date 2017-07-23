@@ -1,5 +1,5 @@
 package hmr.com.servlet;
-
+ 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -226,6 +226,8 @@ public class Bid extends HttpServlet {
 		String action_id = req.getParameter("action_id")!=null ? (String)req.getParameter("action_id") : "";
 		List<FileItem> files = new ArrayList<FileItem>();
 		
+		
+		
 		String page = null;
 
 		
@@ -233,11 +235,15 @@ public class Bid extends HttpServlet {
 		File auction_file_small = null;
 		File item_file = null;
 		//String file_name = "";
-		Integer user_id = 0;
-		BigDecimal auctionId_wip = new BigDecimal(0);
-		BigDecimal itemId_wip = new BigDecimal(0);
+		BigDecimal user_id = BigDecimal.ZERO;
+		if(req.getSession().getAttribute("user-id")!=null ) {
+			user_id =  new BigDecimal((String) ""+req.getSession().getAttribute("user-id"));
+		}
 		
-        if(ServletFileUpload.isMultipartContent(req)){
+		BigDecimal auctionId_wip = BigDecimal.ZERO;
+		BigDecimal itemId_wip = BigDecimal.ZERO;
+		
+        /*if(ServletFileUpload.isMultipartContent(req)){
             try {
                 List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
                 for(FileItem item : multiparts){
@@ -300,7 +306,7 @@ public class Bid extends HttpServlet {
             	req.setAttribute("message", "File Upload Failed due to " + ex);
             }          
         }//file uploads
-		
+         */		
 		
 		System.out.println("Paramerters - start");
 		System.out.println("manager : "+manager);
@@ -310,43 +316,27 @@ public class Bid extends HttpServlet {
 		System.out.println("Paramerters - end");
 		System.out.println("");
 
-		
-        AuctionManager aucMngr = new AuctionManager(req,res);
-        List<Auction> activeOnlineAuctionList = null;
-        if(req.getSession().getAttribute("ACTIVE-ONLINE-AUCTION-LIST")==null){
-        	activeOnlineAuctionList = aucMngr.getAuctionListByTypeAndActive(15);
-        	req.getSession().setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
-        	req.setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
-        }else{
-        	activeOnlineAuctionList = aucMngr.getAuctionListByTypeAndActive(15);
-        	req.setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
-        }
-        
-        
-        List<Auction> activeNegotiatedAuctionList = null;
-        if(req.getSession().getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST")==null){
-        	activeNegotiatedAuctionList = aucMngr.getAuctionListByTypeAndActive(16);
-        	req.getSession().setAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST", activeNegotiatedAuctionList);
-        	req.setAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST", activeNegotiatedAuctionList);
-        }else{
-        	activeNegotiatedAuctionList = aucMngr.getAuctionListByTypeAndActive(16);
-        	req.setAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST", activeNegotiatedAuctionList);
-        }
-        
-        
-        List<Auction> activeLiveAuctionList = null;
-        if(req.getSession().getAttribute("ACTIVE-LIVE-AUCTION-LIST")==null){
-        	activeLiveAuctionList = aucMngr.getAuctionListByTypeAndActive(16);
-        	req.getSession().setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
-        	req.setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
-        }else{
-        	activeLiveAuctionList = aucMngr.getAuctionListByTypeAndActive(185);
-        	req.setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
-        }
 
+        AuctionManager aMngr = new AuctionManager(req,res);
+        AuctionUserManager auMngr = new AuctionUserManager();
+        
+        
 		
 		//all page get requests
 		if(manager.equals("get")){
+			
+			if("private-invite".equals(action)){
+
+				Auction a = new AuctionManager().getAuctionByToken(aid);
+				req.setAttribute("auction", a);
+
+				if(userId!=null){
+					req.setAttribute("userId", userId);
+				}
+				// Lets make sure user logs in first
+				page ="invite-login.jsp";
+				
+			} else
 			
 			if("login".equals(action)){
 				
@@ -385,7 +375,6 @@ public class Bid extends HttpServlet {
 				page = uMngr.doUserManager();
 				
 			}else if("auctionBidDetails".equals(action)){
-				AuctionManager aMngr = new AuctionManager(req,res);
 				AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
 				LotManager lMngr = new LotManager(req,res);
 				ItemManager iMngr = new ItemManager(req,res);
@@ -430,14 +419,6 @@ public class Bid extends HttpServlet {
 						lList.add(lot);
 					}
 					
-					
-					
-					System.out.println("AUCTION End Date : " + a.getEnd_date_time().toString());
-					System.out.println("LOT End Date : " + lot.getEnd_date_time().toString());
-					System.out.println("LOT ID : " + lot.getLot_id().toString());
-					System.out.println("LOT DESC : " + lot.getLot_desc());
-					System.out.println("LOT NEXT BID : " + lot.getAmount_bid_next().toString());
-					System.out.println("LOT AMOUNT BID: " + lot.getAmount_bid().toString());
 							
 				}//for loop
 				
@@ -641,7 +622,7 @@ public class Bid extends HttpServlet {
 					User u = ud.getUser(userId);
 					
 					BiddingTransactionManager btMngr = new BiddingTransactionManager();
-					AuctionUserBiddingMaxManager auMngr = new AuctionUserBiddingMaxManager();
+					AuctionUserBiddingMaxManager auMngr1 = new AuctionUserBiddingMaxManager();
 					Integer lotId = Integer.valueOf(reqlotId);
 					BigDecimal amount = new BigDecimal(reqamount);
 					Integer unit_qty = Integer.valueOf(requnitqty);
@@ -656,11 +637,11 @@ public class Bid extends HttpServlet {
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Buy submitted.");
 					}else if(doAction.equals("SET-MAXIMUM-BID")) {
-						auMngr.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId(),unit_qty);
+						auMngr1.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId(),unit_qty);
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Maximum bid submitted.");
 					}else if(doAction.equals("PRE-BID")) {
-						auMngr.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId(),unit_qty);
+						auMngr1.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId(),unit_qty);
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Pre-bid submitted.");
 					}else if(doAction.equals("NEGOTIATED")) {
@@ -670,7 +651,6 @@ public class Bid extends HttpServlet {
 						
 						
 						LotManager lMngr = new LotManager();
-						AuctionManager aMngr = new AuctionManager();
 						
 						Lot lot = lMngr.getLotByLotId(new BigDecimal(lotId));
 						Auction auction = aMngr.getAuctionByAuctionId(lot.getAuction_id());
@@ -709,7 +689,6 @@ public class Bid extends HttpServlet {
 					LotManager lMngr = new LotManager();
 					Lot l = lMngr.getLotById(lotId_wip);
 					
-					AuctionManager aMngr = new AuctionManager();
 					Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
 					
 
@@ -764,7 +743,6 @@ public class Bid extends HttpServlet {
 				page = uMngr.doUserManager();
 				
 			}else if(manager.equals("auction-manager")){		
-				AuctionManager aMngr = new AuctionManager(req,res);
 				if("saveAuctionImage".equals(action) && (auction_file_small!=null || auction_file!=null) ){
 					System.out.println("BID saveAuctionImage "+auction_file_small+" - "+auction_file);
 					page = aMngr.doAuctionManager(auction_file_small, auction_file, action, auctionId_wip);
@@ -805,7 +783,6 @@ public class Bid extends HttpServlet {
 				
 				System.out.println("BID - Auction User Manager");
 				
-				AuctionUserManager auMngr = new AuctionUserManager(req,res);
 				
 				page = auMngr.doAuctionUserManager();
 			}else if(manager.equals("bidding-transaction-manager")){
@@ -890,13 +867,69 @@ public class Bid extends HttpServlet {
 				}
 			}
 			
-		}else{
-				
+		}else{			
 
 	
 	
 		}
 		
+		
+List<Auction> aL = null;
+        
+        List<Auction> activeOnlineAuctionList = new ArrayList<Auction>();
+        List<Auction> activeNegotiatedAuctionList = new ArrayList<Auction>();
+        List<Auction> activeLiveAuctionList = new ArrayList<Auction>();
+        
+        List<Auction> activeOnlineAuctionListPrivate = new ArrayList<Auction>();
+        List<Auction> activeNegotiatedAuctionListPrivate = new ArrayList<Auction>();
+        List<Auction> activeLiveAuctionListPrivate = new ArrayList<Auction>();
+        
+        
+        aL = aMngr.getAuctionListByTypeAndActive(15);
+        for(Auction x : aL) {
+        	if(x.getVisibility()==33) {
+        		activeOnlineAuctionList.add(x);
+        	}else if( x.getVisibility()==34 && auMngr.isUserApprovedOnAuction(user_id, x.getAuction_id())){
+        		activeOnlineAuctionList.add(x);
+        	} else {
+        		activeOnlineAuctionListPrivate.add(x);
+        	}
+        }
+        	
+        
+        //Listings
+        if(req.getSession().getAttribute("user-id")!=null )	user_id =  new BigDecimal((String) ""+req.getSession().getAttribute("user-id"));
+	
+    	req.getSession().setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
+    	req.setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
+        
+        aL = aMngr.getAuctionListByTypeAndActive(16);
+        for(Auction y : aL) {
+        	if(y.getVisibility()==33) {
+        		activeNegotiatedAuctionList.add(y);
+        	}else if( y.getVisibility()==34 && auMngr.isUserApprovedOnAuction(user_id, y.getAuction_id())){
+        		activeNegotiatedAuctionList.add(y);
+        	} else {
+        		activeNegotiatedAuctionListPrivate.add(y);
+        	}
+        }
+    	req.getSession().setAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST", activeNegotiatedAuctionList);
+    	req.setAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST", activeNegotiatedAuctionList);
+        
+    	aL = aMngr.getAuctionListByTypeAndActive(16);
+        for(Auction z : aL) {
+        	if(z.getVisibility()==33) {
+        		activeLiveAuctionList.add(z);
+        	}else if( z.getVisibility()==34 && auMngr.isUserApprovedOnAuction(user_id, z.getAuction_id())){
+        		activeLiveAuctionList.add(z);
+        	} else {
+        		activeLiveAuctionListPrivate.add(z);
+        	}
+        }
+    	req.getSession().setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
+    	req.setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
+
+
 		if(manager.equals("") && action.equals("")){
 			page = "index.jsp";
 		}

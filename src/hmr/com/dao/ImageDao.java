@@ -663,7 +663,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 			InputStream image,
 			InputStream thumbnail,
 			Integer active,
-			Integer user_id
+			BigDecimal user_id
 		) {
 	
 	Connection conn = null;
@@ -695,7 +695,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
         stmt.setBlob (5, image);
         stmt.setBlob (6, thumbnail);
         stmt.setTimestamp(7, sqlDate_t);
-        stmt.setInt(8, user_id);
+        stmt.setBigDecimal(8, user_id);
 
 	    System.out.println("sql : "+sql);
 	    affectedRows = stmt.executeUpdate();

@@ -210,16 +210,6 @@
 		                
 		                <div id="msgDiv"></div>
 		             </div>
-		             <%--
-		             <div class="col-md-12">   
-						<div>
-		                   <div class="media">
-		                       <a href="#">
-		                           <img style="height: 200px; size: 200px" src="image?id=<%=auction.getId()%>" alt=""/> 
-		                       </a>
-		                   </div>
-		               </div>
-	               </div> --%>
                </div>
             </div>
         </section>

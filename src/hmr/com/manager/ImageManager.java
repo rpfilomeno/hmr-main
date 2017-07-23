@@ -428,7 +428,7 @@ public class ImageManager {
 			Integer item_id,
 			InputStream file,
 			Integer active,
-			Integer user_id
+			BigDecimal user_id
 		){
 		
 		

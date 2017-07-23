@@ -14,6 +14,7 @@
 		 import="java.util.ArrayList"  
 		 import="javax.servlet.RequestDispatcher"
 		 import="java.text.SimpleDateFormat"
+		 import="hmr.com.manager.AuctionManager"
 %>
 <html lang="en">
 <head>
@@ -105,6 +106,7 @@
     <!-- Theme CSS -->
     <link href="assets/css/theme.css" rel="stylesheet">
 <link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
+<link href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
     <!-- Head Libs -->
     
     <script src="assets/plugins/modernizr.custom.js"></script>
@@ -154,15 +156,12 @@
         
         
  	        <form action="bid" name="frm" id="frm" method="post">
-		       <input type="hidden" name="manager" id="manager" value="auction-manager"/>
-		       <input type="hidden" name="action" id="action" value=""/>
+		       <input type="hidden" name="manager" id="manager" value="auction-user-manager"/>
 		       <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
 		       <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
 		       <input type="hidden" name="auctionId_wip" id="auctionId_wip" value="<%=auction.getAuction_id()%>"/>
 		       <input type="hidden" name="auction_id" id="auction_id" value="<%=auction.getAuction_id()%>"/>
-		       <input type="hidden" name="lotId_wip" id="lotId_wip" value=""/>
-		       <input type="hidden" name="lot_id" id="lot_id" value=""/>
-		       <input type="hidden" name="itemId_wip" id="itemId_wip" value=""/>
+		       <input type="hidden" name="action" id="action" value=""/>
 		       <input type="hidden" name="auctionUserId_wip" id="auctionUserId_wip" value=""/>
 		     </form>
 		       
@@ -371,6 +370,8 @@
 
 		            </div>
 		            
+
+		            
 		            
 				</div>
 
@@ -391,16 +392,22 @@
 	              <% } %>
 	              </label>
 	            </div>
-			
-            
-              <div class="box box-info">
-                <div class="box-header">
-                  <h3 class="box-title"><label><b>Terms and Conditions : </b> <span id="terms_and_conditions_div"></span> </label></h3>
-                </div><!-- /.box-header -->
+	            
 
-
-            </div>
-            </div>
+           </div>
+           
+           <div class="col-md-12">
+	            <div class="form-group">
+	            	<label><b>Invite URL : </b></label>
+			            <%
+			            String url = request.getRequestURL().toString();
+			            String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
+			            String token = new AuctionManager().generateAuctionPrivateToken(auction.getId());
+			            %>
+			            <%=baseURL %>bid?mngr=get&a=private-invite&aid=<%=token %>
+	            </div>
+	        </div>
+           
             </div>
             </div>
         </section>
@@ -485,9 +492,9 @@
                             <td>
 	                            <div class="input-group">
 	  								<div class="input-group-btn">
-		                            	<button type="button" class="btn btn-labeled btn-success btn-xs">
+		                            	<button type="button" class="btn btn-labeled btn-success btn-xs" onclick="userAction('USER-APPROVE', '<%=email%>','<%=au.getId()%>', '<%=fn %> <%=ln %>')">
 		                					<span class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>&nbsp;Yes</button>
-		            					<button type="button" class="btn btn-labeled btn-danger btn-xs">
+		            					<button type="button" class="btn btn-labeled btn-danger btn-xs" onclick="userAction('USER-REJECT', '<%=email%>','<%=au.getId()%>', '<%=fn %> <%=ln %>')">
 		                					<span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>&nbsp;No</button>
 	                            	</div>
 	                            </div>
@@ -592,7 +599,7 @@
                             <td>
 	                            <div class="input-group">
 	  								<div class="input-group-btn">
-		                            	<button type="button" class="btn btn-labeled btn-warning btn-xs">
+		                            	<button type="button" class="btn btn-labeled btn-warning btn-xs" onclick="userAction('USER-APPROVE-TO-PENDING', '<%=email%>','<%=au.getId()%>', '<%=fn %> <%=ln %>')">
 		                					<span class="btn-label"><i class="glyphicon glyphicon-repeat"></i></span>&nbsp;Reset</button>
 	                            	</div>
 	                            </div>
@@ -692,7 +699,7 @@
                             <td>
 	                            <div class="input-group">
 	  								<div class="input-group-btn">
-		                            	<button type="button" class="btn btn-labeled btn-warning btn-xs">
+		                            	<button type="button" class="btn btn-labeled btn-warning btn-xs" onclick="userAction('USER-REJECTED-TO-PENDING', '<%=email%>','<%=au.getId()%>', '<%=fn %> <%=ln %>')">
 		                					<span class="btn-label"><i class="glyphicon glyphicon-repeat"></i></span>&nbsp;Reset</button>
 	                            	</div>
 	                            </div>
@@ -735,92 +742,14 @@
 </div>
 <!-- /WRAPPER -->
 
-<!-- JS Local -->
-<script type="text/javascript">
-function createAuction(){
-	document.frm.action.value="createAuction";
-	document.frm.submit();
-}
-
-function updateAuction(){
-	document.frm.action.value="updateAuction";
-	document.frm.submit();
-}
-
-
-function saveAuctionImage(){
-	if(document.frm.myFileSmall.value=="" && document.frm.myFile.value==""){
-		//document.frm.action.value="saveAuctionImage";
-	}else{
-		document.frm.action.value="saveAuctionImage";
-		document.frm.submit();
-	}
-	
-	//alert(document.frm.myFileSmall.value);
-	
-}
-
-function auctionRange(){
-	document.frm.manager.value="auction-range-manager";
-	document.frm.action.value="auctionRangeList";
-	document.frm.submit();
-}
-
-function auctionImages(){
-	document.frm.manager.value="image-manager";
-	document.frm.action.value="auctionImageUpload";
-	document.frm.submit();
-}
-
-function lotImages(lotId){
-	document.frm.manager.value="image-manager";
-	document.frm.action.value="lotImageUpload";
-	document.frm.lotId_wip.value=lotId;
-	document.frm.lot_id.value=lotId;
-	document.frm.submit();
-}
-
-function itemImages(itemId){
-	document.frm.manager.value="image-manager";
-	document.frm.action.value="itemImageUpload";
-	document.frm.itemId_wip.value=itemId;
-	document.frm.submit();
-}
-
-
-
-function onLoadPage(){
-
-	
-}
-
-
- <% if(msgInfo!=null){ %>
-	
-	var msgInfo = "<%=msgInfo%>";
-	var msgbgcol = "<%=msgbgcol%>";
-	var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-	msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-	msgBoxValue = msgBoxValue + '</div>';
-	document.getElementById("msgDiv").innerHTML=msgBoxValue;
-
-	<% }%>
-
-
-setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
-
-setTimeout(onLoadPage,3000);
-
-
-
-</script>
 
 
 <!-- /JS Local -->
 
 
 <!-- JS Global -->
-<script src="assets/plugins/jquery/jquery-1.11.1.min.js"></script>
+<script src="assets/plugins/jquery/jquery-2.0.0.min.js"></script>
+<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
 <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="assets/plugins/superfish/js/superfish.min.js"></script>
@@ -850,17 +779,87 @@ setTimeout(onLoadPage,3000);
 
 <script>
 
+function userAction(action, email, user_Id, userName) {
+
+	$('input[name="manager"]').val("auction-manager");
+	$('input[name="action"]').val(action);
+	$('input[name="auctionUserId_wip"]').val(user_Id);
+
+	
+	$('<div id="dialog-confirm"></div>').dialog({
+		resizable: false,
+	    height: "auto",
+	    width: 400,
+	    modal: true,
+	    title: "Confirmation",
+	    closeOnEscape: false,
+        open: function (event, ui) {
+        	var dialog_title = "Confirmation";
+        	var currency_html = "PHP";
+        	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure?</p>';
+
+        	
+        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+      
+        	if(action=="USER-APPROVE") {
+        		dialog_title = "Approve confirmation";
+        		dialog_html = '<p>You are approving the request of '+ userName +' &lt;'+email+'&gt;'+' as bidder for this private auction.</p>'+
+        			'<p>Are you sure?</p>';
+        	}else if(action=="USER-REJECT") {
+        		dialog_title = "Reject confirmation";
+        		dialog_html = '<p>You are rejecting the request of '+ userName +' &lt;'+email+'&gt;'+' as bidder for this private auction.</p>'+
+        			'<p>Are you sure?</p>';
+        	}else if(action=="USER-APPROVE-TO-PENDING") {
+        		dialog_title = "Reset confirmation";
+        		dialog_html = '<p>You are resetting the approval of '+ userName +' &lt;'+email+'&gt;'+' as bidder for this private auction.</p>'+
+        		    '<p><strong>This user will no longer be able to bid on this auction!</strong></p>' +
+        			'<p>Are you sure?</p>';
+        	}else if(action=="USER-REJECTED-TO-PENDING") {
+        		dialog_title = "Reset confirmation";
+        		dialog_html = '<p>You are resetting the rejection of '+ userName +' &lt;'+email+'&gt;'+' as bidder for this private auction.</p>'+
+        			'<p><strong>After reset, you can then approve this user as a bidder!</strong></p>' +
+        			'<p>Are you sure?</p>';
+        	}
+
+            $(this).dialog( "option", "title", dialog_title);
+            $(this).html(dialog_html);
+        },
+        buttons: {
+        	"Yes": function() {
+  	          $( this ).dialog( "close" );
+  	          $( "#frm" ).submit();
+  	        },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        },
+		close: function() {
+			$("#dialog-confirm").remove();
+		}
+    }).dialog('widget').position({ my: 'center', at: 'center', of: $(this) }); //end confirm dialog
+}
+
 
 
 
  $(document).ready(function() {
+	 <% if(msgInfo!=null){ %>
+		
+		var msgInfo = "<%=msgInfo%>";
+		var msgbgcol = "<%=msgbgcol%>";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
 
- });
+		<% }%>
+
+
+	setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
+
+
 	
-
-  
-$(function () {
-    $("#table1").DataTable({
+	$("#table1").DataTable({
     	"pageLength": 100,
       	"order": [[ 1, "asc" ]],
       	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
@@ -875,8 +874,10 @@ $(function () {
       	"order": [[ 1, "asc" ]],
       	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });
-  });
-  
+
+ });
+	
+
   
 </script>
 

@@ -51,13 +51,9 @@ public class AuctionUserManager {
 	public String doAuctionUserManager(){
 		String page = null;
 		String action = req.getParameter("action")!=null ? req.getParameter("action") : "";
-		
-		
-		BigDecimal auctionId_wip = new BigDecimal(0);
-		
-		try{
-			auctionId_wip = req.getParameter("auctionId_wip")!=null && !"".equals(req.getParameter("auctionId_wip"))  ? new BigDecimal(req.getParameter("auctionId_wip")): new BigDecimal(0);
-		}catch(Exception exx){}
+		BigDecimal auctionId_wip = req.getParameter("auctionId_wip")!=null && !"".equals(req.getParameter("auctionId_wip"))  ? new BigDecimal(req.getParameter("auctionId_wip")): new BigDecimal(0);
+		Integer auctionUserId_wip = req.getParameter("auctionUserId_wip")!=null ? Integer.valueOf(req.getParameter("auctionUserId_wip")): 0;
+		Integer user_id = req.getParameter("user-id")!=null ? Integer.valueOf(req.getParameter("user-id")) : 0;
 		
 
 		
@@ -136,19 +132,21 @@ public class AuctionUserManager {
 			
 			System.out.println("saveAuctionUser");
 
-			Integer user_id = req.getParameter("user-id")!=null ? Integer.valueOf(req.getParameter("user-id")) : 0;
+			
 
 			BigDecimal auction_id = !req.getParameter("auction_id").equals("") ? new BigDecimal(req.getParameter("auction_id")) : new BigDecimal(0);
 			Integer bidder_id =!req.getParameter("bidder_id").equals("") ? Integer.valueOf(req.getParameter("bidder_id")) : 0;
 			Integer status = !req.getParameter("userStatus").equals("") ? Integer.valueOf(req.getParameter("userStatus")) : 0;
 			Integer active = !req.getParameter("active").equals("") ? Integer.valueOf(req.getParameter("active")) : 0;
+			String company_id_no = !req.getParameter("company_id_no").equals("") ? req.getParameter("company_id_no") : "";
 
 			AuctionUser au = insertAuctionUserOnCreate(
 					auction_id,
 					bidder_id,
 					status,
 					active,
-					user_id
+					user_id,
+					company_id_no
 					);
 			
 			if(au!=null && au.getId()!=null){
@@ -224,7 +222,7 @@ public class AuctionUserManager {
 			
 			System.out.println("viewAuctionUser");
 
-			Integer auctionUserId_wip = req.getParameter("auctionUserId_wip")!=null ? Integer.valueOf(req.getParameter("auctionUserId_wip")): 0;
+			
 			if(auctionUserId_wip > 0){
 				
 				AuctionUser au = getAuctionUserById(auctionUserId_wip);
@@ -283,7 +281,7 @@ public class AuctionUserManager {
 		}else if("updateAuctionUser".equals(action)){
 
 
-			Integer auctionUserId_wip = !req.getParameter("auctionUserId_wip").equals("") ? Integer.valueOf(req.getParameter("auctionUserId_wip")): 0;
+			
 			
 			System.out.println("updateAuctionUser "+auctionUserId_wip);
 			
@@ -318,14 +316,15 @@ public class AuctionUserManager {
 			
 			System.out.println("saveUpdateAuctionUser");
 
-			Integer user_id = req.getParameter("user-id")!=null ? Integer.valueOf(req.getParameter("user-id")) : 0;
-			BigDecimal auctionUserId_wip = !req.getParameter("auctionUserId_wip").equals("") ? new BigDecimal(req.getParameter("auctionUserId_wip")) : new BigDecimal(0);
+			
+			
 			
 			
 			BigDecimal auction_id = !req.getParameter("auction_id").equals("") ? new BigDecimal(req.getParameter("auction_id")) : new BigDecimal(0);
 			Integer bidder_id =!req.getParameter("bidder_id").equals("") ? Integer.valueOf(req.getParameter("bidder_id")) : 0;
 			Integer status = !req.getParameter("userStatus").equals("") ? Integer.valueOf(req.getParameter("userStatus")) : 0;
 			Integer active = !req.getParameter("active").equals("") ? Integer.valueOf(req.getParameter("active")) : 0;
+			String company_id_no = (String) (!req.getParameter("companyIdNo").equals("") ?  req.getParameter("companyIdNo") : "");
 			
 			System.out.println("auctionUserId_wip "+auctionUserId_wip);
 			
@@ -336,7 +335,8 @@ public class AuctionUserManager {
 					status,
 					active,
 					user_id,
-					auctionUserId_wip
+					new BigDecimal(auctionUserId_wip),
+					company_id_no
 					);
 			
 
@@ -416,7 +416,6 @@ public class AuctionUserManager {
 		
 		
 		req.getSession().setAttribute("auctionId_wip", auctionId_wip);
-		
 		req.setAttribute("auctionId_wip", auctionId_wip);
 		
 		
@@ -453,7 +452,8 @@ public class AuctionUserManager {
 			Integer bidder_id,
 			Integer status,
 			Integer active,
-			Integer user_id
+			Integer user_id,
+			String company_id_no
 			){
 		
 		AuctionUser u = null;
@@ -466,13 +466,16 @@ public class AuctionUserManager {
 				bidder_id,
 				status,
 				active,
-				user_id
+				user_id,
+				company_id_no
 				
 				);
 		
 		return u;
 		
 	}
+	
+
 	
 	
 	public AuctionUser updateAuctionUserOnUpdate(
@@ -481,7 +484,8 @@ public class AuctionUserManager {
 			Integer status,
 			Integer active,
 			Integer user_id,
-			BigDecimal auctionUserId_wip
+			BigDecimal auctionUserId_wip,
+			String company_id_no
 			){
 		
 		AuctionUser u = null;
@@ -494,7 +498,8 @@ public class AuctionUserManager {
 				status,
 				active,
 				user_id,
-				auctionUserId_wip
+				auctionUserId_wip,
+				company_id_no
 				);
 		
 		return u;
@@ -624,6 +629,12 @@ public class AuctionUserManager {
 		}
 		
 		
+	}
+	
+	
+	public boolean isUserApprovedOnAuction(BigDecimal user_id, BigDecimal auction_id) {
+		if(new AuctionUserDao().getAuctionUserByUserIdAndAuctionIdAndStatus(user_id, auction_id, 25) != null) return true;
+		return false;
 	}
 	
 }
