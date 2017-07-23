@@ -382,21 +382,19 @@
 							                         
 							                                <div class="media">
                                 								<% if(user_id != null && user_role_id > 0){ %>
-                                									<% if(l.getIs_bid() == 1){ %>
-                                   	 							
-		                                   	 							<% if( l.getIs_available_lot() > 0) { %>
-		                                   	 								<% Integer i = l.getUnit_qty(); %>
-		                                   	 								<div class="form-group">
-		                                   	 								<label>Quantity:</label>
-		                                   	 								<select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
-		                                   	 								<% while(i > 0) { %>
-		                                   	 									<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
-		                                   	 									<% i = i - 1; %>
-		                                   	 								<% } %>
-		                                   	 								</select>
-		                                   	 								</div>
+                                									<% if( l.getIs_available_lot() > 0) { %>
+		                                   	 							<% Integer i = l.getUnit_qty(); %>
+		                                   	 							<div class="form-group">
+		                                   	 							<label>Quantity:</label>
+		                                   	 							<select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
+		                                   	 							<% while(i > 0) { %>
+		                                   	 								<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+		                                   	 								<% i = i - 1; %>
 		                                   	 							<% } %>
-		                                   	 							
+		                                   	 							</select>
+		                                   	 							</div>
+		                                   	 						<% } %>
+                                									<% if(l.getIs_bid() == 1){ %>
 		                                   	 							<% if(auction.getAuction_type() == 15){ %>
 			                                   	 							<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
 			                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</a>
@@ -408,10 +406,10 @@
 		                                   	 							<% } else if(auction.getAuction_type() == 16){ %>
 		                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</a>
 		                                   	 							<% } %>
-                                   	 								<% }else {  } %>
+                                   	 								<% }%>
                                    	 								<% if(l.getIs_buy() == 1){ %>
                                 										<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></a>
-                                									<% }else{ } %>
+                                									<% }%> 
                                    	 							<% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
 																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
 																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
