@@ -855,8 +855,11 @@ public class Bid extends HttpServlet {
 	
 		}
 		
+		//Make sure user Id is updated
+		if(req.getSession().getAttribute("user-id")!=null )	user_id =  new BigDecimal((String) ""+req.getSession().getAttribute("user-id"));
 		
-List<Auction> aL = null;
+		//Listings
+		List<Auction> aL = null;
         
         List<Auction> activeOnlineAuctionList = new ArrayList<Auction>();
         List<Auction> activeNegotiatedAuctionList = new ArrayList<Auction>();
@@ -878,10 +881,7 @@ List<Auction> aL = null;
         	}
         }
         	
-        
-        //Listings
-        if(req.getSession().getAttribute("user-id")!=null )	user_id =  new BigDecimal((String) ""+req.getSession().getAttribute("user-id"));
-	
+
     	req.getSession().setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
     	req.setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
         
@@ -898,7 +898,7 @@ List<Auction> aL = null;
     	req.getSession().setAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST", activeNegotiatedAuctionList);
     	req.setAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST", activeNegotiatedAuctionList);
         
-    	aL = aMngr.getAuctionListByTypeAndActive(16);
+    	aL = aMngr.getAuctionListByTypeAndActive(185);
         for(Auction z : aL) {
         	if(z.getVisibility()==33) {
         		activeLiveAuctionList.add(z);
@@ -910,7 +910,6 @@ List<Auction> aL = null;
         }
     	req.getSession().setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
     	req.setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
-
 
 		if(manager.equals("") && action.equals("")){
 			page = "index.jsp";
