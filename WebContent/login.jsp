@@ -230,7 +230,7 @@ function onLoadPage(){
 	document.frm.userId.value ="administrator@hmrauctions.com.ph";
 	document.frm.pw.value = "administrator";
 	document.frm.userId.focus();
-	document.frm.submit();
+
 	
 	if(document.frm.userId.value!=""){
 		<%if(userId!=null){ %>

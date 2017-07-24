@@ -7,6 +7,7 @@
   String sid = (String)request.getAttribute("sid");
   String vek = (String)request.getAttribute("vek");
   String aid = (String)request.getAttribute("aid");
+
   
   System.out.println("PAGE security-check.jsp : manager = "+manager+" / action = "+action+" / userId = "+userId+" / sid = "+sid+" / vek = "+vek+" / aid = "+aid);
   %>

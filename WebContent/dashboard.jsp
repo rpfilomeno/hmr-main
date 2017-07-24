@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<%@ page 
-		 import="java.util.List"
+<%@ page import="java.util.List"
 		 import="java.util.ArrayList"
 		 import="java.util.HashMap"
-		 import="java.text.SimpleDateFormat" %>
+		 import="java.text.SimpleDateFormat"
+		 
+%>
 <html>
   <head>
     <meta charset="utf-8">

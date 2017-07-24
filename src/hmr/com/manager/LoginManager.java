@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.manager.RunnableEmailManager;
 import hmr.com.bean.Auction;
+import hmr.com.bean.AuctionUser;
 import hmr.com.bean.Lov;
 import hmr.com.bean.User;
 import hmr.com.dao.UserDao;
@@ -79,17 +80,23 @@ public class LoginManager {
 					//Check valid token
 					Auction a = new AuctionManager().getAuctionByToken(privateInviteId);
 					if(a!=null) {
-						new AuctionUserManager().insertAuctionUserOnCreate(a.getAuction_id(), u.getId(), 26, 1, 0,companyIdNo);
-						req.setAttribute("msgbgcol", "LIGHTGREEN");
-						req.setAttribute("msgInfo", "Your request to bid on a Private Auction has been submitted.");
+						AuctionUser au = new AuctionUserManager().getAuctionUserByUserId(u.getId());
+						if(au == null){
+							new AuctionUserManager().insertAuctionUserOnCreate(a.getAuction_id(), u.getId(), 26, 1, 0,companyIdNo);
+							req.setAttribute("msgbgcol", "LIGHTGREEN");
+							req.setAttribute("msgInfo", "Your request to bid on a Private Auction has been submitted.");
+						} else {
+							req.setAttribute("msgbgcol", "RED");
+							req.setAttribute("msgInfo", "You have already applied for this private auction, please wait for email confirmation that you have been given access.");
+						}
 					} else {
 						req.setAttribute("msgbgcol", "red");
 						req.setAttribute("msgInfo", "The auction you are invited to is no longer available.");
 					}
 					
 				} 
-				
 				page ="index.jsp";
+
 				
 			}else{
 				
@@ -98,13 +105,19 @@ public class LoginManager {
 				
 				req.setAttribute("msgbgcol", "red");
 				req.setAttribute("msgInfo", "Email and Password does not match.");
-				
 				page ="login.jsp";
 				
+				if(privateInviteId.length()==32 && companyIdNo.length()>0) {
+					Auction a = new AuctionManager().getAuctionByToken(privateInviteId);
+					req.setAttribute("auction", a);
+					req.setAttribute("companyIdNo", companyIdNo);
+					req.setAttribute("privateInviteId", privateInviteId);
+					page = "invite-login.jsp";
+				}
 			}
 		}else if("passwordReset".equals(action)){			
 			String userId = req.getParameter("userId");
-			
+			 
 			User u = getUser(userId);
 
 			if(u!=null){

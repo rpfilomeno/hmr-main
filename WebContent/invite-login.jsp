@@ -202,31 +202,15 @@ function ValidateEmail(mail)
 }  
 
 function onLoadPage(){
-	document.frm.userId.value ="administrator@hmrauctions.com.ph";
-	document.frm.pw.value = "administrator";
-	document.frm.userId.focus();
-	//document.frm.submit();
+
 	
-	if(document.frm.userId.value!=""){
-		<%if(userId!=null){ %>
-			document.frm.pw.focus();
-		<%}%>
-	}
+
 
 }
 
 function validateLogin(){
 	var isLogin = true;
-	if(document.frm.companyIdNo.value==""){
-		var msgInfo = "Company ID number is required.";
-		var msgbgcol = "red";
-		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-		msgBoxValue = msgBoxValue + '</div>';
-		document.getElementById("msgDiv").innerHTML=msgBoxValue;
-		document.frm.userId.focus();
-		isLogin = false;
-	}else if(document.frm.userId.value==""){
+	if(document.frm.userId.value==""){
 		var msgInfo = "Email is required.";
 		var msgbgcol = "red";
 		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';

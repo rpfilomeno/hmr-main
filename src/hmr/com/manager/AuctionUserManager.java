@@ -442,7 +442,16 @@ public class AuctionUserManager {
 		
 		return u;
 		
+		
 	}	
+	
+	
+	public AuctionUser getAuctionUserByUserId(Integer user_id){
+		
+		return new AuctionUserDao().getAuctionUserByUserId(user_id);
+		
+		
+	}
 	
 	
 	

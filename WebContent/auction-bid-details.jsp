@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<%@page import="java.sql.Timestamp"%>
 <%@ page import="hmr.com.bean.Auction"
 		 import="hmr.com.bean.Lot"
 		 import="hmr.com.bean.Image"
@@ -10,6 +9,7 @@
 		 import="java.util.HashMap"  
 		 import="java.text.DecimalFormat"
 		 import="java.text.SimpleDateFormat"
+		 import="java.sql.Timestamp"
 
 %>
 <html lang="en">
