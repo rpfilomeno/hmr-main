@@ -1,6 +1,6 @@
-package bizoncloudone.com.manager;
+package hmr.com.manager;
 
-import bizoncloudone.com.util.EmailUtils;
+import hmr.com.util.EmailUtils;
 import hmr.com.util.EmailUtil;
 
 public class RunnableEmailManager implements Runnable {
@@ -189,9 +189,9 @@ public class RunnableEmailManager implements Runnable {
 					
 					System.out.println("sMsg "+sMsg);
 					
-					RequestManager rMngr = new RequestManager();
+					//RequestManager rMngr = new RequestManager();
 					
-					rMngr.updateRequestSMS(id, sMsg, "sms_msg");
+					///rMngr.updateRequestSMS(id, sMsg, "sms_msg");
 					
 					//sms.sendSMSOW(mobile_no, sMsg);
 				}else if ("sendEmailChangePasswordwithPasswordAdmin".equals(threadName)){
@@ -200,9 +200,9 @@ public class RunnableEmailManager implements Runnable {
 					
 					sMsg = "MARCVENTURES Google Admin successfully changed your Google Password to "+pass_word;
 					
-					RequestManager rMngr = new RequestManager();
+					//RequestManager rMngr = new RequestManager();
 					
-					rMngr.updateRequestSMS(id, sMsg, "sms_msg");
+					//rMngr.updateRequestSMS(id, sMsg, "sms_msg");
 				}
 				
 

@@ -1,4 +1,4 @@
-package bizoncloudone.com.util;
+package hmr.com.util;
 
 
 //import ipc.ph.bean.User;
@@ -21,10 +21,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import bizoncloudone.com.bean.User;
-import bizoncloudone.com.bean.UserLogin;
-import bizoncloudone.com.dao.UserDao;
-import bizoncloudone.com.dao.UserLoginDao;
 
 
 

@@ -18,22 +18,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bizoncloudone.com.bean.RoleLogin;
-import bizoncloudone.com.bean.UserLogin;
 import hmr.com.bean.Lov;
 import hmr.com.bean.User;
 import hmr.com.dao.LovDao;
 import hmr.com.dao.UserDao;
 import hmr.com.util.EmailUtil;
 import hmr.com.util.StringUtil;
-import bizoncloudone.com.bean.UserRoleLogin;
-import bizoncloudone.com.dao.RequestDao;
-import bizoncloudone.com.dao.RoleLoginDao;
-import bizoncloudone.com.dao.SnapshotDao;
-import bizoncloudone.com.dao.UserLoginDao;
-import bizoncloudone.com.dao.UserRoleLoginDao;
-import bizoncloudone.com.manager.RunnableEmailManager;
-import bizoncloudone.com.util.DBConnection;
+import hmr.com.util.DBConnection;
 
 public class UserManager {
 

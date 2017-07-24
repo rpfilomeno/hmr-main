@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bizoncloudone.com.manager.RunnableEmailManager;
+import hmr.com.manager.RunnableEmailManager;
 import hmr.com.bean.Auction;
 import hmr.com.bean.Lov;
 import hmr.com.bean.User;

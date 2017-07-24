@@ -17,7 +17,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import bizoncloudone.com.util.EmailMessages;
 
 public class EmailUtil {
 	//C:\Work\workspace\HMR\WebContent\hmr\images\email\header_1.png

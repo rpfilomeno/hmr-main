@@ -18,7 +18,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.api.gbase.client.GmAttributes.GmAttribute.Importance;
 
 import hmr.com.bean.Auction;
 import hmr.com.bean.BiddingTransaction;

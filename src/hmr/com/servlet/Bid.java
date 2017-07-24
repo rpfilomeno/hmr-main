@@ -2,18 +2,15 @@ package hmr.com.servlet;
  
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+//import java.io.OutputStream;
 
 import java.math.BigDecimal;
-import java.nio.file.Paths;
-import java.sql.SQLException;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -25,17 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import bizoncloudone.com.bean.ParamsLov;
-import bizoncloudone.com.bean.Request;
-import bizoncloudone.com.bean.RoleLogin;
-import bizoncloudone.com.bean.UserLogin;
-import bizoncloudone.com.bean.UserRoleLogin;
 import hmr.com.manager.AuctionManager;
 import hmr.com.manager.AuctionRangeManager;
 import hmr.com.manager.AuctionUserBiddingMaxManager;
@@ -49,22 +37,16 @@ import hmr.com.manager.LotRangeManager;
 import hmr.com.manager.RunnableNegotiatedBidManager;
 import hmr.com.manager.UploadAuctionManager;
 import hmr.com.manager.UserManager;
-import hmr.com.util.EmailUtil;
-import bizoncloudone.com.manager.ParamsLovManager;
-import bizoncloudone.com.manager.RequestManager;
-import bizoncloudone.com.manager.RoleLoginManager;
-import bizoncloudone.com.manager.RunnableEmailManager;
-import bizoncloudone.com.manager.UserLoginManager;
-import bizoncloudone.com.util.DBConnection;
+
+import hmr.com.util.DBConnection;
 import hmr.com.bean.Auction;
-import hmr.com.bean.AuctionRange;
+
 import hmr.com.bean.BiddingTransaction;
 import hmr.com.bean.Image;
 import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
-import hmr.com.bean.LotRange;
+
 import hmr.com.bean.User;
-import hmr.com.dao.AuctionDao;
 import hmr.com.dao.UserDao;
 
 @SuppressWarnings("serial")
@@ -74,7 +56,7 @@ public class Bid extends HttpServlet {
 	String actionGet = null;
 	String userIdGet = null;
 	String vekGet = null;
-	private OutputStream out;
+	//private OutputStream out;
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
