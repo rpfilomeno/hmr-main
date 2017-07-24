@@ -1,5 +1,4 @@
-<%@ page import="bizoncloudone.com.bean.UserLogin"
-		 import="java.util.List"
+<%@ page import="java.util.List"
 		 import="java.util.ArrayList"
 		 import="javax.servlet.RequestDispatcher" %>
 <%

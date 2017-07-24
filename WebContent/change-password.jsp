@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<%@ page import="bizoncloudone.com.bean.UserLogin"
-		 import="bizoncloudone.com.bean.RoleLogin"
-		 import="java.util.List"
+<%@ page import="java.util.List"
 		 import="java.util.ArrayList"
 		 import="javax.servlet.RequestDispatcher"
 		 import="java.util.HashMap" %>

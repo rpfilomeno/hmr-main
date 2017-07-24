@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ page import="bizoncloudone.com.bean.UserLogin"
+<%@ page 
 		 import="java.util.List" %>
 <html>
   <head>
