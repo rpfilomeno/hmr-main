@@ -403,8 +403,6 @@
 				                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAXIMUM BID</a>
 				                                   	 							
 			                                   	 							<% } %>
-		                                   	 							<% } else if(auction.getAuction_type() == 16){ %>
-		                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</a>
 		                                   	 							<% } %>
                                    	 								<% }%>
                                    	 								<% if(l.getIs_buy() == 1){ %>
@@ -414,6 +412,9 @@
 																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
 																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
 																<% } %>
+																<% if(auction.getAuction_type() == 16){ %>
+		                                   	 						<a class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</a>
+		                                   	 					<% } %>
 							                                </div>
 							                            </div>
 				
