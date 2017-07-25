@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import hmr.com.manager.AuctionManager;
 import hmr.com.manager.AuctionRangeManager;
@@ -225,7 +227,7 @@ public class Bid extends HttpServlet {
 		BigDecimal auctionId_wip = BigDecimal.ZERO;
 		BigDecimal itemId_wip = BigDecimal.ZERO;
 		
-        /*if(ServletFileUpload.isMultipartContent(req)){
+        if(ServletFileUpload.isMultipartContent(req)){
             try {
                 List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
                 for(FileItem item : multiparts){
@@ -247,7 +249,7 @@ public class Bid extends HttpServlet {
                         	userId=fieldvalue;
                         	req.getSession().setAttribute("userId", userId);
                         }else if (fieldname.equals("user-id")) {
-                        	user_id=Integer.valueOf(fieldvalue) ;
+                        	user_id= new BigDecimal(fieldvalue) ;
                         	req.getSession().setAttribute("user-id", user_id);
                         }else if (fieldname.equals("auctionId_wip")) {
                         	if(fieldvalue!=null && !"".equals(fieldvalue)){
@@ -288,7 +290,7 @@ public class Bid extends HttpServlet {
             	req.setAttribute("message", "File Upload Failed due to " + ex);
             }          
         }//file uploads
-         */		
+        		
 		
 		System.out.println("Paramerters - start");
 		System.out.println("manager : "+manager);
@@ -911,18 +913,29 @@ List<Auction> aL = null;
     	req.getSession().setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
     	req.setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
 
-
-		if(manager.equals("") && action.equals("")){
+    	
+    	if(manager.equals("") && action.equals("")){
 			page = "index.jsp";
 		}
-		
-		System.out.println("");
-		System.out.println("Controller - end");
-		
+    	
+    	try {
+    		Pattern regex = Pattern.compile("^redirect://(.*)");
+    		Matcher regexMatcher = regex.matcher(page);
+    		if (regexMatcher.find()) {
+    			page = regexMatcher.group(1);
+    			res.sendRedirect(page);
+    		} else {
+    			RequestDispatcher rd = req.getRequestDispatcher(page);
+    			rd.forward(req, res);
+    		}
+    	} catch (PatternSyntaxException ex) {
+    		// Syntax error in the regular expression
+    	}
+    	
+    	
 		System.out.println("page : "+page);
 
-		RequestDispatcher rd = req.getRequestDispatcher(page);
-		rd.forward(req, res);
+		
 		
 		
 	}
