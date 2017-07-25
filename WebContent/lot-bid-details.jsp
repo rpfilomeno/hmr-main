@@ -20,7 +20,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<%
 	System.out.println("PAGE lot-bid-details.jsp");
-
+ 
 	String COMPANY_NAME = (String)request.getSession().getAttribute("COMPANY_NAME")!=null ? (String)request.getSession().getAttribute("COMPANY_NAME") :"HMR Auctions";
 	String COMPANY_NAME_ACRONYM = (String)request.getSession().getAttribute("COMPANY_NAME_ACRONYM");
 
@@ -459,9 +459,17 @@
 						                                            	<% for(BiddingTransaction bidding_transaction : bidding_transactions ) { %>
 						                                                <tr>
 						                                                	
-						                                                	<% bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00"; %>
-						                                                    <% bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00"; %>
-						                                                    <% bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00"; %>
+						                                                	<% if(bidding_transaction.getAction_taken()==1){
+						                                                		bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00";
+						                                                	} else if(bidding_transaction.getAction_taken()==2){
+						                                                	   bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00";
+						                                                	 } else if(bidding_transaction.getAction_taken()==3) {
+						                                                       bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00";  
+						                                                    }%>
+						                                                    
+						                                                    
+						                                                    
+						                                                    
 						                                                    <td class="image">
 						                                                    	<a href="#" class="media-link"><img alt="" src="assets/img/default_avatar.png"></a>
 						                                                    </td>
@@ -474,7 +482,6 @@
 						                                                    </td>
 						                                                    <td class="total"><%=currency%>&nbsp;<%=bAmount%> </td>
 						                                                    <td class="diliver-date"> <%=sdf.format(bidding_transaction.getDate_created()) %> </td>
-						                                                    
 						                                                </tr>
 						                                                <% } %>
 						                                            </tbody>
