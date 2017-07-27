@@ -2,6 +2,7 @@
 <%@ page import="hmr.com.bean.Auction"
 		 import="java.util.List"  
 		 import="java.text.SimpleDateFormat"
+		 import="java.math.BigDecimal"
 %>
 <%
 	System.out.println("PAGE index.jsp");
@@ -30,7 +31,7 @@
 	String imgHeight="85";
 	
 	// IDs
-	Integer user_id = request.getSession().getAttribute("user-id")!=null ? (Integer)request.getSession().getAttribute("user-id") : null;
+	BigDecimal user_id = request.getSession().getAttribute("user-id")!=null ? new BigDecimal (""+request.getSession().getAttribute("user-id")) : null;
 	Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ? (Integer)request.getSession().getAttribute("user-role-id") : 0;
 
 	
@@ -133,15 +134,16 @@
               <li>
                 <a href="/bid">Home</a>
               </li>
+              <% if(fullName!=null && !"null".equals(fullName)){%>
+              <li>
+                <a href="bid?mngr=get&a=logout&uid=<%=userId%>">Logout</a>
+              </li>
+              <% } else { %>
               <li>
                 <a href="bid?mngr=get&a=login">Login</a>
               </li>
               <li>
                 <a href="bid?mngr=get&a=registration">Register</a>
-              </li>
-              <% if(fullName!=null && !"null".equals(fullName)){%>
-              <li>
-                <a href="bid?mngr=get&a=logout&uid=<%=userId%>">Register</a>
               </li>
               <% } %>
             </ul>
@@ -181,28 +183,18 @@
 
               <ul class="nav navbar-nav navbar-right navbar-icons">
                 <li>
-                  <a href="#">Watch List</a>
+                    <a href="#"><%=fullName%></a>
                 </li>
                 <li>
-                    <a href="account.html">My Account</a>
-                </li>
-                <li>
-                  <a href="cart">
+                  <a href="#">
                     <span id="bag-count"></span>
                     <span class="navbar-icon ion-bag"></span>
                   </a>
                 </li>
-                
-                
               </ul>
-      
-              
             </div>
           </div>
         </div>
-
-        
-
       </div>
     </div>
   </div>
@@ -212,15 +204,6 @@
       <div class="row">
         <div class="col-md-12">
           <ul class="navbar-subnav">
-            <li>
-              <a href="#">Online Bidding</a>
-            </li>
-            <li>
-              <a href="#">Negotiated Bids</a>
-            </li>
-            <li>
-              <a href="#">Live Auctions</a>
-            </li>
             <li>
               <a href="#">Services</a>
             </li>
@@ -424,7 +407,7 @@
 										<h1 class="slide-header">Slide 1</h1>
 										<p class="slide-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi aliquid nobis maxime sapiente, rerum, molestiae.</p>
 										<div class="hero-action-btns">
-											<a href="product-view.html" class="btn ms-btn btn-default hero-btn">View More <span class="left5 ion-chevron-right"></span></a>
+											<a href="#" class="btn ms-btn btn-default hero-btn">View More <span class="left5 ion-chevron-right"></span></a>
 										</div>
 									</div>
 								</div>
@@ -441,7 +424,7 @@
 										<h1 class="slide-header">Slide 2</h1>
 										<p class="slide-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi aliquid nobis maxime sapiente, rerum, molestiae.</p>
 										<div class="hero-action-btns">
-											<a href="product-view.html" class="btn ms-btn btn-default hero-btn">View More <span class="left5 ion-chevron-right"></span></a>
+											<a href="#" class="btn ms-btn btn-default hero-btn">View More <span class="left5 ion-chevron-right"></span></a>
 										</div>
 									</div>
 								</div>
@@ -458,7 +441,7 @@
 										<h1 class="slide-header">Slide 3</h1>
 										<p class="slide-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi aliquid nobis maxime sapiente, rerum, molestiae.</p>
 										<div class="hero-action-btns">
-											<a href="product-view.html" class="btn ms-btn btn-default hero-btn">View More <span class="left5 ion-chevron-right"></span></a>
+											<a href="#" class="btn ms-btn btn-default hero-btn">View More <span class="left5 ion-chevron-right"></span></a>
 										</div>
 									</div>
 								</div>
@@ -510,8 +493,15 @@
 															</a>
 														</h3>
 														<div class="card-snippet-wrap">
-															<%=activeOnlineAuction.getLocation()%>
+															Location: <%=activeOnlineAuction.getLocation()%>
 														</div>
+														<div class="card-snippet-wrap">
+															Start: <%=sdf.format(activeOnlineAuction.getStart_date_time()) %>
+														</div>
+														<div class="card-snippet-wrap">
+															Closing: <%=sdf.format(activeOnlineAuction.getEnd_date_time()) %>
+														</div>
+															
 														<div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=activeOnlineAuction.getId()%>"></label></div>
                                     					<script>setCountDownTimer('cdTimer-<%=activeOnlineAuction.getId()%>', '<%=activeOnlineAuction.getEnd_date_time()%>')</script>
 														<div class="card-action-btns">

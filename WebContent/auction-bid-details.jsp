@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<%@page import="java.sql.Timestamp"%>
 <%@ page import="hmr.com.bean.Auction"
 		 import="hmr.com.bean.Lot"
 		 import="hmr.com.bean.Image"
@@ -10,14 +9,11 @@
 		 import="java.util.HashMap"  
 		 import="java.text.DecimalFormat"
 		 import="java.text.SimpleDateFormat"
+		 import="java.sql.Timestamp"
+		 import="java.math.BigDecimal"
 
 %>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<%
+<%
 	System.out.println("PAGE auction-bid-details.jsp");
 
 	String COMPANY_NAME = (String)request.getSession().getAttribute("COMPANY_NAME")!=null ? (String)request.getSession().getAttribute("COMPANY_NAME") :"HMR Auctions";
@@ -43,7 +39,7 @@
 	String currency = "PHP";
 	
 	// IDs
-	Integer user_id = request.getSession().getAttribute("user-id")!=null ? (Integer)request.getSession().getAttribute("user-id") : null;
+	BigDecimal user_id = request.getSession().getAttribute("user-id")!=null ? new BigDecimal (""+request.getSession().getAttribute("user-id")) : null;
 	Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ? (Integer)request.getSession().getAttribute("user-role-id") : 0;
 	
 	System.out.println("PAGE user_id :"+user_id);
@@ -68,1479 +64,525 @@
 	
 	
 	%>
-    <title><%=COMPANY_NAME%></title>
-    
-    <!-- Page: auction-bid-details.jsp -->
-
-    <!-- Favicon -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="ico/hmr-favicon.ico">
-
-    <!-- DataTables -->
-    <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
-
-
-    <!-- CSS Global -->
-    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
-    <link href="assets/plugins/fontawesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="assets/plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet">
-    <link href="assets/plugins/owl-carousel2/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="assets/plugins/owl-carousel2/assets/owl.theme.default.min.css" rel="stylesheet">
-    <link href="assets/plugins/animate/animate.min.css" rel="stylesheet">
-    <link href="assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-
-    <!-- Theme CSS -->
-    <link href="assets/css/theme.css" rel="stylesheet">
-<link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
-    <link href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/plugins/gridder/jquery.gridder.min.css" />
-
-	<!-- Page Level CSS -->
-	<link rel="stylesheet" href="assets/css/gridder.css" />
-
-    <!-- Head Libs -->
-    <script src="assets/plugins/modernizr.custom.js"></script>
-
-    <!--[if lt IE 9]>
-    <script src="assets/plugins/iesupport/html5shiv.js"></script>
-    <script src="assets/plugins/iesupport/respond.min.js"></script>
-    <![endif]-->
-
-   <script>
-		    
-    function setCountDownTimer(elementId, end_date_time){
-		 // Set the date we're counting down to
-		 //var countDownDate = new Date("Jan 5, 2018 15:37:25").getTime();
-		
-		 var countDownDate = new Date(end_date_time).getTime();
-			
-		 
-		 // Update the count down every 1 second
-		 var x = setInterval(function() {
-		
-		     // Get todays date and time
-		     var now = new Date().getTime();
-		     
-		     // Find the distance between now an the count down date
-		     var distance = countDownDate - now;
-		     
-		     // Time calculations for days, hours, minutes and seconds
-		     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-		     
-		     // Output the result in an element with id="demo"
-		     document.getElementById(elementId).innerHTML = days + "d " + hours + "h "
-		     + minutes + "m " + seconds + "s ";
-		     
-		     // If the count down is over, write some text 
-		     if (distance < 0) {
-		         clearInterval(x);
-		         document.getElementById(elementId).innerHTML = "EXPIRED";
-		     }
-		 }, 1000);
-		 
-    }
- </script>
-</head>
-<body id="home" class="wide">
-<!-- PRELOADER -->
-<jsp:include page="hmr-preloader.jsp" />
-<!-- /PRELOADER -->
-
-<!-- WRAPPER -->
-<div class="wrapper">
-
-    <!-- Popup: Shopping cart items -->
-    <div class="modal fade popup-cart" id="popup-cart" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="container">
-                <div class="cart-items">
-                    <div class="cart-items-inner">
-                        <div class="media">
-                            <a class="pull-left" href="#"><img class="media-object item-image" src="assets/img/preview/shop/order-1s.jpg" alt=""></a>
-                            <p class="pull-right item-price">$450.00</p>
-                            <div class="media-body">
-                                <h4 class="media-heading item-title"><a href="#">1x Standard Product</a></h4>
-                                <p class="item-desc">Lorem ipsum dolor</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <p class="pull-right item-price">$450.00</p>
-                            <div class="media-body">
-                                <h4 class="media-heading item-title summary">Subtotal</h4>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <div class="media-body">
-                                <div>
-                                    <a href="#" class="btn btn-theme btn-theme-dark" data-dismiss="modal">Close</a><!--
-                                    --><a href="shopping-cart.html" class="btn btn-theme btn-theme-transparent btn-call-checkout">Checkout</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Popup: Shopping cart items -->
-
-    <!-- HEADER -->
-	<jsp:include page="hmr-header.jsp" />
-    <!-- /HEADER -->
-
-    <!-- CONTENT AREA -->
-    <div class="content-area">
-
-
-
-        <!-- PAGE -->
-        <section class="page-section">
-            <div class="container">
-            	<div class="row ">
-            		<div class="col-md-12">
-		                <div class="message-box">
-		                    <div class="message-box-inner">
-		                        <h2><%=auction.getAuction_name()%></h2>
-		                    </div>
-		                </div>
-		                
-		                <div id="msgDiv"></div>
-		             </div>
-               </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
-
-        <!-- PAGE -->
-        <section class="page-section no-padding-bottom">
-            <div class="container">
-
-                <div class="row ">
-                <%--
-                    <div class="col-md-3 sidebar">
-                        <!-- widget shop categories -->
-						<jsp:include page="hmr-category.jsp" />
-                        <!-- /widget shop categories -->
-                    </div> --%>
-
-
-	                    <div class="col-md-12">
-	                        <div class="tabs-wrapper content-tabs">
-	                            <ul class="nav nav-tabs">
-	                                <li><a href="#auction-description" data-toggle="tab">Details</a></li>
-	                                <li class="active"><a href="#auction-lots" data-toggle="tab">Lots</a></li>
-	                                <!-- <li><a href="#items-list" data-toggle="tab">Items</a></li> --->
-	                                <li><a href="#terms-and-conditions" data-toggle="tab">Terms and Conditions</a></li>
-	                            </ul>
-	                            <div class="tab-content">
-	                                <div class="tab-pane fade" id="auction-description">
-
-
-							        <section class="page-section">
-							            <div class="container">
-							                <div class="row">
-							                    <div class="col-md-10">
-
-							                            <div class="media" style="height: 210px;">
-							                               <a class="pull-left media-link" href="#" >
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=auction.getAuction_id()%>&t=at" alt="">
-							                                    
-							                                    <!-- <i class="fa fa-eye"></i> -->
-							                                </a>
-							                                <div class="media-body">
-																<h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red"><%=auction.getAuction_desc()%></a></h4>
-							                                	<div><label>LOCATION : </label> &nbsp;&nbsp; <label><%=auction.getLocation()%></label></div>
-							                                    
-							                                    <div><label>START : </label> &nbsp;&nbsp; <label><%=sdf.format(auction.getStart_date_time()) %></label></div>
-                                    							<div><label>CLOSING : </label>&nbsp;&nbsp; <label><%=sdf.format(auction.getEnd_date_time()) %></label></div>
-
-							                                </div>
-							                            </div>
-
-							                    </div>
-
-							                </div>
-							                
-							                <div class="row">
-													<div class="col-md-11">
-														<div class="panel panel-default">
-															<div class="panel-heading">
-																<h3 class="panel-title">Gallery</h3>
-															</div>
-															<div class="panel-body">
-																<!-- Gridder navigation -->
-																<ul class="gridder">
-
-																	<%
-																		for (Image i : auction_images) {
-																	%>
-																	<li class="gridder-list"
-																		data-griddercontent="#content<%=i.getId()%>">
-																		<img style="width:150px" class="media-object" src="image?id=<%=i.getId()%>&t=t" />
-																	</li>
-																	<%
-																		}
-																	%>
-
-																</ul>
-
-																<!-- Gridder content -->
-																<%
-																	for (Image i : auction_images) {
-																%>
-																<div id="content<%=i.getId()%>" class="gridder-content">
-																	<img class="media-object" src="image?id=<%=i.getId()%>" />
-																	<div class="media-body">
-																		<h4 class="media-heading">
-																			<a href="#"
-																				style="font-size: 14px; font-weight: bold; color: red">Image
-																				#<%=i.getId()%></a>
-																		</h4>
-																	</div>
-																</div>
-																<% } %>
-															</div>
-															<div class="panel-footer"><em>Note: Click on image for bigger view.</em></div>
-														</div>
-
-
-
-														
-													</div>
-												</div>
-							                    
-							            </div>
-							        </section>
-
-
-
-
-
-
-
-
-	                                </div>
-	                                <div class="tab-pane fade in active" id="auction-lots">
-
-							        <!-- PAGE -->
-							        <section class="page-section">
-							            <div class="container">
-							                <div class="row">
-							                	<%for(Lot l : lList) {%>
-							                	
-							                	
-
-							                	
-							                    <div class="col-md-7">
-
-							                            <div class="media" style="height: 210px;">
-							                               <a class="pull-left media-link" href="#" onclick="viewLot('<%=l.getId()%>')">
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=l.getId()%>&t=lt" alt="">
-							                                    
-							                                    <!-- <i class="fa fa-eye"></i> -->
-							                                </a>
-							                                <div class="media-body">
-							                                
-							                                    <h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red" onclick="viewLot('<%=l.getId()%>')">#<%=l.getLot_no()%>: <%=l.getLot_name()%></a></h4>
-							                                  
-							                                    
-							                                    <div><label><%=l.getLot_desc()%></label></div>
-							                                    
-							                                    <div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=l.getId()%>"></label></div>
-                                    							
-                                    							<%
-                                    								//if(currencyLovHM.get(l.getCurrency())!=null){
-                                    								//	currency = currencyLovHM.get(l.getCurrency()).getValue();
-                                    								//}
-                                    							%>
-                                    							
-                                    							<div><label>Highest Bid : <%=df.format(l.getAmount_bid())%> <%=currency%></label></div>
-							                                    <div><label>Asking Bid : <%=df.format(l.getAmount_bid_next())%> <%=currency%></label></div>
-							                                    <div><label>Bids : <%=l.getBid_count()%></label></div>
-							                                    <%-- <div><label>Bids : < /%=l.getBid_count()%></label></div> --%>
-							                                   
-							                                   
-							                                   
-							                                   
-							                                </div>
-							                            </div>
-							                            <script>setCountDownTimer('cdTimer-<%=l.getId()%>', '<%=l.getEnd_date_time()%>')</script>
-							                            
-							
-							                        
-							                    </div>
-												
-												
-							                    <div class="col-md-3">
-							                            
-							
-							                            <div class="media" style="height: 210px;">
-							                         
-							                                <div class="media">
-                                								<% if(user_id != null && user_role_id > 0){ %>
-                                									<% if( l.getIs_available_lot() > 0) { %>
-		                                   	 							<% Integer i = l.getUnit_qty(); %>
-		                                   	 							<div class="form-group">
-		                                   	 							<label>Quantity:</label>
-		                                   	 							<select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
-		                                   	 							<% while(i > 0) { %>
-		                                   	 								<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
-		                                   	 								<% i = i - 1; %>
-		                                   	 							<% } %>
-		                                   	 							</select>
-		                                   	 							</div>
-		                                   	 						<% } %>
-                                									<% if(l.getIs_bid() == 1){ %>
-		                                   	 							<% if(auction.getAuction_type() == 15){ %>
-			                                   	 							<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
-			                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</a>
-			                                   	 							<% } else { %>
-				                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%> </a>
-				                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAXIMUM BID</a>
-				                                   	 							
-			                                   	 							<% } %>
-		                                   	 							<% } else if(auction.getAuction_type() == 16){ %>
-		                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</a>
-		                                   	 							<% } %>
-                                   	 								<% }%>
-                                   	 								<% if(l.getIs_buy() == 1){ %>
-                                										<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></a>
-                                									<% }%> 
-                                   	 							<% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
-																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
-																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
-																<% } %>
-							                                </div>
-							                            </div>
-				
-							                    </div>
-												
-							                    
-							                    <%} %>
-							                   
-							                </div>
-							                    
-							            </div>
-							        </section>
-							        <!-- /PAGE -->
-
-
-
-	                                </div>
-	                                
-	                                
-	                                <%-- 
-									<div class="tab-pane fade in" id="items-list">
-
-							        <!-- PAGE -->
-							        <section class="page-section">
-							            <div class="container">
-							                <div class="row">
-							                	<%for(Item i : iList) {%>
-							                	
-							                	
-							                	
-							                    <div class="col-md-7">
-							                            
-							
-							                            <div class="media" style="height: 210px;">
-							                               <a class="pull-left media-link" href="#" >
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=i.getId()%>&t=i" alt="">
-							                                    
-							                                    <!-- <i class="fa fa-eye"></i> -->
-							                                </a>
-							                                <div class="media-body">
-							                                
-							       
-
-							                                
-							                                
-							                                
-							                                    <h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red"><%=i.getItem_desc()%></a></h4>
-							                                  
-							                                    
-							                                    <div><label><%=i.getItem_desc()%></label></div>
-							                                    
-							                                    <div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=i.getId()%>"></label></div>
-                                    							
-                                    							<%
-                                    							String currency = "PHP";
-                                    								if(currencyLovHM.get(i.getCurrency())!=null){
-                                    									currency = currencyLovHM.get(i.getCurrency()).getValue();
-                                    								}
-                                    							%>
-                                    							
-                                    							<div><label>Highest Bid : <%=i.getAmount_bid()%> <%=currency%></label></div>
-							                                    <div><label>Asking Bid : <%=i.getAmount_bid_next()%> <%=currency%></label></div>
-							                                    <div><label>Bids : <%=i.getBid_count()%></label></div>
-							                                   
-							                                   
-							                                   
-							                                   
-							                                </div>
-							                            </div>
-							                            <script>setCountDownTimer('cdTimer-<%=i.getId()%>', '<%=auction.getEnd_date_time()%>')</script>
-							                            
-							
-							                        
-							                    </div>
-												
-												
-							                    <div class="col-md-3">
-							                            
-							
-							                            <div class="media" style="height: 210px;">
-							                         
-							                                <div class="media">
-                                								<% if(user_id != null && user_role_id > 0){ %>
-                                									<% if(i.getIs_bid() == 1){ %>
-                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=i.getAmount_bid_next()%>')">BID <%=i.getAmount_bid_next()%> <%=currency%> </a>
-                                   	 							<a class="btn btn-theme btn-block" href="#" onclick="submitPage('SET-MAXIMUM-BID', '<%=i.getAmount_bid_next()%>')">SET MAXIMUM BID</a>
-                                   	 								<% }else {  } %>
-                                   	 								<% if(i.getIs_buy() == 1){ %>
-                                								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=i.getBuy_price()%>')">BUY <%=i.getBuy_price()%> <%=currency%></a>
-                                									<% }else{ } %>
-                                   	 							<% }else if(user_id == null && user_role_id == 0){ %>
-																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
-																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
-																<% } %>
-							                                </div>
-							                            </div>
-				
-							                    </div>
-												
-							                    
-							                    <%} %>
-							                   
-							                </div>
-							                    
-							            </div>
-							        </section>
-							        <!-- /PAGE -->
-
-
-
-	                                </div>
-	                                
-	                                 --%>
-	                                 
-	                                <div class="tab-pane fade" id="terms-and-conditions">
-	                                    <p><%=auction.getTerms_and_conditions()%></p>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                
- 
- 
-
-
-
-                </div>
-                </div>
-				</section>
-
-        <!-- /PAGE -->
-
-
-
-<%-- 
-
-        <!-- PAGE -->
-        <section class="page-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="thumbnail no-border no-padding thumbnail-banner size-1x3">
-                            <div class="media">
-                                <a class="media-link" href="#">
-                                    <div class="img-bg" style="background-image: url('assets/img/preview/shop/banner-1.jpg')"></div>
-                                    <div class="caption">
-                                        <div class="caption-wrapper div-table">
-                                        <div class="caption-inner div-cell">
-                                            <h2 class="caption-title"><span>Lorem Ipsum</span></h2>
-                                            <h3 class="caption-sub-title"><span>Dolor Sir Amet Percpectum</span></h3>
-                                            <span class="btn btn-theme btn-theme-sm">Shop Now</span>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="thumbnail no-border no-padding thumbnail-banner size-1x3">
-                            <div class="media">
-                                <a class="media-link" href="#">
-                                    <div class="img-bg" style="background-image: url('image?id=53')"></div>
-                                    <div class="caption text-right">
-                                        <div class="caption-wrapper div-table">
-                                            <div class="caption-inner div-cell">
-                                                <h2 class="caption-title"><span>Lorem Ipsum</span></h2>
-                                                <h3 class="caption-sub-title"><span>Dolor Sir Amet Percpectum</span></h3>
-                                                <span class="btn btn-theme btn-theme-sm">Shop Now</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
---%>
-
-
-
-<%-- 
-        <!-- PAGE -->
-        <section class="page-section">
-            <div class="container">
-
-
-                <div class="tabs">
-                    <ul id="tabs" class="nav nav-justified-off"><!--
-                        --><li class=""><a href="#tab-1" data-toggle="tab">Featured</a></li><!--
-                        --><li class="active"><a href="#tab-2" data-toggle="tab">Newest</a></li><!--
-                        --><li class=""><a href="#tab-3" data-toggle="tab">Top Sellers</a></li>
-                    </ul>
-                </div>
-
-                <div class="tab-content">
-		
-					
-                    <!-- tab 1 -->
-                    <div class="tab-pane fade" id="tab-1">
-                        <div class="row">
-                        
-                        
-                            <div class="col-md-3 col-sm-6">
-
-
-								
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="http://localhost:8080/HMR/image?id=53">
-                                            <img src="http://localhost:8080/HMR/image?id=2" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="image?id=53" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="image?id=53" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="image?id=53" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- tab 2 -->
-                    <div class="tab-pane fade active in" id="tab-2">
-                        <div class="row">
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="image?id=2" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="assets/img/preview/shop/product-2.jpg" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="image?id=2" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="image?id=2" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- tab 3 -->
-                    <div class="tab-pane fade" id="tab-3">
-                        <div class="row">
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="image?id=2" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="image?id=1" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="image?id=2">
-                                            <img src="image?id=2" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="thumbnail no-border no-padding">
-                                    <div class="media">
-                                        <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                            <img src="image?id=2" alt=""/>
-                                            <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                        </a>
-                                    </div>
-                                    <div class="caption text-center">
-                                        <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                        <div class="rating">
-                                            <span class="star"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span><!--
-                                            --><span class="star active"></span>
-                                        </div>
-                                        <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                        <div class="buttons">
-                                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-icon-left" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a><!--
-                                            --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-        <!-- /PAGE -->
---%>
-
-
-
-
-
-<%--
-        <!-- PAGE -->
-        <section class="page-section">
-            <div class="container">
-                <h2 class="section-title"><span>Top Rated Products</span></h2>
-                <div class="top-products-carousel">
-                    <div class="owl-carousel" id="top-products-carousel">
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                    <img src="assets/img/preview/shop/top-rated-1.jpg" alt=""/>
-                                    <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                </a>
-                            </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                <div class="rating">
-                                    <span class="star"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span>
-                                </div>
-                                <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                --><a class="btn btn-theme btn-theme-transparent" href="#">Add to Cart</a><!--
-                                --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                    <img src="assets/img/preview/shop/top-rated-2.jpg" alt=""/>
-                                    <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                </a>
-                            </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                <div class="rating">
-                                    <span class="star"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span>
-                                </div>
-                                <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                --><a class="btn btn-theme btn-theme-transparent" href="#">Add to Cart</a><!--
-                                --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                    <img src="assets/img/preview/shop/top-rated-3.jpg" alt=""/>
-                                    <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                </a>
-                            </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                <div class="rating">
-                                    <span class="star"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span>
-                                </div>
-                                <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                --><a class="btn btn-theme btn-theme-transparent" href="#">Add to Cart</a><!--
-                                --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                    <img src="assets/img/preview/shop/top-rated-4.jpg" alt=""/>
-                                    <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                </a>
-                            </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                <div class="rating">
-                                    <span class="star"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span>
-                                </div>
-                                <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                --><a class="btn btn-theme btn-theme-transparent" href="#">Add to Cart</a><!--
-                                --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                    <img src="assets/img/preview/shop/top-rated-5.jpg" alt=""/>
-                                    <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                </a>
-                            </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                <div class="rating">
-                                    <span class="star"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span>
-                                </div>
-                                <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                --><a class="btn btn-theme btn-theme-transparent" href="#">Add to Cart</a><!--
-                                --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                    <img src="assets/img/preview/shop/top-rated-6.jpg" alt=""/>
-                                    <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                </a>
-                            </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                <div class="rating">
-                                    <span class="star"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span>
-                                </div>
-                                <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                --><a class="btn btn-theme btn-theme-transparent" href="#">Add to Cart</a><!--
-                                --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                    <img src="assets/img/preview/shop/top-rated-1.jpg" alt=""/>
-                                    <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                </a>
-                            </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                <div class="rating">
-                                    <span class="star"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span>
-                                </div>
-                                <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                --><a class="btn btn-theme btn-theme-transparent" href="#">Add to Cart</a><!--
-                                --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" data-gal="prettyPhoto" href="assets/img/preview/shop/product-1-big.jpg">
-                                    <img src="assets/img/preview/shop/top-rated-2.jpg" alt=""/>
-                                    <span class="icon-view"><strong><i class="fa fa-eye"></i></strong></span>
-                                </a>
-                            </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title"><a href="product-details.html">Standard Product Header</a></h4>
-                                <div class="rating">
-                                    <span class="star"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span><!--
-                                --><span class="star active"></span>
-                                </div>
-                                <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="#"><i class="fa fa-heart"></i></a><!--
-                                --><a class="btn btn-theme btn-theme-transparent" href="#">Add to Cart</a><!--
-                                --><a class="btn btn-theme btn-theme-transparent btn-compare" href="#"><i class="fa fa-exchange"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
-
-        <!-- PAGE -->
-        <section class="page-section">
-            <div class="container">
-                <a class="btn btn-theme btn-title-more btn-icon-left" href="#"><i class="fa fa-file-text-o"></i>See All Posts</a>
-                <h2 class="block-title"><span>Our Recent posts</span></h2>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="recent-post">
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/blog/recent-post-1.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <p class="media-category"><a href="#">Shoes</a> / <a href="#">Dress</a></p>
-                                    <h4 class="media-heading"><a href="#">Standard Post Comment Header Here</a></h4>
-                                    Fusce gravida interdum eros a mollis. Sed non lorem varius, volutpat nisl in, laoreet ante.
-                                    <div class="media-meta">
-                                        6th June 2014
-                                        <span class="divider">/</span><a href="#"><i class="fa fa-comment"></i>27</a>
-                                        <span class="divider">/</span><a href="#"><i class="fa fa-heart"></i>18</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="recent-post">
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/blog/recent-post-2.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <p class="media-category"><a href="#">Wedding</a> / <a href="#">Meeting</a></p>
-                                    <h4 class="media-heading"><a href="#">Standard Post Comment Header Here</a></h4>
-                                    Fusce gravida interdum eros a mollis. Sed non lorem varius, volutpat nisl in, laoreet ante.
-                                    <div class="media-meta">
-                                        6th June 2014
-                                        <span class="divider">/</span><a href="#"><i class="fa fa-comment"></i>27</a>
-                                        <span class="divider">/</span><a href="#"><i class="fa fa-heart"></i>18</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="recent-post">
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/blog/recent-post-3.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <p class="media-category"><a href="#">Children</a> / <a href="#">Kids</a></p>
-                                    <h4 class="media-heading"><a href="#">Standard Post Comment Header Here</a></h4>
-                                    Fusce gravida interdum eros a mollis. Sed non lorem varius, volutpat nisl in, laoreet ante.
-                                    <div class="media-meta">
-                                        6th June 2014
-                                        <span class="divider">/</span><a href="#"><i class="fa fa-comment"></i>27</a>
-                                        <span class="divider">/</span><a href="#"><i class="fa fa-heart"></i>18</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="recent-post">
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/blog/recent-post-4.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <p class="media-category"><a href="#">Man</a> / <a href="#">Accessories</a></p>
-                                    <h4 class="media-heading"><a href="#">Standard Post Comment Header Here</a></h4>
-                                    Fusce gravida interdum eros a mollis. Sed non lorem varius, volutpat nisl in, laoreet ante.
-                                    <div class="media-meta">
-                                        6th June 2014
-                                        <span class="divider">/</span><a href="#"><i class="fa fa-comment"></i>27</a>
-                                        <span class="divider">/</span><a href="#"><i class="fa fa-heart"></i>18</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
---%>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title><%=COMPANY_NAME%></title>
         
-        <section class="page-section">
-            <div class="container">
-                <h2 class="section-title"><span>Brand &amp; Clients</span></h2>
-                <div class="partners-carousel">
-                    <div class="owl-carousel" id="partners">
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo1.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo2.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo3.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo4.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo5.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo6.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo7.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo8.png" alt=""/></a></div>
-                        
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
-<%--
-        <!-- PAGE -->
-        <section class="page-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="product-list">
-                            <a class="btn btn-theme btn-title-more" href="#">See All</a>
-                            <h4 class="block-title"><span>Top Sellers</span></h4>
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/shop/top-sellers-1.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">Standard Product Header</a></h4>
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div>
-                                    <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/shop/top-sellers-2.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">Standard Product Header</a></h4>
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div>
-                                    <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/shop/top-sellers-3.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">Standard Product Header</a></h4>
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div>
-                                    <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="product-list">
-                            <a class="btn btn-theme btn-title-more" href="#">See All</a>
-                            <h4 class="block-title"><span>Top Accessories</span></h4>
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/shop/top-sellers-4.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">Standard Product Header</a></h4>
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div>
-                                    <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/shop/top-sellers-5.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">Standard Product Header</a></h4>
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div>
-                                    <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/shop/top-sellers-6.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">Standard Product Header</a></h4>
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div>
-                                    <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="product-list">
-                            <a class="btn btn-theme btn-title-more" href="#">See All</a>
-                            <h4 class="block-title"><span>Top Newest</span></h4>
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/shop/top-sellers-7.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">Standard Product Header</a></h4>
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div>
-                                    <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/shop/top-sellers-8.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">Standard Product Header</a></h4>
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div>
-                                    <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <a class="pull-left media-link" href="#">
-                                    <img class="media-object" src="assets/img/preview/shop/top-sellers-9.jpg" alt="">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">Standard Product Header</a></h4>
-                                    <div class="rating">
-                                        <span class="star"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span><!--
-                                        --><span class="star active"></span>
-                                    </div>
-                                    <div class="price"><ins>$400.00</ins> <del>$425.00</del></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/themes/hmr/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="assets/themes/hmr/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="assets/themes/hmr/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="assets/themes/hmr/manifest.json">
+        <link rel="mask-icon" href="assets/themes/hmr/safari-pinned-tab.svg" color="#222222">
+        <link rel="shortcut icon" href="assets/themes/hmr/favicon.ico">
+        <meta name="theme-color" content="#ffffff">
 
-        <!-- PAGE -->
-        <section class="page-section no-padding-top">
-            <div class="container">
-                <div class="row blocks shop-info-banners">
-                    <div class="col-md-4">
-                        <div class="block">
-                            <div class="media">
-                                <div class="pull-right"><i class="fa fa-gift"></i></div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Buy 1 Get 1</h4>
-                                    Proin dictum elementum velit. Fusce euismod consequat ante.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="block">
-                            <div class="media">
-                                <div class="pull-right"><i class="fa fa-comments"></i></div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Call to Free</h4>
-                                    Proin dictum elementum velit. Fusce euismod consequat ante.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="block">
-                            <div class="media">
-                                <div class="pull-right"><i class="fa fa-trophy"></i></div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Money Back!</h4>
-                                    Proin dictum elementum velit. Fusce euismod consequat ante.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
---%>
+    
+        <meta property="og:site_name" content="HMR Auctions"/>
+        <meta property="og:title" content="Product View — HMR Auctions"/>
+        <meta property="og:url" content="product-view.html"/>
+                <meta property="og:type" content="website" />
+        
+        <meta property="og:description" content=""/>
+        
+        <meta property="og:image" content=""/>
+
+        <meta itemprop="name" content="Product View"/>
+        <meta itemprop="url" content="product-view.html"/>
+        <meta itemprop="description" content=""/>
+        <meta itemprop="thumbnailUrl" content=""/>
+        
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="Product View"/>
+        <meta name="twitter:image" content=""/>
+        <meta name="twitter:url" content="product-view.html"/>
+        <meta name="twitter:text" content=""/>
+        <meta name="twitter:domain" content="">
+
+        <meta name="description" content="" />
+
+        <link rel="stylesheet" href="assets/themes/hmr/css/bootstrap.css">
+		<link rel="stylesheet" href="assets/themes/hmr/css/ionicons.min.css">
+		<link rel="stylesheet" href="assets/themes/hmr/css/main.css?v=36502498">
+		
+		<link rel="stylesheet" href="assets/css/gridder.css" />
+		<link rel="stylesheet" href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css">
+		
+		<script src=assets/themes/hmr/js/vendor/modernizr.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery-1.11.3.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery-migrate-1.2.1.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/social.js></script>
+		<script src=assets/themes/hmr/js/vendor/masonry.pkgd.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/owl.carousel.min.js?v=2></script>
+		<script src=assets/themes/hmr/js/vendor/jquery.form.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery.easing.1.3.js></script>
+		<script src=assets/themes/hmr/js/bootstrap.js></script>
+		<script src=assets/themes/hmr/js/vendor/bootbox.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/url.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/msis.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
+		<script src=assets/themes/hmr/js/main.js?v=79186204></script>
+		
+		<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
+		<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
+                
+    </head>
+    <body data-is-mobile="" id="c" >
+    
+    <input type="hidden" id="base_url" value="">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+ 
+<div id="ms--main--nav">
+	<nav id="main-navigation" class="navbar navbar-fixed-top">
+  <div id="top-nav">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="top-nav-items nav-white visible-md visible-lg">
+            
+            <ul class="top-navbar">
+              <li>(02)548-6962</li>
+              <li>0917 548 3603</li>
+              <li>
+                  <a href="mailto:auction@hmrphils.com">auction@hmrphils.com</a>
+              </li>
+              <li>
+                <a href="">Home</a>
+              </li>
+              <% if(fullName!=null && !"null".equals(fullName)){%>
+              <li>
+                <a href="bid?mngr=get&a=logout&uid=<%=userId%>">Logout</a>
+              </li>
+              <% } else { %>
+              <li>
+                <a href="bid?mngr=get&a=login">Login</a>
+              </li>
+              <li>
+                <a href="bid?mngr=get&a=registration">Register</a>
+              </li>
+              <% } %>
+              
+            </ul>
+    
+            
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- /CONTENT AREA -->
+  </div>
+  <div class="container">
+    <div class="row gutter-0">
+      <div class="col-md-2">
+        <div class="site--logo">
+                      <a class="logo-default" href="index.html"><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
+                  </div>
+      </div>
 
-    <!-- PAGE --><!-- FOOTER -->
-	<jsp:include page="hmr-footer.jsp" />
-    <!-- /FOOTER -->
+      <div class="col-md-10">
+        <div class="row gutter-0">
+          <div class="col-md-8">
+            
+              <form action="#" id="nav-search-form" method="post" accept-charset="utf-8">
+                
+                <div class="input-group nav-search-group">
+                  <input type="text" class="form-control" id="nav-search-input" placeholder="Search for products, brands, shops">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default nav-search-btn" type="submit"><span class="ion-ios-search-strong"></span></button>
+                  </span>
+                </div>
 
-    <div id="to-top" class="to-top" style="background-color: #93bcff"><i class="fa fa-angle-up"></i></div>
+              
+              </form>
+          </div>
+          <div class="col-md-4">
+            <div id="main-nav-items" class="main-nav-items nav-white visible-md visible-lg">
+
+              <ul class="nav navbar-nav navbar-right navbar-icons">
+                <li>
+                  <a href="#"><%=fullName%></a>
+                </li>
+                <li>
+                  <a href="#">
+                    <span id="bag-count"></span>
+                    <span class="navbar-icon ion-bag"></span>
+                  </a>
+                </li>
+                
+                
+              </ul>
+      
+              
+            </div>
+          </div>
+        </div>
+
+        
+
+      </div>
+    </div>
+  </div>
+
+  <div id="sub-navigation">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="navbar-subnav">
+            <li>
+              <a href="">Services</a>
+            </li>
+            <li>
+              <a href="">Gallery</a>
+            </li>
+            <li>
+              <a href="">Contact Us</a>
+            </li>
+          </ul>    
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+
+
+<div id="mobile-nav-trigger" class="visible-sm visible-xs">
+  <div id="nav-trigger">
+      <span></span>
+      <span></span>
+      <span></span>
+  </div>
+</div>
+
+<div id="mobile-nav-wrapper">
+  <div id="mobile-logo" class="site--logo">
+    <a class="logo-default" href=""><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
+  </div>
+  <div id="mobile-nav-inject"></div>
+</div>
+
+
+
+
+<div id="search-dialog" class="ms-dialog hide">
+  <div class="ms-dialog-header">
+    <a href="#" class="ms-dialog-close-btn"><span class="ion-ios-close-empty"></span></a>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+        <form action="" id="search-form" method="post" accept-charset="utf-8">
+          
+        <div class="search-input-wrap">
+          <input type="text" class="form-control" id="search-input" placeholder="Search">
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+	
+</div>
+
+	
+<div id="ms--main--body">
+	
+
+
+
+
+
+
+	<div class="hmr-breadcrumb">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ol class="breadcrumb">
+					<li>
+						<a href="">Home</a>
+					</li>
+					<li>
+						<a href="electronics-and-gadgets">Categories</a>
+					</li>
+					<li class="active">Product View</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+
+<section id="hmr-main-container">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-lg-3 visible-lg visible-md">
+				<div class="side-widget">
+					<div class="main-category-header">
+						Gallery
+					</div>
+					<% for (Image i : auction_images) {	%>
+						<div class="side-product-item">
+							<div class="product-item">
+								<a href="#">
+									<div class="product-image-wrap">
+										<div class="image feature-fade-in" style="background-image: url('image?id=<%=i.getId()%>&t=t')"></div>
+									</div>
+								</a>
+							</div>
+						</div>
+					<% } %>
+					
+					
+				</div>
+				
+			</div>
+			<div class="col-md-8 col-lg-9">
+				
+				<div class="product-full-view-wrap">
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="full-product-picture">
+								<div class="image feature-fade-in" style="background-image: url('image?id=<%=auction.getAuction_id()%>&t=at')" ></div>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<h3 class="full-product-name"><%=auction.getAuction_name()%></h3>
+							<div class="product-details">
+								<div class="product-detail">Location: <%=auction.getLocation()%></div>
+								<div class="product-detail">Start: <%=sdf.format(auction.getStart_date_time()) %></div>
+								<div class="product-detail">Closing: <%=sdf.format(auction.getEnd_date_time()) %></div>
+								<div class="product-detail">Lots: <%=lList.size() %></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="clearfix top20"></div>
+
+					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#product-description-tab" aria-controls="product-description-tab" role="tab" data-toggle="tab">Description</a>
+						</li>
+						<li role="presentation">
+							<a href="#product-delivery-tab" aria-controls="product-delivery-tab" role="tab" data-toggle="tab">Terms and Conditions</a>
+						</li>
+					</ul>
+
+					<div class="clearfi"></div>
+
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="product-description-tab">
+							<h5>Overview</h5>
+							<p><%=auction.getAuction_desc()%></p>
+						</div>
+
+						<div role="tabpanel" class="tab-pane" id="product-delivery-tab">
+							<h5>Delivery</h5>
+							<p><%=auction.getTerms_and_conditions()%></p>
+
+						</div>
+						
+					</div>
+				</div>
+
+				<div id="product-list-wrapper">
+					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">Lots</a>
+						</li>
+					</ul>
+					<div class="clearfix top10"></div>
+
+					
+
+					<div class="row gutter-10">
+						<% Integer x =0; %>
+						<%for(Lot l : lList) {%>
+						<div class="col-md-6 col-xs-6">
+							<div class="product-item">
+								<a href="#" onclick="viewLot('<%=l.getId()%>')">
+									<div class="product-image-wrap">
+										<div class="image feature-fade-in" style="background-image: url('image?id=<%=l.getId()%>&t=lt')"></div>
+									</div>
+									<div class="product-body">
+										<h3 class="product-name">#<%=l.getLot_no()%> : <%=l.getLot_name()%></h3>
+										<div class="product-details">
+											<div class="product-detail">Description: <%=l.getLot_desc()%></div>
+											<div class="product-detail product-price">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
+											<div class="product-detail">Highest Bid: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
+											<div class="product-detail">Bids: <%=l.getBid_count()%></div>
+
+										</div>
+									</div>
+								</a>
+								<% if(user_id != null && user_role_id > 0){ %>
+                                <% if( l.getIs_available_lot() > 0) { %>
+		                            <% Integer i = l.getUnit_qty(); %>
+				                    <div class="form-group">
+				                    	<label>Quantity:</label>
+				                        <select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
+				                            <% while(i > 0) { %>
+		                                   		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+		                                   	 	<% i = i - 1; %>
+		                                   	<% } %>
+		                                </select>
+		                            </div>
+		                        <% } %>
+                                <% if(l.getIs_bid() == 1){ %>
+		                            <% if(auction.getAuction_type() == 15){ %>
+			                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
+			                                <button class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
+			                            <% } else { %>
+				                            <button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
+				                            <button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAXIMUM BID</button>
+			                            <% } %>
+		                            <% } else if(auction.getAuction_type() == 16){ %>
+		                                <button class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</button>
+		                            <% } %>
+                                <% }%>
+                                <% if(l.getIs_buy() == 1){ %>
+                                	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></button>
+                                <% }%> 
+                            <% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
+								<button class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</button>
+								<button class="btn btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</button>
+							<% } %>
+							</div>
+							
+						</div>
+						<% x = x +1;%>
+						<% if ((x % 2) == 0) { %>
+						</div><div class="row gutter-10">
+						<% } %>
+						<% } %>
+					</div>
+					
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+
+	
+</section>
+
+
+
+
+<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+
+
+
 
 </div>
-<!-- /WRAPPER -->
-
-<!-- JS Global -->
-<script src="assets/plugins/jquery/jquery-2.0.0.min.js"></script>
-<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
-<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
-<script src="assets/plugins/superfish/js/superfish.min.js"></script>
-<script src="assets/plugins/prettyphoto/js/jquery.prettyPhoto.js"></script>
-<script src="assets/plugins/owl-carousel2/owl.carousel.min.js"></script>
-<script src="assets/plugins/jquery.sticky.min.js"></script>
-<script src="assets/plugins/jquery.easing.min.js"></script>
-<script src="assets/plugins/jquery.smoothscroll.min.js"></script>
-<script src="assets/plugins/smooth-scrollbar.min.js"></script>
 
 
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+	<section class="instagram-section">
+	<div class="container-fluid">
+		<!-- <div id="instagram" class="row no-gutter"></div> -->
+	</div>
+</section>
 
-<!-- JS Page Level -->
-<script src="assets/js/theme.js"></script>
-<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
 
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="assets/plugins/jquery.cookie.js"></script>
-<!-- <script src="assets/js/theme-config.js"></script> -->
-<!--<![endif]-->
+
+
+<div id="footer">
+	<div class="container">
+		<div class="footer-lv1">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-3">
+									<h3 class="top10"><a href="">HMR</a></h3>
+								</div>
+								<div class="col-md-9">
+									<div class="row">
+																				<div class="col-sm-6">
+											<h4 class="footer-header">Purchase</h4>
+											<ul class="list-block">
+																								<li>
+													<a href="account">My Account</a>
+												</li>
+												<li>
+													<a href="cart">My Basket</a>
+												</li>
+												<li>
+													<a href="checkout">Checkout</a>
+												</li>
+												<li>
+													<a href="terms-and-conditions">Terms and Conditions</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="tarasd">
+						<h4 class="footer-header">Subscribe to our Weekly Newsletter</h4>
+						<form action="q/validate_email_subscribers" id="newsletter-form" method="post" accept-charset="utf-8">
+						<div class="form-group">
+							<div class="input-group">
+								<input type="text" name="email" id="email" class="form-control" placeholder="Your email address">
+								<span class="input-group-btn">
+									<input type="submit" class="btn btn-primary" value="Join" style="width: 90px;" />
+								</span>
+							</div><!-- /input-group -->
+							<div class="help-block"></div>
+						</div>
+						</form>					</div>
+
+					<ul class="social-media-links social-media-links-inline">
+						<li>
+							<a target="_BLANK" href="#">
+								<span class="social-icon"><img src="assets/themes/hmr/img/facebook-logo-white.png" class="img-responsive"></span>
+							</a>
+						</li>
+						<li>
+							<a target="_BLANK" href="#">
+								<span class="social-icon"><img src="assets/themes/hmr/img/youtube-logo-white.png" class="img-responsive"></span>
+							</a>
+						</li>
+						<li>
+							<a target="_BLANK" href="#">
+								<span class="social-icon"><img src="assets/themes/hmr/img/twitter-logo-white.png" class="img-responsive"></span>
+							</a>
+						</li>
+						
+					</ul>
+
+					<div class="clearfix"></div>
+					<div class="all-rights-reserved">
+						HMR Auctions © 2017. All Rights Reserved.
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <script>
 $(document).ready(function(){
-    $('#myTable').dataTable();
     <%if(msgInfo!=null){%>
     var msgInfo = "<%=msgInfo%>";
     var msgbgcol = "<%=msgbgcol%>";
@@ -1551,31 +593,7 @@ $(document).ready(function(){
     <%}%>
     setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
 	
- 	// Call Gridder
-    $('.gridder').gridderExpander({
-        scroll: true,
-        scrollOffset: 30,
-        scrollTo: "panel", // panel or listitem
-        animationSpeed: 400,
-        animationEasing: "easeInOutExpo",
-        showNav: true, // Show Navigation
-        nextText: "<span></span>", // Next button text
-        prevText: "<span></span>", // Previous button text
-        closeText: "", // Close button text
-        onStart: function () {
-            //Gridder Inititialized
-            console.log('On Gridder Initialized...');
-
-        },
-        onContent: function () {
-            //Gridder Content Loaded
-        },
-        onClosed: function () {
-            //Gridder Closed
-            console.log('On Gridder Closed...');
-
-        }
-    });
+ 	
 });
 
 
@@ -1781,8 +799,9 @@ function submitPage(action, value, lot, id, qtyid, note) {
    <input type="hidden" name="unit_qty" id="unit_qty" value=""/>
    <input type="hidden" name="note" id="note" value=""/>
    <input type="hidden" name="amount" id="amount" value=""/>
-   <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
+   <input type="hidden" name="userId" id="userId" value="<%=userId %>"/>
    <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
 </form>
+
 </body>
 </html>
