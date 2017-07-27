@@ -641,15 +641,15 @@ public class ItemStagingDao extends DBConnection {
 			) {
 		
 		Connection conn = null;
-		
+		PreparedStatement stmt = null;
 		int affectedRows = 0;
 		
-		AuctionStaging is = null;
+		//AuctionStaging is = null;
 
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection3();
+			conn = dbConn.getConnection7();
 
 
 			StringBuilder sb = new StringBuilder("INSERT into item_staging (item_id, lot_id, status_id, reference_no, pullout_id,");
@@ -674,26 +674,29 @@ public class ItemStagingDao extends DBConnection {
 			
 			
 		    String sql = sb.toString();
-	        PreparedStatement stmt = null;
+	        
 	        
 	        
 			try{
 				stmt = conn.prepareStatement(sql);
 			}catch(Exception ex){
-				conn = dbConn.getConnection3();
+				conn = dbConn.getConnection4();
 				//stmt = conn.prepareStatement(sql);
 				
 				try{
 					stmt = conn.prepareStatement(sql);
 				}catch(Exception ex1){
-					conn = dbConn.getConnection2();
+					conn = dbConn.getConnection5();
 					stmt = conn.prepareStatement(sql);
 				}
 				
 			}
 	        
+			if(stmt.isClosed()){
+				stmt = conn.prepareStatement(sql);
+			}
 	        
-	        
+	        /*
 			if(conn!=null && !conn.isClosed()){
 				try{
 					stmt = conn.prepareStatement(sql);
@@ -754,6 +757,7 @@ public class ItemStagingDao extends DBConnection {
 				conn = dbConn.getConnection();
 				stmt = conn.prepareStatement(sql);
 			}
+			*/
 
 	        stmt.setBigDecimal(1, item_id);
 	        stmt.setBigDecimal(2, lot_id);
@@ -792,7 +796,210 @@ public class ItemStagingDao extends DBConnection {
 	        //    throw new SQLException("Creating lot staging failed, no rows affected.");
 	        //}
 
-			stmt.close();
+			//stmt.close();
+		} catch (SQLException e) {
+			System.err.println(e.getCause());
+			
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+			
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+		}
+
+		return affectedRows;
+	}
+	
+	public int insertItemStagingOnSearch2(
+			BigDecimal item_id,
+			BigDecimal lot_id,
+			Integer status_id,
+			BigDecimal reference_no,
+			Integer pullout_id,
+			BigDecimal target_price,
+			BigDecimal reserved_price,
+			BigDecimal rate,
+			BigDecimal amount_bid,
+			Integer received_items_id,
+			String qt_remarks,
+			BigDecimal assess_value,
+			Integer payment_status,
+			BigDecimal bidder_number_id,
+			Integer payables_id,
+			BigDecimal product_code,
+			BigDecimal srp,
+			BigDecimal consignor_id,
+			String description,
+			BigDecimal delivery_receipt_id,
+			Timestamp last_date_sync
+			) {
+		
+		Connection conn = null;
+		
+		int affectedRows = 0;
+		
+		System.out.println("22222222222222");
+		//AuctionStaging is = null;
+
+		PreparedStatement stmt = null;
+		
+		try {
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+
+
+			StringBuilder sb = new StringBuilder("INSERT into item_staging (item_id, lot_id, status_id, reference_no, pullout_id,");
+
+			sb.append(" target_price, reserved_price, rate, amount_bid, received_items_id,");
+			
+			sb.append(" qt_remarks, assess_value, payment_status, bidder_number_id, payables_id,");
+
+			sb.append(" product_code, srp, consignor_id, description, delivery_receipt_id, last_date_sync");
+			
+			sb.append(" )VALUES(");
+			
+			sb.append(" ?, ?, ?, ?, ?,");
+			
+			sb.append(" ?, ?, ?, ?, ?,");
+			
+			sb.append(" ?, ?, ?, ?, ?,");
+			
+			sb.append(" ?, ?, ?, ?, ?, ?");
+
+			sb.append(")");
+			
+			
+		    String sql = sb.toString();
+	        
+	        
+	        
+			try{
+				stmt = conn.prepareStatement(sql);
+			}catch(Exception ex){
+				conn = dbConn.getConnection3();
+				//stmt = conn.prepareStatement(sql);
+				
+				try{
+					stmt = conn.prepareStatement(sql);
+				}catch(Exception ex1){
+					conn = dbConn.getConnection7();
+					stmt = conn.prepareStatement(sql);
+				}
+				
+			}
+	        
+			if(stmt.isClosed()){
+				stmt = conn.prepareStatement(sql);
+			}
+	        /*
+			if(conn!=null && !conn.isClosed()){
+				try{
+					stmt = conn.prepareStatement(sql);
+				}catch(Exception ex){
+					conn = dbConn.getConnection7();
+					stmt = conn.prepareStatement(sql);
+				}
+				
+			}else{
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection3();
+				stmt = conn.prepareStatement(sql);
+			}
+			
+			
+			if(stmt!=null && !stmt.isClosed()){
+				if(conn!=null && !conn.isClosed()){
+					stmt = conn.prepareStatement(sql);
+				}else{
+					dbConn = new DBConnection();
+					conn = dbConn.getConnection5();
+					stmt = conn.prepareStatement(sql);
+				}
+			}else{
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+				if(stmt!=null && !stmt.isClosed()){
+					
+				}else{
+					stmt = conn.prepareStatement(sql);
+				}
+				if(conn!=null && !conn.isClosed()){
+					stmt = conn.prepareStatement(sql);
+				}else{
+					
+					stmt = conn.prepareStatement(sql);
+				}
+				
+			}
+			
+			if(conn==null || conn.isClosed()){
+				conn = dbConn.getConnection3();
+			}
+	        
+			if(stmt!=null && !stmt.isClosed()){
+				
+			}else{
+				stmt = conn.prepareStatement(sql);
+			}
+			
+
+	        
+			if((stmt==null || stmt.isClosed()) && conn!=null && !conn.isClosed()){
+				stmt = conn.prepareStatement(sql);
+			}
+			
+			if(conn.isClosed()){
+				conn = dbConn.getConnection4();
+				stmt = conn.prepareStatement(sql);
+			}
+*/
+	        stmt.setBigDecimal(1, item_id);
+	        stmt.setBigDecimal(2, lot_id);
+	        stmt.setInt(3, status_id);
+	        stmt.setBigDecimal(4, reference_no);
+	        stmt.setInt(5, pullout_id);
+	        
+
+	        stmt.setBigDecimal(6, target_price);
+	        stmt.setBigDecimal(7, reserved_price);
+	        stmt.setBigDecimal(8, rate);
+	        stmt.setBigDecimal(9, amount_bid);
+	        stmt.setInt(10, received_items_id);
+	
+			
+	        
+	        stmt.setString(11, qt_remarks);
+	        stmt.setBigDecimal(12, assess_value);
+	        stmt.setInt(13, payment_status);
+	        stmt.setBigDecimal(14, bidder_number_id);
+	        stmt.setInt(15, payables_id);
+
+
+	        stmt.setBigDecimal(16, product_code);
+	        stmt.setBigDecimal(17, srp);
+	        stmt.setBigDecimal(18, consignor_id);
+	        stmt.setString(19, description);
+	        stmt.setBigDecimal(20, delivery_receipt_id);
+	        stmt.setTimestamp(21, last_date_sync); 
+
+		    System.out.println("sql : "+sql);
+		    
+		    affectedRows = stmt.executeUpdate();
+		    
+		    //if (affectedRows == 0) {
+	        //    throw new SQLException("Creating lot staging failed, no rows affected.");
+	        //}
+
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -801,11 +1008,17 @@ public class ItemStagingDao extends DBConnection {
 				conn.close();
 				} catch (SQLException e) {}
 			}
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+			
 		}
 
 		return affectedRows;
 	}
-	
 	
 	public int deleteItemStagingOnSearch() {
 	

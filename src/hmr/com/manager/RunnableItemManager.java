@@ -21,10 +21,7 @@ public class RunnableItemManager implements Runnable {
 	   private String threadName;
 	   private BigDecimal lot_id;
 	   private BigDecimal auction_id;
-	   
-	 
 
-	   
 	   RunnableItemManager( String threadName, BigDecimal lot_id, BigDecimal auction_id){
 	       this.threadName = threadName;
 	       this.lot_id = lot_id;
@@ -92,6 +89,7 @@ public class RunnableItemManager implements Runnable {
 				
 							JSONArray objArrItem = objItem.getJSONArray("data");
 							
+							boolean isConn2 = false;
 							
 							for (int i = 0; i < objArrItem.length(); i++) {
 							    JSONObject objDataItem = objArrItem.getJSONObject(i);
@@ -428,31 +426,73 @@ public class RunnableItemManager implements Runnable {
 										
 										System.out.println("item "+item_id+" - "+last_date_sync);
 										
-										
 										ItemStagingManager isMngr = new ItemStagingManager();
-										isMngr.insertItemStagingOnSearch(
-												item_id,
-												lot_id,
-												status_id,
-												reference_no,
-												pullout_id,
-												target_price,
-												reserved_price,
-												rate,
-												amount_bid,
-												received_items_id,
-												qt_remarks,
-												assess_value,
-												payment_status,
-												bidder_number_id,
-												payables_id,
-												product_code,
-												srp,
-												consignor_id,
-												description,
-												delivery_receipt_id,
-												last_date_sync
-												);
+										
+										if(isConn2==false){
+											
+
+											isMngr.insertItemStagingOnSearch(
+													item_id,
+													lot_id,
+													status_id,
+													reference_no,
+													pullout_id,
+													target_price,
+													reserved_price,
+													rate,
+													amount_bid,
+													received_items_id,
+													qt_remarks,
+													assess_value,
+													payment_status,
+													bidder_number_id,
+													payables_id,
+													product_code,
+													srp,
+													consignor_id,
+													description,
+													delivery_receipt_id,
+													last_date_sync
+													);
+											
+											
+											isConn2 = true;
+
+										}else{
+											
+											
+											isMngr.insertItemStagingOnSearch2(
+													item_id,
+													lot_id,
+													status_id,
+													reference_no,
+													pullout_id,
+													target_price,
+													reserved_price,
+													rate,
+													amount_bid,
+													received_items_id,
+													qt_remarks,
+													assess_value,
+													payment_status,
+													bidder_number_id,
+													payables_id,
+													product_code,
+													srp,
+													consignor_id,
+													description,
+													delivery_receipt_id,
+													last_date_sync
+													);
+											
+											
+											isConn2 = false;
+											
+											Thread.sleep(3000);
+										}
+										
+										//Thread.sleep(2000);
+										
 									}
 									
 									
@@ -468,11 +508,14 @@ public class RunnableItemManager implements Runnable {
 							}
 							
 						}
+						
+						Thread.sleep(1000);
+						
 					}
 	    	  
 	    	  
 
-	            Thread.sleep(5000);
+	            Thread.sleep(1000);
 	            
 	     } catch (InterruptedException | JSONException e) {
 	         System.out.println("Thread " +  threadName + " interrupted.");

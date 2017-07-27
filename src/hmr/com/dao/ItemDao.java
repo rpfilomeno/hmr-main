@@ -1369,28 +1369,33 @@ public class ItemDao extends DBConnection {
 		
 		sb.append(" order by item_desc");
 
+		Connection conn = null;
+		java.sql.Statement stmt = null;
+		
+		
+		
+		
 		try {
-			conn = getConnection7();
-
-			java.sql.Statement stmt = null;
 			
-			if(conn!=null && !conn.isClosed()){
-				stmt = conn.createStatement();
-			}else{
-				DBConnection dbConn = new DBConnection();
-				conn = dbConn.getConnection7();
-				stmt = conn.createStatement();
+			
+			try{
+				stmt = conn.prepareStatement(sb.toString());
+			}catch(Exception ex){
+				conn = dbConn.getConnection3();
+				//stmt = conn.prepareStatement(sql);
+				
+				try{
+					stmt = conn.prepareStatement(sb.toString());
+				}catch(Exception ex1){
+					conn = dbConn.getConnection2();
+					stmt = conn.prepareStatement(sb.toString());
+				}
+				
 			}
-			
-			
-			if(stmt!=null && !stmt.isClosed()){
-				stmt = conn.createStatement();
-			}else{
-				//DBConnection dbConn = new DBConnection();
-				conn = dbConn.getConnection5();
-				stmt = conn.createStatement();
+	        
+			if(stmt.isClosed()){
+				stmt = conn.prepareStatement(sb.toString());
 			}
-			
 			
 			System.out.println("sql : "+sb.toString());
 			
@@ -1437,7 +1442,7 @@ public class ItemDao extends DBConnection {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -1446,10 +1451,132 @@ public class ItemDao extends DBConnection {
 				conn.close();
 				} catch (SQLException e) {}
 			}
+			
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+			
+			
 		}
 		
 		return iHM;
 	}
+	
+	public HashMap<BigDecimal, Item> getItemHMByAuctionId_SetItemId2(BigDecimal auction_id){
+
+		HashMap<BigDecimal, Item> iHM = new HashMap<BigDecimal, Item>();
+		
+
+		StringBuilder sb = new StringBuilder("Select id, lot_id, auction_id, item_id, reference_no, target_price");
+
+		sb.append(", reserve_price, amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price");
+		
+		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date");
+		
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		
+		sb.append(" from item where auction_id="+auction_id);
+		
+		sb.append(" order by item_desc");
+
+		Connection conn = null;
+		java.sql.Statement stmt = null;
+		
+		
+		
+		
+		try {
+			
+			
+			try{
+				stmt = conn.prepareStatement(sb.toString());
+			}catch(Exception ex){
+				conn = dbConn.getConnection5();
+				//stmt = conn.prepareStatement(sql);
+				
+				try{
+					stmt = conn.prepareStatement(sb.toString());
+				}catch(Exception ex1){
+					conn = dbConn.getConnection6();
+					stmt = conn.prepareStatement(sb.toString());
+				}
+				
+			}
+	        
+			if(stmt.isClosed()){
+				stmt = conn.prepareStatement(sb.toString());
+			}
+			
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			Item i = null;
+
+			while(rs.next()){
+				i = new Item();
+				i.setId(rs.getBigDecimal("id"));
+				i.setLot_id(rs.getBigDecimal("lot_id"));
+				i.setItem_id(rs.getBigDecimal("item_id"));
+				i.setAuction_id(rs.getBigDecimal("auction_id"));
+				i.setReference_no(rs.getBigDecimal("reference_no"));
+				i.setTarget_price(rs.getBigDecimal("target_price"));
+				i.setReserve_price(rs.getBigDecimal("reserve_price"));
+				i.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				i.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				i.setAction_taken(rs.getInt("action_taken"));
+				i.setIs_buy(rs.getInt("is_buy"));
+				i.setIs_bid(rs.getInt("is_bid"));
+				i.setBuy_price(rs.getBigDecimal("buy_price"));
+				i.setBidder_id(rs.getInt("bidder_id"));
+				i.setItem_increment_time(rs.getInt("item_increment_time"));
+				i.setItem_desc(rs.getString("item_desc"));
+				i.setImageBytes(rs.getBytes("image"));
+				i.setCategory_level_1(rs.getInt("category_level_1"));
+				i.setCategory_level_2(rs.getInt("category_level_2"));
+				i.setCategory_level_3(rs.getInt("category_level_3"));
+				i.setCurrency(rs.getInt("currency"));
+				i.setBid_count(rs.getInt("bid_count"));
+				
+				i.setSynched_date(rs.getTimestamp("synched_date"));
+				
+				
+				//SystemBean - start
+				
+				i.setDate_updated(rs.getTimestamp("date_updated"));
+				i.setCreated_by(rs.getInt("created_by"));
+				i.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				iHM.put(i.getItem_id(), i);
+			}
+
+			rs.close();
+			//stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+			
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+			
+			
+		}
+		
+		return iHM;
+	}
+	
+	
 	/*
 	
 	public List<Item> getItemListByTypeAndActive(Integer itemType){

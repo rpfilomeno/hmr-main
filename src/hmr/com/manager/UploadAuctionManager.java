@@ -614,7 +614,7 @@ public class UploadAuctionManager {
 														
 													}
 													
-													if(lotcount<10){
+													if(lotcount<500){
 														
 														lsMngr.insertLotStagingOnSearch(
 																lot_id,

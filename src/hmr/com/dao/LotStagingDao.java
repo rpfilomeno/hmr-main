@@ -638,6 +638,8 @@ public class LotStagingDao extends DBConnection {
 		
 		AuctionStaging ls = null;
 
+		PreparedStatement stmt = null;
+				
 		try {
 			DBConnection dbConn = new DBConnection();
 			
@@ -658,7 +660,7 @@ public class LotStagingDao extends DBConnection {
 			
 			
 		    String sql = sb.toString();
-	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        stmt = conn.prepareStatement(sql);
 	        
 	        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        //java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
@@ -696,13 +698,19 @@ public class LotStagingDao extends DBConnection {
 	        //    throw new SQLException("Creating lot staging failed, no rows affected.");
 	        //}
 
-			stmt.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
 				conn.close();
+				} catch (SQLException e) {}
+			}
+			
+			if (stmt != null) {
+				try {
+					stmt.close();
 				} catch (SQLException e) {}
 			}
 		}
@@ -1073,23 +1081,36 @@ public class LotStagingDao extends DBConnection {
 		
 		sb.append(" order by lot_id asc");
 
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+
+		
 		try {
 			
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection7();
 			
 			
-			java.sql.Statement stmt = null;
-			
-			if(conn!=null && !conn.isClosed()){
-				conn = getConnection3();
-			}else{
-				conn = dbConn.getConnection3();
-				//conn = getConnection();
+			try{
+				stmt = conn.prepareStatement(sb.toString());
+			}catch(Exception ex){
+				conn = dbConn.getConnection7();
+				//stmt = conn.prepareStatement(sql);
+				
+				try{
+					stmt = conn.prepareStatement(sb.toString());
+				}catch(Exception ex1){
+					conn = dbConn.getConnection6();
+					stmt = conn.prepareStatement(sb.toString());
+				}
+				
 			}
-			
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
+	        
+			if(stmt.isClosed()){
+				stmt = conn.prepareStatement(sb.toString());
 			}
-
 			
 			System.out.println("sql : "+sb.toString());
 			
@@ -1129,6 +1150,13 @@ public class LotStagingDao extends DBConnection {
 				conn.close();
 				} catch (SQLException e) {}
 			}
+			
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+			
 		}
 		
 		return lsList;
