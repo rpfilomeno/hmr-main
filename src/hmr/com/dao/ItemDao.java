@@ -224,10 +224,10 @@ public class ItemDao extends DBConnection {
 			conn = dbConn.getConnection6();
 			
 
-			String SERVER_DIRECTORY_HMR_IMAGES = (String)req.getSession().getAttribute("SERVER_DIRECTORY_HMR_IMAGES");
+			//String SERVER_DIRECTORY_HMR_IMAGES = (String)req.getSession().getAttribute("SERVER_DIRECTORY_HMR_IMAGES");
 			
-			File image = new File(SERVER_DIRECTORY_HMR_IMAGES + "default-image.jpg");
-			FileInputStream fis = new FileInputStream ( image );
+			//File image = new File(SERVER_DIRECTORY_HMR_IMAGES + "default-image.jpg");
+			//FileInputStream fis = new FileInputStream ( image );
 			
 			
 			//File image_small = new File(SERVER_DIRECTORY_HMR_IMAGES + "default-image-small.jpg");
@@ -237,7 +237,9 @@ public class ItemDao extends DBConnection {
 
 			sb.append(", reserve_price, amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price");
 			
-			sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3");
+			//sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3");
+			
+			sb.append(", bidder_id, item_increment_time, item_desc, category_level_1, category_level_2, category_level_3");
 			
 			sb.append(", date_created, created_by)");
 			
@@ -245,7 +247,8 @@ public class ItemDao extends DBConnection {
 			
 			sb.append(" ?, ?, ?, ?, ?");
 			sb.append(",?, ?, ?, ?, ?, ?, ?");
-			sb.append(",?, ?, ?, ?, ?, ?, ?");
+			//sb.append(",?, ?, ?, ?, ?, ?, ?");
+			sb.append(",?, ?, ?, ?, ?, ?");
 			sb.append(",?, ?");
 			
 			sb.append(")");
@@ -275,14 +278,14 @@ public class ItemDao extends DBConnection {
 	        stmt.setInt(13, bidder_id);
 	        stmt.setInt(14, item_increment_time);
 	        stmt.setString(15, item_desc);
-	        stmt.setBlob (16, fis, (int) image.length() );
+	        //stmt.setBlob (16, null, 0);
 	        
-	        stmt.setInt(17, category_level_1);
-	        stmt.setInt(18, category_level_2);
-	        stmt.setInt(19, category_level_3);
+	        stmt.setInt(16, category_level_1);
+	        stmt.setInt(17, category_level_2);
+	        stmt.setInt(18, category_level_3);
 	        
-	        stmt.setTimestamp(20, sqlDate_t);
-	        stmt.setInt(21, user_id);
+	        stmt.setTimestamp(19, sqlDate_t);
+	        stmt.setInt(20, user_id);
 
 	        
 		    System.out.println("sql : "+sql);
@@ -335,9 +338,9 @@ public class ItemDao extends DBConnection {
 			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
-		} catch (FileNotFoundException e) {
+		//} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			if (conn != null) {
 				try {

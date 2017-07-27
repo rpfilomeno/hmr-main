@@ -187,8 +187,11 @@ System.out.println("fullName : "+fullName);
                         <%if(user_role_id.equals(1) || user_role_id.equals(4)){ %>
                         <li><a href="#">Marketing</a>
                             <ul>
+                            <!-- 
                             	<li><a href="bid?mngr=auction-marketing-manager&a=auctionMarketingList">Auctions</a></li>
-                                <li><a href="bid?mngr=site-content-manager&a=siteContentList">Site Contents</a></li>
+                                <li><a href="bid?mngr=site-content-manager&a=siteContentList">Site Contents</a></li> 
+                                -->
+                                <li><a href="bid?mngr=site-notification-manager&a=notificationtList">Notifications</a></li>
                             </ul>
                         </li>
                         <li><a href="index.html">Reports</a>
@@ -204,7 +207,7 @@ System.out.println("fullName : "+fullName);
                     	<%} %>
                     	
                     	<%if(user_role_id.equals(2)){%>
-                    	<li><a href="bid?mngr=auction-manager&a=privateAuctionList&uid=<%=userId%>">My Private Biddings</a></li>
+                    	<!-- <li><a href="bid?mngr=auction-manager&a=privateAuctionList&uid=</%=userId%>">My Private Biddings</a></li> -->
                     	<li><a href="#">My Bids</a></li>
                     	<%} %>
                     	<li><a href="#">Online Biddings</a></li>
