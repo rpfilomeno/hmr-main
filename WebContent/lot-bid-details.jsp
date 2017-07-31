@@ -483,9 +483,13 @@
 						        <tbody>
 						        	<% for(BiddingTransaction bidding_transaction : bidding_transactions ) { %>
 						            	<tr>                     	
-						               		<% bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00"; %>
-						                    <% bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00"; %>
-						                    <% bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00"; %>
+											<% if(bidding_transaction.getAction_taken()==1) {
+						                       bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00";
+						                       } else if(bidding_transaction.getAction_taken()==2){
+						                       bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00";
+						                       } else if(bidding_transaction.getAction_taken()==3) {
+						                       bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00";  
+						                  	}%>
                                             <td>
 						                    	<% if(user_id == bidding_transaction.getUser_id()) { %>
 						                        <div>You</div> 
