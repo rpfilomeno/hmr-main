@@ -764,4 +764,55 @@ public class ItemStagingManager {
 		return 1;
 	}
 	
+	//Second Connection
+	public int insertItemStagingOnSearch2(
+			BigDecimal item_id,
+			BigDecimal lot_id,
+			Integer status_id,
+			BigDecimal reference_no,
+			Integer pullout_id,
+			BigDecimal target_price,
+			BigDecimal reserved_price,
+			BigDecimal rate,
+			BigDecimal amount_bid,
+			Integer received_items_id,
+			String qt_remarks,
+			BigDecimal assess_value,
+			Integer payment_status,
+			BigDecimal bidder_number_id,
+			Integer payables_id,
+			BigDecimal product_code,
+			BigDecimal srp,
+			BigDecimal consignor_id,
+			String description,
+			BigDecimal delivery_receipt_id,
+			Timestamp last_date_sync){
+		ItemStagingDao isd = new ItemStagingDao(req,res);
+		isd.insertItemStagingOnSearch2(
+				item_id,
+				lot_id,
+				status_id,
+				reference_no,
+				pullout_id,
+				target_price,
+				reserved_price,
+				rate,
+				amount_bid,
+				received_items_id,
+				qt_remarks,
+				assess_value,
+				payment_status,
+				bidder_number_id,
+				payables_id,
+				product_code,
+				srp,
+				consignor_id,
+				description,
+				delivery_receipt_id,
+				last_date_sync
+				
+				);
+		return 1;
+	}
+	
 }
