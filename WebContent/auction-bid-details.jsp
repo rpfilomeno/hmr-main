@@ -39,7 +39,7 @@
 	String currency = "PHP";
 	
 	// IDs
-	BigDecimal user_id = request.getSession().getAttribute("user-id")!=null ? new BigDecimal (""+request.getSession().getAttribute("user-id")) : null;
+	Integer user_id = request.getSession().getAttribute("user-id")!=null ? (Integer)request.getSession().getAttribute("user-id") : null;
 	Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ? (Integer)request.getSession().getAttribute("user-role-id") : 0;
 	
 	System.out.println("PAGE user_id :"+user_id);
@@ -132,6 +132,7 @@
 		
 		<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
 		<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
+		<script src="assets/plugins/jquery.bsAlerts.min.js"></script>
                 
     </head>
     <body data-is-mobile="" id="c" >
@@ -183,7 +184,7 @@
     <div class="row gutter-0">
       <div class="col-md-2">
         <div class="site--logo">
-                      <a class="logo-default" href="index.html"><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
+                      <a class="logo-default" href="bid"><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
                   </div>
       </div>
 
@@ -191,7 +192,7 @@
         <div class="row gutter-0">
           <div class="col-md-8">
             
-              <form action="#" id="nav-search-form" method="post" accept-charset="utf-8">
+              <form action="#" id="nav-search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
                 
                 <div class="input-group nav-search-group">
                   <input type="text" class="form-control" id="nav-search-input" placeholder="Search for products, brands, shops">
@@ -207,9 +208,11 @@
             <div id="main-nav-items" class="main-nav-items nav-white visible-md visible-lg">
 
               <ul class="nav navbar-nav navbar-right navbar-icons">
+                <% if (fullName!=null) {%>
                 <li>
-                  <a href="#"><%=fullName%></a>
+                    <a href="#"><%=fullName%></a>
                 </li>
+                <% } %>
                 <li>
                   <a href="#">
                     <span id="bag-count"></span>
@@ -281,7 +284,7 @@
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         
-        <form action="" id="search-form" method="post" accept-charset="utf-8">
+        <form action="" id="search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
           
         <div class="search-input-wrap">
           <input type="text" class="form-control" id="search-input" placeholder="Search">
@@ -325,6 +328,8 @@
 <section id="hmr-main-container">
 	<div class="container">
 		<div class="row">
+			<div data-alerts="alerts" data-titles='{"warning": "<em>Warning!</em>", "error": "<em>Error!</em>"}' data-ids="myid" data-fade="3000"></div>
+			
 			<div class="col-md-4 col-lg-3 visible-lg visible-md">
 				<div class="side-widget">
 					<div class="main-category-header">
@@ -428,7 +433,6 @@
                                 <% if( l.getIs_available_lot() > 0) { %>
 		                            <% Integer i = l.getUnit_qty(); %>
 				                    <div class="form-group">
-				                    	<label>Quantity:</label>
 				                        <select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
 				                            <% while(i > 0) { %>
 		                                   		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
@@ -453,8 +457,8 @@
                                 	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></button>
                                 <% }%> 
                             <% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
-								<button class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</button>
-								<button class="btn btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</button>
+								<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
+								<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
 							<% } %>
 							</div>
 							
@@ -538,7 +542,7 @@
 				<div class="col-md-4">
 					<div class="tarasd">
 						<h4 class="footer-header">Subscribe to our Weekly Newsletter</h4>
-						<form action="q/validate_email_subscribers" id="newsletter-form" method="post" accept-charset="utf-8">
+						<form action="q/validate_email_subscribers" id="newsletter-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
 						<div class="form-group">
 							<div class="input-group">
 								<input type="text" name="email" id="email" class="form-control" placeholder="Your email address">
@@ -582,19 +586,7 @@
 
 
 <script>
-$(document).ready(function(){
-    <%if(msgInfo!=null){%>
-    var msgInfo = "<%=msgInfo%>";
-    var msgbgcol = "<%=msgbgcol%>";
-    var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-    msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-    msgBoxValue = msgBoxValue + '</div>';
-    document.getElementById("msgDiv").innerHTML=msgBoxValue;
-    <%}%>
-    setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
-	
- 	
-});
+
 
 
 function viewLot(id) {
@@ -788,9 +780,51 @@ function submitPage(action, value, lot, id, qtyid, note) {
     }).dialog('widget').position({ my: 'center', at: 'center', of: $(this) }); //end confirm dialog
 }
 
+function showAlert(msgInfo, msgbgcol) {
+	var priority = null;
+	if(msgbgcol=="red") {
+		priority = "error";
+	}else if(msgbgcol=="green") {
+		priority = "success";
+	}else {
+		priority = "warning";
+	}
+
+	$(document).trigger("add-alerts", [
+		{
+			"message": msgInfo,
+	         "priority": priority
+	    }
+	]);
+	
+	
+}
+
+function stopEnterSubmitting(e) {
+    if (e.keyCode == 13) {
+        var src = e.srcElement || e.target;
+        if (src.tagName.toLowerCase() != "textarea") {
+            if (e.preventDefault) {
+                e.preventDefault();
+            } else {
+                e.returnValue = false;
+            }
+        }
+    }
+}	
+
+$(document).ready(function(){
+	<%if(msgInfo!=null){%>
+	var msgInfo = "<%=msgInfo%>";
+	var msgbgcol = "<%=msgbgcol%>";
+	showAlert(msgInfo, msgbgcol);
+	<%}%>
+	
+});
+
 </script>
 
-<form action="" id="frm" name="frm" method="post">
+<form action="" id="frm" name="frm" method="post" onkeypress="stopEnterSubmitting(window.event)">
    <input type="hidden" name="manager" id="manager" value=""/>
    <input type="hidden" name="action" id="action" value=""/>
    <input type="hidden" name="doaction" id="doaction" value=""/>

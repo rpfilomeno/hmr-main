@@ -31,9 +31,9 @@
 	String imgHeight="85";
 	
 	// IDs
-	BigDecimal user_id = request.getSession().getAttribute("user-id")!=null ? new BigDecimal (""+request.getSession().getAttribute("user-id")) : null;
+	Integer user_id = request.getSession().getAttribute("user-id")!=null ? (Integer)request.getSession().getAttribute("user-id") : null;
 	Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ? (Integer)request.getSession().getAttribute("user-role-id") : 0;
-
+	
 	
 	List<Auction> activeOnlineAuctionList = request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-ONLINE-AUCTION-LIST");
 	
@@ -108,6 +108,8 @@
         <script src=assets/themes/hmr/js/vendor/msis.js></script>
         <script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
         <script src=assets/themes/hmr/js/main.js?v=67412309></script>
+        
+        <script src="assets/plugins/jquery.bsAlerts.min.js"></script>
                 
     </head>
     <body data-is-mobile="" id="c" >
@@ -158,7 +160,7 @@
     <div class="row gutter-0">
       <div class="col-md-2">
         <div class="site--logo">
-                      <a class="logo-default" href="index.html"><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
+                      <a class="logo-default" href="bid"><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
                   </div>
       </div>
 
@@ -166,7 +168,7 @@
         <div class="row gutter-0">
           <div class="col-md-8">
             
-              <form action="#" id="nav-search-form" method="post" accept-charset="utf-8">
+              <form action="#" id="nav-search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
                 
                 <div class="input-group nav-search-group">
                   <input type="text" class="form-control" id="nav-search-input" placeholder="Search for products, brands, shops">
@@ -182,9 +184,11 @@
             <div id="main-nav-items" class="main-nav-items nav-white visible-md visible-lg">
 
               <ul class="nav navbar-nav navbar-right navbar-icons">
+              	<% if (fullName!=null) {%>
                 <li>
                     <a href="#"><%=fullName%></a>
                 </li>
+                <% } %>
                 <li>
                   <a href="#">
                     <span id="bag-count"></span>
@@ -249,7 +253,7 @@
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         
-        <form action="" id="search-form" method="post" accept-charset="utf-8">
+        <form action="" id="search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
           
         <div class="search-input-wrap">
           <input type="text" class="form-control" id="search-input" placeholder="Search">
@@ -354,18 +358,6 @@
 					<h4 class="text-primary">Quick Links</h4>
 					<ul class="simple-nav-list">
 						<li>
-							<a href="#">My HMR <span class="icon-right ion-chevron-right"></span></a>
-						</li>
-						<li>
-							<a href="#">Manage Bidding <span class="icon-right ion-chevron-right"></span></a>
-						</li>
-						<li>
-							<a href="#">Manage Account <span class="icon-right ion-chevron-right"></span></a>
-						</li>
-						<li>
-							<a href="#">View Cart <span class="icon-right ion-chevron-right"></span></a>
-						</li>
-						<li>
 							<a href="#">Services <span class="icon-right ion-chevron-right"></span></a>
 						</li>
 						<li>
@@ -397,6 +389,10 @@
 
 
 			</div>
+			
+			<div data-alerts="alerts" data-titles='{"warning": "<em>Warning!</em>", "error": "<em>Error!</em>"}' data-ids="myid" data-fade="3000"></div>
+			
+			
 			<div class="col-md-8 col-lg-9">
 				<div id="landing-slider" class="owl-carousel">
 					<div class="owl-slide" data-dot="1">
@@ -530,6 +526,12 @@
 														<div class="card-snippet-wrap">
 															<%=activeNegotiatedAuction.getLocation()%>
 														</div>
+														<div class="card-snippet-wrap">
+															Start: <%=sdf.format(activeNegotiatedAuction.getStart_date_time()) %>
+														</div>
+														<div class="card-snippet-wrap">
+															Closing: <%=sdf.format(activeNegotiatedAuction.getEnd_date_time()) %>
+														</div>
 														<div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=activeNegotiatedAuction.getId()%>"></label></div>
                                     					<script>setCountDownTimer('cdTimer-<%=activeNegotiatedAuction.getId()%>', '<%=activeNegotiatedAuction.getEnd_date_time()%>')</script>
 														<div class="card-action-btns">
@@ -557,6 +559,12 @@
 														</h3>
 														<div class="card-snippet-wrap">
 															<%=activeLiveAuction.getLocation()%>
+														</div>
+														<div class="card-snippet-wrap">
+															Start: <%=sdf.format(activeLiveAuction.getStart_date_time()) %>
+														</div>
+														<div class="card-snippet-wrap">
+															Closing: <%=sdf.format(activeLiveAuction.getEnd_date_time()) %>
 														</div>
 														<div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=activeLiveAuction.getId()%>"></label></div>
                                     					<script>setCountDownTimer('cdTimer-<%=activeLiveAuction.getId()%>', '<%=activeLiveAuction.getEnd_date_time()%>')</script>
@@ -634,7 +642,7 @@
 				<div class="col-md-4">
 					<div class="tarasd">
 						<h4 class="footer-header">Subscribe to our Weekly Newsletter</h4>
-						<form action="q/validate_email_subscribers" id="newsletter-form" method="post" accept-charset="utf-8">
+						<form action="q/validate_email_subscribers" id="newsletter-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
 						<div class="form-group">
 							<div class="input-group">
 								<input type="text" name="email" id="email" class="form-control" placeholder="Your email address">
@@ -677,17 +685,48 @@
 </div>
 
 <script>
+function showAlert(msgInfo, msgbgcol) {
+	var priority = null;
+	if(msgbgcol=="red") {
+		priority = "error";
+	}else if(msgbgcol=="green") {
+		priority = "success";
+	}else {
+		priority = "warning";
+	}
+
+	$(document).trigger("add-alerts", [
+		{
+			"message": msgInfo,
+	         "priority": priority
+	    }
+	]);
+	
+	
+}
+
+function stopEnterSubmitting(e) {
+    if (e.keyCode == 13) {
+        var src = e.srcElement || e.target;
+        if (src.tagName.toLowerCase() != "textarea") {
+            if (e.preventDefault) {
+                e.preventDefault();
+            } else {
+                e.returnValue = false;
+            }
+        }
+    }
+}	
+
 $(document).ready(function(){
-    <%if(msgInfo!=null){%>
-    var msgInfo = "<%=msgInfo%>";
-    var msgbgcol = "<%=msgbgcol%>";
-    var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-    msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-    msgBoxValue = msgBoxValue + '</div>';
-    document.getElementById("msgDiv").innerHTML=msgBoxValue;
-    setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
-    <%}%>
+	<%if(msgInfo!=null){%>
+	var msgInfo = "<%=msgInfo%>";
+	var msgbgcol = "<%=msgbgcol%>";
+	showAlert(msgInfo, msgbgcol);
+	<%}%>
+	
 });
+
 
 </script>
 </body>

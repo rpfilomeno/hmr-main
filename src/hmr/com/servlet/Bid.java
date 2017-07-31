@@ -219,9 +219,9 @@ public class Bid extends HttpServlet {
 		File auction_file_small = null;
 		File item_file = null;
 		//String file_name = "";
-		BigDecimal user_id = BigDecimal.ZERO;
+		Integer user_id = 0;
 		if(req.getSession().getAttribute("user-id")!=null ) {
-			user_id =  new BigDecimal((String) ""+req.getSession().getAttribute("user-id"));
+			user_id =  (Integer) req.getSession().getAttribute("user-id");
 		}
 		
 		BigDecimal auctionId_wip = BigDecimal.ZERO;
@@ -249,7 +249,7 @@ public class Bid extends HttpServlet {
                         	userId=fieldvalue;
                         	req.getSession().setAttribute("userId", userId);
                         }else if (fieldname.equals("user-id")) {
-                        	user_id= new BigDecimal(fieldvalue) ;
+                        	user_id= Integer.valueOf(fieldvalue) ;
                         	req.getSession().setAttribute("user-id", user_id);
                         }else if (fieldname.equals("auctionId_wip")) {
                         	if(fieldvalue!=null && !"".equals(fieldvalue)){
@@ -530,7 +530,7 @@ public class Bid extends HttpServlet {
     								Integer.valueOf("0"), 
     								inputStream, 
     								Integer.valueOf("1"), 
-    								user_id)) {
+    								new BigDecimal(""+user_id) )) {
     							throw new RuntimeException("Image not uploaded.");
     						}
 						}
@@ -565,7 +565,7 @@ public class Bid extends HttpServlet {
     								Integer.valueOf(item_id), 
     								inputStream, 
     								Integer.valueOf("1"), 
-    								user_id)) {
+    								new BigDecimal(""+user_id))) {
     							throw new RuntimeException("Image not uploaded.");
     						}
 						}
@@ -583,7 +583,7 @@ public class Bid extends HttpServlet {
     								Integer.valueOf(action_id), 
     								inputStream, 
     								Integer.valueOf("1"), 
-    								user_id)) {
+    								new BigDecimal(""+user_id))) {
     							throw new RuntimeException("Image not uploaded.");
     						}
 						}
@@ -873,7 +873,7 @@ List<Auction> aL = null;
         for(Auction x : aL) {
         	if(x.getVisibility()==33) {
         		activeOnlineAuctionList.add(x);
-        	}else if( x.getVisibility()==34 && auMngr.isUserApprovedOnAuction(user_id, x.getAuction_id())){
+        	}else if( x.getVisibility()==34 && auMngr.isUserApprovedOnAuction(new BigDecimal(""+user_id), x.getAuction_id())){
         		activeOnlineAuctionList.add(x);
         	} else {
         		activeOnlineAuctionListPrivate.add(x);
@@ -882,7 +882,7 @@ List<Auction> aL = null;
         	
         
         //Listings
-        if(req.getSession().getAttribute("user-id")!=null )	user_id =  new BigDecimal((String) ""+req.getSession().getAttribute("user-id"));
+        if(req.getSession().getAttribute("user-id")!=null )	user_id =  (Integer) req.getSession().getAttribute("user-id");
 	
     	req.getSession().setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
     	req.setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
@@ -891,7 +891,7 @@ List<Auction> aL = null;
         for(Auction y : aL) {
         	if(y.getVisibility()==33) {
         		activeNegotiatedAuctionList.add(y);
-        	}else if( y.getVisibility()==34 && auMngr.isUserApprovedOnAuction(user_id, y.getAuction_id())){
+        	}else if( y.getVisibility()==34 && auMngr.isUserApprovedOnAuction(new BigDecimal(""+user_id), y.getAuction_id())){
         		activeNegotiatedAuctionList.add(y);
         	} else {
         		activeNegotiatedAuctionListPrivate.add(y);
@@ -904,7 +904,7 @@ List<Auction> aL = null;
         for(Auction z : aL) {
         	if(z.getVisibility()==33) {
         		activeLiveAuctionList.add(z);
-        	}else if( z.getVisibility()==34 && auMngr.isUserApprovedOnAuction(user_id, z.getAuction_id())){
+        	}else if( z.getVisibility()==34 && auMngr.isUserApprovedOnAuction(new BigDecimal(""+user_id), z.getAuction_id())){
         		activeLiveAuctionList.add(z);
         	} else {
         		activeLiveAuctionListPrivate.add(z);

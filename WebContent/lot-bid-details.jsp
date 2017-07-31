@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<%@page import="java.sql.Timestamp"%>
-<%@page import="hmr.com.bean.BiddingTransaction"%>
 <%@ page import="hmr.com.bean.Lot"
 		 import="hmr.com.bean.Auction"
 		 import="hmr.com.bean.Lov"
@@ -12,15 +10,10 @@
 		 import="java.util.HashMap"  
 		 import="java.text.DecimalFormat"
 		 import="java.text.SimpleDateFormat"
+		 import="java.sql.Timestamp"
+		 import="hmr.com.bean.BiddingTransaction"
 %>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<%
-	System.out.println("PAGE lot-bid-details.jsp");
-
+<%
 	String COMPANY_NAME = (String)request.getSession().getAttribute("COMPANY_NAME")!=null ? (String)request.getSession().getAttribute("COMPANY_NAME") :"HMR Auctions";
 	String COMPANY_NAME_ACRONYM = (String)request.getSession().getAttribute("COMPANY_NAME_ACRONYM");
 
@@ -65,546 +58,560 @@
 	String bAmount = "0";
 	
 	%>
-    <title><%=COMPANY_NAME%></title>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="ico/hmr-favicon.ico">
+        <title><%=COMPANY_NAME%></title>
+        
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/themes/hmr/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="assets/themes/hmr/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="assets/themes/hmr/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="assets/themes/hmr/manifest.json">
+        <link rel="mask-icon" href="assets/themes/hmr/safari-pinned-tab.svg" color="#222222">
+        <link rel="shortcut icon" href="assets/themes/hmr/favicon.ico">
+        <meta name="theme-color" content="#ffffff">
 
-    <!-- DataTables -->
-    <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
-
-
-    <!-- CSS Global -->
-    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
-    <link href="assets/plugins/fontawesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="assets/plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet">
-    <link href="assets/plugins/owl-carousel2/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="assets/plugins/owl-carousel2/assets/owl.theme.default.min.css" rel="stylesheet">
-    <link href="assets/plugins/animate/animate.min.css" rel="stylesheet">
     
+        <meta property="og:site_name" content="HMR Auctions"/>
+        <meta property="og:title" content="Product View — HMR Auctions"/>
+        <meta property="og:url" content="product-view.html"/>
+                <meta property="og:type" content="website" />
+        
+        <meta property="og:description" content=""/>
+        
+        <meta property="og:image" content=""/>
 
-    <!-- Theme CSS -->
-    <link href="assets/css/theme.css" rel="stylesheet">
-<link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
-    <link href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="assets/plugins/gridder/jquery.gridder.min.css" />
+        <meta itemprop="name" content="Product View"/>
+        <meta itemprop="url" content="product-view.html"/>
+        <meta itemprop="description" content=""/>
+        <meta itemprop="thumbnailUrl" content=""/>
+        
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="Product View"/>
+        <meta name="twitter:image" content=""/>
+        <meta name="twitter:url" content="product-view.html"/>
+        <meta name="twitter:text" content=""/>
+        <meta name="twitter:domain" content="">
 
-	<!-- Page Level CSS -->
-	<link rel="stylesheet" href="assets/css/gridder.css" />
+        <meta name="description" content="" />
 
-    <!-- Head Libs -->
-    <script src="assets/plugins/modernizr.custom.js"></script>
-
-    <!--[if lt IE 9]>
-    <script src="assets/plugins/iesupport/html5shiv.js"></script>
-    <script src="assets/plugins/iesupport/respond.min.js"></script>
-    <![endif]-->
-
-   <script>
-		    
-    function setCountDownTimer(elementId, end_date_time){
-		 // Set the date we're counting down to
-		 //var countDownDate = new Date("Jan 5, 2018 15:37:25").getTime();
+        <link rel="stylesheet" href="assets/themes/hmr/css/bootstrap.css">
+		<link rel="stylesheet" href="assets/themes/hmr/css/ionicons.min.css">
+		<link rel="stylesheet" href="assets/themes/hmr/css/main.css?v=36502498">
 		
-		 var countDownDate = new Date(end_date_time).getTime();
-			
-		 
-		 // Update the count down every 1 second
-		 var x = setInterval(function() {
+		<link rel="stylesheet" href="assets/css/gridder.css" />
+		<link rel="stylesheet" href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css">
 		
-		     // Get todays date and time
-		     var now = new Date().getTime();
-		     
-		     // Find the distance between now an the count down date
-		     var distance = countDownDate - now;
-		     
-		     // Time calculations for days, hours, minutes and seconds
-		     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-		     
-		     // Output the result in an element with id="demo"
-		     document.getElementById(elementId).innerHTML = days + "d " + hours + "h "
-		     + minutes + "m " + seconds + "s ";
-		     
-		     // If the count down is over, write some text 
-		     if (distance < 0) {
-		         clearInterval(x);
-		         document.getElementById(elementId).innerHTML = "EXPIRED";
-		     }
-		 }, 1000);
-		 
-    }
- </script>
-</head>
-<body id="home" class="wide">
-<!-- PRELOADER -->
-<jsp:include page="hmr-preloader.jsp" />
-<!-- /PRELOADER -->
-
-<!-- WRAPPER -->
-<div class="wrapper">
-
-    <!-- Popup: Shopping cart items -->
-    <div class="modal fade popup-cart" id="popup-cart" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="container">
-                <div class="cart-items">
-                    <div class="cart-items-inner">
-                        <div class="media">
-                            <a class="pull-left" href="#"><img class="media-object item-image" src="assets/img/preview/shop/order-1s.jpg" alt=""></a>
-                            <p class="pull-right item-price">$450.00</p>
-                            <div class="media-body">
-                                <h4 class="media-heading item-title"><a href="#">1x Standard Product</a></h4>
-                                <p class="item-desc">Lorem ipsum dolor</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <p class="pull-right item-price">$450.00</p>
-                            <div class="media-body">
-                                <h4 class="media-heading item-title summary">Subtotal</h4>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <div class="media-body">
-                                <div>
-                                    <a href="#" class="btn btn-theme btn-theme-dark" data-dismiss="modal">Close</a><!--
-                                    --><a href="shopping-cart.html" class="btn btn-theme btn-theme-transparent btn-call-checkout">Checkout</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+		<script src=assets/themes/hmr/js/vendor/modernizr.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery-1.11.3.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery-migrate-1.2.1.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/social.js></script>
+		<script src=assets/themes/hmr/js/vendor/masonry.pkgd.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/owl.carousel.min.js?v=2></script>
+		<script src=assets/themes/hmr/js/vendor/jquery.form.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery.easing.1.3.js></script>
+		<script src=assets/themes/hmr/js/bootstrap.js></script>
+		<script src=assets/themes/hmr/js/vendor/bootbox.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/url.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/msis.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
+		<script src=assets/themes/hmr/js/main.js?v=79186204></script>
+		
+		<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
+		<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
+		<script src="assets/plugins/jquery.bsAlerts.min.js"></script>
+                
+    </head>
+    <body data-is-mobile="" id="c" >
+    
+    <input type="hidden" id="base_url" value="">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+ 
+<div id="ms--main--nav">
+	<nav id="main-navigation" class="navbar navbar-fixed-top">
+  <div id="top-nav">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="top-nav-items nav-white visible-md visible-lg">
+            
+            <ul class="top-navbar">
+              <li>(02)548-6962</li>
+              <li>0917 548 3603</li>
+              <li>
+                  <a href="mailto:auction@hmrphils.com">auction@hmrphils.com</a>
+              </li>
+              <li>
+                <a href="">Home</a>
+              </li>
+              <% if(fullName!=null && !"null".equals(fullName)){%>
+              <li>
+                <a href="bid?mngr=get&a=logout&uid=<%=userId%>">Logout</a>
+              </li>
+              <% } else { %>
+              <li>
+                <a href="bid?mngr=get&a=login">Login</a>
+              </li>
+              <li>
+                <a href="bid?mngr=get&a=registration">Register</a>
+              </li>
+              <% } %>
+              
+            </ul>
+    
+            
+          </div>
         </div>
+      </div>
     </div>
-    <!-- /Popup: Shopping cart items -->
+  </div>
+  <div class="container">
+    <div class="row gutter-0">
+      <div class="col-md-2">
+        <div class="site--logo">
+                      <a class="logo-default" href="bid"><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
+                  </div>
+      </div>
 
-    <!-- HEADER -->
-	<jsp:include page="hmr-header.jsp" />
-    <!-- /HEADER -->
+      <div class="col-md-10">
+        <div class="row gutter-0">
+          <div class="col-md-8">
+            
+              <form action="#" id="nav-search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
+                
+                <div class="input-group nav-search-group">
+                  <input type="text" class="form-control" id="nav-search-input" placeholder="Search for products, brands, shops">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default nav-search-btn" type="submit"><span class="ion-ios-search-strong"></span></button>
+                  </span>
+                </div>
 
-    <!-- CONTENT AREA -->
-    <div class="content-area">
+              
+              </form>
+          </div>
+          <div class="col-md-4">
+            <div id="main-nav-items" class="main-nav-items nav-white visible-md visible-lg">
 
-
-
-        <!-- PAGE -->
-        <section class="page-section">
-            <div class="container">
-            	<div class="row ">
-            		<div class="col-md-12">
-		                <div class="message-box">
-		                    <div class="message-box-inner">
-		                        <h2><%=lot.getLot_name()%></h2>
-		                    </div>
-		                </div>
-		                
-		                <div id="msgDiv"></div>
-		             </div>
-		             <%--
-		             <div class="col-md-12">   
-						<div>
-		                   <div class="media">
-		                       <a href="#">
-		                           <img style="height: 200px; size: 200px" src="image?id=<%=auction.getId()%>" alt=""/> 
-		                       </a>
-		                   </div>
-		               </div>
-	               </div> --%>
-               </div>
+              <ul class="nav navbar-nav navbar-right navbar-icons">
+                <% if (fullName!=null) {%>
+                <li>
+                    <a href="#"><%=fullName%></a>
+                </li>
+                <% } %>
+                <li>
+                  <a href="#">
+                    <span id="bag-count"></span>
+                    <span class="navbar-icon ion-bag"></span>
+                  </a>
+                </li>
+                
+                
+              </ul>
+      
+              
             </div>
-        </section>
-        <!-- /PAGE -->
+          </div>
+        </div>
 
-        <!-- PAGE -->
-        <section class="page-section no-padding-bottom">
-            <div class="container">
+        
 
-                <div class="row ">
-	                    <div class="col-md-12">
-	                        <div class="tabs-wrapper content-tabs">
-	                            <ul class="nav nav-tabs">
-	                                <li class="active"><a href="#auction-description" data-toggle="tab">Details</a></li>
-	                                <li><a href="#auction-lots" data-toggle="tab">Items</a></li>
-	                                <li><a href="#bidding_transactions" data-toggle="tab">Latest Bids</a></li>
-	                                <li><a href="#terms-and-conditions" data-toggle="tab">Terms and Conditions</a></li>
-	                            </ul>
-	                            <div class="tab-content">
-	                                <div class="tab-pane fade in active" id="auction-description">
+      </div>
+    </div>
+  </div>
+
+  <div id="sub-navigation">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="navbar-subnav">
+            <li>
+              <a href="">Services</a>
+            </li>
+            <li>
+              <a href="">Gallery</a>
+            </li>
+            <li>
+              <a href="">Contact Us</a>
+            </li>
+          </ul>    
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
 
 
-							        <section class="page-section">
-							            <div class="container">
-							                <div class="row">
-							                    <div class="col-md-7">
-							                            <div class="media" style="height: 210px;">
-							                               <a class="pull-left media-link" href="#" >
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=lot.getId()%>&t=lt" alt="">
-							                                    
-							                                    <!-- <i class="fa fa-eye"></i> -->
-							                                </a>
-							                                <div class="media-body">
-																<h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red"><%=lot.getLot_desc()%></a></h4>
-							                                	<%  if( lot.getIs_available_lot() > 0) { %>
-							                                	<div><label>UNIT QUANTITY : <%=lot.getUnit_qty()%></label></div>
-							                                	<% } %>
-							                                	<div><label>HIGHEST BID : <%=df.format(lot.getAmount_bid())%> <%=currency%></label></div>
-							                                	<div><label>ASKING BID : <%=df.format(lot.getAmount_bid_next())%> <%=currency%></label></div>
-							                                    <div><label>BIDS : <%=lot.getBid_count()%></label></div>
-																<div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=lot.getId()%>"></label></div>
-							                                </div>
-							                            </div>
-							                            <script>setCountDownTimer('cdTimer-<%=lot.getId()%>', '<%=lot.getEnd_date_time()%>')</script>
-							                    </div>
-							                    
-							                    <div class="col-md-3">
-							                            
-							
-							                            <div class="media" style="height: 210px;">
-							                         
-							                                <div class="media">
-                                								<% if(user_id != null && user_role_id > 0){ %>
-                                									<% if(lot.getIs_bid() == 1){ %>
-                                   	 							
-		                                   	 							<%  if( lot.getIs_available_lot() > 0) { %>
-		                                   	 								<% Integer i = lot.getUnit_qty(); %>
-		                                   	 								<div class="form-group">
-		                                   	 								<label>Quantity:</label>
-		                                   	 								<select class="form-control" id="qty_<%=lot.getId()%>" name="qty_<%=lot.getId()%>">
-		                                   	 								<% while(i > 0) { %>
-		                                   	 									<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
-		                                   	 									<% i = i - 1; %>
-		                                   	 								<% } %>
-		                                   	 								</select>
-		                                   	 								</div>
-		                                   	 							<% } %>
-		                                   	 							
-		                                   	 							<% if(auction.getAuction_type() == 15){ %>
-			                                   	 							<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && lot.getActive()>0){ %>
-			                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</a>
-			                                   	 							<% } else { %>
-			                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BID <%=df.format(lot.getAmount_bid_next())%> <%=currency%> </a>
-			                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">SET MAXIMUM BID</a>
-			                                   	 							<% } %>
-		                                   	 							<% }else if(auction.getAuction_type() == 16){ %>
-		                                   	 								<a class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">MAKE OFFER</a>
-		                                   	 							<% } %>
 
-                                   	 								<% }else {  } %>
-                                   	 								<% if(lot.getIs_buy() == 1){ %>
-                                								<a class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=lot.getBuy_price()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BUY <%=df.format(lot.getBuy_price())%> <%=currency%></a>
-                                									<% }else{ } %>
-                                   	 							<% }else if(user_id == null && user_role_id == 0 && (lot.getIs_bid() == 1 || lot.getIs_buy() == 1) ){ %>
-																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
-																	<a class="btn btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
-																<% } %>
-							                                </div>
-							                            </div>
+
+<div id="mobile-nav-trigger" class="visible-sm visible-xs">
+  <div id="nav-trigger">
+      <span></span>
+      <span></span>
+      <span></span>
+  </div>
+</div>
+
+<div id="mobile-nav-wrapper">
+  <div id="mobile-logo" class="site--logo">
+    <a class="logo-default" href=""><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
+  </div>
+  <div id="mobile-nav-inject"></div>
+</div>
+
+
+
+
+<div id="search-dialog" class="ms-dialog hide">
+  <div class="ms-dialog-header">
+    <a href="#" class="ms-dialog-close-btn"><span class="ion-ios-close-empty"></span></a>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+        <form action="" id="search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
+          
+        <div class="search-input-wrap">
+          <input type="text" class="form-control" id="search-input" placeholder="Search">
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+	
+</div>
+
+	
+<div id="ms--main--body">
+
+	<div class="hmr-breadcrumb">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ol class="breadcrumb">
+					<li>
+						<a href="">Home</a>
+					</li>
+					<li>
+						<a href="electronics-and-gadgets">Categories</a>
+					</li>
+					<li class="active">Product View</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+
+<section id="hmr-main-container">
+	<div class="container">
+		<div class="row">
+		<div data-alerts="alerts" data-titles='{"warning": "<em>Warning!</em>", "error": "<em>Error!</em>"}' data-ids="myid" data-fade="3000"></div>
+			
+			<div class="col-md-4 col-lg-3 visible-lg visible-md">
+				<div class="side-widget">
+					<div class="main-category-header">
+						Gallery
+					</div>
+					<% for (Image i : lot_images) {	%>
+						<div class="side-product-item">
+							<div class="product-item">
+								<a href="#">
+									<div class="product-image-wrap">
+										<div class="image feature-fade-in" style="background-image: url('image?id=<%=i.getId()%>&t=t')"></div>
+									</div>
+								</a>
+							</div>
+						</div>
+					<% } %>
+					
+					
+				</div>
 				
-							                    </div>
-							                </div>
-												<div class="row">
-													<div class="col-md-11">
-														<div class="panel panel-default">
-															<div class="panel-heading">
-																<h3 class="panel-title">Gallery</h3>
-															</div>
-															<div class="panel-body">
-																<!-- Gridder navigation -->
-																<ul class="gridder">
+			</div>
+			<div class="col-md-8 col-lg-9">
+				
+				<div class="product-full-view-wrap">
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="full-product-picture">
+								<div class="image feature-fade-in" style="background-image: url('image?id=<%=lot.getId()%>&t=lt')" ></div>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<h3 class="full-product-name"><%=lot.getLot_desc()%></h3>
+							<div class="product-details">
+								<%  if( lot.getIs_available_lot() > 0) { %>
+								<div class="product-detail">Unit Quantity: <%=lot.getUnit_qty()%></div>
+								<% } %>
+								<div class="product-detail">Highest Bid: <%=df.format(lot.getAmount_bid())%> <%=currency%></div>
+								<div class="product-detail">Asking Bid: <%=df.format(lot.getAmount_bid_next())%> <%=currency%></div>
+								<div class="product-detail">Bids: <%=lot.getBid_count()%></div>
+							</div>
+							<div class="product-details">
+								<% if(user_id != null && user_role_id > 0){ %>
+									<% if( lot.getIs_available_lot() > 0) { %>
+		                            	<% Integer i = lot.getUnit_qty(); %>
+		                                <div class="form-group">
+                        	 				<select class="form-control" id="qty_<%=lot.getId()%>" name="qty_<%=lot.getId()%>">
+		                                   	 	<% while(i > 0) { %>
+		                                   	 		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+		                                   	 		<% i = i - 1; %>
+		                                   	 	<% } %>
+		                                   	</select>
+		                                 </div>
+		                             <% } %>
+		                             
+									<% if(lot.getIs_bid() == 1){ %>
+										<% if(auction.getAuction_type() == 15){ %>
+			                            	<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && lot.getActive()>0){ %>
+			                                	<button class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</button>
+			                                <% } else { %>
+			                                   	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BID <%=df.format(lot.getAmount_bid_next())%> <%=currency%> </button>
+			                                   	<button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">SET MAXIMUM BID</button>
+			                               	<% } %>
+		                                <% }else if(auction.getAuction_type() == 16){ %>
+		                                   	 	<button class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">MAKE OFFER</button>
+		                               	<% } %>
+									<% } %>
+									
+									<% if(lot.getIs_buy() == 1){ %>
+                                		<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=lot.getBuy_price()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BUY <%=df.format(lot.getBuy_price())%> <%=currency%></button>
+                                	<% } %>
+									
+								<% } else { %>
+									<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
+									<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
+								<% } %>
+							</div>
+						</div>
+					</div>
 
-																	<%
-																		for (Image i : lot_images) {
-																	%>
-																	<li class="gridder-list"
-																		data-griddercontent="#content<%=i.getId()%>">
-																		<img style="width:150px" class="media-object" src="image?id=<%=i.getId()%>&t=t" />
-																	</li>
-																	<%
-																		}
-																	%>
+					<div class="clearfix top20"></div>
 
-																</ul>
+					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#product-description-tab" aria-controls="product-description-tab" role="tab" data-toggle="tab">Description</a>
+						</li>
+						<li role="presentation">
+							<a href="#product-delivery-tab" aria-controls="product-delivery-tab" role="tab" data-toggle="tab">Terms and Conditions</a>
+						</li>
+					</ul>
 
-																<!-- Gridder content -->
-																<%
-																	for (Image i : lot_images) {
-																%>
-																<div id="content<%=i.getId()%>" class="gridder-content">
-																	<img class="media-object" src="image?id=<%=i.getId()%>" />
-																	<div class="media-body">
-																		<h4 class="media-heading">
-																			<a href="#"
-																				style="font-size: 14px; font-weight: bold; color: red">Image
-																				#<%=i.getId()%></a>
-																		</h4>
-																	</div>
-																</div>
-																<%
-																	}
-																%>
-															</div>
-															<div class="panel-footer">
-																<em>Note: Click on image for bigger view.</em>
-															</div>
-														</div>
+					<div class="clearfix"></div>
 
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="product-description-tab">
+							<h5>Overview</h5>
+							<p><%=auction.getAuction_desc()%></p>
+						</div>
 
+						<div role="tabpanel" class="tab-pane" id="product-delivery-tab">
+							<h5>Delivery</h5>
+							<p><%=auction.getTerms_and_conditions()%></p>
 
+						</div>
+						
+					</div>
+				</div>
 
-													</div>
-												</div>
+				<div id="product-list-wrapper">
+					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">Items</a>
+						</li>
+					</ul>
+					<div class="clearfix top10"></div>
 
+					
+
+					<div class="row gutter-10">
+						<%for(Item i : items) {%>
+							<div class="col-md-6 col-xs-6">
+								<div class="product-item">
+									<a href="#">
+										<div class="product-image-wrap">
+											<div class="image feature-fade-in" style="background-image: url('image?id=<%=i.getId()%>&t=it')"></div>
+										</div>
+										<div class="product-body">
+											<h3 class="product-name">#<%=i.getReference_no()%></h3>
+											<div class="product-details">
+												<div class="product-detail">Description: <%=i.getItem_desc()%></div>
 											</div>
-							        </section>
+										</div>
+									</a>
+									
+								</div>
+								
+							</div>
+						<% } %>
+					</div>
+					
+				</div>
+				
+				<div class="clearfix top20"></div>
 
-	                                </div>
-	                                <div class="tab-pane fade" id="auction-lots">
+					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#product-description-tab2" aria-controls="product-description-tab2" role="tab" data-toggle="tab">Bid History</a>
+						</li>
+					</ul>
 
-							        <!-- PAGE -->
-							        <section class="page-section">
-							            <div class="container">
-							                <div class="row">
-							                	<%for(Item i : items) {%>
+					<div class="clearfix"></div>
 
-							                    <div class="col-md-11">
-													<div class="col-md-6">
-							                            <div class="media" style="height: 210px;">
-							                               <a class="pull-left media-link" href="#">
-							                                    <img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=i.getId()%>&t=it" alt="">
-							                                    
-							                                    <!-- <i class="fa fa-eye"></i> -->
-							                                </a>
-							                                <div class="media-body">
-							                                
-							                                    <h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red">#<%=i.getReference_no()%></a></h4>
-							                                    <div><label><%=i.getItem_desc()%></label></div>
-							                                </div>
-							                            </div>
-							                         </div>
-							                         <div class="col-md-6">
-							                         		<div class="panel panel-default">
-															<div class="panel-body">
-															<!-- Gridder navigation -->
-															<%  item_images = iMngr.getImageListByItemId(i.getId()); %>
-															<ul class="gridder">
-
-																
-																<% for (Image ii : item_images) { %>
-																<li class="gridder-list"
-																	data-griddercontent="#icontent<%=ii.getId()%>">
-																	<img style="width:75px" class="media-object" src="image?id=<%=ii.getId()%>&t=t" />
-																</li>
-																<%
-																	}
-																%>
-
-															</ul>
-
-															<!-- Gridder content -->
-															<%
-																for (Image ii : item_images) {
-															%>
-															<div id="icontent<%=ii.getId()%>" class="gridder-content">
-																<img class="media-object" src="image?id=<%=ii.getId()%>" />
-																<div class="media-body">
-																	<h4 class="media-heading">
-																		<a href="#"
-																			style="font-size: 14px; font-weight: bold; color: red">Image
-																			#<%=ii.getId()%></a>
-																	</h4>
-																</div>
-															</div>
-															<%
-																}
-															%>
-															</div>
-															</div>
-														</div><!-- col6 -->
-							                    </div>
-							                    <% item_images.clear(); %>
-							                    <%} %>
-							                    <% iMngr = null; %>
-							                    
-							                   
-							                </div>
-							                    
-							            </div>
-							        </section>
-							        <!-- /PAGE -->
-	                                </div>
-	                                <div class="tab-pane fade" id="bidding_transactions">
-	                                    <section class="page-section">
-								            <div class="container">
-								                <div class="row">
-								                	<!--start main contain of page-->
-						                            <div class="col-md-12">
-						                                
-						                                <div class="details-wrap">                                    
-						                                    <div class="details-box orders">
-						                                        <table class="table">
-						                                            <thead>
-						                                                <tr>
-						                                                    <th>User</th>
-						                                                    <th>ID</th>
-						                                                    <th>Amount</th>
-						                                                    <th>Date</th>
-						                                                </tr>
-						                                            </thead>
-						                                            <tbody>
-						                                            	<% for(BiddingTransaction bidding_transaction : bidding_transactions ) { %>
-						                                                <tr>
-						                                                	
-						                                                	<% bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00"; %>
-						                                                    <% bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00"; %>
-						                                                    <% bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00"; %>
-						                                                    <td class="image">
-						                                                    	<a href="#" class="media-link"><img alt="" src="assets/img/default_avatar.png"></a>
-						                                                    </td>
-						                                                    <td>
-						                                                    	<% if(user_id == bidding_transaction.getUser_id()) { %>
-						                                                    	<div>You</div> 
-						                                                    	<% } else { %>
-						                                                    	<div>User #<%=bidding_transaction.getUser_id() %></div>
-						                                                    	<% } %>
-						                                                    </td>
-						                                                    <td class="total"><%=currency%>&nbsp;<%=bAmount%> </td>
-						                                                    <td class="diliver-date"> <%=sdf.format(bidding_transaction.getDate_created()) %> </td>
-						                                                    
-						                                                </tr>
-						                                                <% } %>
-						                                            </tbody>
-						                                        </table>
-						                                    </div>
-						                                </div>                                
-						                            </div>
-						                            <!--end main contain of page-->
-								                </div>
-								            </div>
-								        </section>
-	                                </div>
-	                                <div class="tab-pane fade" id="terms-and-conditions">
-	                                    <p><%=auction.getTerms_and_conditions()%></p>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-                </div>
-                </div>
-				</section>
-
-        <!-- /PAGE -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="product-description-tab2">
+							<h5>Last 5 Bids</h5>
+							<table class="table">
+						    	<thead>
+						        	<tr>
+						               	<th>ID</th>
+						            	<th>Amount</th>
+						                <th>Date</th>
+						            </tr>
+						        </thead>
+						        <tbody>
+						        	<% for(BiddingTransaction bidding_transaction : bidding_transactions ) { %>
+						            	<tr>                     	
+						               		<% bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00"; %>
+						                    <% bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00"; %>
+						                    <% bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00"; %>
+                                            <td>
+						                    	<% if(user_id == bidding_transaction.getUser_id()) { %>
+						                        <div>You</div> 
+						                        <% } else { %>
+						                    	<div>User #<%=bidding_transaction.getUser_id() %></div>
+						                        <% } %>
+						                    </td>
+						                   	<td class="total"><%=currency%>&nbsp;<%=bAmount%> </td>
+						                    <td class="diliver-date"> <%=sdf.format(bidding_transaction.getDate_created()) %> </td>
+						                 </tr>
+						        	<% } %>
+						        </tbody>
+						    </table>
+						</div>
 
 
-        <section class="page-section">
-            <div class="container">
-                <h2 class="section-title"><span>Brand &amp; Clients</span></h2>
-                <div class="partners-carousel">
-                    <div class="owl-carousel" id="partners">
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo1.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo2.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo3.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo4.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo5.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo6.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo7.png" alt=""/></a></div>
-                        <div><a href="#"><img src="hmr/images/affiliate/alogo8.png" alt=""/></a></div>
-                        
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
+					</div>
 
-    </div>
-    <!-- /CONTENT AREA -->
+			</div>
+		</div>
+	</div>
+	
 
-    <!-- PAGE --><!-- FOOTER -->
-	<jsp:include page="hmr-footer.jsp" />
-    <!-- /FOOTER -->
+	
+</section>
 
-    <div id="to-top" class="to-top" style="background-color: #93bcff"><i class="fa fa-angle-up"></i></div>
+
+
+
+<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+
+
+
 
 </div>
-<!-- /WRAPPER -->
-
-<!-- JS Global -->
-<script src="assets/plugins/jquery/jquery-2.0.0.min.js"></script>
-<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
-<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
-<script src="assets/plugins/superfish/js/superfish.min.js"></script>
-<script src="assets/plugins/prettyphoto/js/jquery.prettyPhoto.js"></script>
-<script src="assets/plugins/owl-carousel2/owl.carousel.min.js"></script>
-<script src="assets/plugins/jquery.sticky.min.js"></script>
-<script src="assets/plugins/jquery.easing.min.js"></script>
-<script src="assets/plugins/jquery.smoothscroll.min.js"></script>
-<script src="assets/plugins/smooth-scrollbar.min.js"></script>
 
 
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+	<section class="instagram-section">
+	<div class="container-fluid">
+		<!-- <div id="instagram" class="row no-gutter"></div> -->
+	</div>
+</section>
 
-<!-- JS Page Level -->
-<script src="assets/js/theme.js"></script>
-<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
 
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="assets/plugins/jquery.cookie.js"></script>
-<!-- <script src="assets/js/theme-config.js"></script> -->
-<!--<![endif]-->
+
+
+<div id="footer">
+	<div class="container">
+		<div class="footer-lv1">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-3">
+									<h3 class="top10"><a href="">HMR</a></h3>
+								</div>
+								<div class="col-md-9">
+									<div class="row">
+																				<div class="col-sm-6">
+											<h4 class="footer-header">Purchase</h4>
+											<ul class="list-block">
+												<li>
+													<a href="account">My Account</a>
+												</li>
+												<li>
+													<a href="terms-and-conditions">Terms and Conditions</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="tarasd">
+						<h4 class="footer-header">Subscribe to our Weekly Newsletter</h4>
+						<form action="q/validate_email_subscribers" id="newsletter-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
+						<div class="form-group">
+							<div class="input-group">
+								<input type="text" name="email" id="email" class="form-control" placeholder="Your email address">
+								<span class="input-group-btn">
+									<input type="submit" class="btn btn-primary" value="Join" style="width: 90px;" />
+								</span>
+							</div><!-- /input-group -->
+							<div class="help-block"></div>
+						</div>
+						</form>					</div>
+
+					<ul class="social-media-links social-media-links-inline">
+						<li>
+							<a target="_BLANK" href="#">
+								<span class="social-icon"><img src="assets/themes/hmr/img/facebook-logo-white.png" class="img-responsive"></span>
+							</a>
+						</li>
+						<li>
+							<a target="_BLANK" href="#">
+								<span class="social-icon"><img src="assets/themes/hmr/img/youtube-logo-white.png" class="img-responsive"></span>
+							</a>
+						</li>
+						<li>
+							<a target="_BLANK" href="#">
+								<span class="social-icon"><img src="assets/themes/hmr/img/twitter-logo-white.png" class="img-responsive"></span>
+							</a>
+						</li>
+						
+					</ul>
+
+					<div class="clearfix"></div>
+					<div class="all-rights-reserved">
+						HMR Auctions © 2017. All Rights Reserved.
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <script>
-$(document).ready(function(){
-	<%if(msgInfo!=null){%>
-
-	var msgInfo = "<%=msgInfo%>";
-	var msgbgcol = "<%=msgbgcol%>";
-	var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-	msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-	msgBoxValue = msgBoxValue + '</div>';
-	document.getElementById("msgDiv").innerHTML=msgBoxValue;
-	<%}%>
-	
-	setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
-	// Call Gridder
-    $('.gridder').gridderExpander({
-        scroll: true,
-        scrollOffset: 30,
-        scrollTo: "panel", // panel or listitem
-        animationSpeed: 400,
-        animationEasing: "easeInOutExpo",
-        showNav: true, // Show Navigation
-        nextText: "<span></span>", // Next button text
-        prevText: "<span></span>", // Previous button text
-        closeText: "", // Close button text
-        onStart: function () {
-            //Gridder Inititialized
-            console.log('On Gridder Initialized...');
-
-        },
-        onContent: function () {
-            //Gridder Content Loaded
-        },
-        onClosed: function () {
-            //Gridder Closed
-            console.log('On Gridder Closed...');
-
-        }
-    });
-});
-
-
-
-
-
-
-
 
 function viewLot(id) {
 	$('input[name="manager"]').val("lot-manager");
@@ -796,9 +803,52 @@ function submitPage(action, value, lot, id, qtyid, note) {
     }); //end confirm dialog
 }
 
+function showAlert(msgInfo, msgbgcol) {
+	var priority = null;
+	if(msgbgcol=="red") {
+		priority = "error";
+	}else if(msgbgcol=="green") {
+		priority = "success";
+	}else {
+		priority = "warning";
+	}
+
+	$(document).trigger("add-alerts", [
+		{
+			"message": msgInfo,
+	         "priority": priority
+	    }
+	]);
+	
+	
+}
+
+function stopEnterSubmitting(e) {
+    if (e.keyCode == 13) {
+        var src = e.srcElement || e.target;
+        if (src.tagName.toLowerCase() != "textarea") {
+            if (e.preventDefault) {
+                e.preventDefault();
+            } else {
+                e.returnValue = false;
+            }
+        }
+    }
+}	
+
+$(document).ready(function(){
+	<%if(msgInfo!=null){%>
+	var msgInfo = "<%=msgInfo%>";
+	var msgbgcol = "<%=msgbgcol%>";
+	showAlert(msgInfo, msgbgcol);
+	<%}%>
+	
+});
+
+
 </script>
 
-<form action="" id="frm" name="frm" method="post">
+<form action="" id="frm" name="frm" method="post" onkeypress="stopEnterSubmitting(window.event)">
    <input type="hidden" name="manager" id="manager" value=""/>
    <input type="hidden" name="action" id="action" value=""/>
    <input type="hidden" name="doaction" id="doaction" value=""/>
@@ -810,5 +860,6 @@ function submitPage(action, value, lot, id, qtyid, note) {
    <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
    <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
 </form>
+
 </body>
 </html>
