@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.manager.RunnableEmailManager;
 import hmr.com.bean.Auction;
+import hmr.com.bean.AuctionUser;
 import hmr.com.bean.Lov;
 import hmr.com.bean.User;
 import hmr.com.dao.UserDao;

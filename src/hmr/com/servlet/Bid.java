@@ -858,7 +858,7 @@ public class Bid extends HttpServlet {
 		}
 		
 		//Make sure user Id is updated
-		if(req.getSession().getAttribute("user-id")!=null )	user_id =  new BigDecimal((String) ""+req.getSession().getAttribute("user-id"));
+		if(req.getSession().getAttribute("user-id")!=null )	user_id =  (Integer) req.getSession().getAttribute("user-id");
 		
 		//Listings
 		List<Auction> aL = null;
