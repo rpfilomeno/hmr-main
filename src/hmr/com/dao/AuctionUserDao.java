@@ -33,7 +33,7 @@ public class AuctionUserDao extends DBConnection {
 		
 		StringBuilder sb = new StringBuilder("Select id, auction_id, user_id, status, active");
 
-		sb.append(", date_created, created_by, date_updated, updated_by");
+		sb.append(", date_created, created_by, date_updated, updated_by, company_id_no, image_1");
 		
 		sb.append(" from auction_user where id ="+id);
 
@@ -60,6 +60,74 @@ public class AuctionUserDao extends DBConnection {
             	u.setUser_id(rs.getInt("user_id"));
             	u.setStatus(rs.getInt("status"));
             	u.setActive(rs.getInt("active"));
+            	u.setCompany_id_no(rs.getString("company_id_no"));
+            	u.setImageBytes(rs.getBytes("image_1"));
+
+            	u.setDate_created(rs.getTimestamp("date_created"));
+            	u.setCreated_by(rs.getInt("created_by"));
+            	u.setDate_updated(rs.getTimestamp("date_updated"));
+            	u.setUpdated_by(rs.getInt("updated_by"));
+            	
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return u;
+	}
+	
+	
+public AuctionUser getAuctionUserByUserId(Integer user_id){
+		
+		Connection conn = null;
+
+		AuctionUser u = null;
+		
+
+		
+		StringBuilder sb = new StringBuilder("Select id, auction_id, user_id, status, active");
+
+		sb.append(", date_created, created_by, date_updated, updated_by, company_id_no, image_1");
+		
+		sb.append(" from auction_user where user_id ="+user_id);
+
+
+		try {
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			System.out.println("conn : "+conn);
+
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			while(rs.next()){
+				u = new AuctionUser();
+
+            	u.setId(rs.getBigDecimal("id"));
+            	u.setAuction_id(rs.getBigDecimal("auction_id"));
+            	u.setUser_id(rs.getInt("user_id"));
+            	u.setStatus(rs.getInt("status"));
+            	u.setActive(rs.getInt("active"));
+            	u.setCompany_id_no(rs.getString("company_id_no"));
+            	u.setImageBytes(rs.getBytes("image_1"));
 
             	u.setDate_created(rs.getTimestamp("date_created"));
             	u.setCreated_by(rs.getInt("created_by"));
