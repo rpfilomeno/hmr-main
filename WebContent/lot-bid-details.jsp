@@ -309,9 +309,9 @@
 						<a href="">Home</a>
 					</li>
 					<li>
-						<a href="electronics-and-gadgets">Categories</a>
+						<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId %>&aid=<%=auction.getId() %>"><%=auction.getAuction_name() %></a>
 					</li>
-					<li class="active">Product View</li>
+					<li class="active"><%=lot.getLot_name() %></li>
 				</ol>
 			</div>
 		</div>

@@ -320,10 +320,8 @@
 					<li>
 						<a href="">Home</a>
 					</li>
-					<li>
-						<a href="electronics-and-gadgets">Categories</a>
-					</li>
-					<li class="active">Product View</li>
+
+					<li class="active"><%=auction.getAuction_name() %></li>
 				</ol>
 			</div>
 		</div>
