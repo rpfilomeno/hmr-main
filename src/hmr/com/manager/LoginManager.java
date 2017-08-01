@@ -95,7 +95,11 @@ public class LoginManager {
 					}
 					
 				} 
-				page ="index.jsp";
+				if(u.getRole()==1 || u.getRole()==4) {
+					page ="redirect://bid?mngr=auction-manager&a=auctionList&uid="+u.getEmail_address();
+				} else {
+					page ="index.jsp";
+				}
 
 				
 			}else{

@@ -5,15 +5,11 @@
 		 import="java.text.DecimalFormat"
 		 import="java.text.SimpleDateFormat"
 %>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<%String COMPANY_NAME = request.getSession().getAttribute("COMPANY_NAME")!=null ? (String)request.getSession().getAttribute("COMPANY_NAME") :"HMR Auctions";
+<%	
+String COMPANY_NAME = request.getSession().getAttribute("COMPANY_NAME")!=null ? (String)request.getSession().getAttribute("COMPANY_NAME") :"HMR Auctions";
 	
-	  String msgInfo = request.getAttribute("msgInfo")!=null ? (String)request.getAttribute("msgInfo") : null;
-	  String msgbgcol = request.getAttribute("msgbgcol")!=null ? (String)request.getAttribute("msgbgcol") : "";
+String msgInfo = request.getAttribute("msgInfo")!=null ? (String)request.getAttribute("msgInfo") : null;
+String msgbgcol = request.getAttribute("msgbgcol")!=null ? (String)request.getAttribute("msgbgcol") : "";
 	  
 	  
 	  String companyIdNo = request.getAttribute("companyIdNo")!=null ? (String)request.getAttribute("companyIdNo") : "";
@@ -33,161 +29,418 @@
 	  SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
 		
 	%>
-    <title><%=COMPANY_NAME%></title>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="ico/hmr-favicon.ico">
+        <title><%=COMPANY_NAME%></title>
+        
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/themes/hmr/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="assets/themes/hmr/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="assets/themes/hmr/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="assets/themes/hmr/manifest.json">
+        <link rel="mask-icon" href="assets/themes/hmr/safari-pinned-tab.svg" color="#222222">
+        <link rel="shortcut icon" href="assets/themes/hmr/favicon.ico">
+        <meta name="theme-color" content="#ffffff">
 
-    <!-- CSS Global -->
-    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
-    <link href="assets/plugins/fontawesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="assets/plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet">
-    <link href="assets/plugins/owl-carousel2/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="assets/plugins/owl-carousel2/assets/owl.theme.default.min.css" rel="stylesheet">
-    <link href="assets/plugins/animate/animate.min.css" rel="stylesheet">
-
-    <!-- Theme CSS -->
-    <link href="assets/css/theme.css" rel="stylesheet">
-<link href="assets/css/theme-hmr.css" rel="stylesheet" id="theme-config-link">
-
-    <!-- Head Libs -->
-    <script src="assets/plugins/modernizr.custom.js"></script>
-
-    <!--[if lt IE 9]>
-    <script src="assets/plugins/iesupport/html5shiv.js"></script>
-    <script src="assets/plugins/iesupport/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body id="home" class="wide">
-<!-- PRELOADER -->
-<jsp:include page="hmr-preloader.jsp" />
-<!-- /PRELOADER -->
-
-
-<!-- WRAPPER -->
-<div class="wrapper">
-    <!-- HEADER -->
-	<jsp:include page="hmr-header.jsp" />
-    <!-- /HEADER -->
-
-    <!-- CONTENT AREA -->
-    <div class="content-area">
     
-    	<!-- PAGE -->
-        <section class="page-section">
-            <div class="container">
-            	<div class="row ">
-            		<div class="col-md-12">
-		                <div class="message-box">
-		                    <div class="message-box-inner">
-		                        <h2><%=auction.getAuction_name()%></h2>
-		                    </div>
-		                </div>
-		                
-		                <div id="msgDiv"></div>
-		             </div>
-               </div>
-            </div>
-        </section>
-        <!-- /PAGE -->
+        <meta property="og:site_name" content="HMR Auctions"/>
+        <meta property="og:title" content="Product View — HMR Auctions"/>
+        <meta property="og:url" content="product-view.html"/>
+                <meta property="og:type" content="website" />
+        
+        <meta property="og:description" content=""/>
+        
+        <meta property="og:image" content=""/>
 
+        <meta itemprop="name" content="Product View"/>
+        <meta itemprop="url" content="product-view.html"/>
+        <meta itemprop="description" content=""/>
+        <meta itemprop="thumbnailUrl" content=""/>
+        
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="Product View"/>
+        <meta name="twitter:image" content=""/>
+        <meta name="twitter:url" content="product-view.html"/>
+        <meta name="twitter:text" content=""/>
+        <meta name="twitter:domain" content="">
 
+        <meta name="description" content="" />
 
-        <!-- PAGE -->
-        <section class="page-section color" style="padding:15px;">
-            <div class="container">
-                <div class="row">
-                	<div class="col-sm-6">
-                		<div class="row">
-                				
-                                
-                                <div class="col-md-12">
+        <link rel="stylesheet" href="assets/themes/hmr/css/bootstrap.css">
+		<link rel="stylesheet" href="assets/themes/hmr/css/ionicons.min.css">
+		<link rel="stylesheet" href="assets/themes/hmr/css/main.css?v=36502498">
+		
+		<link rel="stylesheet" href="assets/css/gridder.css" />
+		<link rel="stylesheet" href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css">
+		
+		<script src=assets/themes/hmr/js/vendor/modernizr.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery-1.11.3.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery-migrate-1.2.1.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/social.js></script>
+		<script src=assets/themes/hmr/js/vendor/masonry.pkgd.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/owl.carousel.min.js?v=2></script>
+		<script src=assets/themes/hmr/js/vendor/jquery.form.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery.easing.1.3.js></script>
+		<script src=assets/themes/hmr/js/bootstrap.js></script>
+		<script src=assets/themes/hmr/js/vendor/bootbox.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/url.min.js></script>
+		<script src=assets/themes/hmr/js/vendor/msis.js></script>
+		<script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
+		<script src=assets/themes/hmr/js/main.js?v=79186204></script>
+		
+		<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
+		<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
+		<script src="assets/plugins/jquery.bsAlerts.min.js"></script>
+                
+    </head>
+    <body data-is-mobile="" id="c" >
+    
+    <input type="hidden" id="base_url" value="">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+ 
+<div id="ms--main--nav">
+	<nav id="main-navigation" class="navbar navbar-fixed-top">
+  <div id="top-nav">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="top-nav-items nav-white visible-md visible-lg">
+            
+            <ul class="top-navbar">
+              <li>(02)548-6962</li>
+              <li>0917 548 3603</li>
+              <li>
+                  <a href="mailto:auction@hmrphils.com">auction@hmrphils.com</a>
+              </li>
+              <li>
+                <a href="bid?mngr=get&a=login">Login</a>
+              </li>
+              <li>
+                <a href="bid?mngr=get&a=registration">Register</a>
+              </li>   
+              
+            </ul>
+    
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row gutter-0">
+      <div class="col-md-2">
+        <div class="site--logo">
+                      <a class="logo-default" href=""><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
+                  </div>
+      </div>
 
-							    	<div class="media" style="height: 210px;">
-							        	<a class="pull-left media-link" href="#" >
-							            	<img  class="media-object" style="height: 200px; size: 200px;" src="image?id=<%=auction.getAuction_id()%>&t=at" alt="">
-								        </a>
-							            <div class="media-body">
-											<h4 class="media-heading"><a href="#" style="font-size: 14px; font-weight: bold; color: red"><%=auction.getAuction_desc()%></a></h4>
-							                <div><label>LOCATION : </label> &nbsp;&nbsp; <label><%=auction.getLocation()%></label></div>
-							           		<div><label>START : </label> &nbsp;&nbsp; <label><%=sdf.format(auction.getStart_date_time()) %></label></div>
-                                    		<div><label>CLOSING : </label>&nbsp;&nbsp; <label><%=sdf.format(auction.getEnd_date_time()) %></label></div>
-
-							        	</div>
-							    	</div>
-							    </div>
-                		</div>
-                	</div>
-                    <div class="col-sm-6">
-                        <form action="bid" class="form-login" name="frm" method="post">
-                            <div class="row">
-
-                                
-                                
-                                <div class="col-md-12 hello-text-wrap">
-                                    <span class="hello-text text-thin">Hello, you have been invited to bid on a Private Auction.</span>
-                                </div>
-                                <div class="col-md-12 hello-text-wrap">
-                                    <span class="hello-text text-thin">You must provide the following information required to join:</span>
-                                </div>
-                                
-                                
-                                 <div class="col-md-12">
-                                    <div class="form-group"><input class="form-control" type="text" id="companyIdNo" name="companyIdNo" placeholder="Company ID Number" maxlength="50" value="<%if(companyIdNo!=null){ %><%=companyIdNo%><%}%>"></div>
-                                </div>
-                                
-                                <input class="form-control" type="hidden" id="privateInviteId" name="privateInviteId" value="<%=auction.getToken()%>">
-                                
-                                
-                                <div class="col-md-12 hello-text-wrap">
-                                    <span class="hello-text text-thin">Continue by logging into your account now.</span>
-                                </div>
-                                
-                               
-                                <div class="col-md-12">
-                                    <div class="form-group"><input class="form-control" type="text" id="userId" name="userId" placeholder="Email" maxlength="50" value="<%if(userId!=null){ %><%=userId%><%}else{%><%}%>"></div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group"><input class="form-control" id="pw" name="pw" type="password" placeholder="Password" maxlength="15" value=""></div>
-                                </div>
-                                
-                                <div class="col-md-12 col-lg-12 text-left-lg">
-                                    <a class="forgot-password" href="bid?mngr=get&a=forgotPassword">forgot password?</a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a class="btn btn-theme btn-block btn-theme-dark" href="#" onclick="submitPage()">Login</a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a class="btn btn-theme btn-block btn-theme-dark" href="#" onclick="clearLogin()">Clear</a>
-                                </div>
-                            </div>
-                            <input type="hidden" name="manager" id="manager" value="login-manager"/>
-                            <input type="hidden" name="action" id="action" value="login"/>
-                            <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
-                        </form>
-                    </div>
-                    
+      <div class="col-md-10">
+        <div class="row gutter-0">
+          <div class="col-md-8">
+            
+              <form action="#" id="nav-search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
+                
+                <div class="input-group nav-search-group">
+                  <input type="text" class="form-control" id="nav-search-input" placeholder="Search for products, brands, shops">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default nav-search-btn" type="submit"><span class="ion-ios-search-strong"></span></button>
+                  </span>
                 </div>
+
+              
+              </form>
+          </div>
+          <div class="col-md-4">
+            <div id="main-nav-items" class="main-nav-items nav-white visible-md visible-lg">
+
+              <ul class="nav navbar-nav navbar-right navbar-icons">
+                <li>
+                  <a href="cart">
+                    <span id="bag-count"></span>
+                    <span class="navbar-icon ion-bag"></span>
+                  </a>
+                </li>
+                
+                
+              </ul>
+      
+              
             </div>
-        </section>
-        <!-- /PAGE -->
+          </div>
+        </div>
 
         
 
-
+      </div>
     </div>
-    <!-- /CONTENT AREA -->
+  </div>
 
-    <!-- FOOTER -->
-	<jsp:include page="hmr-footer.jsp" />
-    <!-- /FOOTER -->
+  <div id="sub-navigation">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="navbar-subnav">
+            <li>
+              <a href="">Services</a>
+            </li>
+            <li>
+              <a href="">Gallery</a>
+            </li>
+            <li>
+              <a href="">Contact Us</a>
+            </li>
+          </ul>    
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
 
-    <div id="to-top" class="to-top" style="background-color: #93bcff"><i class="fa fa-angle-up"></i></div>
+
+
+
+<div id="mobile-nav-trigger" class="visible-sm visible-xs">
+  <div id="nav-trigger">
+      <span></span>
+      <span></span>
+      <span></span>
+  </div>
+</div>
+
+<div id="mobile-nav-wrapper">
+  <div id="mobile-logo" class="site--logo">
+    <a class="logo-default" href=""><img src="assets/themes/hmr/img/HMR-logo-white.png" alt="HMR Auctions" class="img-responsive"></a>
+  </div>
+  <div id="mobile-nav-inject"></div>
+</div>
+
+
+
+
+<div id="search-dialog" class="ms-dialog hide">
+  <div class="ms-dialog-header">
+    <a href="#" class="ms-dialog-close-btn"><span class="ion-ios-close-empty"></span></a>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+        <form action="" id="search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
+          
+        <div class="search-input-wrap">
+          <input type="text" class="form-control" id="search-input" placeholder="Search">
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+	
+</div>
+
+	
+<div id="ms--main--body">
+	<section id="register-account-section" class="page-section">
+	<div class="container">
+		<div class="row">
+		<div data-alerts="alerts" data-titles='{"warning": "<em>Warning!</em>", "error": "<em>Error!</em>"}' data-ids="myid" data-fade="3000"></div>
+			
+			<div class="col-md-12">
+				<div class="product-full-view-wrap">
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="full-product-picture">
+								<div class="image feature-fade-in" style="background-image: url('image?id=<%=auction.getAuction_id()%>&t=at')" ></div>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<h3 class="full-product-name"><%=auction.getAuction_name()%></h3>
+							<div class="product-details">
+								<div class="product-detail">Location: <%=auction.getLocation()%></div>
+								<div class="product-detail">Start: <%=sdf.format(auction.getStart_date_time()) %></div>
+								<div class="product-detail">Closing: <%=sdf.format(auction.getEnd_date_time()) %></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4">
+				
+				<div class="customer-register-wrap">
+					<h2 class="tac">Accept Invite </h2>
+					<div class="clearfix top20"></div>
+					
+					<form action="bid" class="form-login" name="frm" method="post" onkeypress="stopEnterSubmitting(window.event)">
+					
+						<div class="form-group ">
+							
+							<div class="">
+								<input class="form-control" type="text" id="companyIdNo" name="companyIdNo" placeholder="Company ID Number" maxlength="50" value="<%if(companyIdNo!=null){ %><%=companyIdNo%><%}%>">
+							 	<span class="help-block">  </span>
+							</div>
+						</div>
+						
+						<div class="form-group ">
+							
+							<div class="">
+								<input type="text" name="userId" value="<%if(userId!=null){ %><%=userId%><%}%>" id="userId" class="email form-control" placeholder="Email" autofocus="autofocus"   id="email" />
+							 	<span class="help-block">  </span>
+							</div>
+						</div>
+											
+																	
+						<div class="form-group ">
+							
+							<div class="">
+								<input type="password" name="pw" value="" id="pw" class="password form-control" placeholder="Password"   id="password" />
+							 	<span class="help-block">  </span>
+							</div>
+						</div>
+		
+						
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<a href="bid?mngr=get&a=forgotPassword">Forgot your password?</a>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<a class="btn btn-primary pull-right" onclick="submitPage()">Accept</a>
+								</div>		
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						
+
+						<div class="clearfix top20"></div>
+						<div class="tac">
+							<div><a href="bid?mngr=get&a=registration">Don't have an account? Register here.</a></div>
+						</div>
+						
+						<input class="form-control" type="hidden" id="privateInviteId" name="privateInviteId" value="<%=auction.getToken()%>">
+						<input type="hidden" name="manager" id="manager" value="login-manager"/>
+                        <input type="hidden" name="action" id="action" value="login"/>
+                        <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
+					</form>
+					
+					
+				</div>
+			</div>
+		</div>
+	
+	
+
+	</div>
+
+	<div class="clearfix top100"></div>
+</section>
+
+<section id="account-login-section" class="page-section">
+	<div class="container">
+		
+	</div>
+</section>
 
 </div>
-<!-- /WRAPPER -->
+
+
+	<section class="instagram-section">
+	<div class="container-fluid">
+		<!-- <div id="instagram" class="row no-gutter"></div> -->
+	</div>
+</section>
+
+
+
+
+<div id="footer">
+	<div class="container">
+		<div class="footer-lv1">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-3">
+									<h3 class="top10"><a href="">HMR</a></h3>
+								</div>
+								<div class="col-md-9">
+									<div class="row">
+																				<div class="col-sm-6">
+											<h4 class="footer-header">Purchase</h4>
+											<ul class="list-block">
+
+												<li>
+													<a href="terms-and-conditions">Terms and Conditions</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="tarasd">
+						<h4 class="footer-header">Subscribe to our Weekly Newsletter</h4>
+						<form action="q/validate_email_subscribers" id="newsletter-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
+						<div class="form-group">
+							<div class="input-group">
+								<input type="text" name="email" id="email" class="form-control" placeholder="Your email address">
+								<span class="input-group-btn">
+									<input type="submit" class="btn btn-primary" value="Join" style="width: 90px;" />
+								</span>
+							</div><!-- /input-group -->
+							<div class="help-block"></div>
+						</div>
+						</form>					</div>
+
+					<ul class="social-media-links social-media-links-inline">
+						<li>
+							<a target="_BLANK" href="#">
+								<span class="social-icon"><img src="assets/themes/hmr/img/facebook-logo-white.png" class="img-responsive"></span>
+							</a>
+						</li>
+						<li>
+							<a target="_BLANK" href="#">
+								<span class="social-icon"><img src="assets/themes/hmr/img/youtube-logo-white.png" class="img-responsive"></span>
+							</a>
+						</li>
+						<li>
+							<a target="_BLANK" href="#">
+								<span class="social-icon"><img src="assets/themes/hmr/img/twitter-logo-white.png" class="img-responsive"></span>
+							</a>
+						</li>
+						
+					</ul>
+
+					<div class="clearfix"></div>
+					<div class="all-rights-reserved">
+						HMR Auctions © 2017. All Rights Reserved.
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <!-- JS Local -->
 <script type="text/javascript">
@@ -201,50 +454,38 @@ function ValidateEmail(mail)
     return false;  
 }  
 
-function onLoadPage(){
 
-	
-
-
-}
 
 function validateLogin(){
 	var isLogin = true;
-	if(document.frm.userId.value==""){
+	if(document.frm.companyIdNo.value==""){
+		var msgInfo = "Company ID number is required.";
+		var msgbgcol = "red";
+		showAlert(msgInfo, msgbgcol);
+		isLogin = false;
+	}else if(document.frm.userId.value==""){
 		var msgInfo = "Email is required.";
 		var msgbgcol = "red";
-		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-		msgBoxValue = msgBoxValue + '</div>';
-		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		showAlert(msgInfo, msgbgcol);
 		document.frm.userId.focus();
 		isLogin = false;
 	}else if(document.frm.pw.value==""){
 		var msgInfo = "Password is required.";
 		var msgbgcol = "red";
-		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-		msgBoxValue = msgBoxValue + '</div>';
-		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		showAlert(msgInfo, msgbgcol);
 		document.frm.pw.focus();
 		isLogin = false;
 	}else if(document.frm.pw.value.length < 8){
 		var msgInfo = "Password length should be atleast 8.";
 		var msgbgcol = "red";
-		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-		msgBoxValue = msgBoxValue + '</div>';
-		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		showAlert(msgInfo, msgbgcol);
 		document.frm.pw.focus();
 		isLogin = false;
 		
 	}else if(!ValidateEmail(document.frm.userId.value)){
 		var msgInfo = "Email is invalid.";
 		var msgbgcol = "red";
-		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-		msgBoxValue = msgBoxValue + '</div>';
-		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		showAlert(msgInfo, msgbgcol);
 		document.frm.userId.focus();
 		isLogin = false;
 	}
@@ -267,47 +508,50 @@ function submitPage(){
 	setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
 }
 
-<%if(msgInfo!=null){%>
+function showAlert(msgInfo, msgbgcol) {
+	var priority = null;
+	if(msgbgcol=="red") {
+		priority = "error";
+	}else if(msgbgcol=="green") {
+		priority = "success";
+	}else {
+		priority = "warning";
+	}
+
+	$(document).trigger("add-alerts", [
+		{
+			"message": msgInfo,
+	         "priority": priority
+	    }
+	]);
 	
+	
+}
+
+function stopEnterSubmitting(e) {
+    if (e.keyCode == 13) {
+        var src = e.srcElement || e.target;
+        if (src.tagName.toLowerCase() != "textarea") {
+            if (e.preventDefault) {
+                e.preventDefault();
+            } else {
+                e.returnValue = false;
+            }
+        }
+    }
+}	
+
+$(document).ready(function(){
+	<%if(msgInfo!=null){%>
 	var msgInfo = "<%=msgInfo%>";
 	var msgbgcol = "<%=msgbgcol%>";
-	var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
-	msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
-	msgBoxValue = msgBoxValue + '</div>';
-	document.getElementById("msgDiv").innerHTML=msgBoxValue;
-
-<%}%>
-
-
-setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
-
-setTimeout(onLoadPage,4000);
-
-
+	showAlert(msgInfo, msgbgcol);
+	<%}%>
+	
+});
 
 </script>
 <!-- /JS Local -->
-
-
-<!-- JS Global -->
-<script src="assets/plugins/jquery/jquery-1.11.1.min.js"></script>
-<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
-<script src="assets/plugins/superfish/js/superfish.min.js"></script>
-<script src="assets/plugins/prettyphoto/js/jquery.prettyPhoto.js"></script>
-<script src="assets/plugins/owl-carousel2/owl.carousel.min.js"></script>
-<script src="assets/plugins/jquery.sticky.min.js"></script>
-<script src="assets/plugins/jquery.easing.min.js"></script>
-<script src="assets/plugins/jquery.smoothscroll.min.js"></script>
-<script src="assets/plugins/smooth-scrollbar.min.js"></script>
-
-<!-- JS Page Level -->
-<script src="assets/js/theme.js"></script>
-
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="assets/plugins/jquery.cookie.js"></script>
-<!--  <script src="assets/js/theme-config.js"></script> -->
-<!--<![endif]-->
 
 </body>
 </html>
