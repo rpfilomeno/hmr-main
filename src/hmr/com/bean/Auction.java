@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+
 public class Auction extends SystemBean {
 
 	BigDecimal id;
@@ -70,13 +71,13 @@ public class Auction extends SystemBean {
 		this.end_date_time = end_date_time;
 	}
 	public String getAuction_desc() {
-		return auction_desc;
+		return escapeHTML(auction_desc);
 	}
 	public void setAuction_desc(String auction_desc) {
 		this.auction_desc = auction_desc;
 	}
 	public String getTerms_and_conditions() {
-		return terms_and_conditions;
+		return escapeHTML(terms_and_conditions);
 	}
 	public void setTerms_and_condition(String terms_and_conditions) {
 		this.terms_and_conditions = terms_and_conditions;
@@ -228,4 +229,20 @@ public class Auction extends SystemBean {
 	public void setToken(String token) {
 		this.token = token;
 	}
+	
+	private static String escapeHTML(String s) {
+	    StringBuilder out = new StringBuilder(Math.max(16, s.length()));
+	    for (int i = 0; i < s.length(); i++) {
+	        char c = s.charAt(i);
+	        if (c > 127 || c == '"' || c == '<' || c == '>' || c == '&') {
+	            out.append("&#");
+	            out.append((int) c);
+	            out.append(';');
+	        } else {
+	            out.append(c);
+	        }
+	    }
+	    return out.toString();
+	}
+
 }

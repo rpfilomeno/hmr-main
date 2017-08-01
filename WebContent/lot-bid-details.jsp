@@ -417,12 +417,10 @@
 
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane active" id="product-description-tab">
-							<h5>Overview</h5>
 							<p><%=auction.getAuction_desc()%></p>
 						</div>
 
 						<div role="tabpanel" class="tab-pane" id="product-delivery-tab">
-							<h5>Delivery</h5>
 							<p><%=auction.getTerms_and_conditions()%></p>
 
 						</div>
