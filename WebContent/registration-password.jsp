@@ -273,7 +273,7 @@
                                     <a class="btn btn-primary btn-theme btn-block btn-theme-dark" href="#" onclick="submitPage()">Sign Up</a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a class="btn btn-primary btn-theme btn-block btn-theme-dark" href="#" onclick="clearSignUp()">Clear</a>
+                                    <a class="btn btn-primary btn-theme btn-block btn-theme-dark" href="#" onclick="clearActivation()">Clear</a>
                                 </div>
                             </div>
                             <input type="hidden" name="manager" id="manager" value="user-manager"/>
