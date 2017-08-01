@@ -692,8 +692,8 @@ public Image getThumbnailByItemId(BigDecimal item_id){
         stmt.setInt(2, lot_id);
         stmt.setInt(3, item_id);
         stmt.setInt(4, active);
-        stmt.setBlob (5, image);
-        stmt.setBlob (6, thumbnail);
+        stmt.setBinaryStream (5, image, image.available());
+        stmt.setBinaryStream (6, thumbnail, thumbnail.available());
         stmt.setTimestamp(7, sqlDate_t);
         stmt.setBigDecimal(8, user_id);
 
@@ -702,7 +702,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	    
 	    
 		stmt.close();
-	} catch (SQLException e) {
+	} catch (Exception e) {
 		throw new RuntimeException(e);
 	} finally {
 		if (conn != null) {
