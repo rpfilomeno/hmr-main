@@ -472,9 +472,6 @@
 									<li role="presentation">
 										<a href="#live-auction-tab" aria-controls="negotiated-bids-tab" role="tab" data-toggle="tab">Live Auctions</a>
 									</li>
-									<li role="presentation">
-										<a href="#buy-not-tab" aria-controls="negotiated-bids-tab" role="tab" data-toggle="tab">Buy Now</a>
-									</li>
 								</ul>
 							
 								<!-- Tab panes -->
