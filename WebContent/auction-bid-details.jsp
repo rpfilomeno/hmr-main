@@ -717,7 +717,7 @@ function showNegotiatedBidForm(action, value, lot, id, qtyid) {
 }
 
 function submitPage(action, value, lot, id, qtyid, note) {
-	var unit_qty = 0;
+	var unit_qty = 1;
 	if($("#"+qtyid+" :selected").length ) unit_qty = $("#"+qtyid+" :selected").attr('value');
 	
 	$('input[name="manager"]').val("bid-manager");
@@ -736,6 +736,7 @@ function submitPage(action, value, lot, id, qtyid, note) {
 	    title: "Confirmation",
 	    closeOnEscape: false,
         open: function (event, ui) {
+        	var amount = parseFloat(value) * parseInt(unit_qty);
         	var dialog_title = "Confirmation";
         	var currency_html = "<%=currency%>";
         	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure?</p>';
@@ -746,11 +747,11 @@ function submitPage(action, value, lot, id, qtyid, note) {
       
         	if(action=="BID") {
         		dialog_title = "Bid confirmation";
-        		dialog_html = '<p>You will bid ' + value +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will bid ' + amount.toFixed(2)  +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}else if(action=="BUY") {
         		dialog_title = "Buy confirmation";
-        		dialog_html = '<p>You will buy this lot for' + value + ' '+currency_html + unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will buy this lot for' + value.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}else if(action=="SET-MAXIMUM-BID") {
         		dialog_title = "Set maximum bid confirmation";
