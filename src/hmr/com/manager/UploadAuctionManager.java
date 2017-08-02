@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,11 +88,12 @@ public class UploadAuctionManager {
 		}else if(action.equals("searchUploadAuction")){
 			
 			BigDecimal auction_no = !req.getParameter("auction_no").equals("") ? new BigDecimal(req.getParameter("auction_no")) : new BigDecimal(0);
+			BigDecimal lot_no = !req.getParameter("lot_no").equals("") ? new BigDecimal(req.getParameter("lot_no")) : new BigDecimal(0);
 			//String auction_date = req.getParameter("auction_date")!=null ? req.getParameter("auction_date") : "";
 
 			try {
 				UploadAuctionManager uaMngr = new UploadAuctionManager(req,res);
-				uaMngr.processUploadAuction(auction_no);
+				uaMngr.processUploadAuction(auction_no, lot_no);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -191,8 +193,10 @@ public class UploadAuctionManager {
 	
 
 
-	public static BigDecimal processUploadAuction(BigDecimal auction_no_param) throws JSONException {
+	//public static BigDecimal processUploadAuction(BigDecimal auction_no_param) throws JSONException {
+	public static BigDecimal processUploadAuction(BigDecimal auction_no_param, BigDecimal lot_no_param) throws JSONException {
 		BigDecimal auction_no_ret = new BigDecimal(0);
+		BigDecimal lot_no_ret = new BigDecimal(0);
 		String jsonData = "";
 		
 		//BigDecimal auction_no_param = new BigDecimal("1658");
@@ -592,11 +596,19 @@ public class UploadAuctionManager {
 											}
 											*/
 
+											//boolean isLot = false;
+											boolean isLotDone = false;
 											
 											try{
 												
-												if(auction_id!=null && !"".equals(auction_id)){
-													
+												if(auction_id.doubleValue() > 0 && lot_no_param.doubleValue() > 0){
+													isLotDone = true;
+												}
+												
+												System.out.println("isLotDone "+isLotDone);
+												
+												if(auction_id!=null && !"".equals(auction_id) && !isLotDone){
+		
 													//AuctionManager aMngr = new AuctionManager(req,res);
 													LotManager lMngr = new LotManager();
 													
@@ -614,7 +626,7 @@ public class UploadAuctionManager {
 														
 													}
 													
-													if(lotcount<500){
+													if(lotcount<100){
 														
 														lsMngr.insertLotStagingOnSearch(
 																lot_id,
@@ -637,9 +649,57 @@ public class UploadAuctionManager {
 													}
 
 
+												
+												
+												}else if(lot_no_param.equals(lot_number) && isLotDone){
+													
+													//AuctionManager aMngr = new AuctionManager(req,res);
+													LotManager lMngr = new LotManager();
+													
+													//HashMap<BigDecimal, Lot> lotHM  = lMngr.getLotHMByAuctionId(auction_id);
+													
+													HashMap<BigDecimal, Lot> lotHM  = lMngr.getLotHMByAuctionId_SetLotId(auction_id);
+													
+													
+													Lot l = lotHM.get(lot_id);
+													Timestamp last_date_sync = null;
+													
+													try{
+														last_date_sync = l.getDate_sync();
+													}catch(Exception e){
+														
+													}
+													
+													if(lotcount<100){
+														
+														if(lot_no_param.equals(lot_number)){
+														
+															
+															//lot_description2 = URLEncoder.encode(lot_description, "UTF-8");
+
+															//System.out.println("Encoded encoded_lot_description " + lot_description);
+
+															lsMngr.insertLotStagingOnSearch(
+																	lot_id,
+																	auction_id,
+																	lot_number,
+																	is_available_lot,
+																	lot_description,
+																	lot_type_id,
+																	premium_rate,
+																	unit,
+																	unit_qty,
+																	vat,
+																	duties,
+																	assessment_value,
+																	last_date_sync
+																	);
+															
+															lotcount++;
+														}
+													}
+													
 												}
-												
-												
 
 											}catch(Exception e){
 												e.printStackTrace();
@@ -816,9 +876,12 @@ public class UploadAuctionManager {
 					}
 				}
 				
+				HashMap<BigDecimal, Lot> lHM = lMngr.getLotHMByAuctionId_SetLotId(as.getAuction_id());
+				
+				iHM = iMngr.getItemHMByAuctionId_SetReferenceNo(as.getAuction_id());
 				
 				for(LotStaging ls : lsList){
-					HashMap<BigDecimal, Lot> lHM = lMngr.getLotHMByAuctionId_SetLotId(as.getAuction_id());
+					
 					if(lHM.get(ls.getLot_id())!=null){
 						//update lot
 						lMngr.updateLotOnUpload(
@@ -878,11 +941,13 @@ public class UploadAuctionManager {
 						
 					}
 					
+				}
+					
 					for(ItemStaging is : isList){
 						
 						System.out.println("isList "+isList.size());
 						
-						iHM = iMngr.getItemHMByAuctionId_SetReferenceNo(ls.getAuction_id());
+						
 						if(iHM.get(is.getReference_no())!=null){
 							//update item
 							
@@ -907,7 +972,7 @@ public class UploadAuctionManager {
 									is.getConsignor_id(),
 									is.getDescription(),
 									is.getDelivery_receipt_id(),
-									ls.getAuction_id(),
+									as.getAuction_id(),
 									last_date_sync,
 									user_id
 							);
@@ -937,16 +1002,24 @@ public class UploadAuctionManager {
 									is.getConsignor_id(),
 									is.getDescription(),
 									is.getDelivery_receipt_id(),
-									ls.getAuction_id(),
+									as.getAuction_id(),
 									last_date_sync,
 									user_id
 							);
 							
+							lMngr.updateLotTotalsOnUpload(
+							is.getLot_id(),
+							is.getSrp(),
+							is.getTarget_price(),
+							is.getReserve_price(),
+							is.getAssess_value());
+
 						}
+
 					}
 				
 					
-				}
+				//}
 				
 
 			}
@@ -968,8 +1041,8 @@ public class UploadAuctionManager {
 	public static void main(String[] args) throws JSONException {
 		
 		BigDecimal auction_no_param = new BigDecimal("2180");
-		
-		processUploadAuction(auction_no_param);
+		BigDecimal lot_no_param = new BigDecimal("0");
+		processUploadAuction(auction_no_param, lot_no_param);
 		processSyncAll();
 	}
 	

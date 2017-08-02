@@ -166,7 +166,12 @@
 					<div class="col-sm-4">
 		              <div class="form-group">
 		                <label><b>Auction No : </b></label>
-						<input type="text" class="form-control" placeholder="AUCTION NO" value="" id="auction_no" name="auction_no" onchange="return trim(this)" autocomplete="off" maxlength="20" />
+						<input type="text" class="form-control" placeholder="AUCTION NO" value="" id="auction_no" name="auction_no" onchange="return trim(this)" autocomplete="off" maxlength="10" />
+		              </div>
+		              
+		              <div class="form-group">
+		                <label><b>Lot No : </b></label>
+						<input type="text" class="form-control" placeholder="LOT NO" value="" id="lot_no" name="lot_no" onchange="return trim(this)" autocomplete="off" maxlength="4" />
 		              </div>
 		              <!-- 
 		              <div class="form-group">
@@ -240,22 +245,36 @@ function loadUploadAuctionSearch(){
 
 function clearUploadAuctionSearch(){
 	document.getElementById("auction_no").value="";
-	document.getElementById("auction_date").value="";
+	document.getElementById("lot_no").value="";
+	//document.getElementById("auction_date").value="";
 }
 
 
 function searchUploadAuction(){
 	document.frm.action.value="searchUploadAuction";
-	document.frm.submit();
-}
-
-function saveUser(){
-	if(validateSave()){
-		document.frm.action.value="saveUser";
+	if(validateSearchAuctionNo()){
 		document.frm.submit();
 	}
-	setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
-	//	alert('s');
+	
+	
+}
+
+function validateSearchAuctionNo(){
+	var isAllowed = true;
+	
+	if(document.frm.auction_no.value==""){
+		var msgInfo = "Auction No is required.";
+		var msgbgcol = "red";
+		var msgBoxValue = '<div class=\"message-box\" style=\"font-size: 12px; background-color: '+msgbgcol+'\">';
+		msgBoxValue = msgBoxValue + '<h2 style=\"font-size: 12px; background-color: '+msgbgcol+';\">'+msgInfo+'</h2>';
+		msgBoxValue = msgBoxValue + '</div>';
+		document.getElementById("msgDiv").innerHTML=msgBoxValue;
+		document.frm.firstName.focus();
+		isAllowed = false;
+	}
+
+	
+	return isAllowed;
 }
 
 <%if(msgInfo!=null){%>
@@ -304,9 +323,10 @@ setTimeout(onLoadPage,3000);
 <!--<![endif]-->
 
 <!-- DataTables -->
+<!-- 
 <script src="plugins/datatables/jquery.dataTables.js"></script>
 <script src="plugins/datatables/dataTables.bootstrap.js"></script>
-
+-->
 <script src="js/jquery.datetimepicker.full.js"></script>
 <script type="text/javascript" src="js/select2.full.js"></script>
 
@@ -344,7 +364,25 @@ $(document).ready(function() {
  	        }
  	    });
 
-
+ 	    $("#lot_no").keydown(function (e) {
+ 	        // Allow: backspace, delete, tab, escape, enter and .
+ 	        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+ 	             // Allow: Ctrl+A
+ 	            (e.keyCode == 65 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+C
+ 	            (e.keyCode == 67 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+X
+ 	            (e.keyCode == 88 && e.ctrlKey === true) ||
+ 	             // Allow: home, end, left, right
+ 	            (e.keyCode >= 35 && e.keyCode <= 39)) {
+ 	                 // let it happen, don't do anything
+ 	                 return;
+ 	        }
+ 	        // Ensure that it is a number and stop the keypress
+ 	        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+ 	            e.preventDefault();
+ 	        }
+ 	    });
 
  	  
  	});	

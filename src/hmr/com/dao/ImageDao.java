@@ -5,16 +5,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.util.DBConnection;
 import hmr.com.bean.Image;
-import hmr.com.bean.Lot;
-import hmr.com.util.StringUtil;
+
 
 public class ImageDao extends DBConnection {
 
@@ -49,8 +47,11 @@ public class ImageDao extends DBConnection {
 		StringBuilder sb = new StringBuilder("Select id, auction_id, lot_id, item_id, active, image");
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		sb.append(" from image where auction_id ="+  auction_id);
+		
+		DBConnection dbConn = new DBConnection();
+		
 		try {
-			conn = getConnection();
+			conn = dbConn.getConnection7();
 			java.sql.Statement stmt = conn.createStatement();
 			System.out.println("sql : "+sb.toString());		
 			ResultSet rs = stmt.executeQuery(sb.toString());
@@ -83,8 +84,12 @@ public class ImageDao extends DBConnection {
 		StringBuilder sb = new StringBuilder("Select id, auction_id, lot_id, item_id, active, image");
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		sb.append(" from image where lot_id ="+  lot_id);
+
+		DBConnection dbConn = new DBConnection();
+		
+		
 		try {
-			conn = getConnection();
+			conn = dbConn.getConnection3();
 			java.sql.Statement stmt = conn.createStatement();
 			System.out.println("sql : "+sb.toString());		
 			ResultSet rs = stmt.executeQuery(sb.toString());
@@ -692,8 +697,8 @@ public Image getThumbnailByItemId(BigDecimal item_id){
         stmt.setInt(2, lot_id);
         stmt.setInt(3, item_id);
         stmt.setInt(4, active);
-        stmt.setBinaryStream (5, image, image.available());
-        stmt.setBinaryStream (6, thumbnail, thumbnail.available());
+        stmt.setBlob (5, image);
+        stmt.setBlob (6, thumbnail);
         stmt.setTimestamp(7, sqlDate_t);
         stmt.setBigDecimal(8, user_id);
 
@@ -702,7 +707,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	    
 	    
 		stmt.close();
-	} catch (Exception e) {
+	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
 		if (conn != null) {
