@@ -77,7 +77,7 @@ public class Auction extends SystemBean {
 		this.auction_desc = auction_desc;
 	}
 	public String getTerms_and_conditions() {
-		return escapeHTML(terms_and_conditions);
+		return terms_and_conditions;
 	}
 	public void setTerms_and_condition(String terms_and_conditions) {
 		this.terms_and_conditions = terms_and_conditions;
@@ -250,7 +250,5 @@ public class Auction extends SystemBean {
 		}else{
 			return null;
 		}
-		
 	}
-
 }
