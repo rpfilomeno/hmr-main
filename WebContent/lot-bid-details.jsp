@@ -108,25 +108,9 @@
 		
 		<link rel="stylesheet" href="assets/css/gridder.css" />
 		<link rel="stylesheet" href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css">
+		<link rel="stylesheet" href="assets/plugins/gallery/css/blueimp-gallery.min.css">
 		
-		<script src=assets/themes/hmr/js/vendor/modernizr.js></script>
-		<script src=assets/themes/hmr/js/vendor/jquery-1.11.3.js></script>
-		<script src=assets/themes/hmr/js/vendor/jquery-migrate-1.2.1.min.js></script>
-		<script src=assets/themes/hmr/js/vendor/social.js></script>
-		<script src=assets/themes/hmr/js/vendor/masonry.pkgd.min.js></script>
-		<script src=assets/themes/hmr/js/vendor/owl.carousel.min.js?v=2></script>
-		<script src=assets/themes/hmr/js/vendor/jquery.form.js></script>
-		<script src=assets/themes/hmr/js/vendor/jquery.easing.1.3.js></script>
-		<script src=assets/themes/hmr/js/bootstrap.js></script>
-		<script src=assets/themes/hmr/js/vendor/bootbox.min.js></script>
-		<script src=assets/themes/hmr/js/vendor/url.min.js></script>
-		<script src=assets/themes/hmr/js/vendor/msis.js></script>
-		<script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
-		<script src=assets/themes/hmr/js/main.js?v=79186204></script>
 		
-		<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
-		<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
-		<script src="assets/plugins/jquery.bsAlerts.min.js"></script>
                 
     </head>
     <body data-is-mobile="" id="c" >
@@ -328,17 +312,20 @@
 					<div class="main-category-header">
 						Gallery
 					</div>
-					<% for (Image i : lot_images) {	%>
-						<div class="side-product-item">
-							<div class="product-item">
-								<a href="#">
-									<div class="product-image-wrap">
-										<div class="image feature-fade-in" style="background-image: url('image?id=<%=i.getId()%>&t=t')"></div>
-									</div>
-								</a>
+					<div class="side-product-item">
+							<div class="product-item gallery">
+								<div id="lot-gallery">
+								<% for (Image i : lot_images) {	%>
+									<a href="image?id=<%=i.getId()%>" title="Image #<%=i.getId()%>">
+										<img style="width:100%" src="image?id=<%=i.getId()%>&t=t" alt="Image #<%=i.getId()%>">
+									</a>
+			
+								<% } %>
+								</div>
 							</div>
-						</div>
-					<% } %>
+					</div>
+					
+					
 					
 					
 				</div>
@@ -442,17 +429,26 @@
 						<%for(Item i : items) {%>
 							<div class="col-md-6 col-xs-6">
 								<div class="product-item">
-									<a href="#">
+									
 										<div class="product-image-wrap">
 											<div class="image feature-fade-in" style="background-image: url('image?id=<%=i.getId()%>&t=it')"></div>
 										</div>
 										<div class="product-body">
-											<h3 class="product-name">#<%=i.getReference_no()%></h3>
+											<%  item_images = iMngr.getImageListByItemId(i.getId()); %>
+											<div id="item-gallery-<%=i.getId() %>">
+												<% for (Image ii : item_images) { %>
+												<a href="image?id=<%=ii.getId()%>" title="<%=ii.getId()%>">
+											        <img style="width:20%; padding-top:3px" src="image?id=<%=ii.getId()%>&t=t" alt="<%=ii.getId()%>" />
+											    </a>
+											    
+											    <% } %>
+											</div>
+											<h3 class="product-name">Item #<%=i.getReference_no()%></h3>
 											<div class="product-details">
 												<div class="product-detail">Description: <%=i.getItem_desc()%></div>
 											</div>
 										</div>
-									</a>
+									
 									
 								</div>
 								
@@ -613,6 +609,25 @@
 	</div>
 </div>
 
+<script src=assets/themes/hmr/js/vendor/modernizr.js></script>
+<script src=assets/themes/hmr/js/vendor/jquery-1.11.3.js></script>
+<script src=assets/themes/hmr/js/vendor/jquery-migrate-1.2.1.min.js></script>
+<script src=assets/themes/hmr/js/vendor/social.js></script>
+<script src=assets/themes/hmr/js/vendor/masonry.pkgd.min.js></script>
+<script src=assets/themes/hmr/js/vendor/owl.carousel.min.js?v=2></script>
+<script src=assets/themes/hmr/js/vendor/jquery.form.js></script>
+<script src=assets/themes/hmr/js/vendor/jquery.easing.1.3.js></script>
+<script src=assets/themes/hmr/js/bootstrap.js></script>
+<script src=assets/themes/hmr/js/vendor/bootbox.min.js></script>
+<script src=assets/themes/hmr/js/vendor/url.min.js></script>
+<script src=assets/themes/hmr/js/vendor/msis.js></script>
+<script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
+<script src=assets/themes/hmr/js/main.js?v=79186204></script>
+		
+<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
+<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
+<script src="assets/plugins/jquery.bsAlerts.min.js"></script>
+<script src="assets/plugins/gallery/js/blueimp-gallery.min.js"></script>
 
 <script>
 
@@ -846,10 +861,45 @@ $(document).ready(function(){
 	showAlert(msgInfo, msgbgcol);
 	<%}%>
 	
+	document.getElementById('lot-gallery').onclick = function (event) {
+	    event = event || window.event;
+	    var target = event.target || event.srcElement,
+	        link = target.src ? target.parentNode : target,
+	        options = {index: link, event: event},
+	        links = this.getElementsByTagName('a');
+	    blueimp.Gallery(links, options);
+	};
+	
+	<%for(Item i : items) {%>
+	<%  item_images = iMngr.getImageListByItemId(i.getId()); %>
+		<% if(item_images.size() > 1) { %>
+		
+		document.getElementById("item-gallery-<%=i.getId() %>").onclick = function (event) {
+		    event = event || window.event;
+		    var target = event.target || event.srcElement,
+		        link = target.src ? target.parentNode : target,
+		        options = {index: link, event: event},
+		        links = this.getElementsByTagName('a');
+		    blueimp.Gallery(links, options);
+		};
+		<% } %>
+	<% } %>
+	
 });
 
 
 </script>
+
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">&lsaquo;</a>
+    <a class="next">&rsaquo;</a>
+    <a class="close">&times;</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>	
+
 
 <form action="" id="frm" name="frm" method="post" onkeypress="stopEnterSubmitting(window.event)">
    <input type="hidden" name="manager" id="manager" value=""/>

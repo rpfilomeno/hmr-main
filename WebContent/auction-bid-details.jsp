@@ -114,25 +114,10 @@
 		
 		<link rel="stylesheet" href="assets/css/gridder.css" />
 		<link rel="stylesheet" href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css">
+		<link rel="stylesheet" href="assets/plugins/gallery/css/blueimp-gallery.min.css">
 		
-		<script src=assets/themes/hmr/js/vendor/modernizr.js></script>
-		<script src=assets/themes/hmr/js/vendor/jquery-1.11.3.js></script>
-		<script src=assets/themes/hmr/js/vendor/jquery-migrate-1.2.1.min.js></script>
-		<script src=assets/themes/hmr/js/vendor/social.js></script>
-		<script src=assets/themes/hmr/js/vendor/masonry.pkgd.min.js></script>
-		<script src=assets/themes/hmr/js/vendor/owl.carousel.min.js?v=2></script>
-		<script src=assets/themes/hmr/js/vendor/jquery.form.js></script>
-		<script src=assets/themes/hmr/js/vendor/jquery.easing.1.3.js></script>
-		<script src=assets/themes/hmr/js/bootstrap.js></script>
-		<script src=assets/themes/hmr/js/vendor/bootbox.min.js></script>
-		<script src=assets/themes/hmr/js/vendor/url.min.js></script>
-		<script src=assets/themes/hmr/js/vendor/msis.js></script>
-		<script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
-		<script src=assets/themes/hmr/js/main.js?v=79186204></script>
 		
-		<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
-		<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
-		<script src="assets/plugins/jquery.bsAlerts.min.js"></script>
+		
                 
     </head>
     <body data-is-mobile="" id="c" >
@@ -338,19 +323,20 @@
 					<div class="main-category-header">
 						Gallery
 					</div>
-					<% for (Image i : auction_images) {	%>
-						<div class="side-product-item">
-							<div class="product-item">
-								<a href="#">
-									<div class="product-image-wrap">
-										<div class="image feature-fade-in" style="background-image: url('image?id=<%=i.getId()%>&t=t')"></div>
-									</div>
-								</a>
+					
+					<div class="side-product-item">
+							<div class="product-item gallery">
+								<div id="auction-gallery">
+								<% for (Image i : auction_images) {	%>
+									<a href="image?id=<%=i.getId()%>" title="Image #<%=i.getId()%>">
+										<img style="width:100%" src="image?id=<%=i.getId()%>&t=t" alt="Image #<%=i.getId()%>">
+									</a>
+			
+								<% } %>
+								</div>
 							</div>
-						</div>
-					<% } %>
-					
-					
+					</div>
+
 				</div>
 				
 			</div>
@@ -585,11 +571,27 @@
 	</div>
 </div>
 
+<script src=assets/themes/hmr/js/vendor/modernizr.js></script>
+<script src=assets/themes/hmr/js/vendor/jquery-1.11.3.js></script>
+<script src=assets/themes/hmr/js/vendor/jquery-migrate-1.2.1.min.js></script>
+<script src=assets/themes/hmr/js/vendor/social.js></script>
+<script src=assets/themes/hmr/js/vendor/masonry.pkgd.min.js></script>
+<script src=assets/themes/hmr/js/vendor/owl.carousel.min.js?v=2></script>
+<script src=assets/themes/hmr/js/vendor/jquery.form.js></script>
+<script src=assets/themes/hmr/js/vendor/jquery.easing.1.3.js></script>
+<script src=assets/themes/hmr/js/bootstrap.js></script>
+<script src=assets/themes/hmr/js/vendor/bootbox.min.js></script>
+<script src=assets/themes/hmr/js/vendor/url.min.js></script>
+<script src=assets/themes/hmr/js/vendor/msis.js></script>
+<script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
+<script src=assets/themes/hmr/js/main.js?v=79186204></script>
+		
+<script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
+<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
+<script src="assets/plugins/jquery.bsAlerts.min.js"></script>
+<script src="assets/plugins/gallery/js/blueimp-gallery.min.js"></script>
 
 <script>
-
-
-
 function viewLot(id) {
 	$('input[name="manager"]').val("lot-manager");
 	$('input[name="action"]').val("lotBidDetails");
@@ -821,10 +823,29 @@ $(document).ready(function(){
 	showAlert(msgInfo, msgbgcol);
 	<%}%>
 	
+	document.getElementById('auction-gallery').onclick = function (event) {
+	    event = event || window.event;
+	    var target = event.target || event.srcElement,
+	        link = target.src ? target.parentNode : target,
+	        options = {index: link, event: event},
+	        links = this.getElementsByTagName('a');
+	    blueimp.Gallery(links, options);
+	};
+	
 });
 
 </script>
 
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">&lsaquo;</a>
+    <a class="next">&rsaquo;</a>
+    <a class="close">&times;</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>		
+		
 <form action="" id="frm" name="frm" method="post" onkeypress="stopEnterSubmitting(window.event)">
    <input type="hidden" name="manager" id="manager" value=""/>
    <input type="hidden" name="action" id="action" value=""/>
@@ -837,6 +858,7 @@ $(document).ready(function(){
    <input type="hidden" name="userId" id="userId" value="<%=userId %>"/>
    <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
 </form>
+
 
 </body>
 </html>

@@ -94,7 +94,7 @@ public class Image extends HttpServlet {
 				i = iMngr.getThumbnailByLotId(id);
 			}else if("at".equals(t)){
 				i = iMngr.getThumbnailByAuctionId(id);
-			}else if("t".equals(t)){
+			}else {
 				i = iMngr.getThumbnailBytesById(id);
 			}
 			
@@ -107,11 +107,7 @@ public class Image extends HttpServlet {
 				output.write(barray);
 				res.setContentType("image/png");
 			}else{
-				id = new BigDecimal("1");
-				i = iMngr.getImageBytesById(id);
-				byte barray[] = i.getImageBytes();
-				output.write(barray);
-				res.setContentType("image/png");
+				throw new Exception();
 			}
 		} catch (Exception ex) {
 			BufferedImage originalImage = ImageIO.read(new File(getClass().getClassLoader().getResource("hmr.jpg").getFile()));
@@ -126,7 +122,6 @@ public class Image extends HttpServlet {
 		} finally {
 			output.close();
 		}
-		
 		
 		
 		
