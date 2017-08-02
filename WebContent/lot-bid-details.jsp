@@ -170,16 +170,19 @@
         <div class="row gutter-0">
           <div class="col-md-8">
             
-              <form action="#" id="nav-search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
+              <form action="bid" id="nav-search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
                 
                 <div class="input-group nav-search-group">
-                  <input type="text" class="form-control" id="nav-search-input" placeholder="Search for products, brands, shops">
+                  <input type="text" class="form-control" name="nav-search-input" id="nav-search-input" placeholder="Search for products, brands, shops">
                   <span class="input-group-btn">
                     <button class="btn btn-default nav-search-btn" type="submit"><span class="ion-ios-search-strong"></span></button>
                   </span>
                 </div>
-
-              
+                
+				<input type="hidden" name="manager" id="manager" value="search-manager"/>
+   				<input type="hidden" name="action" id="action" value=""/>
+              	<input type="hidden" name="userId" id="userId" value="<%=userId %>"/>
+   				<input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
               </form>
           </div>
           <div class="col-md-4">

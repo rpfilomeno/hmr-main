@@ -579,6 +579,10 @@ public class LotManager {
 		
 	}	
 	
+	public ArrayList<Lot> getLotListBySearch(String search) {
+		return new LotDao().getLotListBySearch(search);
+	}
+	
 	public Lot getLotByLotId(BigDecimal id){
 		
 		Lot l = new Lot();

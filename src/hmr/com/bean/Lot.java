@@ -173,6 +173,7 @@ public class Lot extends SystemBean {
 		this.lot_increment_time = lot_increment_time;
 	}
 	public BigDecimal getAmount_bid_next() {
+		if(amount_bid_next==null) return BigDecimal.ZERO;
 		return amount_bid_next;
 	}
 	public void setAmount_bid_next(BigDecimal amount_bid_next) {

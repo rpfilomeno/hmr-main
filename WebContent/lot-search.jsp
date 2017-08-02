@@ -14,8 +14,6 @@
 
 %>
 <%
-	System.out.println("PAGE auction-bid-details.jsp");
-
 	String COMPANY_NAME = (String)request.getSession().getAttribute("COMPANY_NAME")!=null ? (String)request.getSession().getAttribute("COMPANY_NAME") :"HMR Auctions";
 	String COMPANY_NAME_ACRONYM = (String)request.getSession().getAttribute("COMPANY_NAME_ACRONYM");
 
@@ -49,7 +47,6 @@
 	List<Auction> activeNegotiatedAuctionList = request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST");
 	List<Auction> activeLiveAuctionList = request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-ONLINE-AUCTION-LIST");
 
-	Auction auction = request.getAttribute("auction")!=null ? (Auction)request.getAttribute("auction") : (Auction)request.getSession().getAttribute("auction");
 	List<Lot> lList = request.getAttribute("lList")!=null ? (List<Lot>)request.getAttribute("lList") : (List<Lot>)request.getSession().getAttribute("lList");
 	HashMap<Integer, Lov> currencyLovHM  = request.getAttribute("CURRENCY-HM")!=null ? (HashMap<Integer, Lov>)request.getAttribute("CURRENCY-HM") : (HashMap<Integer, Lov>)request.getSession().getAttribute("CURRENCY-HM");
 	
@@ -58,9 +55,6 @@
 
     DecimalFormat df = new DecimalFormat("#,###,##0");
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
-	
-	List<Image> auction_images = (List<Image>)request.getAttribute("auction_images");
-	
 	
 	
 	%>
@@ -308,8 +302,6 @@
 					<li>
 						<a href="">Home</a>
 					</li>
-
-					<li class="active"><%=auction.getAuction_name() %></li>
 				</ol>
 			</div>
 		</div>
@@ -321,86 +313,128 @@
 		<div class="row">
 			<div data-alerts="alerts" data-titles='{"warning": "<em>Warning!</em>", "error": "<em>Error!</em>"}' data-ids="myid" data-fade="3000"></div>
 			
-			<div class="col-md-4 col-lg-3 visible-lg visible-md">
+			<div class="col-md-4 col-lg-3">
 				<div class="side-widget">
-					<div class="main-category-header">
-						Gallery
+					<div id="category-wrap">
+						<div class="main-category-header">
+							Categories
+						</div>
+						<ul class="main-category-list">
+							
+<li>
+  <a href="electronics-and-gadgets.html">Electronics and Gadgets</a>
+  <ul class="sub-category-list simple-nav-list">
+	<li>
+		<a href="electronics-and-gadgets.html">Cameras</a>
+	</li>
+	<li>
+		<a href="electronics-and-gadgets.html">Computer and Accessories</a>
+	</li>
+	<li>
+		<a href="electronics-and-gadgets.html">Mobile Phone</a>
+	</li>
+	<li>
+		<a href="electronics-and-gadgets.html">TV, Video, Audio</a>
+	</li>
+	<li>
+		<a href="electronics-and-gadgets.html">Video Games</a>
+	</li>
+  </ul>
+</li>
+<li>
+  <a href="electronics-and-gadgets.html">Furniture</a>
+  <ul class="sub-category-list simple-nav-list">
+	<li><a href="electronics-and-gadgets.html">Chairs</a></li>
+	<li><a href="electronics-and-gadgets.html">Desks &amp; Home Office Furniture</a></li>
+	<li><a href="electronics-and-gadgets.html">Dining Sets</a></li>
+	<li><a href="electronics-and-gadgets.html">Dressers</a></li>
+	<li><a href="electronics-and-gadgets.html">Entertainment Units</a></li>
+	<li><a href="electronics-and-gadgets.html">Frames &amp Covers</a></li>
+	<li><a href="electronics-and-gadgets.html">Futons</a></li>
+	<li><a href="electronics-and-gadgets.html">Home Decor</a></li>
+	<li><a href="electronics-and-gadgets.html">Sofas</a></li>
+	<li><a href="electronics-and-gadgets.html">Tables</a></li>
+	<li><a href="electronics-and-gadgets.html">TV Stands</a></li>
+  </ul>
+</li>
+<li>
+  <a href="electronics-and-gadgets.html">Industrial Equipment</a>
+  <ul class="sub-category-list simple-nav-list">
+	<li><a href="electronics-and-gadgets.html">Construction</a></li>
+	<li><a href="electronics-and-gadgets.html">Electrical</a></li>
+	<li><a href="electronics-and-gadgets.html">Machines</a></li>
+	<li><a href="electronics-and-gadgets.html">Office Equipment</a></li>
+	<li><a href="electronics-and-gadgets.html">Plumbing</a></li>
+	<li><a href="electronics-and-gadgets.html">Power Tools</a></li>
+	<li><a href="electronics-and-gadgets.html">Restaurant Equipment</a></li>
+  </ul>
+</li>
+<li>
+  <a href="electronics-and-gadgets.html">Real Estate</a>
+  <ul class="sub-category-list simple-nav-list">
+	<li><a href="electronics-and-gadgets.html">Agricultural</a></li>
+	<li><a href="electronics-and-gadgets.html">Commercial</a></li>
+	<li><a href="electronics-and-gadgets.html">Industrial</a></li>
+	<li><a href="electronics-and-gadgets.html">Residential</a></li>
+  </ul>
+</li>
+<li>
+  <a href="electronics-and-gadgets.html">Vehicles</a>
+  <ul class="sub-category-list simple-nav-list">
+	<li><a href="electronics-and-gadgets.html">Bus</a></li>
+	<li><a href="electronics-and-gadgets.html">Cars</a></li>
+	<li><a href="electronics-and-gadgets.html">Commercial Trucks</a></li>
+	<li><a href="electronics-and-gadgets.html">Motorcycle</a></li>
+	<li><a href="electronics-and-gadgets.html">SUV</a></li>
+	<li><a href="electronics-and-gadgets.html">Van and Mini Van</a></li>
+  </ul>
+</li>						</ul>
 					</div>
-					
-					<div class="side-product-item">
-							<div class="product-item gallery">
-								<div id="auction-gallery">
-								<% for (Image i : auction_images) {	%>
-									<a href="image?id=<%=i.getId()%>" title="Image #<%=i.getId()%>">
-										<img style="width:100%" src="image?id=<%=i.getId()%>&t=t" alt="Image #<%=i.getId()%>">
-									</a>
-			
-								<% } %>
-								</div>
-							</div>
-					</div>
-
 				</div>
 				
+				<div class="side-widget">
+					<h4 class="text-primary">Quick Links</h4>
+					<ul class="simple-nav-list">
+						<li>
+							<a href="#">Services <span class="icon-right ion-chevron-right"></span></a>
+						</li>
+						<li>
+							<a href="#">Contact Us <span class="icon-right ion-chevron-right"></span></a>
+						</li>
+					</ul>	
+				</div>
+
+
+				<div class="side-widget">
+					<h4 class="text-primary">FAQ</h4>
+					<ul class="simple-nav-list">
+						<li>
+							<a href="#">Auction Tips <span class="icon-right ion-chevron-right"></span></a>
+						</li>
+						<li>
+							<a href="#">Basic Auction FAQs <span class="icon-right ion-chevron-right"></span></a>
+						</li>
+						<li>
+							<a href="#">Auction Terminologies <span class="icon-right ion-chevron-right"></span></a>
+						</li>
+						<li>
+							<a href="#">Online Auction FAQs <span class="icon-right ion-chevron-right"></span></a>
+						</li>
+					</ul>
+				</div>
+
 			</div>
 			<div class="col-md-8 col-lg-9">
 				
-				<div class="product-full-view-wrap">
-					<div class="row">
-						<div class="col-sm-7">
-							<div class="full-product-picture">
-								<div class="image feature-fade-in" style="background-image: url('image?id=<%=auction.getAuction_id()%>&t=at')" ></div>
-							</div>
-						</div>
-						<div class="col-sm-5">
-							<h3 class="full-product-name"><%=auction.getAuction_name()%></h3>
-							<div class="product-details">
-								<div class="product-detail">Location: <%=auction.getLocation()%></div>
-								<div class="product-detail">Start: <%=sdf.format(auction.getStart_date_time()) %></div>
-								<div class="product-detail">Closing: <%=sdf.format(auction.getEnd_date_time()) %></div>
-								<div class="product-detail">Lots: <%=lList.size() %></div>
-							</div>
-						</div>
-					</div>
-
-					<div class="clearfix top20"></div>
-
-					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
-						<li role="presentation" class="active">
-							<a href="#product-description-tab" aria-controls="product-description-tab" role="tab" data-toggle="tab">Description</a>
-						</li>
-						<li role="presentation">
-							<a href="#product-delivery-tab" aria-controls="product-delivery-tab" role="tab" data-toggle="tab">Terms and Conditions</a>
-						</li>
-					</ul>
-
-					<div class="clearfi"></div>
-
-					<div class="tab-content">
-						<div role="tabpanel" class="tab-pane active" id="product-description-tab">
-							<p><%=auction.getAuction_desc()%></p>
-						</div>
-
-						<div role="tabpanel" class="tab-pane" id="product-delivery-tab">
-							<p><%=auction.getTerms_and_conditions()%></p>
-
-						</div>
-						
-					</div>
-				</div>
-
 				<div id="product-list-wrapper">
 					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
 						<li role="presentation" class="active">
-							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">Lots</a>
+							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">Lots Matching Your Search</a>
 						</li>
 					</ul>
 					<div class="clearfix top10"></div>
 
-					
-
 					<div class="row gutter-10">
-						<% Integer x =0; %>
 						<%for(Lot l : lList) {%>
 						<div class="col-md-6 col-xs-6">
 							<div class="product-item">
@@ -419,44 +453,8 @@
 										</div>
 									</div>
 								</a>
-								<% if(user_id != null && user_role_id > 0){ %>
-                                <% if( l.getIs_available_lot() > 0) { %>
-		                            <% Integer i = l.getUnit_qty(); %>
-				                    <div class="form-group">
-				                        <select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
-				                            <% while(i > 0) { %>
-		                                   		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
-		                                   	 	<% i = i - 1; %>
-		                                   	<% } %>
-		                                </select>
-		                            </div>
-		                        <% } %>
-                                <% if(l.getIs_bid() == 1){ %>
-		                            <% if(auction.getAuction_type() == 15){ %>
-			                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
-			                                <button class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
-			                            <% } else { %>
-				                            <button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
-				                            <button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
-			                            <% } %>
-		                            <% } else if(auction.getAuction_type() == 16){ %>
-		                                <button class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</button>
-		                            <% } %>
-                                <% }%>
-                                <% if(l.getIs_buy() == 1){ %>
-                                	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></button>
-                                <% }%> 
-                            <% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
-								<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
-								<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
-							<% } %>
 							</div>
-							
 						</div>
-						<% x = x +1;%>
-						<% if ((x % 2) == 0) { %>
-						</div><div class="row gutter-10">
-						<% } %>
 						<% } %>
 					</div>
 					
@@ -465,13 +463,7 @@
 			</div>
 		</div>
 	</div>
-	
-
-	
 </section>
-
-
-
 
 <div class="clearfix top100"></div>
 <div class="clearfix top100"></div>
@@ -601,191 +593,6 @@ function viewLot(id) {
 	$('input[name="action"]').val("lotBidDetails");
 	$('input[name="lotId_wip"]').val(id);
 	$( "#frm" ).submit();
-}
-
-function showMaxBidForm(action, value, lot, id, qtyid) {
-	$('<div id="maxbid-form" title="Set Maximum Bid"></div>').dialog({
-		height: "auto",
-		width: 350,
-		title: "Set Maximum Bid",
-		modal: true,
-		open: function (event, ui) {
-			var dialog_html = '<p id="validateTips">All fields are required.</p><label for="maxbid-'+ id +'">Amount</label><div class="input-group"><span class="input-group-addon">' + "<%=currency%>" + '</span>' +
-			'<input type="text" name="maxbid-'+ id +'" id="maxbid-'+ id +'" placeholder="'+ value +'" class="form-control">' +
-			'</div>';
-			$(this).html(dialog_html);
-			$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-		},
-		buttons: {
-			"Set Max": function(){
-				value = parseFloat(parseFloat(value).toFixed(2));
-				var maxbid_value = parseFloat(parseFloat($("#maxbid-"+id).val().trim()).toFixed(2));
-
-				if(isNaN(maxbid_value)) maxbid_value = 0;
-				if(maxbid_value <= value) {
-					$("#validateTips" ).text( 'Amount must be greater than ' + value ).addClass( "ui-state-highlight" );
-					setTimeout(function() {	$( "#validateTips" ).removeClass( "ui-state-highlight", 1500 );	}, 500 );
-				} else {				
-					$(this).dialog("close");
-					submitPage(action, maxbid_value, lot, id, qtyid,'')
-				}
-			},
-			Cancel: function() {
-				$(this).dialog("close");
-			}
-		},
-		close: function() {
-			$("#maxbid-form").remove();
-		}
-	}).dialog('widget').position({ my: 'center', at: 'center', of: $(this) });
-}
-
-function showPreBidForm(action, value, lot, id, qtyid) {
-	$('<div id="prebid-form" title="Pre-Bid"></div>').dialog({
-		height: "auto",
-		width: 350,
-		title: "Pre-Bid",
-		modal: true,
-		open: function (event, ui) {
-			var dialog_html = '<p id="validateTips">All fields are required.</p><label for="prebid-'+ id +'">Amount</label><div class="input-group"><span class="input-group-addon">' + "<%=currency%>" + '</span>' +
-			'<input type="text" name="prebid-'+ id +'" id="prebid-'+ id +'" placeholder="'+ value +'" class="form-control">' +
-			'</div>';
-			$(this).html(dialog_html);
-			$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-		},
-		buttons: {
-			"Pre-Bid": function(){
-				value = parseFloat(parseFloat(value).toFixed(2));
-				var prebid_value = parseFloat(parseFloat($("#prebid-"+id).val().trim()).toFixed(2));
-
-				if(isNaN(prebid_value)) prebid_value = 0;
-				if(prebid_value <= value) {
-					$("#validateTips" ).text( 'Amount must be greater than ' + value ).addClass( "ui-state-highlight" );
-					setTimeout(function() {	$( "#validateTips" ).removeClass( "ui-state-highlight", 1500 );	}, 500 );
-				} else {				
-					$(this).dialog("close");
-					submitPage(action, prebid_value, lot, id, qtyid,'')
-				}
-			},
-			Cancel: function() {
-				$(this).dialog("close");
-			}
-		},
-		close: function() {
-			$("#prebid-form").remove();
-		}
-	}).dialog('widget').position({ my: 'center', at: 'center', of: $(this) });
-}
-
-
-function showNegotiatedBidForm(action, value, lot, id, qtyid) {
-	$('<div id="negotiated-form" title="Pre-Bid"></div>').dialog({
-		height: "auto",
-		width: 350,
-		title: "Make Offer",
-		modal: true,
-		open: function (event, ui) {
-			var dialog_html = '<p id="validateTips">All fields are required.</p><label for="negotiated-'+ id +'">Amount</label><div class="input-group"><span class="input-group-addon">' + "<%=currency%>" + '</span>' +
-			'<input type="text" name="negotiated-'+ id +'" id="negotiated-'+ id +'" placeholder="'+ value +'" class="form-control">' +
-			'</div>'+
-			'<label for="negotiated-note-'+ id +'">Note</label>'+
-			'<textarea maxlength="50" class="form-control" rows="5" id="negotiated-note-'+ id +'"></textarea>';
-			$(this).html(dialog_html);
-			$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-		},
-		buttons: {
-			"Send Offer": function(){
-				value = parseFloat(parseFloat(value).toFixed(2));
-				var negotiated_value = parseFloat(parseFloat($("#negotiated-"+id).val().trim()).toFixed(2));
-				var negotiated_note = $("#negotiated-note-"+id).val();
-				
-
-				if(isNaN(negotiated_value)) negotiated_value = 0;
-				if(negotiated_value <= 0) {
-					$("#validateTips" ).text( 'Amount must be greater than 0' ).addClass( "ui-state-highlight" );
-					setTimeout(function() {	$( "#validateTips" ).removeClass( "ui-state-highlight", 1500 );	}, 500 );
-				} else {				
-					$(this).dialog("close");
-					submitPage(action, negotiated_value, lot, id, qtyid, negotiated_note);
-				}
-			},
-			Cancel: function() {
-				$(this).dialog("close");
-			}
-		},
-		close: function() {
-			$("#negotiated-form").remove();
-		}
-	}).dialog('widget').position({ my: 'center', at: 'center', of: $(this) });
-}
-
-function submitPage(action, value, lot, id, qtyid, note) {
-	var unit_qty = 1;
-	if($("#"+qtyid+" :selected").length ) unit_qty = $("#"+qtyid+" :selected").attr('value');
-	
-	$('input[name="manager"]').val("bid-manager");
-	$('input[name="doaction"]').val(action);
-	$('input[name="amount"]').val(value);
-	$('input[name="lotId"]').val(lot);
-	$('input[name="lotId_wip"]').val(id);
-	$('input[name="unit_qty"]').val(unit_qty);
-	$('input[name="note"]').val(note);
-	
-	$('<div id="dialog-confirm"></div>').dialog({
-		resizable: false,
-	    height: "auto",
-	    width: 400,
-	    modal: true,
-	    title: "Confirmation",
-	    closeOnEscape: false,
-        open: function (event, ui) {
-        	var amount = parseFloat(value) * parseInt(unit_qty);
-        	var dialog_title = "Confirmation";
-        	var currency_html = "<%=currency%>";
-        	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure?</p>';
-        	var unit_qty_html = "";
-        	if(unit_qty>0) unit_qty_html = ' with quantity of ' + unit_qty + ' units';
-        	
-        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-      
-        	if(action=="BID") {
-        		dialog_title = "Bid confirmation";
-        		dialog_html = '<p>You will bid ' + amount.toFixed(2)  +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
-        			'<p>Are you sure?</p>';
-        	}else if(action=="BUY") {
-        		dialog_title = "Buy confirmation";
-        		dialog_html = '<p>You will buy this lot for' + value.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+
-        			'<p>Are you sure?</p>';
-        	}else if(action=="SET-MAXIMUM-BID") {
-        		dialog_title = "Set maximum bid confirmation";
-        		dialog_html = '<p>You will will set your maximum bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
-        			'<p>Are you sure?</p>';
-        	}else if(action=="NEGOTIATED") {
-        		dialog_title = "Offer bid confirmation";
-        		dialog_html = '<p>You will will set your offer bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
-        			'<p>Are you sure?</p>';
-        	}else if(action=="PRE-BID") {
-        		dialog_title = "Pre-bid confirmation";
-        		dialog_html = '<p>You will will set pre-bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
-        			'<p>Are you sure?</p>';
-        	}
-
-            $(this).dialog( "option", "title", dialog_title);
-            $(this).html(dialog_html);
-        },
-        buttons: {
-        	"Yes": function() {
-  	          $( this ).dialog( "close" );
-  	          $( "#frm" ).submit();
-  	        },
-            Cancel: function () {
-                $(this).dialog("close");
-            }
-        },
-		close: function() {
-			$("#dialog-confirm").remove();
-		}
-    }).dialog('widget').position({ my: 'center', at: 'center', of: $(this) }); //end confirm dialog
 }
 
 function showAlert(msgInfo, msgbgcol) {

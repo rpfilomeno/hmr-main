@@ -139,17 +139,7 @@
         <div class="row gutter-0">
           <div class="col-md-8">
             
-              <form action="#" id="nav-search-form" method="post" accept-charset="utf-8" onkeypress="stopEnterSubmitting(window.event)">
-                
-                <div class="input-group nav-search-group">
-                  <input type="text" class="form-control" id="nav-search-input" placeholder="Search for products, brands, shops">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default nav-search-btn" type="submit"><span class="ion-ios-search-strong"></span></button>
-                  </span>
-                </div>
-
               
-              </form>
           </div>
           <div class="col-md-4">
             <div id="main-nav-items" class="main-nav-items nav-white visible-md visible-lg">

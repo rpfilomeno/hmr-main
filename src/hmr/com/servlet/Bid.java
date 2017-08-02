@@ -777,9 +777,68 @@ public class Bid extends HttpServlet {
 				
 				page = btMngr.doBiddingTransactionManager();
 
-			}
-			else 
-			{
+			} else if(manager.equals("search-manager")){
+				ArrayList<Lot> searchResult = null;
+				String navSearchInput = req.getParameter("nav-search-input")!=null ? (String)req.getParameter("nav-search-input") : "";
+				if(navSearchInput.length()<1) {
+					req.setAttribute("msgbgcol", "green");
+					req.setAttribute("msgInfo", "No search results found.");
+					page = "index.jsp";
+				} else {
+					searchResult = new LotManager().getLotListBySearch(navSearchInput);
+					if(searchResult.isEmpty()) {
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "No search results found.");
+						page = "index.jsp";
+					} else {
+						
+						AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
+						LotManager lMngr = new LotManager(req,res);
+						ItemManager iMngr = new ItemManager(req,res);
+						List<Lot> lList = new ArrayList<Lot>();
+						List<Lot> lListExpired = new ArrayList<Lot>();
+						LotRangeManager lrMngr = new LotRangeManager();
+						
+						Auction a =null;
+						iMngr.setLovValuesCurrency(req, res);
+						
+						for(Lot lot : searchResult){
+							a = aMngr.getAuctionByAuctionId(lot.getAuction_id());
+							BigDecimal increment_amount = BigDecimal.ZERO;
+
+							//Check if there is lot level bid increment else use auction level value
+							increment_amount = lrMngr.getIncrementAmountByLotId(lot.getLot_id(), lot.getAmount_bid());
+							if(increment_amount.equals(BigDecimal.ZERO)) {
+								System.out.println("Using auction bid increment on lot");
+								increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), lot.getAmount_bid());
+							}
+							BigDecimal amount_bid_next=  increment_amount.add(lot.getAmount_bid());
+							lot.setAmount_bid_next(amount_bid_next);
+
+							
+							//check of there is lot level end_date_time
+							if(lot.getEnd_date_time()==null) {
+								System.out.println("Using auction end date time on lot");
+								lot.setEnd_date_time(a.getEnd_date_time());
+							}
+							
+							//check if the end time is expired
+							if(lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+								lot.setIs_bid(0);
+								lot.setIs_buy(0);
+								lListExpired.add(lot);
+							} else {
+								lList.add(lot);
+							}
+							
+									
+						}//for loop
+
+						req.setAttribute("lList", lList);
+						page = "lot-search.jsp";
+					}
+				}
+			} else 	{
 				if("login".equals(action) || "reLogin".equals(action)){
 				
 				System.out.println("aaaaaaaaaa");	
@@ -913,7 +972,7 @@ public class Bid extends HttpServlet {
     	req.getSession().setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
     	req.setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
 
-		if(manager.equals("") && action.equals("")){
+		if(manager.equals("") && action.equals("") || page ==null){
 			page = "index.jsp";
 		}
 		
