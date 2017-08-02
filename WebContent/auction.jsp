@@ -529,7 +529,7 @@
 		                    <td width="75px">
 			                    <div class="media">
 								  <a class="pull-left" href="#" onclick="lotImages('<%=l.getId()%>')">
-								      <img class="media-object" style="width:75px; " src="image?id=<%=l.getLot_id()%>&t=lt" alt="Click to upload image" />
+								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=l.getLot_id()%>&t=lt" alt="Click to upload image" />
 								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
 								      	<%= new ImageManager().getImageListByLotId(l.getLot_id()).size() %> 
 								      </span>
@@ -659,17 +659,16 @@
                             */
                       %>
 		                  <tr>
-		                  <!-- 
 		                  	<td width="75px">
 			                    <div class="media">
-								  <a class="pull-left" href="#" onclick="itemImages('<//%=i.getId()%>')">
-								      <img class="media-object" style="width:75px; " src="image?id=<//%=i.getId()%>&t=it" alt="Click to upload image" />
+								  <a class="pull-left" href="#" onclick="itemImages('<%=i.getId()%>')">
+								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=i.getId()%>&t=it" alt="Click to upload image" />
 								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
-								      	<//%= new ImageManager().getImageListByItemId(i.getId()).size() %>
+								      	<%= new ImageManager().getImageListByItemId(i.getId()).size() %>
 								      </span>
 								  </a>
 								</div>
-		                    </td> -->
+		                    </td>
                             <td width="15px"><a href="#" onclick="viewItem('<%=i.getId()%>')"><%=i.getItem_id()%></a></td>
                             <td width="15px"><%=i.getAuction_id()%></td>
                             <td width="15px"><%=i.getLot_id()%></td>
@@ -978,6 +977,7 @@ setTimeout(onLoadPage,3000);
 <script src="assets/plugins/jquery.easing.min.js"></script>
 <script src="assets/plugins/jquery.smoothscroll.min.js"></script>
 <script src="assets/plugins/smooth-scrollbar.min.js"></script>
+<script src="assets/plugins/jquery.lazy/jquery.lazy.min.js"></script>
 
 <!-- JS Page Level -->
 <script src="assets/js/theme.js"></script>
@@ -1050,37 +1050,23 @@ function viewAuctionUser(id){
 	document.getElementById("auctionUserId_wip").value=id;
 	document.frm.submit();
 }
-
- $(document).ready(function() {
-	 
-	 /*
-	 $(function () {
-	     // Replace the <textarea id="editor1"> with a CKEditor
-	     // instance, using default configuration.
-	     CKEDITOR.replace('terms_and_conditions');
-	     //bootstrap WYSIHTML5 - text editor
-	     $(".textarea").wysihtml5();
-	   });
-	 
-	 */
-	 
-	 /*
-	 $(function () {
-	     // Replace the <textarea id="editor1"> with a CKEditor
-	     // instance, using default configuration.
-	     CKEDITOR.replace('editor-2');
-	     //bootstrap WYSIHTML5 - text editor
-	     $(".textarea").wysihtml5();
-	   });
-	 */
- });
-
-	// document.getElementById("terms_and_conditions").value="< / %=auction.getTerms_and_conditions()!=null ? auction.getTerms_and_conditions() : ""%>";
-	
+$( document ).ready(function() {
+	$('.lazy').lazy({
+		enableThrottle: true,
+	    throttle: 250,
+		onError: function(element) {
+	        console.log('image "' + element[0]['currentSrc'] + '" could not be loaded');
+	    },
+	    afterLoad: function(element) {
+	        var imageSrc = element.data('currentSrc');
+	        console.log('image "' + element[0]['currentSrc'] + '" was loaded successfully');
+	    }
+	});
 	document.getElementById("terms_and_conditions_div").innerHTML = "<%=auction.getTerms_and_conditions()!=null ? "Yes" : "No"%>";
-	
-	//CKEDITOR.instances.editor1.setData(t);
-	//document.getElementById("terms_and_conditions").value="<p>a</p><p>asdfsadfasdf</p>";
+
+});
+
+
 </script>
 <script>
 /*

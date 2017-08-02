@@ -31,6 +31,7 @@ jQuery(document).ready(function($) {
 				var $this = $(this);
 
 				var owl = $this.owlCarousel({
+					lazyLoad: true,
 					stagePadding: 0,
 					nav: true,
 					// loop: true,

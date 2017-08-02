@@ -39,10 +39,7 @@
 	
 	List<Auction> activeNegotiatedAuctionList = request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST");
 	
-	
 	List<Auction> activeLiveAuctionList = request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-ONLINE-AUCTION-LIST");
-	
-	
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
 	
@@ -449,7 +446,7 @@
 							</div>
 						</div>
 						<div class="bg-color-overlay"></div>
-						<div class="image feature-fade-in" style="background-image: url('assets/themes/hmr/mg/landing-pic-3.jpg')"></div>
+						<div class="image feature-fade-in" style="background-image: url('assets/themes/hmr/img/landing-pic-3.jpg')"></div>
 					</div>
 				</div>
 
@@ -482,7 +479,7 @@
 											<div class="owl-slide">
 												<div class="hmr-card-wrap">
 													<div class="card-image-wrap">
-														<div class="image feature-fade-in" style="background-image: url('image?id=<%=activeOnlineAuction.getAuction_id()%>&t=at')"></div>
+														<div class="image feature-fade-in owl-lazy" data-src="image?id=<%=activeOnlineAuction.getAuction_id()%>&t=at"></div>
 													</div>
 													<div class="card-body-wrap">
 														<h3 class="card-title">
@@ -500,8 +497,6 @@
 															Closing: <%=sdf.format(activeOnlineAuction.getEnd_date_time()) %>
 														</div>
 															
-														<div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=activeOnlineAuction.getId()%>"></label></div>
-                                    					<script>setCountDownTimer('cdTimer-<%=activeOnlineAuction.getId()%>', '<%=activeOnlineAuction.getEnd_date_time()%>')</script>
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeOnlineAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
 														</div>
@@ -517,7 +512,7 @@
 											<div class="owl-slide">
 												<div class="hmr-card-wrap">
 													<div class="card-image-wrap">
-														<div class="image feature-fade-in" style="background-image: url('image?id=<%=activeNegotiatedAuction.getAuction_id()%>&t=at')"></div>
+														<div class="image feature-fade-in owl-lazy" data-src="image?id=<%=activeNegotiatedAuction.getAuction_id()%>&t=at"></div>
 													</div>
 													<div class="card-body-wrap">
 														<h3 class="card-title">
@@ -534,8 +529,6 @@
 														<div class="card-snippet-wrap">
 															Closing: <%=sdf.format(activeNegotiatedAuction.getEnd_date_time()) %>
 														</div>
-														<div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=activeNegotiatedAuction.getId()%>"></label></div>
-                                    					<script>setCountDownTimer('cdTimer-<%=activeNegotiatedAuction.getId()%>', '<%=activeNegotiatedAuction.getEnd_date_time()%>')</script>
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
 														</div>
@@ -551,7 +544,7 @@
 											<div class="owl-slide">
 												<div class="hmr-card-wrap">
 													<div class="card-image-wrap">
-														<div class="image feature-fade-in" style="background-image: url('image?id=<%=activeLiveAuction.getAuction_id()%>&t=at')"></div>
+														<div class="image feature-fade-in owl-lazy" data-src="image?id=<%=activeLiveAuction.getAuction_id()%>&t=at"></div>
 													</div>
 													<div class="card-body-wrap">
 														<h3 class="card-title">
@@ -568,8 +561,6 @@
 														<div class="card-snippet-wrap">
 															Closing: <%=sdf.format(activeLiveAuction.getEnd_date_time()) %>
 														</div>
-														<div><i class="fa fa-clock-o"></i> <label id="cdTimer-<%=activeLiveAuction.getId()%>"></label></div>
-                                    					<script>setCountDownTimer('cdTimer-<%=activeLiveAuction.getId()%>', '<%=activeLiveAuction.getEnd_date_time()%>')</script>
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeLiveAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
 														</div>

@@ -209,7 +209,7 @@
 		                  	<td width="75px">
 			                    <div class="media">
 								  <a class="pull-left" href="#" onclick="auctionImages('<%=a.getAuction_id()%>')">
-								      <img class="media-object" style="width:75px; " src="image?id=<%=a.getAuction_id()%>&t=at" alt="Click to upload image" />
+								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=a.getAuction_id()%>&t=at" alt="Click to upload image" />
 								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
 								      	<%= new ImageManager().getImageListByAuctionId(a.getAuction_id()).size() %>
 								      </span>
@@ -383,6 +383,7 @@ function auctionImages(auctionId){
 <script src="assets/plugins/jquery.easing.min.js"></script>
 <script src="assets/plugins/jquery.smoothscroll.min.js"></script>
 <script src="assets/plugins/smooth-scrollbar.min.js"></script>
+<script src="assets/plugins/jquery.lazy/jquery.lazy.min.js"></script>
 
 <!-- JS Page Level -->
 <script src="assets/js/theme.js"></script>
@@ -398,6 +399,21 @@ function auctionImages(auctionId){
 
 
 <script>
+
+$( document ).ready(function() {
+	$('.lazy').lazy({
+		enableThrottle: true,
+	    throttle: 250,
+		onError: function(element) {
+	        console.log('image "' + element[0]['currentSrc'] + '" could not be loaded');
+	    },
+	    afterLoad: function(element) {
+	        var imageSrc = element.data('currentSrc');
+	        console.log('image "' + element[0]['currentSrc'] + '" was loaded successfully');
+	    }
+	});
+});
+
 $(function () {
     $("#table1").DataTable({
     	"pageLength": 100,

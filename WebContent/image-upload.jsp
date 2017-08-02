@@ -248,7 +248,7 @@
 									        					<%	for (Image im : images) { %>
 																		<li class="gridder-list"
 																			data-griddercontent="#content<%=im.getId()%>">
-																			<img style="width:150px" class="media-object" src="image?id=<%=im.getId()%>&t=t" />
+																			<img style="width:150px" class="media-object lazy" src="" data-src="image?id=<%=im.getId()%>&t=t" />
 																		</li>
 																		<%
 																			}
@@ -257,7 +257,7 @@
 									        				<!-- Gridder content -->
 									        				<%	for (Image im : images) { %>
 															<div id="content<%=im.getId()%>" class="gridder-content">
-																<img class="media-object" src="image?id=<%=im.getId()%>" />
+																<img class="media-object lazy" src="" data-src="image?id=<%=im.getId()%>" />
 																<div class="media-body">
 																	<h4 class="media-heading">
 																		<a href="#"	style="font-size: 14px; font-weight: bold; color: red">Image #<%=im.getId()%></a>
@@ -370,6 +370,7 @@
 <script src="assets/plugins/jquery.easing.min.js"></script>
 <script src="assets/plugins/jquery.smoothscroll.min.js"></script>
 <script src="assets/plugins/smooth-scrollbar.min.js"></script>
+<script src="assets/plugins/jquery.lazy/jquery.lazy.min.js"></script>
 
 <!-- JS Local -->
 <script type="text/javascript">
@@ -518,6 +519,20 @@ function clearQueue() {
 
 
  $(document).ready(function() {
+	 
+		$('.lazy').lazy({
+			enableThrottle: true,
+		    throttle: 250,
+			onError: function(element) {
+		        console.log('image "' + element[0]['currentSrc'] + '" could not be loaded');
+		    },
+		    afterLoad: function(element) {
+		        var imageSrc = element.data('currentSrc');
+		        console.log('image "' + element[0]['currentSrc'] + '" was loaded successfully');
+		    }
+		});
+	 
+	 
 	Dropzone.autoDiscover = false;
 	myDropzone = new Dropzone("#image-uploader", { 
 		url: 'bid',

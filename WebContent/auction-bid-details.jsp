@@ -403,7 +403,7 @@
 							<div class="product-item">
 								<a href="#" onclick="viewLot('<%=l.getId()%>')">
 									<div class="product-image-wrap">
-										<div class="image feature-fade-in" style="background-image: url('image?id=<%=l.getId()%>&t=lt')"></div>
+										<div class="image feature-fade-in lazy" style="background-image: url('image?id=<%=l.getId()%>&t=lt')"></div>
 									</div>
 									<div class="product-body">
 										<h3 class="product-name">#<%=l.getLot_no()%> : <%=l.getLot_name()%></h3>
@@ -590,6 +590,7 @@
 <script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
 <script src="assets/plugins/jquery.bsAlerts.min.js"></script>
 <script src="assets/plugins/gallery/js/blueimp-gallery.min.js"></script>
+
 
 <script>
 function viewLot(id) {
