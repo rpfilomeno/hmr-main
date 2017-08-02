@@ -1007,7 +1007,15 @@ public class UploadAuctionManager {
 									user_id
 							);
 							
+							lMngr.updateLotTotalsOnUpload(
+							is.getLot_id(),
+							is.getSrp(),
+							is.getTarget_price(),
+							is.getReserve_price(),
+							is.getAssess_value());
+
 						}
+
 					}
 				
 					

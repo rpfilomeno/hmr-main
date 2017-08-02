@@ -854,6 +854,32 @@ public class LotManager {
 	
 }
 	
+	
+	public Lot updateLotTotalsOnUpload(
+			BigDecimal lot_id,
+			BigDecimal srp,
+			BigDecimal target_price,
+			BigDecimal reserve_price,
+			BigDecimal assess_value
+		){
+	
+	Lot l = null;
+	
+	LotDao ld = new LotDao();
+
+	l = ld.updateLotTotalsOnUpload(
+			lot_id,
+			srp,
+			target_price,
+			reserve_price,
+			assess_value
+				
+			);
+	
+	return l;
+	
+}
+	
 	public List<Lot> getLotList(){
 		
 		List<Lot> lList = new ArrayList<Lot>();

@@ -1176,6 +1176,124 @@ public class LotDao extends DBConnection {
 	}
 	
 	
+	public Lot updateLotTotalsOnUpload(
+			BigDecimal lot_id,
+			BigDecimal srp,
+			BigDecimal target_price,
+			BigDecimal reserve_price,
+			BigDecimal assess_value
+			){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		int affectedRows = 0;
+		
+		Lot l = null;
+	
+		try {
+			
+			
+			Lot lot = getLotById(lot_id);
+			
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection4();
+			
+			
+			BigDecimal srp_total = new BigDecimal(0);
+			try{
+				srp_total = srp.add(lot.getSrp_total());
+			}catch(Exception e){}
+			
+			
+			BigDecimal target_price_total = new BigDecimal(0);
+			try{
+				target_price_total = srp.add(lot.getTarget_price_total());
+			}catch(Exception e){}
+			
+			BigDecimal reserve_price_total = new BigDecimal(0);
+			try{
+				reserve_price_total = srp.add(lot.getReserve_price_total());
+			}catch(Exception e){}
+			
+			BigDecimal assess_value_total = new BigDecimal(0);
+			try{
+				assess_value_total = srp.add(lot.getAssess_value_total());
+			}catch(Exception e){}
+
+			StringBuilder sb = new StringBuilder("Update Lot Set srp_total=?, target_price_total=?, reserve_price_total=?, assess_value_total=?");
+
+			sb.append(" where lot_id="+lot_id);
+
+		    String sql = sb.toString();
+		    
+	        stmt = conn.prepareStatement(sql);
+
+			stmt.setBigDecimal(1, srp_total);
+			stmt.setBigDecimal(2, target_price_total);
+	        stmt.setBigDecimal(3, reserve_price_total);
+	        stmt.setBigDecimal(4, assess_value_total);
+	        
+	
+		    System.out.println("sql : "+sql);
+		    
+		    affectedRows = stmt.executeUpdate();
+		    
+		    if (affectedRows == 0) {
+		    	l = null;
+	        }else{
+	        	l = new Lot(); 
+	        	l.setId(lot_id);
+	        	/*
+	        	a.setEmail_address(emailAddress);
+	        	a.setFirst_name(firstName);
+	        	a.setLast_name(lastName);
+	        	a.setMobile_no_1(mobileNo1);
+	        	a.setMobile_no_2(mobileNo2);
+	        	
+	        	a.setGender(gender);
+	        	a.setRole(role);
+	        	a.setBidder_no(bidderNo);
+	        	a.setReserve_bidder_no(reserveBidderNo);
+	        	a.setCompany(company);
+	        	a.setStatus(userStatus);
+	        	a.setActive(active);
+	        	a.setLandline_no(landLineNo);
+	        	
+	        	a.setNews_letter(newsLetter);
+	        	a.setNews_letter_registration_date(newsLetterRegistrationDate_t);
+	        	a.setVerification_email_key(verificationEmailKey);
+	        	a.setDate_registration(registrationDate_t);
+	        	a.setDate_password_change(passwordChangeDate_t);
+	        	a.setShowChangePasswordNextLogin(showChangePasswordNextLogin);
+	        	a.setBirth_date(birthDate_d);
+	        	a.setPass_word(passWord);
+	        	*/
+	        }
+		    
+	
+			//stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+			
+		}
+	
+		return l;
+	}
+	
+	
+	
 	public List<Lot> getLotList(){
 
 		List<Lot> lList = new ArrayList<Lot>();
