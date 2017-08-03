@@ -110,7 +110,7 @@
               <li>(02)548-6962</li>
               <li>0917 548 3603</li>
               <li>
-                  <a href="mailto:auction@hmrphils.com">auction@hmrphils.com</a>
+                  <a href="mailto:online-auction@hmrbid.com">online-auction@hmrbid.com</a>
               </li>
               <li>
                 <a href="bid?mngr=get&a=login">Login</a>
@@ -240,7 +240,7 @@
 			<div class="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4">
 
 				<div class="customer-register-wrap">
-					<h2 class="tac">Account Register</h2>
+					<h2 class="tac">Activate Account</h2>
 					<div class="clearfix top20"></div>
 
 					

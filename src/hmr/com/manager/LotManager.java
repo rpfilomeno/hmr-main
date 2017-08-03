@@ -864,7 +864,8 @@ public class LotManager {
 			BigDecimal srp,
 			BigDecimal target_price,
 			BigDecimal reserve_price,
-			BigDecimal assess_value
+			BigDecimal assess_value,
+			BigDecimal weight
 		){
 	
 	Lot l = null;
@@ -876,7 +877,8 @@ public class LotManager {
 			srp,
 			target_price,
 			reserve_price,
-			assess_value
+			assess_value,
+			weight
 				
 			);
 	

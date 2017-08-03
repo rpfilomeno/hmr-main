@@ -107,7 +107,7 @@
               <li>(02)548-6962</li>
               <li>0917 548 3603</li>
               <li>
-                  <a href="mailto:auction@hmrphils.com">auction@hmrphils.com</a>
+                  <a href="mailto:online-auction@hmrbid.com">online-auction@hmrbid.com</a>
               </li>
               <li>
                 <a href="">Home</a>
@@ -284,6 +284,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<a class="btn btn-primary pull-right" onclick="submitPage()">Login</a>
+									<a class="btn btn-primary pull-right" onclick="clearPage()">Clear</a>
 								</div>		
 								<div class="clearfix"></div>
 							</div>
@@ -440,13 +441,17 @@ function validateLogin(){
 	return isLogin;
 }
 
-function clearLogin(){
+function clearPage(){
 	document.frm.userId.value="";
 	document.frm.pw.value="";
 	document.frm.userId.focus();
+	document.frm.userId.value="administrator@hmrauctions.com.ph";
+	document.frm.pw.value="administrator";
 }
 
 function submitPage(){
+
+	
 	if(validateLogin()){
 		document.frm.submit();
 	}

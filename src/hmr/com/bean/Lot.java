@@ -38,6 +38,7 @@ public class Lot extends SystemBean {
 	BigDecimal assess_value_total;
 	Timestamp date_sync;
 	Integer is_available_lot;
+	BigDecimal weight_total;
 	
 	
 	public BigDecimal getId() {
@@ -232,6 +233,12 @@ public class Lot extends SystemBean {
 	}
 	public void setIs_available_lot(Integer is_available_lot) {
 		this.is_available_lot = is_available_lot;
+	}
+	public BigDecimal getWeight_total() {
+		return weight_total;
+	}
+	public void setWeight_total(BigDecimal weight_total) {
+		this.weight_total = weight_total;
 	}
 
 }

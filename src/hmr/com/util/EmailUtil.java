@@ -47,9 +47,9 @@ public class EmailUtil {
 			  last_name = "Dacanay";
 			  String access_key = "123";
 
-			  //sendVerifyEmailUser(to,cc,first_name,last_name,"asdfasd");
+			  sendVerifyEmailUser(to,cc,first_name,last_name,"asdfasd");
 			  
-			  sendNegotiatedBidEmailAdmin("noreplyhmrauctions@gmail.com", "sadf", "123", "12312", "AuctionDescription", "12312", "123123", "LotName", "LotDescription", "123123", "BidderFirstName", "BidderLastName", "noreplyhmrauctions@gmail.com", "1000", "asdfasd");
+			  //sendNegotiatedBidEmailAdmin("noreplyhmrauctions@gmail.com", "sadf", "123", "12312", "AuctionDescription", "12312", "123123", "LotName", "LotDescription", "123123", "BidderFirstName", "BidderLastName", "noreplyhmrauctions@gmail.com", "1000", "asdfasd");
 
 		   }
 	

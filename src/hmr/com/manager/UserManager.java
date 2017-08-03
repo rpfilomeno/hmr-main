@@ -105,7 +105,7 @@ public class UserManager {
 				
 				if(i==0){	
 					req.setAttribute("msgbgcol", "red");
-					req.setAttribute("msgInfo", "Registration failed.<>You may call (02)548-6962 / 0917 548 3603 or Email us at auction@hmrphils.com.");
+					req.setAttribute("msgInfo", "Registration failed.<>You may call (02)548-6962 / 0917 548 3603 or Email us at online-auction@hmrbid.com.");
 				}else{	
 					req.setAttribute("msgbgcol", "green");
 					req.setAttribute("msgInfo", "Registration successful.<br>Please see "+userId+" to verify email.");

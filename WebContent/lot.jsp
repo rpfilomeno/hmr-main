@@ -331,6 +331,11 @@
 		                <label><b>Buy Price : </b><%=lot.getBuy_price()%></label>
 					
 		              </div>
+		              <div class="form-group">
+		                <label><b>Total Weight : </b><%=lot.getWeight_total()%></label>
+					
+		              </div>
+		              
 				</div>
 				
             <div class="col-md-12">

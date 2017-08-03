@@ -328,20 +328,26 @@
 		
 				<div class="col-sm-4">
 					<div class="form-group">			
-		              <div class="form-group">
-		              <div class="form-group">
+		              
+		              
 		                <label><b>Amount Bid : </b></label>
 						<input type="text" class="form-control" placeholder="AMOUNT BID" value=""  id="amount_bid" name="amount_bid" onchange="return trim(this)" autocomplete="off" maxlength="11"/>
 		              </div>
+		              <div class="form-group">
 		                <label><b>Amount Buy : </b></label>
 						<input type="text" class="form-control" placeholder="AMOUNT BUY" value=""  id="amount_buy" name="amount_buy" onchange="return trim(this)" autocomplete="off" maxlength="11"/>
 		              </div>
+		              <div class="form-group">
 		             <label><b>Transaction Won : </b></label>
 						<select class="form-control" id="action_taken" name="action_taken"><option value="">TRANSACTION WON</option><option value="1">Bid</option><option value="0">Buy</option></select>
 		            </div>
 		              <div class="form-group">
 		                <label><b>Buy Price : </b></label>
 						<input type="text" class="form-control" placeholder="BUY PRICE" value=""  id="buy_price" name="buy_price" onchange="return trim(this)" autocomplete="off" maxlength="11"/>
+		              </div>
+		              <div class="form-group">
+		                <label><b>Weight : </b></label>
+						<input type="text" class="form-control" placeholder="WEIGHT" value=""  id="weight" name="weight" onchange="return trim(this)" autocomplete="off" maxlength="11"/>
 		              </div>
 				</div>
 
@@ -441,6 +447,7 @@ document.getElementById("amount_bid").value="<%=item.getAmount_bid()%>";
 document.getElementById("amount_buy").value="<%=item.getAmount_buy()%>";
 document.getElementById("action_taken").value="<%=item.getAction_taken()%>";
 document.getElementById("buy_price").value="<%=item.getBuy_price()%>";
+document.getElementById("weight").value="<%=item.getWeight()%>";
 //document.getElementById("bidder_id").value="</%=item.getBidder_id()%>";
 
 
@@ -546,25 +553,25 @@ function validateSave(){
 }
 
 function clearItem(){
-	var auction_id = document.getElementById("auction_id").value="";
-	var lot_id = document.getElementById("lot_id").value="";
-	var item_id = document.getElementById("item_id").value="";
-	var reference_no = document.getElementById("reference_no").value="";
-	var target_price = document.getElementById("target_price").value=0; 
-	var reserve_price = document.getElementById("reserve_price").value=0; 
-	var item_desc = document.getElementById("item_desc").value="";
-	var is_buy = document.getElementById("is_buy").value=0; 
-	var is_bid = document.getElementById("is_bid").value=0;
-	var item_increment_time = document.getElementById("item_increment_time").value=0;
-	var category_level_1 = document.getElementById("category_level_1").value="";
-	var category_level_2 = document.getElementById("category_level_2").value="";
-	var category_level_3 = document.getElementById("category_level_3").value="";
-	var amount_bid = document.getElementById("amount_bid").value=0;
-	var amount_buy = document.getElementById("amount_buy").value=0;
-	var action_taken = document.getElementById("action_taken").value="";
-	var buy_price = document.getElementById("buy_price").value=0;
-	
-	var bidder_id = document.getElementById("bidder_id").value=0;
+	document.getElementById("auction_id").value="";
+	document.getElementById("lot_id").value="";
+	document.getElementById("item_id").value="";
+	document.getElementById("reference_no").value="";
+	document.getElementById("target_price").value=0; 
+	document.getElementById("reserve_price").value=0; 
+	document.getElementById("item_desc").value="";
+	document.getElementById("is_buy").value=0; 
+	document.getElementById("is_bid").value=0;
+	document.getElementById("item_increment_time").value=0;
+	document.getElementById("category_level_1").value="";
+	document.getElementById("category_level_2").value="";
+	document.getElementById("category_level_3").value="";
+	document.getElementById("amount_bid").value=0;
+	document.getElementById("amount_buy").value=0;
+	document.getElementById("action_taken").value="";
+	document.getElementById("buy_price").value=0;
+	document.getElementById("weight").value=0;
+	document.getElementById("bidder_id").value=0;
 	
 	$(document).ready(function() {
 		$('#bidder_id').select2().val(0);
@@ -866,6 +873,26 @@ $(document).ready(function() {
  	    });
  	    
  	    $("#buy_price").keydown(function (e) {
+ 	        // Allow: backspace, delete, tab, escape, enter and .
+ 	        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+ 	             // Allow: Ctrl+A
+ 	            (e.keyCode == 65 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+C
+ 	            (e.keyCode == 67 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+X
+ 	            (e.keyCode == 88 && e.ctrlKey === true) ||
+ 	             // Allow: home, end, left, right
+ 	            (e.keyCode >= 35 && e.keyCode <= 39)) {
+ 	                 // let it happen, don't do anything
+ 	                 return;
+ 	        }
+ 	        // Ensure that it is a number and stop the keypress
+ 	        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+ 	            e.preventDefault();
+ 	        }
+ 	    });
+ 	    
+ 	    $("#weight").keydown(function (e) {
  	        // Allow: backspace, delete, tab, escape, enter and .
  	        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
  	             // Allow: Ctrl+A

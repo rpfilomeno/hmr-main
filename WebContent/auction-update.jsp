@@ -476,6 +476,8 @@ function onLoadPage(){
 	
 	document.getElementById("one_start_bid").value = "<%=auction.getOne_start_bid()%>";
 	document.getElementById("bid_qualifier_price").value = "<%=auction.getBid_qualifier_price()%>";
+	document.getElementById("auto_send_post_notification").value = "<%=auction.getAuto_send_post_notification()%>";
+	
     <%
 	String date_sync = "";
 	if(auction.getDate_sync()!=null){

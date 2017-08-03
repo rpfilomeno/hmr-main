@@ -108,7 +108,7 @@
               <li>(02)548-6962</li>
               <li>0917 548 3603</li>
               <li>
-                  <a href="mailto:auction@hmrphils.com">auction@hmrphils.com</a>
+                  <a href="mailto:online-auction@hmrbid.com">online-auction@hmrbid.com</a>
               </li>
               <li>
                 <a href="bid?mngr=get&a=login">Login</a>
@@ -238,7 +238,7 @@
 			<div class="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4">
 
 				<div class="customer-register-wrap">
-					<h2 class="tac">Account Register</h2>
+					<h2 class="tac">Forgot Password</h2>
 					<div class="clearfix top20"></div>
 
 					
@@ -250,7 +250,7 @@
                                 </div>
                                 
                                 <div class="col-md-12">
-                                    <div class="form-group"><input class="form-control" type="text" id="userId" name="userId" placeholder="Email" maxlength="50" value="<%if(userId!=null){ %><%=userId%><%}%>"></div>
+                                    <div class="form-group"><input class="form-control" type="text" id="user_Id" name="userId" placeholder="Email" maxlength="50" value="<%if(userId!=null){ %><%=userId%><%}%>"></div>
                                 </div>
                        
                                 <div class="col-md-6">
@@ -260,11 +260,10 @@
                                     <a class="btn btn-primary btn-theme btn-block btn-theme-dark" href="#" onclick="clearReset()">Clear</a>
                                 </div>
                             </div>
-                            <input type="hidden" name="manager" id="manager" value="user-manager"/>
-                            <input type="hidden" name="action" id="action" value="activate"/>
-                            <input type="hidden" name="userId" id="userId" value="<%=userId%>"/>
+							<input type="hidden" name="manager" id="manager" value="login-manager"/>
+                            <input type="hidden" name="action" id="action" value="passwordReset"/>
                             <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
-                        </form>
+                        
                         </form>				</div>
 			</div>
 			

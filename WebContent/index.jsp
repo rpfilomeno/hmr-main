@@ -128,10 +128,10 @@
               <li>(02)548-6962</li>
               <li>0917 548 3603</li>
               <li>
-                  <a href="mailto:auction@hmrphils.com">auction@hmrphils.com</a>
+                  <a href="mailto:online-auction@hmrbid.com">online-auction@hmrbid.com</a>
               </li>
               <li>
-                <a href="/bid">Home</a>
+                <a href="bid?mngr=get&a=home">Home</a>
               </li>
               <% if(fullName!=null && !"null".equals(fullName)){%>
               <li>

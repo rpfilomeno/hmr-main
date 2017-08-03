@@ -56,7 +56,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
 		
 		sb.append(" from lot where id ="+id);
 
@@ -113,6 +113,8 @@ public class LotDao extends DBConnection {
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
 				
 
             	l.setDate_created(rs.getTimestamp("date_created"));
@@ -209,7 +211,7 @@ public class LotDao extends DBConnection {
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
-				
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
 
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
@@ -249,7 +251,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
 		
 		sb.append(" from lot where auction_id ="+auction_id);
 
@@ -306,6 +308,7 @@ public class LotDao extends DBConnection {
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
 				
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
@@ -338,7 +341,7 @@ public class LotDao extends DBConnection {
 		StringBuilder sb = new StringBuilder("SELECT id, lot_name, lot_no, lot_id, auction_id, lot_desc, assessment_value");
 		sb.append(", duties, vat, unit, premium_rate, lot_type_id, active, unit_qty");
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
 		sb.append(" from lot where auction_id ="+auction_id+" and lot_no="+lot_no);
 		
 		try {
@@ -388,6 +391,7 @@ public class LotDao extends DBConnection {
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
 				
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
@@ -428,7 +432,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, date_sync, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
 		
 		sb.append(" from lot where auction_id ="+auction_id);
 
@@ -487,6 +491,7 @@ public class LotDao extends DBConnection {
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
 
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
             	l.setDate_updated(rs.getTimestamp("date_updated"));
@@ -529,7 +534,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, date_sync, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
 		
 		sb.append(" from lot where auction_id ="+auction_id);
 
@@ -587,6 +592,7 @@ public class LotDao extends DBConnection {
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
 				
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
@@ -1181,7 +1187,8 @@ public class LotDao extends DBConnection {
 			BigDecimal srp,
 			BigDecimal target_price,
 			BigDecimal reserve_price,
-			BigDecimal assess_value
+			BigDecimal assess_value,
+			BigDecimal weight
 			){
 		
 		Connection conn = null;
@@ -1220,8 +1227,13 @@ public class LotDao extends DBConnection {
 			try{
 				assess_value_total = srp.add(lot.getAssess_value_total());
 			}catch(Exception e){}
+			
+			BigDecimal weight_total = new BigDecimal(0);
+			try{
+				weight_total = srp.add(lot.getWeight_total());
+			}catch(Exception e){}
 
-			StringBuilder sb = new StringBuilder("Update Lot Set srp_total=?, target_price_total=?, reserve_price_total=?, assess_value_total=?");
+			StringBuilder sb = new StringBuilder("Update Lot Set srp_total=?, target_price_total=?, reserve_price_total=?, assess_value_total=?, weight_total=?");
 
 			sb.append(" where lot_id="+lot_id);
 
@@ -1233,7 +1245,7 @@ public class LotDao extends DBConnection {
 			stmt.setBigDecimal(2, target_price_total);
 	        stmt.setBigDecimal(3, reserve_price_total);
 	        stmt.setBigDecimal(4, assess_value_total);
-	        
+	        stmt.setBigDecimal(5, weight_total);
 	
 		    System.out.println("sql : "+sql);
 		    
@@ -1304,7 +1316,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
 		
 		sb.append(" from lot");
 		
@@ -1349,6 +1361,7 @@ public class LotDao extends DBConnection {
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
 
 				//SystemBean - start
 				l.setDate_created(rs.getTimestamp("date_created"));
@@ -1386,7 +1399,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
 		
 		sb.append(" from lot where auction_id= "+auction_id);
 		
@@ -1431,7 +1444,7 @@ public class LotDao extends DBConnection {
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
-				
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
 
 				//SystemBean - start
 				l.setDate_created(rs.getTimestamp("date_created"));
@@ -1471,7 +1484,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
 		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
 		
 		sb.append(" from lot where auction_type ="+auctionType+" and active = 1");
 		
@@ -1519,7 +1532,7 @@ public class LotDao extends DBConnection {
 				l.setBid_count(rs.getInt("bid_count"));
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
-				
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
 				//SystemBean - start
 				l.setDate_created(rs.getTimestamp("date_created"));
 				l.setDate_updated(rs.getTimestamp("date_updated"));

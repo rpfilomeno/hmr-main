@@ -31,6 +31,7 @@ public class Item extends SystemBean {
 	Integer bid_count;
 	Integer currency;
 	Timestamp synched_date;
+	BigDecimal weight;
 	
 	
 	InputStream imageInputStream;
@@ -190,6 +191,12 @@ public class Item extends SystemBean {
 	}
 	public void setSynched_date(Timestamp synched_date) {
 		this.synched_date = synched_date;
+	}
+	public BigDecimal getWeight() {
+		return weight;
+	}
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
 	}
 
 

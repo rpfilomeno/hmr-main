@@ -1013,7 +1013,8 @@ public class UploadAuctionManager {
 							is.getSrp(),
 							is.getTarget_price(),
 							is.getReserve_price(),
-							is.getAssess_value());
+							is.getAssess_value(),
+							is.getWeight());
 
 						}
 

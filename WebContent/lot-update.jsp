@@ -293,6 +293,11 @@
 		                <label><b>Buy Price : </b></label>
 						<input type="text" class="form-control" placeholder="BUY PRICE" value=""  id="buy_price" name="buy_price" onchange="return trim(this)" autocomplete="off" maxlength="11"/>
 		              </div>
+		              
+		              <div class="form-group">
+		                <label><b>Total Weight : </b></label>
+						<input type="text" class="form-control" placeholder="WEIGHT TOTAL" value=""  id="weight_total" name="weight_total" onchange="return trim(this)" autocomplete="off" maxlength="11"/>
+		              </div>
 				</div>
 
         
@@ -383,6 +388,8 @@ function onLoadPage(){
 	document.getElementById("buy_price").value="<%=lot.getBuy_price()%>";
 	document.getElementById("lot_increment_time").value="<%=lot.getLot_increment_time()%>";
 	document.getElementById("lot_name").value="<%=lot.getLot_name()%>";
+	document.getElementById("weight_total").value="<%=lot.getWeight_total()%>";
+	
 
 	
 	
@@ -508,6 +515,8 @@ function clearLot(){
 	document.getElementById("lot_increment_time").value="0";
 	document.getElementById("lot_name").value="";
 	document.getElementById("bidder_id").value="0";
+	document.getElementById("weight_total").value="0";
+	
 
 	$(document).ready(function() {
 		$('#bidder_id').select2().val(0);
@@ -852,6 +861,27 @@ $(document).ready(function() {
  	            e.preventDefault();
  	        }
  	    });
+
+ 	    $("#weight_total").keydown(function (e) {
+ 	        // Allow: backspace, delete, tab, escape, enter and .
+ 	        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+ 	             // Allow: Ctrl+A
+ 	            (e.keyCode == 65 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+C
+ 	            (e.keyCode == 67 && e.ctrlKey === true) ||
+ 	             // Allow: Ctrl+X
+ 	            (e.keyCode == 88 && e.ctrlKey === true) ||
+ 	             // Allow: home, end, left, right
+ 	            (e.keyCode >= 35 && e.keyCode <= 39)) {
+ 	                 // let it happen, don't do anything
+ 	                 return;
+ 	        }
+ 	        // Ensure that it is a number and stop the keypress
+ 	        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+ 	            e.preventDefault();
+ 	        }
+ 	    });
+ 	    
  	    
  	});	
 

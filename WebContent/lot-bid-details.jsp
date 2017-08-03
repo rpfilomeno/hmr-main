@@ -50,7 +50,7 @@
 	List<BiddingTransaction> bidding_transactions = (List<BiddingTransaction>)request.getAttribute("bidding_transactions");
 	
     DecimalFormat df = new DecimalFormat("#,###,##0");
-	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
+	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm:ss");
 	
 	ImageManager iMngr = new ImageManager();
 	List<Image> item_images = null;
@@ -132,7 +132,7 @@
               <li>(02)548-6962</li>
               <li>0917 548 3603</li>
               <li>
-                  <a href="mailto:auction@hmrphils.com">auction@hmrphils.com</a>
+                  <a href="mailto:online-auction@hmrbid.com">online-auction@hmrbid.com</a>
               </li>
               <li>
                 <a href="">Home</a>
@@ -484,10 +484,21 @@
 						        </thead>
 						        <tbody>
 						        	<% for(BiddingTransaction bidding_transaction : bidding_transactions ) { %>
-						            	<tr>                     	
-						               		<% bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00"; %>
-						                    <% bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00"; %>
-						                    <% bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00"; %>
+						            	<tr>  
+						            	
+						            	
+						            	<% if(bidding_transaction.getAction_taken()==1){
+						            		bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00";
+						            	} else if(bidding_transaction.getAction_taken()==2){
+						            		bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00";
+						            	} else if(bidding_transaction.getAction_taken()==3){
+						            		bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00";
+						            	}
+						            	
+						            	    %>              	
+						            	    <%-- bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00"; --%>
+						                    <%-- bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00"; --%>
+						                    <%-- bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00"; --%>
                                             <td>
 						                    	<% if(user_id == bidding_transaction.getUser_id()) { %>
 						                        <div>You</div> 

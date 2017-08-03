@@ -179,7 +179,7 @@ public Auction getAuctionByToken(String token){
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, auction_name, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price, token");
+		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -241,6 +241,7 @@ public Auction getAuctionByToken(String token){
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
 				a.setToken(rs.getString("token"));
+				a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
 
             	a.setDate_created(rs.getTimestamp("date_created"));
             	a.setCreated_by(rs.getInt("created_by"));
@@ -288,7 +289,7 @@ public Auction getAuctionByToken(String token){
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, auction_name, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price, token");
+		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -350,6 +351,7 @@ public Auction getAuctionByToken(String token){
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
 				a.setToken(rs.getString("token"));
+				a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
 
             	a.setDate_created(rs.getTimestamp("date_created"));
             	a.setCreated_by(rs.getInt("created_by"));
@@ -398,7 +400,7 @@ public Auction getAuctionByToken(String token){
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, auction_name, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price, token");
+		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -460,6 +462,7 @@ public Auction getAuctionByToken(String token){
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
 				a.setToken(rs.getString("token"));
+				a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
 				
             	a.setDate_created(rs.getTimestamp("date_created"));
             	a.setCreated_by(rs.getInt("created_by"));
@@ -509,7 +512,7 @@ public Auction getAuctionByToken(String token){
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, auction_name, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price, token");
+		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -572,6 +575,7 @@ public Auction getAuctionByToken(String token){
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
 				a.setToken(rs.getString("token"));
+				a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
 	
             	a.setDate_created(rs.getTimestamp("date_created"));
             	a.setCreated_by(rs.getInt("created_by"));
@@ -1650,7 +1654,7 @@ public Auction getAuctionByToken(String token){
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price, token");
+		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -1697,6 +1701,8 @@ public Auction getAuctionByToken(String token){
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
 				a.setToken(rs.getString("token"));
+				a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
+				
 
 				//SystemBean - start
 				a.setDate_created(rs.getTimestamp("date_created"));
@@ -1733,7 +1739,7 @@ public Auction getAuctionByToken(String token){
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price, token");
+		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -1799,7 +1805,7 @@ public Auction getAuctionByToken(String token){
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
 				a.setToken(rs.getString("token"));
-				
+				a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
 				
             	a.setImageBytes(rs.getBytes("image"));
             	a.setImageSmallBytes(rs.getBytes("image_small"));
@@ -1846,7 +1852,7 @@ public Auction getAuctionByToken(String token){
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price, token");
+		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -1912,7 +1918,7 @@ public Auction getAuctionByToken(String token){
 				a.setOne_start_bid(rs.getInt("one_start_bid"));
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
 				a.setToken(rs.getString("token"));
-				
+				a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
 				
             	a.setImageBytes(rs.getBytes("image"));
             	a.setImageSmallBytes(rs.getBytes("image_small"));

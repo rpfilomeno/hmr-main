@@ -348,20 +348,25 @@
 		
 				<div class="col-sm-4">
 					<div class="form-group">			
-		              <div class="form-group">
-		              <div class="form-group">
 		                <label><b>Amount Bid : </b><%=item.getAmount_bid()%></label>
-						
+					  
 		              </div>
+		              <div class="form-group">
 		                <label><b>Amount Buy : </b><%=item.getAmount_buy()%></label>
 						
 		              </div>
+		              
+		             <div class="form-group"> 
 		             <label><b>Transaction Won : </b><%=item.getAction_taken()%></label>
 						
 		            </div>
 		              <div class="form-group">
 		                <label><b>Buy Price : </b><%=item.getBuy_price()%></label>
 						
+		              </div>
+		              
+		               <div class="form-group">
+		                <label><b>Weight : </b><%=item.getWeight()%></label>
 		              </div>
 				</div>
 

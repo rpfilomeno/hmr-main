@@ -81,7 +81,7 @@ System.out.println("fullName : "+fullName);
                 	<li class="icon-user"><a href="bid?mngr=get&a=login"><img src="assets/img/icon-1.png" alt=""/> <span>Login</span></a></li>
                 	<li class="icon-user"><a href="bid?mngr=get&a=registration"><img src="assets/img/icon-2.png" alt=""/> <span>Not a Member? Sign Up</span></a></li>
                 	<% } %>
-                    <li class="icon-user"><a href="mailto:auction@hmrphils.com"><img src="assets/img/icon-2.png" alt=""/> <span>auction@hmrphils.com</span></a></li>
+                    <li class="icon-user"><a href="mailto:online-auction@hmrbid.com"><img src="assets/img/icon-2.png" alt=""/> <span>online-auction@hmrbid.com</span></a></li>
                 	<% if(fullName!=null && !"null".equals(fullName)){%>
                     <li class="icon-user"><a href="bid?mngr=get&a=logout&uid=<%=userId%>"><img src="assets/img/icon-4.png" alt=""/> <span>Logout</span></a></li>
                 	<% } %>
