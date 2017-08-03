@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.util.DBConnection;
 import hmr.com.bean.Image;
+import hmr.com.bean.Lot;
+import hmr.com.manager.AuctionManager;
+import hmr.com.manager.LotManager;
 
 
 public class ImageDao extends DBConnection {
@@ -679,7 +682,14 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 
 	try {
 		DBConnection dbConn = new DBConnection();
-		conn = dbConn.getConnection();
+		conn = dbConn.getConnection7();
+		
+		if(auction_id!=null && auction_id.doubleValue() == 0 && lot_id!=null){
+			LotManager lMngr = new LotManager();
+			BigDecimal lotBD = new BigDecimal(lot_id);
+			Lot lot = lMngr.getLotByLotId(lotBD);
+			auction_id = Integer.valueOf(lot.getAuction_id().toString());
+		}
 		
 		StringBuilder sb = new StringBuilder("INSERT into image (auction_id, lot_id, item_id, active, image, thumbnail");
 		sb.append(", date_created, created_by)");

@@ -543,9 +543,10 @@
 			                    <div class="media">
 								  <a class="pull-left" href="#" onclick="lotImages('<%=l.getId()%>')">
 								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=l.getLot_id()%>&t=lt" alt="Click to upload image" />
+								      <!--
 								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
-								      	<%= new ImageManager().getImageListByLotId(l.getLot_id()).size() %> 
-								      </span>
+								      	  <//%= new ImageManager().getImageListByLotId(l.getLot_id()).size() %>  
+								      </span> -->
 								  </a>
 								</div>
 		                    </td>

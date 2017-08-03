@@ -394,7 +394,12 @@ public class LotDao extends DBConnection {
 				l.setWeight_total(rs.getBigDecimal("weight_total"));
 				
             	l.setDate_created(rs.getTimestamp("date_created"));
-            	l.setCreated_by(rs.getInt("created_by"));
+            	try{
+            		l.setCreated_by(rs.getInt("created_by"));
+            	}catch(Exception ex){
+            		
+            	}
+            	
             	l.setDate_updated(rs.getTimestamp("date_updated"));
             	l.setUpdated_by(rs.getInt("updated_by"));
 			}

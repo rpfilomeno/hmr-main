@@ -284,7 +284,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<a class="btn btn-primary pull-right" onclick="submitPage()">Login</a>
-									<a class="btn btn-primary pull-right" onclick="clearPage()">Clear</a>
+									<!-- <a class="btn btn-primary pull-right" onclick="clearPage()">Clear</a> -->
 								</div>		
 								<div class="clearfix"></div>
 							</div>
