@@ -257,6 +257,7 @@
 								<option value="0">AUCTION TYPE</option>
  								<option value="15">Online</option>
  								<option value="16">Negotiated</option>
+ 								<option value="185">Live</option>
 						</select>
 		            </div>
 				
@@ -345,7 +346,10 @@
 						</select>
 		            
 		            </div>
-		            
+					<div class="form-group">			
+		             <label><b>Auto Send Post Notification : </b></label>
+						<select class="form-control" id="auto_send_post_notification" name="auto_send_post_notification"><option value="">AUTO SEND POST NOTIFICATION</option><option value="1">Yes</option><option value="0">No</option></select>
+		            </div>
 				</div>
 
 

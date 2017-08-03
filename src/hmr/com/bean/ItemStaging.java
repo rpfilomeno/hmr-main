@@ -28,6 +28,7 @@ public class ItemStaging extends SystemBean {
 	BigDecimal consignor_id;
 	String description;
 	BigDecimal delivery_receipt_id;
+	BigDecimal weight;
 	Timestamp last_date_sync;
 	
 	
@@ -156,6 +157,12 @@ public class ItemStaging extends SystemBean {
 	}
 	public void setLast_date_sync(Timestamp last_date_sync) {
 		this.last_date_sync = last_date_sync;
+	}
+	public BigDecimal getWeight() {
+		return weight;
+	}
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
 	}
 
 }

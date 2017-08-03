@@ -130,6 +130,7 @@ public class AuctionManager {
 			Integer one_start_bid = req.getParameter("one_start_bid")!=null && !req.getParameter("one_start_bid").equals("") ? Integer.valueOf(req.getParameter("one_start_bid")) : 0;
 			Integer bid_qualifier_price = req.getParameter("bid_qualifier_price")!=null && !req.getParameter("bid_qualifier_price").equals("") ? Integer.valueOf(req.getParameter("bid_qualifier_price")) : 0;
 			
+			Integer auto_send_post_notification = !req.getParameter("auto_send_post_notification").equals("") ? Integer.valueOf(req.getParameter("auto_send_post_notification")) : 0;
 			
 			
 			Date date_sync_d = null; 
@@ -182,6 +183,7 @@ public class AuctionManager {
 						one_lot_per_bidder,
 						one_start_bid,
 						bid_qualifier_price,
+						auto_send_post_notification,
 						user_id
 					);
 			
@@ -458,6 +460,8 @@ public class AuctionManager {
 			Integer one_start_bid = req.getParameter("one_start_bid")!=null && !req.getParameter("one_start_bid").equals("") ? Integer.valueOf(req.getParameter("one_start_bid")) : 0;
 			Integer bid_qualifier_price = req.getParameter("bid_qualifier_price")!=null && !req.getParameter("bid_qualifier_price").equals("") ? Integer.valueOf(req.getParameter("bid_qualifier_price")) : 0;
 			
+			Integer auto_send_post_notification = !req.getParameter("auto_send_post_notification").equals("") ? Integer.valueOf(req.getParameter("auto_send_post_notification")) : 0;
+			
 			Date date_sync_d = null; 
 			if(!"".equals(date_sync))
 			{
@@ -512,6 +516,7 @@ public class AuctionManager {
 						one_lot_per_bidder,
 						one_start_bid,
 						bid_qualifier_price,
+						auto_send_post_notification,
 						user_id,
 						auctionId_wip
 					);
@@ -750,6 +755,7 @@ public class AuctionManager {
 				Integer one_lot_per_bidder,
 				Integer one_start_bid,
 				Integer bid_qualifier_price,
+				Integer auto_send_post_notification,
 				Integer user_id
 			){
 		
@@ -781,6 +787,7 @@ public class AuctionManager {
 				one_lot_per_bidder,
 				one_start_bid,
 				bid_qualifier_price,
+				auto_send_post_notification,
 				user_id
 				);
 		
@@ -843,6 +850,7 @@ public class AuctionManager {
 				Integer one_lot_per_bidder,
 				Integer one_start_bid,
 				Integer bid_qualifier_price,
+				Integer auto_send_post_notification,
 				Integer user_id,
 				BigDecimal auctionId_wip
 			
@@ -876,6 +884,7 @@ public class AuctionManager {
 					one_lot_per_bidder,
 					one_start_bid,
 					bid_qualifier_price,
+					auto_send_post_notification,
 					user_id,
 					auctionId_wip
 				);

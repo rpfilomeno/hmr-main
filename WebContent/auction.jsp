@@ -279,6 +279,8 @@
 								Online	
 							<%}else if(auction!=null && auction.getAuction_type()==16){%>
 								Negotiated
+							<%}else if(auction!=null && auction.getAuction_type()==185){%>
+								Live
 							<%}else{%>
 								&nbsp;
 							<%}%>
@@ -418,7 +420,18 @@
 
 		            </div>
 		            
-		            
+					<div class="form-group">			
+		             <label><b>Auto Send Post Notification : </b>
+		            <%
+		            	String auto_send_post_notification = "";
+		            	if(auction.getAuto_send_post_notification() == 0){
+		            		auto_send_post_notification = "No";
+		            	}else if(auction.getAuto_send_post_notification() == 1){
+		            		auto_send_post_notification = "Yes";
+		            	}
+		            %>	<%=auto_send_post_notification %>
+		             </label>
+		            </div>
 				</div>
 
 
@@ -659,16 +672,17 @@
                             */
                       %>
 		                  <tr>
+		                  <!-- 
 		                  	<td width="75px">
 			                    <div class="media">
-								  <a class="pull-left" href="#" onclick="itemImages('<%=i.getId()%>')">
-								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=i.getId()%>&t=it" alt="Click to upload image" />
+								  <a class="pull-left" href="#" onclick="itemImages('<//%=i.getId()%>')">
+								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<//%=i.getId()%>&t=it" alt="Click to upload image" />
 								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
-								      	<%= new ImageManager().getImageListByItemId(i.getId()).size() %>
+								      	<//%= new ImageManager().getImageListByItemId(i.getId()).size() %>
 								      </span>
 								  </a>
 								</div>
-		                    </td>
+		                    </td> -->
                             <td width="15px"><a href="#" onclick="viewItem('<%=i.getId()%>')"><%=i.getItem_id()%></a></td>
                             <td width="15px"><%=i.getAuction_id()%></td>
                             <td width="15px"><%=i.getLot_id()%></td>
@@ -1087,7 +1101,7 @@ $(function () {
   
 $(function () {
     $("#table2").DataTable({
-    	"pageLength": 100,
+    	"pageLength": 5,
       	"order": [[ 4, "asc" ]],
       	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });

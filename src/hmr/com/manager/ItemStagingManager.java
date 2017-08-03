@@ -735,6 +735,7 @@ public class ItemStagingManager {
 			BigDecimal consignor_id,
 			String description,
 			BigDecimal delivery_receipt_id,
+			BigDecimal weight,
 			Timestamp last_date_sync){
 		ItemStagingDao isd = new ItemStagingDao(req,res);
 		isd.insertItemStagingOnSearch(
@@ -758,6 +759,7 @@ public class ItemStagingManager {
 				consignor_id,
 				description,
 				delivery_receipt_id,
+				weight,
 				last_date_sync
 				
 				);
@@ -786,6 +788,7 @@ public class ItemStagingManager {
 			BigDecimal consignor_id,
 			String description,
 			BigDecimal delivery_receipt_id,
+			BigDecimal weight,
 			Timestamp last_date_sync){
 		ItemStagingDao isd = new ItemStagingDao(req,res);
 		isd.insertItemStagingOnSearch2(
@@ -809,6 +812,7 @@ public class ItemStagingManager {
 				consignor_id,
 				description,
 				delivery_receipt_id,
+				weight,
 				last_date_sync
 				
 				);

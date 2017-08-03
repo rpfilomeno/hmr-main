@@ -637,6 +637,7 @@ public class ItemStagingDao extends DBConnection {
 			BigDecimal consignor_id,
 			String description,
 			BigDecimal delivery_receipt_id,
+			BigDecimal weight,
 			Timestamp last_date_sync
 			) {
 		
@@ -658,7 +659,7 @@ public class ItemStagingDao extends DBConnection {
 			
 			sb.append(" qt_remarks, assess_value, payment_status, bidder_number_id, payables_id,");
 
-			sb.append(" product_code, srp, consignor_id, description, delivery_receipt_id, last_date_sync");
+			sb.append(" product_code, srp, consignor_id, description, delivery_receipt_id, weight, last_date_sync");
 			
 			sb.append(" )VALUES(");
 			
@@ -668,7 +669,7 @@ public class ItemStagingDao extends DBConnection {
 			
 			sb.append(" ?, ?, ?, ?, ?,");
 			
-			sb.append(" ?, ?, ?, ?, ?, ?");
+			sb.append(" ?, ?, ?, ?, ?, ?, ?");
 
 			sb.append(")");
 			
@@ -786,7 +787,8 @@ public class ItemStagingDao extends DBConnection {
 	        stmt.setBigDecimal(18, consignor_id);
 	        stmt.setString(19, description);
 	        stmt.setBigDecimal(20, delivery_receipt_id);
-	        stmt.setTimestamp(21, last_date_sync); 
+	        stmt.setBigDecimal(21, weight);
+	        stmt.setTimestamp(22, last_date_sync); 
 
 		    System.out.println("sql : "+sql);
 		    
@@ -839,6 +841,7 @@ public class ItemStagingDao extends DBConnection {
 			BigDecimal consignor_id,
 			String description,
 			BigDecimal delivery_receipt_id,
+			BigDecimal weight,
 			Timestamp last_date_sync
 			) {
 		
@@ -863,7 +866,7 @@ public class ItemStagingDao extends DBConnection {
 			
 			sb.append(" qt_remarks, assess_value, payment_status, bidder_number_id, payables_id,");
 
-			sb.append(" product_code, srp, consignor_id, description, delivery_receipt_id, last_date_sync");
+			sb.append(" product_code, srp, consignor_id, description, delivery_receipt_id, weight, last_date_sync");
 			
 			sb.append(" )VALUES(");
 			
@@ -873,7 +876,7 @@ public class ItemStagingDao extends DBConnection {
 			
 			sb.append(" ?, ?, ?, ?, ?,");
 			
-			sb.append(" ?, ?, ?, ?, ?, ?");
+			sb.append(" ?, ?, ?, ?, ?, ?, ?");
 
 			sb.append(")");
 			
@@ -989,7 +992,8 @@ public class ItemStagingDao extends DBConnection {
 	        stmt.setBigDecimal(18, consignor_id);
 	        stmt.setString(19, description);
 	        stmt.setBigDecimal(20, delivery_receipt_id);
-	        stmt.setTimestamp(21, last_date_sync); 
+	        stmt.setBigDecimal(21, weight);
+	        stmt.setTimestamp(22, last_date_sync); 
 
 		    System.out.println("sql : "+sql);
 		    
@@ -1380,7 +1384,7 @@ public class ItemStagingDao extends DBConnection {
 		
 		sb.append(" qt_remarks, assess_value, payment_status, bidder_number_id, payables_id,");
 		
-		sb.append(" product_code, srp, consignor_id, description, delivery_receipt_id, last_date_sync");
+		sb.append(" product_code, srp, consignor_id, description, delivery_receipt_id, weight, last_date_sync");
 		
 		sb.append(" from item_staging");
 		
@@ -1441,6 +1445,9 @@ public class ItemStagingDao extends DBConnection {
 				is.setConsignor_id(rs.getBigDecimal("consignor_id"));
 				is.setDescription(rs.getString("description"));
 				is.setDelivery_receipt_id(rs.getBigDecimal("delivery_receipt_id"));
+				
+				is.setWeight(rs.getBigDecimal("weight"));
+				
 				is.setLast_date_sync(rs.getTimestamp("last_date_sync"));
 
 				isList.add(is);

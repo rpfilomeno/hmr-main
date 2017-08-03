@@ -680,6 +680,7 @@ public class ItemDao extends DBConnection {
 			BigDecimal consignor_id,
 			String description,
 			BigDecimal delivery_receipt_id,
+			BigDecimal weight,
 			BigDecimal auction_id,
 			Timestamp last_date_sync,
 			Integer user_id
@@ -702,7 +703,7 @@ public class ItemDao extends DBConnection {
 			
 			sb.append(", bidder_id=?, payables_id=?, product_code=?, srp=?, consignor_id=?, item_desc=?");
 			
-			sb.append(", delivery_receipt_id=?, auction_id=?, synched_date=?");
+			sb.append(", delivery_receipt_id=?, weight=?, auction_id=?, synched_date=?");
 		
 			sb.append(", date_updated=?, updated_by=?");
 			
@@ -741,10 +742,11 @@ public class ItemDao extends DBConnection {
 	        stmt.setBigDecimal(18, consignor_id);
 	        stmt.setString(19, description);
 	        stmt.setBigDecimal(20, delivery_receipt_id);
-	        stmt.setBigDecimal(21, auction_id);
-	        stmt.setTimestamp(22, last_date_sync);
-	        stmt.setTimestamp(23, sqlDate_t);
-	        stmt.setInt(24, user_id);
+	        stmt.setBigDecimal(21, weight);
+	        stmt.setBigDecimal(22, auction_id);
+	        stmt.setTimestamp(23, last_date_sync);
+	        stmt.setTimestamp(24, sqlDate_t);
+	        stmt.setInt(25, user_id);
 	
 		    System.out.println("sql : "+sql);
 		    

@@ -222,7 +222,22 @@
                             <td><%=a.getLocation()%></td>
                             <td width="200px"><%=start_date_time%></td>
                             <td width="200px"><%=end_date_time%></td>
-                            <td><%=a.getAuction_type()%></td>
+                                                        <td>
+                            
+                            
+                            <%if(a!=null && a.getAuction_type()==15){%>
+								Online	
+							<%}else if(a!=null && a.getAuction_type()==16){%>
+								Negotiated
+							<%}else if(a!=null && a.getAuction_type()==185){%>
+								Live
+							<%}else{%>
+								&nbsp;
+							<%}%>
+                            
+                            
+                            
+                            </td>
                             <td><%=a.getNo_of_lots()%></td>
                             <td><%=a.getNo_of_items()%></td>
                             <td><%=active%></td> 

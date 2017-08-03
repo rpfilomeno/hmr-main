@@ -697,6 +697,7 @@ public class ItemManager {
 			BigDecimal consignor_id,
 			String description,
 			BigDecimal delivery_receipt_id,
+			BigDecimal weight,
 			BigDecimal auction_id,
 			Timestamp last_date_sync,
 			Integer user_id
@@ -727,6 +728,7 @@ public class ItemManager {
 				consignor_id,
 				description,
 				delivery_receipt_id,
+				weight,
 				auction_id,
 				last_date_sync,
 				user_id

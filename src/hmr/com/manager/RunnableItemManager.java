@@ -263,6 +263,14 @@ public class RunnableItemManager implements Runnable {
 								}catch(Exception e){
 									
 								}
+								
+								String weight_s = "";
+								try{
+									weight_s = objDataItem.getString("weight");
+								}catch(Exception e){
+									
+								}
+								
 							    
 								BigDecimal item_id = new BigDecimal(0);
 								try{
@@ -402,6 +410,14 @@ public class RunnableItemManager implements Runnable {
 								String description = description_s;
 								
 								
+								
+								BigDecimal weight = new BigDecimal(0);
+								try{
+									weight = new BigDecimal(weight_s);
+								}catch(Exception e){
+									
+								}
+								
 								try{
 									
 									System.out.println(item_id.doubleValue()+" "+lot_id.doubleValue());
@@ -452,6 +468,7 @@ public class RunnableItemManager implements Runnable {
 													consignor_id,
 													description,
 													delivery_receipt_id,
+													weight,
 													last_date_sync
 													);
 											
@@ -482,6 +499,7 @@ public class RunnableItemManager implements Runnable {
 													consignor_id,
 													description,
 													delivery_receipt_id,
+													weight,
 													last_date_sync
 													);
 											

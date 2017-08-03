@@ -38,6 +38,7 @@ public class Auction extends SystemBean {
 	Integer one_start_bid;
 	Integer bid_qualifier_price;
 	String token;
+	Integer auto_send_post_notification;
 	
 	public BigDecimal getId() {
 		return id;
@@ -250,5 +251,11 @@ public class Auction extends SystemBean {
 		}else{
 			return null;
 		}
+	}
+	public Integer getAuto_send_post_notification() {
+		return auto_send_post_notification;
+	}
+	public void setAuto_send_post_notification(Integer auto_send_post_notification) {
+		this.auto_send_post_notification = auto_send_post_notification;
 	}
 }

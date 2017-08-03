@@ -894,6 +894,7 @@ public Auction getAuctionByToken(String token){
 				Integer one_lot_per_bidder,
 				Integer one_start_bid,
 				Integer bid_qualifier_price,
+				Integer auto_send_post_notification,
 				Integer user_id
 			) {
 		
@@ -924,14 +925,14 @@ public Auction getAuctionByToken(String token){
 			
 			sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status");
 			
-			sb.append(", date_created, created_by, image, image_small, auction_name, category_level_1, one_lot_per_bidder, one_start_bid, bid_qualifier_price)");
+			sb.append(", date_created, created_by, image, image_small, auction_name, category_level_1, one_lot_per_bidder, one_start_bid, bid_qualifier_price, auto_send_post_notification)");
 			
 			sb.append(" VALUES(");
 			
 			sb.append(" ?, ?, ?, ?, ?");
 			sb.append(",?, ?, ?, ?, ?, ?, ?");
 			sb.append(",?, ?, ?, ?, ?, ?");
-			sb.append(",?, ?, ?, ?, ?, ?, ?, ?");
+			sb.append(",?, ?, ?, ?, ?, ?, ?, ?, ?");
 			
 			sb.append(")");
 			
@@ -998,6 +999,8 @@ public Auction getAuctionByToken(String token){
 	        stmt.setInt(25, one_lot_per_bidder);
 	        stmt.setInt(26, one_start_bid);
 	        stmt.setInt(27, bid_qualifier_price);
+	        stmt.setInt(28, auto_send_post_notification);
+	        
 	        
 		    System.out.println("sql : "+sql);
 		    
@@ -1246,6 +1249,7 @@ public Auction getAuctionByToken(String token){
 				Integer one_lot_per_bidder,
 				Integer one_start_bid,
 				Integer bid_qualifier_price,
+				Integer auto_send_post_notification,
 				Integer user_id,
 				BigDecimal auctionId_wip
 			){
@@ -1267,7 +1271,7 @@ public Auction getAuctionByToken(String token){
 			
 			sb.append(", no_of_lots=?, no_of_items=?, auction_item_increment_time=?, bid_deposit=?, date_sync=?, status=?");
 		
-			sb.append(", date_updated=?, updated_by=?, auction_name=?, category_level_1=?, one_lot_per_bidder=?, one_start_bid=?, bid_qualifier_price=?");
+			sb.append(", date_updated=?, updated_by=?, auction_name=?, category_level_1=?, one_lot_per_bidder=?, one_start_bid=?, bid_qualifier_price=?, auto_send_post_notification=?");
 			
 			sb.append(" where auction_id="+auctionId_wip);
 
@@ -1339,7 +1343,9 @@ public Auction getAuctionByToken(String token){
 	        stmt.setInt(23, one_lot_per_bidder); 
 	         
 	        stmt.setInt(24, one_start_bid); 
-	        stmt.setInt(25, bid_qualifier_price); 
+	        stmt.setInt(25, bid_qualifier_price);
+	        stmt.setInt(26, auto_send_post_notification);
+	        
 
 		    System.out.println("sql : "+sql);
 		    

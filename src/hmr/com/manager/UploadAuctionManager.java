@@ -972,6 +972,7 @@ public class UploadAuctionManager {
 									is.getConsignor_id(),
 									is.getDescription(),
 									is.getDelivery_receipt_id(),
+									is.getWeight(),
 									as.getAuction_id(),
 									last_date_sync,
 									user_id
