@@ -152,7 +152,7 @@ public class LotDao extends DBConnection {
 
 		sb.append(", duties, vat, unit, premium_rate, lot_type_id, active, unit_qty");
 		
-		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
+		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count, weight_total");
 
 		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
 		
