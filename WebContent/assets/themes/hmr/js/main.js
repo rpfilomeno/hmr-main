@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 			this.featuredProductSlider()
 			this.search()
 			//this.featuredBlocks()
-			//this.blogMasonry()
+			this.blogMasonry()
 			this.eventSignupForm()
 			this.contactForm()
 			this.instagramFeed()
@@ -461,7 +461,7 @@ jQuery(document).ready(function($) {
 
 		blogMasonry: function() {
 			
-			var $blogPostsMasonry = $('#blog-posts-masonry');
+			var $blogPostsMasonry = $('#item-posts-masonry');
 			var gutter = 30;
 
 			if ( $blogPostsMasonry.length == 0 ) return;
@@ -480,13 +480,15 @@ jQuery(document).ready(function($) {
 			var $grid = $blogPostsMasonry.masonry({
 				transitionDuration: 100,
 				itemSelector: '.grid-item',
-				columnWidth: '.grid-sizer',
 				percentPosition: true,
 			});
 
 			$(window).resize( main.debouncer( function ( e ) {
 			    $blogPostsMasonry.masonry('bindResize');
 			}));
+			
+			$blogPostsMasonry.masonry('layout');
+
 			
 
 			

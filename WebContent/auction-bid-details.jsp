@@ -112,7 +112,7 @@
 		<link rel="stylesheet" href="assets/themes/hmr/css/ionicons.min.css">
 		<link rel="stylesheet" href="assets/themes/hmr/css/main.css?v=36502498">
 		
-		<link rel="stylesheet" href="assets/css/gridder.css" />
+
 		<link rel="stylesheet" href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css">
 		<link rel="stylesheet" href="assets/plugins/gallery/css/blueimp-gallery.min.css">
 		
@@ -332,7 +332,7 @@
 								<div id="auction-gallery">
 								<% for (Image i : auction_images) {	%>
 									<a href="image?id=<%=i.getId()%>" title="Image #<%=i.getId()%>">
-										<img style="width:100%" class="lazy" data-original="image?id=<%=i.getId()%>&t=t" alt="Image #<%=i.getId()%>">
+										<img style="width:100%; padding:3px" class="" src="image?id=<%=i.getId()%>&t=t" alt="Image #<%=i.getId()%>">
 									</a>
 			
 								<% } %>
@@ -349,7 +349,7 @@
 					<div class="row">
 						<div class="col-sm-7">
 							<div style="margin-top:15px;">
-								<img style="width:100%" class="lazy" data-original="image?id=<%=auction.getAuction_id()%>&t=lt" >
+								<img style="width:100%" class="" src="image?id=<%=auction.getAuction_id()%>&t=lt" >
 							</div>
 						</div>
 						<div class="col-sm-5">
@@ -374,7 +374,7 @@
 						</li>
 					</ul>
 
-					<div class="clearfi"></div>
+					<div class="clearfix"></div>
 
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane active" id="product-description-tab">
@@ -399,15 +399,15 @@
 
 					
 
-					<div class="row gutter-10 grid" id="itemPosts">
-						<% Integer x =0; %>
+					<div class="row grid" id="d">
+						<% Integer x =1; %>
 						<%for(Lot l : lList) {%>
 							<div class="col-md-6 col-xs-12 grid-item">
 								<div class="product-item">
 									
 										<div class="product-image-wrap">
 											<a href="#" onclick="viewLot('<%=l.getId()%>')">
-											<img class="lazy" style="width:100%" src="image?id=<%=l.getId()%>&t=lt">
+											<img class="" style="width:100%" src="image?id=<%=l.getId()%>&t=lt">
 											</a>
 										</div>
 										<div class="clearfix top10"></div>
@@ -420,48 +420,54 @@
 												<div class="product-detail">Bids: <%=l.getBid_count()%></div>
 	
 											</div>
-											<% if(user_id != null && user_role_id > 0){ %>
-	                                <% if( l.getIs_available_lot() > 0) { %>
-			                            <% Integer i = l.getUnit_qty(); %>
-					                    <div class="form-group">
-					                        <select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
-					                            <% while(i > 0) { %>
-			                                   		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
-			                                   	 	<% i = i - 1; %>
-			                                   	<% } %>
-			                                </select>
-			                            </div>
-			                        <% } %>
-	                                <% if(l.getIs_bid() == 1){ %>
-			                            <% if(auction.getAuction_type() == 15){ %>
-				                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
-				                                <button class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
-				                            <% } else { %>
-					                            <button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
-					                            <button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
-				                            <% } %>
-			                            <% } else if(auction.getAuction_type() == 16){ %>
-			                                <button class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</button>
-			                            <% } %>
-	                                <% }%>
-	                                <% if(l.getIs_buy() == 1){ %>
-	                                	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></button>
-	                                <% }%> 
-	                            <% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
-									<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
-									<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
-								<% } %>
 										</div>
-									
-									
-									<div class="clearfix top10"></div>	
+										<div class="clearfix top10"></div>
+										
+										<div class="">
+											<% if(user_id != null && user_role_id > 0){ %>
+				                                <% if( l.getIs_available_lot() > 0) { %>
+						                            <% Integer i = l.getUnit_qty(); %>
+								                    <div class="form-group">
+								                        <select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
+								                            <% while(i > 0) { %>
+						                                   		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+						                                   	 	<% i = i - 1; %>
+						                                   	<% } %>
+						                                </select>
+						                            </div>
+						                        <% } %>
+						                        <div class="form-group">
+				                                <% if(l.getIs_bid() == 1){ %>
+						                            <% if(auction.getAuction_type() == 15){ %>
+							                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
+							                                <button class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
+							                            <% } else { %>
+								                            <button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
+								                            <button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
+							                            <% } %>
+						                            <% } else if(auction.getAuction_type() == 16){ %>
+						                                <button class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</button>
+						                            <% } %>
+				                                <% }%>
+				                                <% if(l.getIs_buy() == 1){ %>
+				                                	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></button>
+				                                <% }%> 
+				                                </div>
+				                            <% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
+												<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
+												<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
+											<% } %>
+											<div class="clearfix top10"></div>
+										</div>
+										<div class="clearfix top10"></div>
 								</div>
+								<div class="clearfix top10"></div>
 								
 							</div>
-							<% x = x +1;%>
-							<% if ((x % 2) == 0) { %>
-							<!-- </div><div class="row gutter-10">  -->
+							<% if ((x % 2) == 0) {%>
+								<div class="clearfix top10"></div>
 							<% } %>
+							<% x++; %>
 						<% } %>
 					</div>
 					
@@ -595,7 +601,6 @@
 <script src=assets/themes/hmr/js/main.js?v=79186204></script>
 		
 <script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
-<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
 <script src="assets/plugins/jquery.bsAlerts.min.js"></script>
 <script src="assets/plugins/gallery/js/blueimp-gallery.min.js"></script>
 
@@ -848,25 +853,24 @@ $(document).ready(function(){
 	};
 	
 
-	var $itemPosts = $('#itemPosts');
-	var gutter = 30;
+	
+	
+	
+	$('.lazy').lazyload({
+		threshold : 200,
+		onError: function(element) {
+	        console.log('image "' + element[0]['currentSrc'] + '" could not be loaded');
+	    },
+	    afterLoad: function(element) {
+	        var imageSrc = element.data('currentSrc');
+	        console.log('image "' + element[0]['currentSrc'] + '" was loaded successfully');
+	    },
+	    load: function(element){
 
-
-	$itemPosts.find('.grid-item').css({
-		'padding-left': gutter / 2,
-		'padding-right': gutter / 2,
-		'margin-bottom': gutter,
-	});
-
-	$itemPosts.css({
-		'margin-left': -(gutter / 2),
-		'margin-right': -(gutter / 2),
-	});
-
-	var $grid = $itemPosts.masonry({
-		transitionDuration: 100,
-		itemSelector: '.grid-item',
-	});
+        }
+	})
+	
+	
 
 
 

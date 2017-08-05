@@ -106,7 +106,7 @@
 		<link rel="stylesheet" href="assets/themes/hmr/css/ionicons.min.css">
 		<link rel="stylesheet" href="assets/themes/hmr/css/main.css?v=36502498">
 		
-		<link rel="stylesheet" href="assets/css/gridder.css" />
+
 		<link rel="stylesheet" href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css">
 		<link rel="stylesheet" href="assets/plugins/gallery/css/blueimp-gallery.min.css">
 		
@@ -340,7 +340,7 @@
 					<div class="row">
 						<div class="col-sm-7">
 							<div style="margin-top:15px;">
-								<img style="width:100%" class="lazy" data-original="image?id=<%=lot.getId()%>&t=lt" >
+								<img style="width:100%" class="" src="image?id=<%=lot.getId()%>&t=lt" >
 							</div>
 						</div>
 						<div class="col-sm-5">
@@ -475,14 +475,16 @@
 
 					
 
-					<div class="row gutter-10 grid" id="itemPosts">
+					<div class="row grid" id="d">
+						<% Integer x =1; %>
 						<%for(Item i : items) {%>
 							<div class="col-md-6 col-xs-12 grid-item">
 								<div class="product-item">
 									
 										<div class="product-image-wrap">
-											<img class="lazy" style="width:100%;" src="image?id=<%=i.getId()%>&t=it">
+											<img class="" style="width:100%;" src="image?id=<%=i.getId()%>&t=it">
 										</div>
+										<div class="clearfix top10"></div>
 										<div class="product-body">
 											
 											<h3 class="product-name">Item #<%=i.getReference_no()%></h3>
@@ -494,24 +496,29 @@
 										<div class="clearfix top10"></div>
 											
 										<%  item_images = iMngr.getImageListByItemId(i.getId()); %>
-										<% Integer x =0; %>
+
 										<div id="item-gallery-<%=i.getId() %>">
 										<% for (Image ii : item_images) { %>
 											
 												<div class="col-md-3 col-xs-6" style="padding:3px">
 													<a href="image?id=<%=ii.getId()%>" title="Image #<%=ii.getId()%>">
-														<img style="width:100%; padding-top:3px" class="lazy" src="image?id=<%=ii.getId()%>&t=t" alt="Image #<%=ii.getId()%>" />
+														<img style="width:100%; padding-top:3px" class="" src="image?id=<%=ii.getId()%>&t=t" alt="Image #<%=ii.getId()%>" />
 													</a>
 												</div>
-											
-											<% x = x+1; %>
+
 										<% } %>
 										</div>
+										<div class="clearfix top10"></div>
 											
-									<div class="clearfix top10"></div>	
+										
 								</div>
+								<div class="clearfix top10"></div>
 							</div>
 							
+							<% if ((x % 2) == 0) {%>
+								<div class="clearfix top10"></div>
+							<% } %>
+							<% x++; %>
 						<% } %>
 					</div>
 					
@@ -642,7 +649,7 @@
 <script src=assets/themes/hmr/js/main.js?v=79186204></script>
 		
 <script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
-<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
+
 <script src="assets/plugins/jquery.bsAlerts.min.js"></script>
 <script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
 <script src="assets/plugins/gallery/js/blueimp-gallery.min.js"></script>
@@ -878,51 +885,27 @@ function stopEnterSubmitting(e) {
     }
 }	
 
-$(document).ready(function(){
+jQuery(window).on('load', function(){
+
 	<%if(msgInfo!=null){%>
 	var msgInfo = "<%=msgInfo%>";
 	var msgbgcol = "<%=msgbgcol%>";
 	showAlert(msgInfo, msgbgcol);
 	<%}%>
+
 	
-	var $itemPosts = $('#itemPosts');
-	var gutter = 30;
-
-
-	$itemPosts.find('.grid-item').css({
-		'padding-left': gutter / 2,
-		'padding-right': gutter / 2,
-		'margin-bottom': gutter,
-	});
-
-	$itemPosts.css({
-		'margin-left': -(gutter / 2),
-		'margin-right': -(gutter / 2),
-	});
-
-	var $grid = $itemPosts.masonry({
-		transitionDuration: 100,
-		itemSelector: '.grid-item',
-	});
-	
-	$('img.lazy').lazyload({
-		enableThrottle: true,
-	    throttle: 250,
-	    effect : "fadeIn",
+	$('.lazy').lazyload({
+	    threshold : 200,
 		onError: function(element) {
 	        console.log('image "' + element[0]['currentSrc'] + '" could not be loaded');
 	    },
 	    afterLoad: function(element) {
 	        var imageSrc = element.data('currentSrc');
 	        console.log('image "' + element[0]['currentSrc'] + '" was loaded successfully');
-	    },
-	    load: function(element){
-
-        }
+	    }
 	})
 	
 
-	
 	
 	
 	document.getElementById('lot-gallery').onclick = function (event) {
