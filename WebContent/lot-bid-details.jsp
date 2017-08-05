@@ -320,7 +320,7 @@
 								<div id="lot-gallery">
 								<% for (Image i : lot_images) {	%>
 									<a href="image?id=<%=i.getId()%>" title="Image #<%=i.getId()%>">
-										<img style="width:100%" src="image?id=<%=i.getId()%>&t=t" alt="Image #<%=i.getId()%>">
+										<img style="width:100%; padding: 3px;" class="lazy" data-original="image?id=<%=i.getId()%>&t=t" alt="Image #<%=i.getId()%>">
 									</a>
 			
 								<% } %>
@@ -339,8 +339,8 @@
 				<div class="product-full-view-wrap">
 					<div class="row">
 						<div class="col-sm-7">
-							<div class="full-product-picture">
-								<div class="image feature-fade-in" style="background-image: url('image?id=<%=lot.getId()%>&t=lt')" ></div>
+							<div style="margin-top:15px;">
+								<img style="width:100%" class="lazy" data-original="image?id=<%=lot.getId()%>&t=lt" >
 							</div>
 						</div>
 						<div class="col-sm-5">
@@ -392,7 +392,9 @@
 						</div>
 					</div>
 
-					<div class="clearfix top20"></div>
+					<div class="clearfix" ></div>
+					</div><div class="row">
+
 
 					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
 						<li role="presentation" class="active">
@@ -400,6 +402,9 @@
 						</li>
 						<li role="presentation">
 							<a href="#product-delivery-tab" aria-controls="product-delivery-tab" role="tab" data-toggle="tab">Terms and Conditions</a>
+						</li>
+						<li role="presentation" class="">
+							<a href="#product-description-tab2" aria-controls="product-description-tab2" role="tab" data-toggle="tab">Bid History</a>
 						</li>
 					</ul>
 
@@ -415,64 +420,7 @@
 
 						</div>
 						
-					</div>
-				</div>
-
-				<div id="product-list-wrapper">
-					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
-						<li role="presentation" class="active">
-							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">Items</a>
-						</li>
-					</ul>
-					<div class="clearfix top10"></div>
-
-					
-
-					<div class="row gutter-10">
-						<%for(Item i : items) {%>
-							<div class="col-md-6 col-xs-6">
-								<div class="product-item">
-									
-										<div class="product-image-wrap">
-											<div class="image feature-fade-in" style="background-image: url('image?id=<%=i.getId()%>&t=it')"></div>
-										</div>
-										<div class="product-body">
-											<%  item_images = iMngr.getImageListByItemId(i.getId()); %>
-											<div id="item-gallery-<%=i.getId() %>">
-												<% for (Image ii : item_images) { %>
-												<a href="image?id=<%=ii.getId()%>" title="<%=ii.getId()%>">
-											        <img style="width:20%; padding-top:3px" src="image?id=<%=ii.getId()%>&t=t" alt="<%=ii.getId()%>" />
-											    </a>
-											    
-											    <% } %>
-											</div>
-											<h3 class="product-name">Item #<%=i.getReference_no()%></h3>
-											<div class="product-details">
-												<div class="product-detail">Description: <%=i.getItem_desc()%></div>
-											</div>
-										</div>
-									
-									
-								</div>
-								
-							</div>
-						<% } %>
-					</div>
-					
-				</div>
-				
-				<div class="clearfix top20"></div>
-
-					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
-						<li role="presentation" class="active">
-							<a href="#product-description-tab2" aria-controls="product-description-tab2" role="tab" data-toggle="tab">Bid History</a>
-						</li>
-					</ul>
-
-					<div class="clearfix"></div>
-
-					<div class="tab-content">
-						<div role="tabpanel" class="tab-pane active" id="product-description-tab2">
+						<div role="tabpanel" class="tab-pane" id="product-description-tab2">
 							<h5>Last 5 Bids</h5>
 							<table class="table">
 						    	<thead>
@@ -513,9 +461,65 @@
 						        </tbody>
 						    </table>
 						</div>
-
-
+						
 					</div>
+				</div>
+
+				<div id="product-list-wrapper">
+					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">Items</a>
+						</li>
+					</ul>
+					<div class="clearfix top10"></div>
+
+					
+
+					<div class="row gutter-10 grid" id="itemPosts">
+						<%for(Item i : items) {%>
+							<div class="col-md-6 col-xs-12 grid-item">
+								<div class="product-item">
+									
+										<div class="product-image-wrap">
+											<img class="lazy" style="width:100%;" src="image?id=<%=i.getId()%>&t=it">
+										</div>
+										<div class="product-body">
+											
+											<h3 class="product-name">Item #<%=i.getReference_no()%></h3>
+											<div class="product-details">
+												<div class="product-detail">Description: <%=i.getItem_desc()%></div>
+											</div>
+										</div>
+										
+										<div class="clearfix top10"></div>
+											
+										<%  item_images = iMngr.getImageListByItemId(i.getId()); %>
+										<% Integer x =0; %>
+										<div id="item-gallery-<%=i.getId() %>">
+										<% for (Image ii : item_images) { %>
+											
+												<div class="col-md-3 col-xs-6" style="padding:3px">
+													<a href="image?id=<%=ii.getId()%>" title="Image #<%=ii.getId()%>">
+														<img style="width:100%; padding-top:3px" class="lazy" src="image?id=<%=ii.getId()%>&t=t" alt="Image #<%=ii.getId()%>" />
+													</a>
+												</div>
+											
+											<% x = x+1; %>
+										<% } %>
+										</div>
+											
+									<div class="clearfix top10"></div>	
+								</div>
+							</div>
+							
+						<% } %>
+					</div>
+					
+				</div>
+				
+				<div class="clearfix top20"></div>
+
+					
 
 			</div>
 		</div>
@@ -635,12 +639,12 @@
 <script src=assets/themes/hmr/js/vendor/bootbox.min.js></script>
 <script src=assets/themes/hmr/js/vendor/url.min.js></script>
 <script src=assets/themes/hmr/js/vendor/msis.js></script>
-<script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
 <script src=assets/themes/hmr/js/main.js?v=79186204></script>
 		
 <script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
 <script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
 <script src="assets/plugins/jquery.bsAlerts.min.js"></script>
+<script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
 <script src="assets/plugins/gallery/js/blueimp-gallery.min.js"></script>
 
 <script>
@@ -787,7 +791,7 @@ function submitPage(action, value, lot, id, qtyid, note) {
 	    title: "Confirmation",
 	    closeOnEscape: false,
         open: function (event, ui) {
-        	var amount = parseFloat(value) * parseInt(unit_qty);
+        	var amount = 0;
         	var dialog_title = "Confirmation";
         	var currency_html = "<%=currency%>";
         	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure?</p>';
@@ -798,23 +802,28 @@ function submitPage(action, value, lot, id, qtyid, note) {
       
         	if(action=="BID") {
         		dialog_title = "Bid confirmation";
+        		amount = parseFloat(value) * parseInt(unit_qty);
         		dialog_html = '<p>You will bid ' + amount.toFixed(2) +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}else if(action=="BUY") {
         		dialog_title = "Buy confirmation";
-        		dialog_html = '<p>You will buy this lot for' + value.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+
+        		amount =  parseFloat(value);
+        		dialog_html = '<p>You will buy this lot for ' + amount.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}else if(action=="SET-MAXIMUM-BID") {
+        		amount =  parseFloat(value);
         		dialog_title = "Set maximum bid confirmation";
-        		dialog_html = '<p>You will will set your maximum bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will will set your maximum bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}else if(action=="NEGOTIATED") {
+        		amount =  parseFloat(value);
         		dialog_title = "Negotiated bid confirmation";
-        		dialog_html = '<p>You will will set your offer bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will will set your offer bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}else if(action=="PRE-BID") {
+        		amount =  parseFloat(value);
         		dialog_title = "Pre-bid confirmation";
-        		dialog_html = '<p>You will will set pre-bid of ' + value.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will will set pre-bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}
 
@@ -876,6 +885,46 @@ $(document).ready(function(){
 	showAlert(msgInfo, msgbgcol);
 	<%}%>
 	
+	var $itemPosts = $('#itemPosts');
+	var gutter = 30;
+
+
+	$itemPosts.find('.grid-item').css({
+		'padding-left': gutter / 2,
+		'padding-right': gutter / 2,
+		'margin-bottom': gutter,
+	});
+
+	$itemPosts.css({
+		'margin-left': -(gutter / 2),
+		'margin-right': -(gutter / 2),
+	});
+
+	var $grid = $itemPosts.masonry({
+		transitionDuration: 100,
+		itemSelector: '.grid-item',
+	});
+	
+	$('img.lazy').lazyload({
+		enableThrottle: true,
+	    throttle: 250,
+	    effect : "fadeIn",
+		onError: function(element) {
+	        console.log('image "' + element[0]['currentSrc'] + '" could not be loaded');
+	    },
+	    afterLoad: function(element) {
+	        var imageSrc = element.data('currentSrc');
+	        console.log('image "' + element[0]['currentSrc'] + '" was loaded successfully');
+	    },
+	    load: function(element){
+
+        }
+	})
+	
+
+	
+	
+	
 	document.getElementById('lot-gallery').onclick = function (event) {
 	    event = event || window.event;
 	    var target = event.target || event.srcElement,
@@ -887,7 +936,7 @@ $(document).ready(function(){
 	
 	<%for(Item i : items) {%>
 	<%  item_images = iMngr.getImageListByItemId(i.getId()); %>
-		<% if(item_images.size() > 1) { %>
+		<% if(item_images.size() > 0) { %>
 		
 		document.getElementById("item-gallery-<%=i.getId() %>").onclick = function (event) {
 		    event = event || window.event;
@@ -899,6 +948,8 @@ $(document).ready(function(){
 		};
 		<% } %>
 	<% } %>
+	
+
 	
 });
 

@@ -429,7 +429,7 @@ function deleteImage(image_id,action,  wip_id){
 	$('#frm input[name="action_id"]').val(image_id);
 	$('#frm input[name="action"]').val(action);
 	$('#frm input[name="wip_id"]').val(wip_id);
-	$('#frm input[name="action"]').val("auctionImageDelete");
+
 	
 	
 	$('<div id="dialog-confirm"></div>').dialog({
@@ -541,7 +541,7 @@ function clearQueue() {
 		resizeHeight: 480,
 		resizeMethod: 'crop',
 		autoProcessQueue: false,
-		maxFilesize: 2,
+		parallelUploads: 1,
 		init: function() {
 	    	this.on("sending", function(file, xhr, formData){
 	    		formData.append("manager", "image-manager");
@@ -550,18 +550,22 @@ function clearQueue() {
 	        	formData.append("user-id", "<%=user_id%>");
 	        	formData.append("userId", "<%=userId%>");
 	    	});
+	    	this.on("success", function() {
+	        	myDropzone.options.autoProcessQueue = true; 
+	        });
 	    	this.on("queuecomplete", function (file) {
-		    		<% if (action == "doAuctionImageUpload") {%>
+	    		myDropzone.options.autoProcessQueue = false;
+		    	<% if (action == "doAuctionImageUpload") {%>
 		    		$('#frm input[name="action"]').val("auctionImageUpload");
 		    		$('#frm input[name="auction_id"]').val("<%=action_id%>");
-		    		<% } else if (action == "doLotImageUpload") {%>
+		    	<% } else if (action == "doLotImageUpload") {%>
 		    		$('#frm input[name="action"]').val("lotImageUpload");
 		    		$('#frm input[name="lotId_wip"]').val("<%=action_id%>");
-		    		<% } else if (action == "doItemImageUpload") {%>
+		    	<% } else if (action == "doItemImageUpload") {%>
 		    		$('#frm input[name="action"]').val("itemImageUpload");
 		    		$('#frm input[name="itemId_wip"]').val("<%=action_id%>");
-		    		<% } %>
-		    		$( "#frm" ).submit();
+		    	<% } %>
+		    	$( "#frm" ).submit();
 	    	});
 	    }
 	});

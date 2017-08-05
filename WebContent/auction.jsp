@@ -542,7 +542,7 @@
 		                    <td width="75px">
 			                    <div class="media">
 								  <a class="pull-left" href="#" onclick="lotImages('<%=l.getId()%>')">
-								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=l.getLot_id()%>&t=lt" alt="Click to upload image" />
+								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=l.getId()%>&t=lt" alt="Click to upload image" />
 								      <!--
 								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
 								      	  <//%= new ImageManager().getImageListByLotId(l.getLot_id()).size() %>  
@@ -624,7 +624,7 @@
 		
 		                    <thead>
 		                      <tr>
-		                      	<!--  <th>Main Image</th> -->
+		                      	<th>Main Image</th>
 		                        <th>Item ID</th>
 		                        <th>Auction ID</th>
 		                        <th>Lot ID</th>
@@ -673,17 +673,17 @@
                             */
                       %>
 		                  <tr>
-		                  <!-- 
+		                   
 		                  	<td width="75px">
 			                    <div class="media">
-								  <a class="pull-left" href="#" onclick="itemImages('<//%=i.getId()%>')">
-								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<//%=i.getId()%>&t=it" alt="Click to upload image" />
-								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
+								  <a class="pull-left" href="#" onclick="itemImages('<%=i.getId()%>')">
+								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=i.getId()%>&t=it" alt="Click to upload image" />
+								      <!--<span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
 								      	<//%= new ImageManager().getImageListByItemId(i.getId()).size() %>
-								      </span>
+								      </span>-->
 								  </a>
 								</div>
-		                    </td> -->
+		                    </td>
                             <td width="15px"><a href="#" onclick="viewItem('<%=i.getId()%>')"><%=i.getItem_id()%></a></td>
                             <td width="15px"><%=i.getAuction_id()%></td>
                             <td width="15px"><%=i.getLot_id()%></td>

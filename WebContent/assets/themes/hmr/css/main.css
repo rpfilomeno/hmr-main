@@ -734,7 +734,8 @@ body.nav-open #nav-trigger span:last-child {
 	min-height: 200px;
 }
 .card-image-wrap{
-	height: 250px;
+	height: 188px;
+	width: 250px;
 	position: relative;
 }
 .card-image-wrap .image{
@@ -847,7 +848,7 @@ body.nav-open #nav-trigger span:last-child {
 }
 .product-item .product-image-wrap{
 	position: relative;
-	height: 120px;
+
 }
 .product-item .product-image-wrap .image{
 	opacity: 1;

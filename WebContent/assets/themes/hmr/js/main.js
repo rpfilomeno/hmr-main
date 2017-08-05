@@ -13,14 +13,15 @@ jQuery(document).ready(function($) {
 			this.landingSlider()
 			this.featuredProductSlider()
 			this.search()
-			this.featuredBlocks()
-			this.blogMasonry()
+			//this.featuredBlocks()
+			//this.blogMasonry()
 			this.eventSignupForm()
 			this.contactForm()
 			this.instagramFeed()
 			this.mainNav()
 			this.newsLetterForm()
 			// this.ever()
+			
 		},
 
 		featuredProductSlider: function() {
@@ -461,7 +462,7 @@ jQuery(document).ready(function($) {
 		blogMasonry: function() {
 			
 			var $blogPostsMasonry = $('#blog-posts-masonry');
-			var gutter = 60;
+			var gutter = 30;
 
 			if ( $blogPostsMasonry.length == 0 ) return;
 
@@ -477,7 +478,7 @@ jQuery(document).ready(function($) {
 			});
 
 			var $grid = $blogPostsMasonry.masonry({
-				transitionDuration: 0,
+				transitionDuration: 100,
 				itemSelector: '.grid-item',
 				columnWidth: '.grid-sizer',
 				percentPosition: true,
@@ -486,6 +487,10 @@ jQuery(document).ready(function($) {
 			$(window).resize( main.debouncer( function ( e ) {
 			    $blogPostsMasonry.masonry('bindResize');
 			}));
+			
+
+			
+			
 
 
 		},
