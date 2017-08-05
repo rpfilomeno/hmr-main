@@ -524,7 +524,7 @@ public class Bid extends HttpServlet {
 	                    	    LotManager ltMngr = new LotManager();
 	                    	    Lot lot = ltMngr.getLotByAuctionIdAndLotNo(new BigDecimal(action_id), new BigDecimal(lot_no));
 	                    	    if( lot != null) {
-	                    	    	lot_id = lot.getLot_id().toString();
+	                    	    	lot_id = lot.getId().toString();
 	                    	    } else {
 	                    	    	lot_no = "0";
 	                    	    	auction_id = action_id;
