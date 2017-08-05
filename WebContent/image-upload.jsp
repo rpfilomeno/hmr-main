@@ -537,8 +537,8 @@ function clearQueue() {
 	myDropzone = new Dropzone("#image-uploader", { 
 		url: 'bid',
 		acceptedFiles: 'image/*',
-		resizeWidth: 400,
-		resizeHeight: 400,
+		resizeWidth: 640,
+		resizeHeight: 480,
 		resizeMethod: 'crop',
 		autoProcessQueue: false,
 		maxFilesize: 2,
