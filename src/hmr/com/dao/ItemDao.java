@@ -119,11 +119,19 @@ public class ItemDao extends DBConnection {
 
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
@@ -164,11 +172,19 @@ public class ItemDao extends DBConnection {
 
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
@@ -320,13 +336,18 @@ public class ItemDao extends DBConnection {
 	            }
 	        }
 		    
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		//} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 
 		return i;
@@ -489,13 +510,18 @@ public class ItemDao extends DBConnection {
             }
         }
 	    
-		
+		stmt.close();
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} catch (FileNotFoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
 	}
 
 	return i;
@@ -620,10 +646,15 @@ public class ItemDao extends DBConnection {
 	        }
 		    
 
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return i;
@@ -755,10 +786,15 @@ public class ItemDao extends DBConnection {
 	        }
 		    
 	
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return i;
@@ -865,10 +901,15 @@ public class ItemDao extends DBConnection {
 	        }
 		    
 
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return i;
@@ -941,11 +982,16 @@ public class ItemDao extends DBConnection {
 				aList.add(i);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return aList;
@@ -969,7 +1015,17 @@ public class ItemDao extends DBConnection {
 		sb.append(" order by item_desc");
 
 		try {
-			conn = getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -1015,11 +1071,16 @@ public class ItemDao extends DBConnection {
 				aList.add(i);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return aList;
@@ -1044,7 +1105,17 @@ public class ItemDao extends DBConnection {
 		sb.append(" order by item_desc");
 
 		try {
-			conn = getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -1092,11 +1163,16 @@ public class ItemDao extends DBConnection {
 
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return iL;
@@ -1122,7 +1198,17 @@ public class ItemDao extends DBConnection {
 		sb.append(" order by item_desc");
 
 		try {
-			conn = getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 
 			java.sql.Statement stmt = null;
 			
@@ -1187,11 +1273,16 @@ public class ItemDao extends DBConnection {
 				iHM.put(i.getItem_id(), i);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return iHM;
@@ -1215,7 +1306,17 @@ public class ItemDao extends DBConnection {
 		sb.append(" order by item_desc");
 
 		try {
-			conn = getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 
 			java.sql.Statement stmt = null;
 			
@@ -1281,11 +1382,16 @@ public class ItemDao extends DBConnection {
 				iHM.put(i.getReference_no(), i);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return iHM;
@@ -1317,11 +1423,19 @@ public class ItemDao extends DBConnection {
 		
 		try {
 			
-			
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 			
 			try{
-				conn = dbConn.getConnection3();
-				dbConn = new DBConnection();
 				stmt = conn.prepareStatement(sb.toString());
 			}catch(Exception ex){
 				//conn = dbConn.getConnection3();
@@ -1353,16 +1467,32 @@ public class ItemDao extends DBConnection {
 				i.setLot_id(rs.getBigDecimal("lot_id"));
 				i.setItem_id(rs.getBigDecimal("item_id"));
 				i.setAuction_id(rs.getBigDecimal("auction_id"));
+				if(rs!=null){
 				i.setReference_no(rs.getBigDecimal("reference_no"));
+				}
+				
+				if(rs!=null){
 				i.setTarget_price(rs.getBigDecimal("target_price"));
+				}
+				
+				if(rs!=null){
 				i.setReserve_price(rs.getBigDecimal("reserve_price"));
+				}
 				i.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				
+				if(rs!=null){
 				i.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				}
 				i.setAction_taken(rs.getInt("action_taken"));
 				i.setIs_buy(rs.getInt("is_buy"));
 				i.setIs_bid(rs.getInt("is_bid"));
 				i.setBuy_price(rs.getBigDecimal("buy_price"));
-				i.setBidder_id(rs.getInt("bidder_id"));
+				
+				if(rs!=null){
+					i.setBidder_id(rs.getInt("bidder_id"));
+				}
+				
+				
 				i.setItem_increment_time(rs.getInt("item_increment_time"));
 				i.setItem_desc(rs.getString("item_desc"));
 				i.setImageBytes(rs.getBytes("image"));
@@ -1385,11 +1515,29 @@ public class ItemDao extends DBConnection {
 				iHM.put(i.getItem_id(), i);
 			}
 
-			//
-			//
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+			
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+			
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {}
+			}
+			
 		}
 		
 		return iHM;
@@ -1421,7 +1569,17 @@ public class ItemDao extends DBConnection {
 		
 		try {
 			
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
 				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 			
 			
 			try{
@@ -1487,11 +1645,24 @@ public class ItemDao extends DBConnection {
 				iHM.put(i.getItem_id(), i);
 			}
 
-			
-			//
+			rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+			
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+			
+			
 		}
 		
 		return iHM;
@@ -1565,14 +1736,14 @@ public class ItemDao extends DBConnection {
 				aList.add(a);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
-				
+				conn.close();
 				} catch (SQLException e) {}
 			}
 		}

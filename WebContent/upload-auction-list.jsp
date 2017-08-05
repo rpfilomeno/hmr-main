@@ -411,7 +411,7 @@
                     
                     
                     
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" id="divIDSyncAll">
                         <a class="btn btn-theme btn-block " href="#" onclick="syncAll()">Sync All Now</a>
                     </div>
                     <!-- 
@@ -575,6 +575,10 @@ function view(id){
 
 function syncAll(){
 	document.getElementById("action").value="syncAll";
+	
+	try{
+		document.getElementById("divIDSyncAll").innerHTML = " <a class=\"btn btn-theme btn-block \" href=\"#\">Processing</a>";
+	}catch(e){}
 	//document.getElementById("auctionId_wip").value=id;
 	document.frm.submit();
 }

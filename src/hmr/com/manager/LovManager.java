@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.bean.Lov;
 import hmr.com.dao.LovDao;
+import hmr.com.dao.UserDao;
 
 
 public class LovManager {
@@ -21,6 +22,10 @@ public class LovManager {
 		this.res = res;
 	}
 	
+	public LovManager(){
+		this.req = req;
+		this.res = res;
+	}
 	
 	public String doLovManager(){
 		String page = null;
@@ -79,6 +84,26 @@ public class LovManager {
 		List<Lov> paramLovList = ld.getLovList(key_cd);
 		
 		return paramLovList;
+		
+	}
+	
+	
+	
+	public int updateLovListValue(String key_cd, Integer id, String newValue, Integer user_id) throws SQLException{
+		int i = 0;
+		
+		LovDao ld = new LovDao();
+		
+		List<Lov> lovList = getLovList(key_cd);
+		
+		for(Lov lov : lovList){
+			
+			i = ld.updateLovListValue(lov.getId(), newValue, user_id);
+			
+		}
+		
+		
+		return i;
 		
 	}
 	

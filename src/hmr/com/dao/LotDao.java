@@ -61,11 +61,21 @@ public class LotDao extends DBConnection {
 		sb.append(" from lot where id ="+id);
 
 
+		DBConnection dbConn = new DBConnection();
+		
 		try {
-
-			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -124,11 +134,19 @@ public class LotDao extends DBConnection {
             	
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return l;
@@ -212,11 +230,19 @@ public class LotDao extends DBConnection {
             	
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return l;
@@ -301,11 +327,19 @@ public class LotDao extends DBConnection {
             	
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return l;
@@ -380,11 +414,19 @@ public class LotDao extends DBConnection {
             	l.setUpdated_by(rs.getInt("updated_by"));
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return l;
@@ -474,11 +516,19 @@ public class LotDao extends DBConnection {
             	
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return lotHM;
@@ -508,7 +558,17 @@ public class LotDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection2();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -568,11 +628,19 @@ public class LotDao extends DBConnection {
             	
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return lotHM;
@@ -615,7 +683,17 @@ public class LotDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 			
 			StringBuilder sb = new StringBuilder("INSERT into lot (lot_no, lot_id, auction_id, lot_desc, assessment_value");
 
@@ -722,10 +800,15 @@ public class LotDao extends DBConnection {
 	            }
 	        }
 		    
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 
 		return l;
@@ -759,7 +842,17 @@ public class LotDao extends DBConnection {
 	try {
 		DBConnection dbConn = new DBConnection();
 		
-		conn = dbConn.getConnection3();
+		if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+			conn = dbConn.getConnection2();
+		}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+			conn = dbConn.getConnection3();
+		}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+			conn = dbConn.getConnection4();
+		}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+			conn = dbConn.getConnection5();
+		}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+			conn = dbConn.getConnection6();
+		}
 		
 		StringBuilder sb = new StringBuilder("INSERT into lot (lot_id, auction_id, lot_no");
 	
@@ -857,10 +950,15 @@ public class LotDao extends DBConnection {
             }
         }
 	    
-		
+		stmt.close();
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
 	}
 
 	return l;
@@ -993,10 +1091,15 @@ public class LotDao extends DBConnection {
 	        }
 		    
 
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return l;
@@ -1109,10 +1212,15 @@ public class LotDao extends DBConnection {
 	        }
 		    
 	
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return l;
@@ -1221,10 +1329,21 @@ public class LotDao extends DBConnection {
 	        }
 		    
 	
-			//
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+			
 		}
 	
 		return l;
@@ -1299,11 +1418,16 @@ public class LotDao extends DBConnection {
 				lList.add(l);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return lList;
@@ -1377,11 +1501,16 @@ public class LotDao extends DBConnection {
 				lList.add(l);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		System.out.println("getLotListByAuctionId "+lList.size());
@@ -1459,11 +1588,16 @@ public class LotDao extends DBConnection {
 				lList.add(l);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return lList;
@@ -1546,10 +1680,15 @@ public class LotDao extends DBConnection {
         }
 	    
 
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 
 		return l;
@@ -1622,11 +1761,16 @@ public class LotDao extends DBConnection {
 				lList.add(l);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		System.out.println("getLotListByAuctionId "+lList.size());

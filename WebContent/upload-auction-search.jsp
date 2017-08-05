@@ -43,6 +43,12 @@
 		
 		List<AuctionStaging> asList =(ArrayList<AuctionStaging>) request.getAttribute("auctionStagingList");
 		
+		Integer lotLovCountList = request.getAttribute("lotLovCountList")!=null ? (Integer)request.getAttribute("lotLovCountList") : (Integer)request.getSession().getAttribute("lotLovCountList");
+		 
+		if(lotLovCountList==null){
+			lotLovCountList = 0;
+		}
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 			
 	%>
@@ -182,21 +188,34 @@
 					</div>
 
 				<div class="col-sm-12">
-					<div class="col-sm-3">
+					<div class="col-sm-3" id="divIDSearch">
 					     <a class="btn btn-theme btn-block " href="#" onclick="searchUploadAuction()">Search</a>
 					</div>
 					<div class="col-sm-3">
-					     <a class="btn btn-theme btn-block " href="#" onclick="clearUploadAuctionSearch()">Clear</a>
+					     <a class="btn btn-theme btn-block " href="">Clear</a>
 					</div>
+					
+					
+					
 					<%for(AuctionStaging as : asList){ %>
-					<div class="col-sm-3">
-					     <a class="btn btn-theme btn-block " href="#" onclick="loadUploadAuctionSearch()">View Auction <%=as.getAuction_no()%></a>
-					</div>
+						<%if(lotLovCountList==0){%>
+							
+						<div class="col-sm-3" id="divIDView1">
+						     <a class="btn btn-theme btn-block " href="#" onclick="loadUploadAuctionSearch()">View Auction <%=as.getAuction_no()%></a>
+						</div>
+							
+						<% }else{ %>
+						
+						<div class="col-sm-3" id="divIDView2">
+						     <a class="btn btn-theme btn-block " href="bid?mngr=upload-auction-manager&a=uploadAuctionSearch&uid=<%=userId%>"">Processing Lot  <%=lotLovCountList%></a>
+						</div>
+
+						<% } %>
 					<%} %>
 				</div>
 					
 
-                    <!-- 
+                    <!--  "bid?mngr=upload-auction-manager&a=uploadAuctionSearch&uid=<//%=userId%>"
                     <div class="col-sm-2">
                         <a class="btn btn-theme btn-block " href="#" onclick="clearLogin()">Clear</a>
                     </div>
@@ -252,12 +271,29 @@ function clearUploadAuctionSearch(){
 
 function searchUploadAuction(){
 	document.frm.action.value="searchUploadAuction";
+	
+	try{
+		document.getElementById("divIDView1").innerHTML = "";
+	}catch(e){}
+	try{
+		document.getElementById("divIDView2").innerHTML = "";
+	}catch(e){}
+	
+	try{
+		document.getElementById("divIDSearch").innerHTML = "<a class=\"btn btn-theme btn-block \" href=\"#\">Processing</a>";
+	}catch(e){}
+	
+	
 	if(validateSearchAuctionNo()){
 		document.frm.submit();
 	}
 	
 	
 }
+
+
+
+//"bid?mngr=upload-auction-manager&a=uploadAuctionSearch&uid=<//%=userId%>"
 
 function validateSearchAuctionNo(){
 	var isAllowed = true;

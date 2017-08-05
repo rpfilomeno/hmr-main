@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.util.DBConnection;
 import hmr.com.bean.Image;
+import hmr.com.bean.Lot;
+import hmr.com.manager.AuctionManager;
+import hmr.com.manager.LotManager;
 
 
 public class ImageDao extends DBConnection {
@@ -36,6 +39,7 @@ public class ImageDao extends DBConnection {
 	public ImageDao(){
 		dbConn = new DBConnection();
 	}
+	
 	
 	public ImageDao(HttpServletRequest req, HttpServletResponse res){
 		this.req = req;
@@ -66,9 +70,16 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 				iList.add(i);
 			}
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		return iList;
 	}
@@ -97,9 +108,16 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 				iList.add(i);
 			}
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		return iList;
 	}
@@ -124,9 +142,16 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 				iList.add(i);
 			}
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		return iList;
 	}
@@ -143,6 +168,11 @@ public class ImageDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		return affectedRows;
 	}
@@ -199,9 +229,19 @@ public class ImageDao extends DBConnection {
 
 			}
 
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
@@ -228,9 +268,19 @@ public class ImageDao extends DBConnection {
 				i = new Image();
 				i.setImageBytes(rs.getBytes("image"));
 			}
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		return i;
 	}
@@ -256,9 +306,19 @@ public class ImageDao extends DBConnection {
 				i = new Image();
 				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		return i;
 	}
@@ -302,9 +362,19 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 			}
 
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
@@ -349,9 +419,19 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
 
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
@@ -396,9 +476,19 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 				i.setImageBytes(rs.getBytes("image"));
 			}
 
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
@@ -443,9 +533,19 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
 
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
@@ -490,9 +590,19 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 				i.setImageBytes(rs.getBytes("image"));
 			}
 
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
@@ -537,9 +647,19 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
 
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
@@ -558,13 +678,11 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	Connection conn = null;
 	
 	int affectedRows = 0;
-	
-	Image i = null;
 
 	try {
 		DBConnection dbConn = new DBConnection();
-		conn = dbConn.getConnection();
-		
+		conn = dbConn.getConnection7();
+
 		StringBuilder sb = new StringBuilder("INSERT into image (auction_id, lot_id, item_id, active, image, thumbnail");
 		sb.append(", date_created, created_by)");
 		sb.append(" VALUES(");
@@ -590,9 +708,15 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	    affectedRows = stmt.executeUpdate();
 	    
 	    
+		stmt.close();
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
 	}
 	return affectedRows;
 }
@@ -675,10 +799,16 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	            }
 	        }
 		    
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 
 		return i;
@@ -756,9 +886,15 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	        }
 		    
 
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return i;
@@ -805,9 +941,16 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				iList.add(i);
 			}
 
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return iList;

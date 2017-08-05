@@ -70,11 +70,19 @@ public class AuctionUserDao extends DBConnection {
             	
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return u;
@@ -128,11 +136,19 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
             	
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return u;
@@ -188,11 +204,19 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
             	
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return u;
@@ -274,10 +298,15 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
             }
         }
 	    
-		
+		stmt.close();
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
 	}
 
 	return u;
@@ -356,10 +385,15 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
 	            }
 	        }
 		    
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 
 		return u;
@@ -426,10 +460,15 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
 	        }
 		    
 
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return u;
@@ -482,11 +521,16 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
 				uList.add(u);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return uList;
@@ -538,11 +582,16 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
 				uList.add(u);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return uList;

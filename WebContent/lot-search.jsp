@@ -131,9 +131,9 @@
             
             <ul class="top-navbar">
               <li>(02)548-6962</li>
-              <li>0917 548 3603</li>
+              <!-- <li>0917 548 3603</li>-->
               <li>
-                  <a href="mailto:auction@hmrphils.com">auction@hmrphils.com</a>
+                  <a href="mailto:ONLINE-AUCTION@HMRBID.COM">ONLINE-AUCTION@HMRBID.COM</a>
               </li>
               <li>
                 <a href="">Home</a>
@@ -507,7 +507,7 @@
 													<a href="account">My Account</a>
 												</li>
 												<li>
-													<a href="cart">My Basket</a>
+													<a href="cart">My Bids</a>
 												</li>
 												<li>
 													<a href="checkout">Checkout</a>

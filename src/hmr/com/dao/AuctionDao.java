@@ -44,7 +44,129 @@ public class AuctionDao extends DBConnection {
 		this.req = req;
 		this.res = res;
 	}
+	/*
+	public Auction getAuction(String auctionId, String pw){
+		
+		Connection conn = null;
 
+		Auction a = null;
+		
+		StringBuilder sb = new StringBuilder("SELECT id, email_address, first_name, last_name, mobile_no_1, mobile_no_2");
+
+		sb.append(", gender, role, bidder_no, reserve_bidder_no, company, status, active, landline_no");
+		
+		sb.append(", news_letter, news_letter_registration_date, verification_email_key, date_registration, date_password_change, show_change_password_next_login, birth_date");
+		
+		sb.append(", date_created, date_updated, created_by, updated_by");
+		
+		sb.append(" from auction where active=1 ");
+		
+		sb.append("and email_address = '"+userId+"' and pass_word = '"+pw+"'") ;
+
+		try {
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			System.out.println("conn : "+conn);
+
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			while(rs.next()){
+				a = new Auction();
+				a.setId(rs.getInt("id"));
+				a.setEmail_address(rs.getString("email_address"));
+				a.setFirst_name(rs.getString("first_name"));
+				a.setLast_name(rs.getString("last_name"));
+				a.setDate_created(rs.getTimestamp("date_created"));
+				a.setRole(rs.getInt("role"));
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return a;
+	}	
+	
+	
+	public Auction getAuctionActive(String auctionId, String pw){
+		
+		Connection conn = null;
+
+		Auction a = null;
+		
+		StringBuilder sb = new StringBuilder("SELECT id, email_address, first_name, last_name, mobile_no_1, mobile_no_2");
+
+		sb.append(", gender, role, bidder_no, reserve_bidder_no, company, status, active, landline_no");
+		
+		sb.append(", news_letter, news_letter_registration_date, verification_email_key, date_registration, date_password_change, show_change_password_next_login, birth_date");
+		
+		sb.append(", date_created, date_updated, created_by, updated_by");
+		
+		sb.append(" from auction where active=1 ");
+		
+		sb.append("and email_address = '"+userId+"' and pass_word = '"+pw+"'") ;
+
+		try {
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			System.out.println("conn : "+conn);
+
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			while(rs.next()){
+				a = new Auction();
+				a.setId(rs.getInt("id"));
+				a.setEmail_address(rs.getString("email_address"));
+				a.setFirst_name(rs.getString("first_name"));
+				a.setLast_name(rs.getString("last_name"));
+				a.setDate_created(rs.getTimestamp("date_created"));
+				a.setRole(rs.getInt("role"));
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return a;
+	}	
+	*/
+	
 public Auction getAuctionByToken(String token){
 		
 		Connection conn = null;
@@ -68,7 +190,19 @@ public Auction getAuctionByToken(String token){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+				if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+					conn = dbConn.getConnection2();
+				}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+					conn = dbConn.getConnection3();
+				}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+					conn = dbConn.getConnection4();
+				}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+					conn = dbConn.getConnection5();
+				}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+					conn = dbConn.getConnection6();
+				}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+					conn = dbConn.getConnection7();
+				}
 			
 			System.out.println("conn : "+conn);
 			
@@ -137,11 +271,28 @@ public Auction getAuctionByToken(String token){
 
 			}
 
-			
-			
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return a;
@@ -170,7 +321,19 @@ public Auction getAuctionByToken(String token){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -240,11 +403,19 @@ public Auction getAuctionByToken(String token){
             	System.out.println("asdfasdf df terms_and_conditions "+a.getTerms_and_conditions());
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return a;
@@ -273,7 +444,19 @@ public Auction getAuctionByToken(String token){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			//System.out.println("conn : "+conn);
 			
@@ -343,11 +526,19 @@ public Auction getAuctionByToken(String token){
             	System.out.println("asdfasdf df terms_and_conditions "+a.getTerms_and_conditions());
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return a;
@@ -448,11 +639,19 @@ public Auction getAuctionByToken(String token){
             	System.out.println("asdfasdf df terms_and_conditions "+a.getTerms_and_conditions());
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return a;
@@ -473,7 +672,19 @@ public Auction getAuctionByToken(String token){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			System.out.println("conn : "+conn);
 
@@ -492,56 +703,15 @@ public Auction getAuctionByToken(String token){
 
 			}
 
-			
-			
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-		}
-		
-		return a;
-	}
-	/*
-	
-	public Auction getAuction(String auctionId){
-		
-		Connection conn = null;
-
-		Auction a = null;
-		
-		StringBuilder sb = new StringBuilder("SELECT id, email_address, first_name, last_name, mobile_no_1, role from auction where ");
-
-		//sb.append("email_address = '"+userId+"'") ;
-
-		try {
-
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
-			
-			System.out.println("conn : "+conn);
-
-			java.sql.Statement stmt = conn.createStatement();
-
-			System.out.println("sql : "+sb.toString());
-			
-			ResultSet rs = stmt.executeQuery(sb.toString());
-
-			while(rs.next()){
-				a = new Auction();
-				a.setId(rs.getInt("id"));
-
-			}
-
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
-				
+				conn.close();
 				conn = null;
 				System.out.println("conn after closing : "+conn);
 				} catch (SQLException e) {}
@@ -550,167 +720,6 @@ public Auction getAuctionByToken(String token){
 		
 		return a;
 	}
-	
-	public Auction getAuctionRegistration(String auctionId, String vek){
-		
-		Connection conn = null;
-
-		Auction a = null;
-		
-		StringBuilder sb = new StringBuilder("SELECT id, email_address, first_name, last_name, mobile_no_1, verification_email_key, date_registration from auction where ");
-
-		//sb.append("email_address = '"+userId+"' and verification_email_key = '"+vek+"'");
-
-		try {
-
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
-			
-			System.out.println("conn : "+conn);
-
-			java.sql.Statement stmt = conn.createStatement();
-
-			System.out.println("sql : "+sb.toString());
-			
-			ResultSet rs = stmt.executeQuery(sb.toString());
-
-			while(rs.next()){
-				a = new Auction();
-				a.setId(rs.getInt("id"));
-
-			}
-
-			
-			
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
-		}
-		
-		return a;
-	}
-	
-	
-	public int insertAuctionOnRegistration(String firstName, String lastName, String auctionId, Integer mobileNo, String verification_email_key){
-		
-		int i = 0;
-		
-		try {
-			 conn = getConnection();
-
-			  Statement stmt = conn.createStatement();
-			
-		      stmt = conn.createStatement();
-
-		      //String sql = "INSERT INTO auction (first_name, last_name, email_address, mobile_no_1, verification_email_key, role, date_created) " +
-		      //             "VALUES ('"+firstName+"', '"+lastName+"', '"+userId+"' ,"+ mobileNo+", '"+verification_email_key+"', 2, now())";
-		      String sql = "";
-		      
-		      System.out.println("sql : "+sql);
-		      i = stmt.executeUpdate(sql);
-			
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-				
-				} catch (SQLException e) {}
-			}
-		}
-
-		return i;
-		
-	}
-*/	
-	/*
-	
-	public int insertAuctionOnCreate(
-				String firstName,
-				String lastName,
-				String birthDate,
-				Integer gender,
-				String company,
-				String emailAddress,
-				String passWord,
-				Integer auctionStatus,
-				Integer active,
-				Integer role,
-				Integer newsLetter,
-				String newsLetterRegistrationDate,
-				String registrationDate,
-				String passwordChangeDate,
-				Integer mobileNo1,
-				Integer mobileNo2,
-				Integer landLineNo,
-				Integer bidderNo,
-				Integer reserveBidderNo,
-				String verificationEmailKey,
-				Integer showChangePasswordNextLogin,
-				Integer auction_id,
-				String a
-			){
-		
-		int i = 0;
-		
-		try {
-			 conn = getConnection();
-
-			java.sql.Statement stmt = conn.createStatement();
-			
-		      stmt = conn.createStatement();
-		      
-				StringBuilder sb = new StringBuilder("INSERT INTO auction (email_address, first_name, last_name, mobile_no_1, mobile_no_2");
-
-				sb.append(", gender, role, bidder_no, reserve_bidder_no, company, status, active, landline_no");
-				
-				sb.append(", news_letter, news_letter_registration_date, verification_email_key, date_registration");
-		      
-				sb.append(", date_password_change, show_change_password_next_login, birth_date");
-				
-				sb.append(", date_created, created_by)");
-				
-				sb.append(" VALUES(");
-				
-				sb.append("'"+emailAddress+"', '"+firstName+"', '"+lastName+"' ,"+ mobileNo1+", "+mobileNo2+"");
-				sb.append(", "+gender+", "+role+", "+bidderNo+" ,"+ reserveBidderNo+", '"+company+"' ,"+ auctionStatus+", "+active+", "+landLineNo);
-				sb.append(", "+newsLetter+", '"+newsLetterRegistrationDate+"', '"+verificationEmailKey+"' ,'"+ registrationDate+"'");
-				sb.append(", '"+passwordChangeDate+"', "+showChangePasswordNextLogin+", '"+birthDate+"'");
-				
-				sb.append("now(),"+user_id);
-				
-				sb.append(")");
-		      
-		      
-		      String sql = sb.toString();
-		      
-		      
-		      System.out.println("sql : "+sql);
-		      i = stmt.executeUpdate(sql);
-			
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-				
-				} catch (SQLException e) {}
-			}
-		}
-
-		return i;
-		
-	}
-	*/
 
 	public Auction insertAuctionOnCreate(
 				String auction_name,
@@ -749,7 +758,19 @@ public Auction getAuctionByToken(String token){
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 
 			String SERVER_DIRECTORY_HMR_IMAGES = (String)req.getSession().getAttribute("SERVER_DIRECTORY_HMR_IMAGES");
@@ -891,13 +912,18 @@ public Auction getAuctionByToken(String token){
 	            }
 	        }
 		    
-			
+			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 
 		return a;
@@ -1043,13 +1069,18 @@ public Auction getAuctionByToken(String token){
 	            }
 	        }
 		    
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return a;
@@ -1216,10 +1247,15 @@ public Auction getAuctionByToken(String token){
 	        }
 		    
 
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return a;
@@ -1244,8 +1280,19 @@ public Auction getAuctionByToken(String token){
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection2();
-
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			StringBuilder sb = new StringBuilder("Update auction SET auction_id=?, auction_no=?, start_date_time=?, end_date_time=?, location=?, default_premium=?, date_sync=?");
 
 			sb.append(", date_updated=?, updated_by=?");
@@ -1307,10 +1354,15 @@ public Auction getAuctionByToken(String token){
 	        }
 		    
 
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return a;
@@ -1446,10 +1498,15 @@ public Auction getAuctionByToken(String token){
 	        }
 		    
 
-			
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	
 		return a;
@@ -1476,7 +1533,19 @@ public Auction getAuctionByToken(String token){
 		sb.append(" order by id desc");
 
 		try {
-			conn = getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -1527,11 +1596,16 @@ public Auction getAuctionByToken(String token){
 				aList.add(a);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return aList;
@@ -1556,19 +1630,33 @@ public Auction getAuctionByToken(String token){
 		sb.append(" order by end_date_time asc");
 
 		try {
+			DBConnection dbConn = new DBConnection();
 			
 			
-			if(conn==null){
-				dbConn = new DBConnection();
-				conn = dbConn.getConnection();
-			}else{
-				conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
 			}
-
 		
 			java.sql.Statement stmt = conn.createStatement();
 
+			//System.out.println("sql : "+sb.toString());
 			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}else{
+				
+			}
+
 			System.out.println("sql : "+sb.toString());
 			
 			ResultSet rs = stmt.executeQuery(sb.toString());
@@ -1618,11 +1706,16 @@ public Auction getAuctionByToken(String token){
 				aList.add(a);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return aList;
@@ -1657,14 +1750,18 @@ public Auction getAuctionByToken(String token){
 			DBConnection dbConn = new DBConnection();
 			
 			
-			
-			//System.out.println("conn : "+conn);
-			
-			if(conn==null){
-				dbConn = new DBConnection();
-				conn = dbConn.getConnection();
-			}else{
-				conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
 			}
 		
 			java.sql.Statement stmt = conn.createStatement();
@@ -1726,11 +1823,16 @@ public Auction getAuctionByToken(String token){
 				aList.add(a);
 			}
 
-			
-			
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return aList;
@@ -1749,6 +1851,11 @@ public Auction getAuctionByToken(String token){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 	}
 	

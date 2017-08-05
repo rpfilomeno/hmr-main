@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
@@ -21,6 +22,7 @@ public class RunnableItemManager implements Runnable {
 	   private String threadName;
 	   private BigDecimal lot_id;
 	   private BigDecimal auction_id;
+	   private Integer isLast;
 
 	   RunnableItemManager( String threadName, BigDecimal lot_id, BigDecimal auction_id){
 	       this.threadName = threadName;
@@ -29,9 +31,21 @@ public class RunnableItemManager implements Runnable {
 	       System.out.println("Creating " +  threadName +" - "+lot_id+" - "+auction_id  );
 	   }
 	   
+	   RunnableItemManager( String threadName, BigDecimal lot_id, BigDecimal auction_id, Integer isLast){
+	       this.threadName = threadName;
+	       this.lot_id = lot_id;
+	       this.auction_id = auction_id;
+	       this.isLast = isLast;
+	       System.out.println("Creating " +  threadName +" - "+lot_id+" - "+auction_id  );
+	   }
+	   
 	   
 	   public void run() {	
 	      System.out.println("Running " +  threadName );
+	      
+    	  
+
+	      
 	      try {
 
 				String jsonDataItem = "";
@@ -506,10 +520,13 @@ public class RunnableItemManager implements Runnable {
 											
 											isConn2 = false;
 											
-											Thread.sleep(3000);
+											//Thread.sleep(3000);
+											
+			
+											
 										}
 										
-										//Thread.sleep(2000);
+										Thread.sleep(2000);
 										
 									}
 									
@@ -525,19 +542,54 @@ public class RunnableItemManager implements Runnable {
 								
 							}
 							
+							
+
+							
 						}
 						
-						Thread.sleep(1000);
+						//Thread.sleep(1000);
 						
 					}
 	    	  
-	    	  
 
-	            Thread.sleep(1000);
+				
+	            //Thread.sleep(1000);
 	            
-	     } catch (InterruptedException | JSONException e) {
+	     } catch (JSONException e) {
 	         System.out.println("Thread " +  threadName + " interrupted.");
 	     }
+	      
+			if(isLast!=null && isLast==1){
+				
+				LovManager lovMngr = new LovManager();
+				try {
+					Thread.sleep(40000);
+					lovMngr.updateLovListValue("UPLOAD-AUCTION-PROCESS-SYNC-ALL",new Integer( 186),"0", new Integer(1));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}else{
+				/*
+				LovManager lovMngr = new LovManager();
+				try {
+					//Thread.sleep(20000);
+					lovMngr.updateLovListValue("UPLOAD-AUCTION-PROCESS-SYNC-ALL",new Integer( 186),"1", new Integer(1));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				*/
+			}
+	      
+	      
 	     System.out.println("Thread " +  threadName + " exiting.");
 	   }
 	   

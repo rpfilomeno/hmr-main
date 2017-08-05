@@ -159,7 +159,7 @@ public class LovDao extends DBConnection {
 	public List<Lov> getLovList(String group){
 		
 		Connection conn = null;
-
+		Statement stmt = null;
 		List<Lov> lovList = new ArrayList<Lov>();
 		
 		Lov l = null;
@@ -178,11 +178,21 @@ public class LovDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 			
 			System.out.println("conn : "+conn);
 			
-			Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -209,9 +219,9 @@ public class LovDao extends DBConnection {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
@@ -221,9 +231,78 @@ public class LovDao extends DBConnection {
 				System.out.println("conn after closing : "+conn);
 				} catch (SQLException e) {}
 			}
+			if (stmt != null) {
+				try {
+				System.out.println("conn closing : "+stmt);
+				stmt.close();
+				stmt = null;
+				System.out.println("conn after closing : "+stmt);
+				} catch (SQLException e) {}
+			}
+			
 		}
 		
 		return lovList;
 	}
+	
+	public int updateLovListValue(Integer id, String newValue, Integer user_id){
+		
+		int i = 0;
+		
+		
+		
+		if(user_id==null || user_id==0){
+			
+		}
+		
+		Connection conn = null;
+		
+		try {
+			
+			DBConnection dbConn = new DBConnection();
+
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection6();
+			}
+			
+			
+			Statement stmt = conn.createStatement();
+			
+			stmt = conn.createStatement();
+			
+			//USER-STATUS - 11 - Registered
+			
+			String sql = "update lov SET `value`='"+newValue+"'";
+			sql = sql+ ", updated_by="+user_id+", date_updated=now() where id="+id+"";
+			System.out.println("sql : "+sql);
+			
+			i = stmt.executeUpdate(sql);
+			
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+
+		return i;
+		
+	}
+	
+	
+	
+	
 	
 }

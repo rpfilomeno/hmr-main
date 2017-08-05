@@ -63,7 +63,19 @@ public class ItemStagingDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -167,7 +179,17 @@ public class ItemStagingDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 			
 			//System.out.println("conn : "+conn);
 			
@@ -272,7 +294,17 @@ public class ItemStagingDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -650,7 +682,17 @@ public class ItemStagingDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection7();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 
 
 			StringBuilder sb = new StringBuilder("INSERT into item_staging (item_id, lot_id, status_id, reference_no, pullout_id,");
@@ -696,70 +738,21 @@ public class ItemStagingDao extends DBConnection {
 			if(stmt.isClosed()){
 				stmt = conn.prepareStatement(sql);
 			}
-	        
-	        /*
-			if(conn!=null && !conn.isClosed()){
-				try{
-					stmt = conn.prepareStatement(sql);
-				}catch(Exception ex){
-					conn = dbConn.getConnection2();
-					stmt = conn.prepareStatement(sql);
-				}
-				
-			}else{
-				dbConn = new DBConnection();
-				conn = dbConn.getConnection3();
-				stmt = conn.prepareStatement(sql);
+	      
+			if(lot_id==null){
+				lot_id = new BigDecimal("0");
 			}
 			
-			
-			if(stmt!=null && !stmt.isClosed()){
-				if(conn!=null && !conn.isClosed()){
-					stmt = conn.prepareStatement(sql);
-				}else{
-					dbConn = new DBConnection();
-					conn = dbConn.getConnection4();
-					stmt = conn.prepareStatement(sql);
-				}
-			}else{
-				dbConn = new DBConnection();
-				conn = dbConn.getConnection();
-				if(stmt!=null && !stmt.isClosed()){
-					
-				}else{
-					stmt = conn.prepareStatement(sql);
-				}
-				if(conn!=null && !conn.isClosed()){
-					stmt = conn.prepareStatement(sql);
-				}else{
-					
-					stmt = conn.prepareStatement(sql);
-				}
-				
+			if(rate==null){
+				rate = new BigDecimal("0");
 			}
 			
-			if(conn==null || conn.isClosed()){
-				conn = dbConn.getConnection();
+			if(item_id==null){
+				item_id = new BigDecimal("0");
 			}
-	        
-			if(stmt!=null && !stmt.isClosed()){
-				
-			}else{
-				stmt = conn.prepareStatement(sql);
-			}
-			
-
-	        
-			if((stmt==null || stmt.isClosed()) && conn!=null && !conn.isClosed()){
-				stmt = conn.prepareStatement(sql);
-			}
-			
-			if(conn.isClosed()){
-				conn = dbConn.getConnection();
-				stmt = conn.prepareStatement(sql);
-			}
-			*/
-
+	        if(consignor_id==null){
+	        	consignor_id = new BigDecimal("0");
+	        }
 	        stmt.setBigDecimal(1, item_id);
 	        stmt.setBigDecimal(2, lot_id);
 	        stmt.setInt(3, status_id);
@@ -802,7 +795,7 @@ public class ItemStagingDao extends DBConnection {
 		} catch (SQLException e) {
 			System.err.println(e.getCause());
 			
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
@@ -857,7 +850,17 @@ public class ItemStagingDao extends DBConnection {
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection2();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}
 
 
 			StringBuilder sb = new StringBuilder("INSERT into item_staging (item_id, lot_id, status_id, reference_no, pullout_id,");
@@ -903,68 +906,23 @@ public class ItemStagingDao extends DBConnection {
 			if(stmt.isClosed()){
 				stmt = conn.prepareStatement(sql);
 			}
-	        /*
-			if(conn!=null && !conn.isClosed()){
-				try{
-					stmt = conn.prepareStatement(sql);
-				}catch(Exception ex){
-					conn = dbConn.getConnection7();
-					stmt = conn.prepareStatement(sql);
-				}
-				
-			}else{
-				dbConn = new DBConnection();
-				conn = dbConn.getConnection3();
-				stmt = conn.prepareStatement(sql);
+	       
+			
+			if(lot_id==null){
+				lot_id = new BigDecimal("0");
 			}
 			
-			
-			if(stmt!=null && !stmt.isClosed()){
-				if(conn!=null && !conn.isClosed()){
-					stmt = conn.prepareStatement(sql);
-				}else{
-					dbConn = new DBConnection();
-					conn = dbConn.getConnection5();
-					stmt = conn.prepareStatement(sql);
-				}
-			}else{
-				dbConn = new DBConnection();
-				conn = dbConn.getConnection();
-				if(stmt!=null && !stmt.isClosed()){
-					
-				}else{
-					stmt = conn.prepareStatement(sql);
-				}
-				if(conn!=null && !conn.isClosed()){
-					stmt = conn.prepareStatement(sql);
-				}else{
-					
-					stmt = conn.prepareStatement(sql);
-				}
-				
+			if(rate==null){
+				rate = new BigDecimal("0");
 			}
 			
-			if(conn==null || conn.isClosed()){
-				conn = dbConn.getConnection3();
+			if(item_id==null){
+				item_id = new BigDecimal("0");
 			}
-	        
-			if(stmt!=null && !stmt.isClosed()){
-				
-			}else{
-				stmt = conn.prepareStatement(sql);
-			}
+	        if(consignor_id==null){
+	        	consignor_id = new BigDecimal("0");
+	        }
 			
-
-	        
-			if((stmt==null || stmt.isClosed()) && conn!=null && !conn.isClosed()){
-				stmt = conn.prepareStatement(sql);
-			}
-			
-			if(conn.isClosed()){
-				conn = dbConn.getConnection4();
-				stmt = conn.prepareStatement(sql);
-			}
-*/
 	        stmt.setBigDecimal(1, item_id);
 	        stmt.setBigDecimal(2, lot_id);
 	        stmt.setInt(3, status_id);
@@ -987,6 +945,7 @@ public class ItemStagingDao extends DBConnection {
 	        stmt.setInt(15, payables_id);
 
 
+
 	        stmt.setBigDecimal(16, product_code);
 	        stmt.setBigDecimal(17, srp);
 	        stmt.setBigDecimal(18, consignor_id);
@@ -1005,7 +964,7 @@ public class ItemStagingDao extends DBConnection {
 
 			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
@@ -1456,7 +1415,7 @@ public class ItemStagingDao extends DBConnection {
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {

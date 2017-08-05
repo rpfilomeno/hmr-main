@@ -303,7 +303,7 @@ public class Bid extends HttpServlet {
 
 
         AuctionManager aMngr = new AuctionManager(req,res);
-        AuctionUserManager auMngr = new AuctionUserManager();
+        AuctionUserManager auMngr = new AuctionUserManager(req,res);
         
         
 		

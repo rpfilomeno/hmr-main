@@ -744,17 +744,30 @@ public class AuctionStagingDao extends DBConnection {
 				BigDecimal default_premium,
 				Timestamp last_date_sync
 			) {
-		
-		Connection conn = null;
+
 		
 		int affectedRows = 0;
 		
 		AuctionStaging a = null;
 
+		Connection conn = null;
+		
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 
 			StringBuilder sb = new StringBuilder("INSERT into auction_staging (auction_id, auction_no, auction_date, location, default_premium, last_date_sync");
@@ -1170,8 +1183,24 @@ public class AuctionStagingDao extends DBConnection {
 		
 		sb.append(" order by auction_id desc");
 
+		Connection conn = null;
+		
 		try {
-			conn = getConnection2();
+			DBConnection dbConn = new DBConnection();
+			
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -1197,7 +1226,7 @@ public class AuctionStagingDao extends DBConnection {
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
@@ -1225,8 +1254,24 @@ public class AuctionStagingDao extends DBConnection {
 		
 		sb.append(" order by end_date_time asc");
 
+		Connection conn = null;
+		
 		try {
-			conn = getConnection();
+			DBConnection dbConn = new DBConnection();
+			
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 
 			java.sql.Statement stmt = conn.createStatement();
 

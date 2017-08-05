@@ -1,17 +1,14 @@
 package hmr.com.manager;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
-import java.sql.Statement;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +20,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,9 +36,7 @@ import hmr.com.bean.ItemStaging;
 import hmr.com.bean.Lot;
 import hmr.com.bean.LotStaging;
 import hmr.com.bean.Lov;
-import hmr.com.dao.LovDao;
-import hmr.com.util.EmailUtil;
-import hmr.com.util.StringUtil;
+
 
 
 public class UploadAuctionManager {
@@ -79,11 +74,33 @@ public class UploadAuctionManager {
 			//String userId = req.getParameter("userId");
 			//BigDecimal mobileNo = new BigDecimal(req.getParameter("mobileNo"));
 			AuctionStagingManager asMngr = new AuctionStagingManager(req,res);
-			AuctionManager aMngr = new AuctionManager();
+			//AuctionManager aMngr = new AuctionManager();
 			List<AuctionStaging> asList = asMngr.getAuctionStagingList();
 			req.setAttribute("auctionStagingList", asList);
 			
-			page = "upload-auction-search.jsp";
+			
+			LovManager lovMngr = new LovManager();
+			List<Lov> lotLovCountList = new ArrayList<Lov>();
+			
+			
+			try {
+				lotLovCountList = lovMngr.getLovList("UPLOAD-AUCTION-PROCESS-SYNC-ALL");
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			req.setAttribute("lotLovCountList", Integer.parseInt(lotLovCountList.get(0).getValue()) );
+			
+			if(Integer.parseInt(lotLovCountList.get(0).getValue())==0){
+				page = "upload-auction-search.jsp";
+			}else{
+				page = "upload-auction-search.jsp";
+			}
+			
+			
 			
 		}else if(action.equals("searchUploadAuction")){
 			
@@ -100,13 +117,13 @@ public class UploadAuctionManager {
 			}
 			
 			AuctionStagingManager asMngr = new AuctionStagingManager(req,res);
-			AuctionManager aMngr = new AuctionManager();
+			//AuctionManager aMngr = new AuctionManager();
 			
 			LotStagingManager lsMngr = new LotStagingManager(req,res);
-			LotManager lMngr = new LotManager();
+			//LotManager lMngr = new LotManager();
 			
 			ItemStagingManager isMngr = new ItemStagingManager(req,res);
-			ItemManager iMngr = new ItemManager();
+			//ItemManager iMngr = new ItemManager();
 			
 			List<AuctionStaging> asList = asMngr.getAuctionStagingList();
 			List<LotStaging> lsList = lsMngr.getLotStagingList();
@@ -116,20 +133,40 @@ public class UploadAuctionManager {
 			req.setAttribute("lotStagingList", lsList);
 			req.setAttribute("itemStagingList", isList);
 			
-			page = "upload-auction-search.jsp";
+
+			LovManager lovMngr = new LovManager();
+			//List<Lov> lotLovCountList = new ArrayList<Lov>();
+			
+			
+			//try {
+			//	lotLovCountList = lovMngr.getLovList("UPLOAD-AUCTION-PROCESS-SYNC-ALL");
+				
+				
+			//} catch (SQLException e) {
+				// TODO Auto-generated catch block
+			//	e.printStackTrace();
+			//}
+			
+			req.setAttribute("lotLovCountList", 1 );
+			
+			//if(Integer.parseInt(lotLovCountList.get(0).getValue())==0){
+			//	page = "upload-auction-search.jsp";
+			//}else{
+				page = "upload-auction-search.jsp";
+			//}
 			
 		}else if(action.equals("viewUploadAuction")){
 
-			UploadAuctionManager uaMngr = new UploadAuctionManager(req,res);
+			//UploadAuctionManager uaMngr = new UploadAuctionManager(req,res);
 			
 			AuctionStagingManager asMngr = new AuctionStagingManager(req,res);
-			AuctionManager aMngr = new AuctionManager();
+			//AuctionManager aMngr = new AuctionManager();
 			
 			LotStagingManager lsMngr = new LotStagingManager(req,res);
-			LotManager lMngr = new LotManager();
+			//LotManager lMngr = new LotManager();
 			
 			ItemStagingManager isMngr = new ItemStagingManager(req,res);
-			ItemManager iMngr = new ItemManager();
+			//ItemManager iMngr = new ItemManager();
 			
 			List<AuctionStaging> asList = asMngr.getAuctionStagingList();
 			List<LotStaging> lsList = lsMngr.getLotStagingList();
@@ -153,13 +190,13 @@ public class UploadAuctionManager {
 			}
 			
 			AuctionStagingManager asMngr = new AuctionStagingManager(req,res);
-			AuctionManager aMngr = new AuctionManager();
+			//AuctionManager aMngr = new AuctionManager();
 			
 			LotStagingManager lsMngr = new LotStagingManager(req,res);
-			LotManager lMngr = new LotManager();
+			//LotManager lMngr = new LotManager();
 			
 			ItemStagingManager isMngr = new ItemStagingManager(req,res);
-			ItemManager iMngr = new ItemManager();
+			//ItemManager iMngr = new ItemManager();
 			
 			List<AuctionStaging> asList = asMngr.getAuctionStagingList();
 			List<LotStaging> lsList = lsMngr.getLotStagingList();
@@ -196,7 +233,7 @@ public class UploadAuctionManager {
 	//public static BigDecimal processUploadAuction(BigDecimal auction_no_param) throws JSONException {
 	public static BigDecimal processUploadAuction(BigDecimal auction_no_param, BigDecimal lot_no_param) throws JSONException {
 		BigDecimal auction_no_ret = new BigDecimal(0);
-		BigDecimal lot_no_ret = new BigDecimal(0);
+		//BigDecimal lot_no_ret = new BigDecimal(0);
 		String jsonData = "";
 		
 		//BigDecimal auction_no_param = new BigDecimal("1658");
@@ -267,7 +304,19 @@ public class UploadAuctionManager {
 		  //jsonData = "{result:OK, data: [ {\"auction_id\":\"31\",\"auction_no\":\"1663\",\"auction_date\":\"2013-03-02\",\"location\":\"HMR\",\"default_premium\":\"15\"}] }";
 		  int lotcount = 1;
 		  
+		  RunnableItemManager rim1 = null;
+		  
 		  if(!"".equals(jsonData)){
+			  
+			  
+				
+				LovManager lovMngr = new LovManager();
+				try {
+					lovMngr.updateLovListValue("UPLOAD-AUCTION-PROCESS-SYNC-ALL",new Integer( 186),"1", new Integer(1));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			  
 				LotStagingManager lsMngr = new LotStagingManager();
 				ItemStagingManager isMngr = new ItemStagingManager();
@@ -626,7 +675,7 @@ public class UploadAuctionManager {
 														
 													}
 													
-													if(lotcount<100){
+													if(lotcount<201){
 														
 														lsMngr.insertLotStagingOnSearch(
 																lot_id,
@@ -717,7 +766,7 @@ public class UploadAuctionManager {
 							
 						}
 						
-
+						
 						List<LotStaging> lsList = lsMngr.getLotStagingList();
 						//List<ItemStaging> isList = isMngr.getItemStagingList();
 						//URL urlItem = null;
@@ -726,15 +775,72 @@ public class UploadAuctionManager {
 						//LotStaging addLot = new LotStaging();
 						//addLot.setLot_id(new BigDecimal("64509"));
 						//lsList.add(addLot) ; 
+						int i = 0;
 						
 						if(lsList!=null && lsList.size() > 0){
 
-							String jsonDataItem = "";
-
+							//String jsonDataItem = "";
+							
+							//int j = 0;
+							
+							//BigDecimal lotIdlast5 = null;
+							
 							for(LotStaging ls :lsList){
 								
-								RunnableItemManager rim = new RunnableItemManager("itemStagingInsert", ls.getLot_id(), ls.getAuction_id());
-								rim.start();
+								if(i>0 && i < lsList.size() - 1){
+
+									RunnableItemManager rim = new RunnableItemManager("itemStagingInsert", ls.getLot_id(), ls.getAuction_id());
+									rim.start();
+								}else{
+									
+									
+									rim1 = new RunnableItemManager("itemStagingInsert", ls.getLot_id(), ls.getAuction_id(), 1);
+									
+									//LovManager lovMngr = new LovManager();
+									//try {
+										//Thread.sleep(45000);
+										rim1.start();
+									//} catch (SQLException e) {
+										// TODO Auto-generated catch block
+										//e.printStackTrace();
+									//} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+									//	e.printStackTrace();
+									//}
+									
+									
+								}
+								
+								
+									
+									i++;
+									
+									if(i==10 || i==20 || i==30 || i==40 || i==50 || i==60 || i==70 || i==80 || i==90 || i==100 ||
+											i==110 || i==120 || i==130 || i==140 || i==150 || i==160 || i==170 || i==180 || i==190 || i==200 ||
+											i==220 || i==240 || i==260 || i==280 || i==300 || i==320 || i==340 || i==360 || i==380 || i==400){
+										
+										try {
+											Thread.sleep(4000);
+											lovMngr.updateLovListValue("UPLOAD-AUCTION-PROCESS-SYNC-ALL",new Integer(186),String.valueOf(i), new Integer(1));
+										} catch (SQLException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+										
+										
+									}
+
+									
+									
+				
+									
+								//}
+								
+
+								
+								
 										/*
 								try{
 								URL urlItem = new URL("http://wsr.hmrphils.com/json/get-item-list?lot_id="+ls.getLot_id());
@@ -790,13 +896,20 @@ public class UploadAuctionManager {
 					}
 					
 					
+
 					
 					
-			  
+
 			  
 		  }else{
 			  //no data
 		  }
+		  
+		  
+		    
+		  
+
+	  
 
 
 
