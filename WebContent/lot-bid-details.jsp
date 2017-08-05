@@ -343,8 +343,8 @@
 								<img style="width:100%" class="" src="image?id=<%=lot.getId()%>&t=lt" >
 							</div>
 						</div>
-						<div class="col-sm-5">
-							<h3 class="full-product-name"><%=lot.getLot_desc()%></h3>
+						<div class="col-sm-5"> 
+							<h3 class="full-product-name"><%=lot.getLot_name()%></h3>
 							<div class="product-details">
 								<%  if( lot.getIs_available_lot() > 0) { %>
 								<div class="product-detail">Unit Quantity: <%=lot.getUnit_qty()%></div>
@@ -412,7 +412,7 @@
 
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane active" id="product-description-tab">
-							<p><%=auction.getAuction_desc()%></p>
+							<p><%=lot.getLot_desc()%></p>
 						</div>
 
 						<div role="tabpanel" class="tab-pane" id="product-delivery-tab">
