@@ -332,7 +332,7 @@
 								<div id="auction-gallery">
 								<% for (Image i : auction_images) {	%>
 									<a href="image?id=<%=i.getId()%>" title="Image #<%=i.getId()%>">
-										<img style="width:100%; padding:3px" class="" src="image?id=<%=i.getId()%>&t=t" alt="Image #<%=i.getId()%>">
+										<img style="width:100%; padding:3px" class="lazy" data-original="image?id=<%=i.getId()%>&t=t" alt="Image #<%=i.getId()%>">
 									</a>
 			
 								<% } %>
@@ -349,7 +349,7 @@
 					<div class="row">
 						<div class="col-sm-7">
 							<div style="margin-top:15px;">
-								<img style="width:100%" class="" src="image?id=<%=auction.getAuction_id()%>&t=lt" >
+								<img style="width:100%" class="lazy" data-original="image?id=<%=auction.getAuction_id()%>&t=lt" >
 							</div>
 						</div>
 						<div class="col-sm-5">
@@ -407,7 +407,7 @@
 									
 										<div class="product-image-wrap">
 											<a href="#" onclick="viewLot('<%=l.getId()%>')">
-											<img class="" style="width:100%" src="image?id=<%=l.getId()%>&t=lt">
+											<img style="width:100%" class="lazy" data-original="image?id=<%=l.getId()%>&t=lt">
 											</a>
 										</div>
 										<div class="clearfix top10"></div>

@@ -340,7 +340,7 @@
 					<div class="row">
 						<div class="col-sm-7">
 							<div style="margin-top:15px;">
-								<img style="width:100%" class="" src="image?id=<%=lot.getId()%>&t=lt" >
+								<img style="width:100%" class="lazy" data-original="image?id=<%=lot.getId()%>&t=lt" >
 							</div>
 						</div>
 						<div class="col-sm-5"> 
@@ -482,7 +482,7 @@
 								<div class="product-item">
 									
 										<div class="product-image-wrap">
-											<img class="" style="width:100%;" src="image?id=<%=i.getId()%>&t=it">
+											<img style="width:100%;" class="lazy" data-original="image?id=<%=i.getId()%>&t=it">
 										</div>
 										<div class="clearfix top10"></div>
 										<div class="product-body">
@@ -502,7 +502,7 @@
 											
 												<div class="col-md-3 col-xs-6" style="padding:3px">
 													<a href="image?id=<%=ii.getId()%>" title="Image #<%=ii.getId()%>">
-														<img style="width:100%; padding-top:3px" class="" src="image?id=<%=ii.getId()%>&t=t" alt="Image #<%=ii.getId()%>" />
+														<img style="width:100%; padding-top:3px" class="lazy" data-original="image?id=<%=ii.getId()%>&t=t" alt="Image #<%=ii.getId()%>" />
 													</a>
 												</div>
 
