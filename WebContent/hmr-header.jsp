@@ -15,7 +15,7 @@ String userId = (String)request.getSession().getAttribute("userId");
 Integer user_id = request.getSession().getAttribute("user-id")!=null ? (Integer)request.getSession().getAttribute("user-id") : null;
 Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ? (Integer)request.getSession().getAttribute("user-role-id") : 0;
 
-System.out.println("fullName : "+fullName);
+System.out.println("fullName : "+fullName); 
 
 %>
 

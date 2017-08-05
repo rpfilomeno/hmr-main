@@ -729,7 +729,7 @@ public class Bid extends HttpServlet {
 		    
             }else if(manager.equals("userAddress-manager")){
 				System.out.println("HELLO ======== " + req.getParameter("action"));
-				UserAddressManager uMngr = new UserAddressManager(req,res);
+				UserAddressManager uMngr = new UserAddressManager(req,res); 
 				page = uMngr.doUserAddressManager();
 			
 

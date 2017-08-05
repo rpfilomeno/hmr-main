@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <%@ page import="hmr.com.bean.User"
 		 import="hmr.com.bean.Lov"
 		 import="java.util.List" 

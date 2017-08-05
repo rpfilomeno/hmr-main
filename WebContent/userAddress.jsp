@@ -2,7 +2,7 @@
 <%@page import="hmr.com.bean.UserAddress"%>
 <%@page import="java.util.HashMap"%>
 <%@ page import="hmr.com.bean.User"
-		 import="hmr.com.bean.Lov"
+		 import="hmr.com.bean.Lov" 
 		 import="java.math.BigDecimal" 
 		 import="java.util.List" 
 		 import="java.util.HashMap" 
