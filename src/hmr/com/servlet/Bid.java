@@ -38,6 +38,7 @@ import hmr.com.manager.LotManager;
 import hmr.com.manager.LotRangeManager;
 import hmr.com.manager.RunnableNegotiatedBidManager;
 import hmr.com.manager.UploadAuctionManager;
+import hmr.com.manager.UserAddressManager;
 import hmr.com.manager.UserManager;
 
 import hmr.com.util.DBConnection;
@@ -725,7 +726,14 @@ public class Bid extends HttpServlet {
 			}else if(manager.equals("user-manager")){
 				UserManager uMngr = new UserManager(req,res);
 				page = uMngr.doUserManager();
-				
+		    
+            }else if(manager.equals("userAddress-manager")){
+				System.out.println("HELLO ======== " + req.getParameter("action"));
+				UserAddressManager uMngr = new UserAddressManager(req,res);
+				page = uMngr.doUserAddressManager();
+			
+
+
 			}else if(manager.equals("auction-manager")){		
 				if("saveAuctionImage".equals(action) && (auction_file_small!=null || auction_file!=null) ){
 					System.out.println("BID saveAuctionImage "+auction_file_small+" - "+auction_file);

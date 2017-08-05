@@ -15,7 +15,8 @@ String userId = (String)request.getSession().getAttribute("userId");
 Integer user_id = request.getSession().getAttribute("user-id")!=null ? (Integer)request.getSession().getAttribute("user-id") : null;
 Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ? (Integer)request.getSession().getAttribute("user-role-id") : 0;
 
-System.out.println("fullName : "+fullName);
+System.out.println("fullName : "+fullName);
+
 %>
 
     <!-- CSS Global -->
@@ -174,7 +175,8 @@ System.out.println("fullName : "+fullName);
                                 <li><a href="#">List Of Values</a></li>
                                 <li><a href="#">Cases</a></li>
                                 <li><a href="#">Auction User Bidding Max</a></li>
-                                <!-- 
+                                <li><a href="bid?mngr=userAddress-manager&a=userAddressList&uid=<%=userId%>">User Address</a></li>
+								<!-- 
                                 <li><a href="bid?mngr=user-manager&a=userList&uid=</ %=userId%>">Users</a></li>
                                 <li><a href="bid?mngr=lov-manager&a=lovList">List Of Values</a></li>
                                 <li><a href="bid?mngr=auction-manager&a=auctionList">Auctions</a></li>
