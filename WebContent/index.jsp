@@ -3,6 +3,7 @@
 		 import="java.util.List"  
 		 import="java.text.SimpleDateFormat"
 		 import="java.math.BigDecimal"
+		 import="java.sql.Timestamp"
 %>
 <%
 	System.out.println("PAGE index.jsp");
@@ -491,6 +492,10 @@
 																<%=activeOnlineAuction.getAuction_name()%>
 															</a>
 														</h3>
+														<%=activeOnlineAuction.getAuction_id()%>
+														<div class="card-snippet-wrap">
+															Description: <%=activeOnlineAuction.getAuction_desc() %>
+														</div>
 														<div class="card-snippet-wrap">
 															Location: <%=activeOnlineAuction.getLocation()%>
 														</div>
@@ -499,6 +504,15 @@
 														</div>
 														<div class="card-snippet-wrap">
 															Closing: <%=sdf.format(activeOnlineAuction.getEnd_date_time()) %>
+														</div>
+														<div class="card-snippet-wrap">
+															<% if(activeOnlineAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+																Remarks: Upcoming Bidding
+															<% }else if (activeOnlineAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+																Remarks: Accepting Bids
+															<% } else { %>
+																Remarks: Completed
+															<% } %>
 														</div>
 															
 														<div class="card-action-btns">
@@ -525,6 +539,9 @@
 															</a>
 														</h3>
 														<div class="card-snippet-wrap">
+															Description: <%=activeNegotiatedAuction.getAuction_desc() %>
+														</div>
+														<div class="card-snippet-wrap">
 															<%=activeNegotiatedAuction.getLocation()%>
 														</div>
 														<div class="card-snippet-wrap">
@@ -532,6 +549,15 @@
 														</div>
 														<div class="card-snippet-wrap">
 															Closing: <%=sdf.format(activeNegotiatedAuction.getEnd_date_time()) %>
+														</div>
+														<div class="card-snippet-wrap">
+															<% if(activeNegotiatedAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+																Remarks: Upcoming Bidding
+															<% }else if (activeNegotiatedAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+																Remarks: Accepting Bids
+															<% } else { %>
+																Remarks: Completed
+															<% } %>
 														</div>
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
@@ -557,6 +583,9 @@
 															</a>
 														</h3>
 														<div class="card-snippet-wrap">
+															Description: <%=activeLiveAuction.getAuction_desc() %>
+														</div>
+														<div class="card-snippet-wrap">
 															<%=activeLiveAuction.getLocation()%>
 														</div>
 														<div class="card-snippet-wrap">
@@ -564,6 +593,15 @@
 														</div>
 														<div class="card-snippet-wrap">
 															Closing: <%=sdf.format(activeLiveAuction.getEnd_date_time()) %>
+														</div>
+														<div class="card-snippet-wrap">
+															<% if(activeLiveAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+																Remarks: Upcoming Bidding
+															<% }else if (activeLiveAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+																Remarks: Accepting Bids
+															<% } else { %>
+																Remarks: Completed
+															<% } %>
 														</div>
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeLiveAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
