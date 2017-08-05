@@ -492,7 +492,6 @@
 																<%=activeOnlineAuction.getAuction_name()%>
 															</a>
 														</h3>
-														<%=activeOnlineAuction.getAuction_id()%>
 														<div class="card-snippet-wrap">
 															Description: <%=activeOnlineAuction.getAuction_desc() %>
 														</div>
