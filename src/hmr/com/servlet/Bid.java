@@ -515,13 +515,20 @@ public class Bid extends HttpServlet {
                     	    	// Syntax error in the regular expression
                     	    }
                     	    
+                    	    
+                    	    
                     	    //Lets try to find the lot_id given lot_no and action_id=auction_id
-                    	    LotManager ltMngr = new LotManager();
-                    	    Lot lot = ltMngr.getLotByAuctionIdAndLotNo(new BigDecimal(action_id), new BigDecimal(lot_no));
-                    	    if( lot != null) {
-                    	    	lot_id = lot.getLot_id().toString();
-                    	    } else {
+                    	    if(lot_no == "0") {
                     	    	auction_id = action_id;
+                    	    } else {
+	                    	    LotManager ltMngr = new LotManager();
+	                    	    Lot lot = ltMngr.getLotByAuctionIdAndLotNo(new BigDecimal(action_id), new BigDecimal(lot_no));
+	                    	    if( lot != null) {
+	                    	    	lot_id = lot.getLot_id().toString();
+	                    	    } else {
+	                    	    	lot_no = "0";
+	                    	    	auction_id = action_id;
+	                    	    }
                     	    }
 
                     	    
