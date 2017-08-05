@@ -436,11 +436,13 @@
 
 					<div class="row gutter-10">
 						<%for(Lot l : lList) {%>
-						<div class="col-md-6 col-xs-6">
+						<div class="col-md-6 col-xs-12">
 							<div class="product-item">
-								<a href="#" onclick="viewLot('<%=l.getId()%>')">
+								
 									<div class="product-image-wrap">
-										<div class="image feature-fade-in lazy" style="background-image: url('image?id=<%=l.getId()%>&t=lt')"></div>
+										<a href="#" onclick="viewLot('<%=l.getId()%>')">
+										<img style="width:100%" class="lazy" data-original="image?id=<%=l.getId()%>&t=lt">
+										</a>
 									</div>
 									<div class="product-body">
 										<h3 class="product-name">#<%=l.getLot_no()%> : <%=l.getLot_name()%></h3>
@@ -452,7 +454,7 @@
 
 										</div>
 									</div>
-								</a>
+								
 							</div>
 						</div>
 						<% } %>
@@ -643,6 +645,21 @@ $(document).ready(function(){
 	        links = this.getElementsByTagName('a');
 	    blueimp.Gallery(links, options);
 	};
+	
+	$('.lazy').lazyload({
+		threshold : 200,
+		onError: function(element) {
+	        console.log('image "' + element[0]['currentSrc'] + '" could not be loaded');
+	    },
+	    afterLoad: function(element) {
+	        var imageSrc = element.data('currentSrc');
+	        console.log('image "' + element[0]['currentSrc'] + '" was loaded successfully');
+	    },
+	    load: function(element){
+
+        }
+	})
+	
 	
 });
 
