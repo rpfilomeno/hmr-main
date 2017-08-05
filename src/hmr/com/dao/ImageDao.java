@@ -40,6 +40,7 @@ public class ImageDao extends DBConnection {
 		dbConn = new DBConnection();
 	}
 	
+	
 	public ImageDao(HttpServletRequest req, HttpServletResponse res){
 		this.req = req;
 		this.res = res;
@@ -677,20 +678,11 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	Connection conn = null;
 	
 	int affectedRows = 0;
-	
-	Image i = null;
 
 	try {
 		DBConnection dbConn = new DBConnection();
 		conn = dbConn.getConnection7();
-		
-		if(auction_id!=null && auction_id.doubleValue() == 0 && lot_id!=null){
-			LotManager lMngr = new LotManager();
-			BigDecimal lotBD = new BigDecimal(lot_id);
-			Lot lot = lMngr.getLotByLotId(lotBD);
-			auction_id = Integer.valueOf(lot.getAuction_id().toString());
-		}
-		
+
 		StringBuilder sb = new StringBuilder("INSERT into image (auction_id, lot_id, item_id, active, image, thumbnail");
 		sb.append(", date_created, created_by)");
 		sb.append(" VALUES(");
