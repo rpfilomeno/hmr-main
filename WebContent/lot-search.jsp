@@ -630,7 +630,7 @@ function stopEnterSubmitting(e) {
     }
 }	
 
-$(document).ready(function(){
+jQuery(window).on('load', function(){
 	<%if(msgInfo!=null){%>
 	var msgInfo = "<%=msgInfo%>";
 	var msgbgcol = "<%=msgbgcol%>";
