@@ -348,7 +348,7 @@
        <input type="hidden" name="action_id" id="action_id" value=""/>
        <input type="hidden" name="wip_id" id="wip_id" value=""/>
        <!-- For reloading -->
-       <input type="hidden" name="auction_id" id="auction_id" value="<%=auction.getAuction_id()%>"/>
+       <input type="hidden" name="auction_id" id="auction_id" value=""/>
        <input type="hidden" name="lot_id" id="lot_id" value=""/>
        <input type="hidden" name="itemId_wip" id="itemId_wip" value=""/>
        <!--  For back button -->
@@ -549,7 +549,6 @@ function clearQueue() {
 	        	formData.append("action_id", "<%=action_id%>");
 	        	formData.append("user-id", "<%=user_id%>");
 	        	formData.append("userId", "<%=userId%>");
-	        	formData.append("auction_id", "<%=auction.getAuction_id()%>");
 	    	});
 	    	this.on("queuecomplete", function (file) {
 		    		<% if (action == "doAuctionImageUpload") {%>
