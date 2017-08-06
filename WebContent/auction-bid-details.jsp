@@ -349,7 +349,13 @@
 					<div class="row">
 						<div class="col-sm-7">
 							<div style="margin-top:15px;">
-								<img style="width:100%" class="lazy" data-original="image?id=<%=auction.getAuction_id()%>&t=lt" >
+							
+								<% for (Image i : auction_images) {	%>
+										<img style="width:100%" class="lazy" data-original="image?id=<%=i.getId()%>&t=t" >
+								<% } %>
+							
+								 
+								
 							</div>
 						</div>
 						<div class="col-sm-5">
