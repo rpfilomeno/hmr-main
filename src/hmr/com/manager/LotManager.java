@@ -122,30 +122,11 @@ public class LotManager {
 			ItemManager iMngr = new ItemManager(req,res);
 			LotRangeManager lrMngr = new LotRangeManager();
 			
+			
 			Lot l = lMngr.getLotById(lotId_wip);
 			Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
 			
-			BigDecimal increment_amount = BigDecimal.ZERO;
-
-			//Check if there is lot level bid increment else use auction level value
-			increment_amount = lrMngr.getIncrementAmountByLotId(l.getLot_id(), l.getAmount_bid());
-			if(increment_amount.equals(BigDecimal.ZERO)) {
-				System.out.println("Using auction bid increment on lot");
-				increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), l.getAmount_bid());
-			}
-			BigDecimal amount_bid_next=  increment_amount.add(l.getAmount_bid());
-			l.setAmount_bid_next(amount_bid_next);
-			
-			//Check if there is lot level bid increment else use auction level value
-			if(l.getEnd_date_time() == null) {
-				l.setEnd_date_time(a.getEnd_date_time());
-			}
-			
-			//check if the end time is expired
-			if(l.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
-				l.setIs_bid(0);
-				l.setIs_buy(0);
-			} 
+			Lot delta_l = this.applyLotRules(l);
 			
 			List<Item> iL = iMngr.getLotItemsById(l.getLot_id());
 				
@@ -154,7 +135,7 @@ public class LotManager {
 			List<BiddingTransaction> bidding_transactions = new BiddingTransactionManager().getLatestBiddingTransactionLotId(l.getLot_id());
 			
 			req.setAttribute("lot_images", lot_images);
-			req.setAttribute("lot", l);
+			req.setAttribute("lot", delta_l);
 			req.setAttribute("items", iL);
 			req.setAttribute("auction", a);
 			req.setAttribute("bidding_transactions", bidding_transactions);
@@ -926,6 +907,62 @@ public class LotManager {
 	
 	public Lot getLotByAuctionIdAndLotNo(BigDecimal auction_id, BigDecimal lot_no) {
 		return new LotDao().getLotByAuctionIdAndLotNo(auction_id, lot_no);
+	}
+	
+	public Lot applyLotRules(Lot l) {
+		AuctionManager aMngr = new AuctionManager(req,res);
+		AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
+		LotManager lMngr = new LotManager(req,res);
+		ItemManager iMngr = new ItemManager(req,res);
+		LotRangeManager lrMngr = new LotRangeManager();
+		
+		
+		Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
+		BigDecimal increment_amount = BigDecimal.ZERO;
+		BigDecimal base_amount = BigDecimal.ZERO;
+		
+		
+		if(l.getBid_count()==0) {
+			//No bids on lot yet. Determine the correct starting bid amount
+			if(l.getIs_bid()==1) {
+				base_amount = l.getAmount_bid();
+			} else if(l.getIs_buy()==1) {
+				base_amount =l.getAmount_buy();
+			}
+			
+			//Check for stupidity where they set the Amount on bid or buy 
+			// if less than required starting bid!
+			if(l.getStarting_bid_amount().compareTo(base_amount)>1) {
+				base_amount = l.getStarting_bid_amount();
+			}
+			
+			l.setAmount_bid_next(base_amount);
+		} else {
+			//There is more than one bid on lot. User bid increment rules
+
+			//Check if there is lot level bid increment else use auction level value
+			increment_amount = lrMngr.getIncrementAmountByLotId(l.getLot_id(), l.getAmount_bid());
+			if(increment_amount.equals(BigDecimal.ZERO)) {
+				System.out.println("Using auction bid increment for lot");
+				increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), l.getAmount_bid());
+			}
+			BigDecimal amount_bid_next=  increment_amount.add(l.getAmount_bid());
+			
+			l.setAmount_bid_next(amount_bid_next);
+		}
+		
+		
+		if(l.getEnd_date_time() == null) {
+			l.setEnd_date_time(a.getEnd_date_time());
+		}
+		
+		//check if the end time is expired
+		if(l.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+			l.setIs_bid(0);
+			l.setIs_buy(0);
+		} 
+		
+		return l;
 	}
 	
 }

@@ -50,13 +50,7 @@ public class LotDao extends DBConnection {
 
 		Lot l = null;
 		
-		StringBuilder sb = new StringBuilder("SELECT id, lot_name, lot_no, lot_id, auction_id, lot_desc, assessment_value");
-
-		sb.append(", duties, vat, unit, premium_rate, lot_type_id, active, unit_qty");
-		
-		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
-
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
+		StringBuilder sb = new StringBuilder("SELECT *");
 		
 		sb.append(" from lot where id ="+id);
 
@@ -112,6 +106,7 @@ public class LotDao extends DBConnection {
 				l.setActive(rs.getInt("active"));
 				l.setUnit_qty(rs.getInt("unit_qty"));
 				
+				l.setStarting_bid_amount(rs.getBigDecimal("starting_bid_amount"));
 				l.setAmount_bid(rs.getBigDecimal("amount_bid"));
 				l.setAmount_buy(rs.getBigDecimal("amount_buy"));
 				l.setAction_taken(rs.getInt("action_taken"));
@@ -1438,13 +1433,7 @@ public class LotDao extends DBConnection {
 
 		ArrayList<Lot> lList = new ArrayList<Lot>();
 		
-		StringBuilder sb = new StringBuilder("SELECT id, lot_name, lot_no, lot_id, auction_id, lot_desc, assessment_value");
-
-		sb.append(", duties, vat, unit, premium_rate, lot_type_id, active, unit_qty");
-		
-		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count");
-		
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, weight_total");
+		StringBuilder sb = new StringBuilder("SELECT *");
 		
 		sb.append(" from lot where auction_id= "+auction_id);
 		
@@ -1477,6 +1466,8 @@ public class LotDao extends DBConnection {
 				l.setLot_type_id(rs.getInt("lot_type_id"));
 				l.setActive(rs.getInt("active"));
 				l.setUnit_qty(rs.getInt("unit_qty"));
+				
+				l.setStarting_bid_amount(rs.getBigDecimal("starting_bid_amount"));
 				
 				l.setAmount_bid(rs.getBigDecimal("amount_bid"));
 				l.setAmount_buy(rs.getBigDecimal("amount_buy"));

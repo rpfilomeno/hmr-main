@@ -71,12 +71,10 @@
 	<div class="container">
 		<div class="row gutter-10">
 			<div data-alerts="alerts" data-titles='{"warning": "<em>Warning!</em>", "error": "<em>Error!</em>"}' data-ids="myid" data-fade="3000"></div>
+			
 			<div class="col-md-4 col-lg-3">
 				<jsp:include page="includes/side-widget.jsp"></jsp:include>
 			</div>
-			
-			
-			
 			
 			<div class="col-md-8 col-lg-9">
 				<jsp:include page="includes/index-slider.jsp"></jsp:include>

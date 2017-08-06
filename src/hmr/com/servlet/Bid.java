@@ -419,12 +419,10 @@ public class Bid extends HttpServlet {
 				page = uMngr.doUserManager();
 				
 			}else if("auctionBidDetails".equals(action)){
-				AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
 				LotManager lMngr = new LotManager(req,res);
 				ItemManager iMngr = new ItemManager(req,res);
 				List<Lot> lList = new ArrayList<Lot>();
 				List<Lot> lListExpired = new ArrayList<Lot>();
-				LotRangeManager lrMngr = new LotRangeManager();
 				
 				Auction a = aMngr.getAuctionById(new BigDecimal(aid));
 				iMngr.setLovValuesCurrency(req, res);
@@ -435,32 +433,16 @@ public class Bid extends HttpServlet {
 				//List<Item> iList = iMngr.getItemListByAuctionId(a.getAuction_id());
 				
 				List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+				Lot delta_lot = null;
 				for(Lot lot : lotList){
-					BigDecimal increment_amount = BigDecimal.ZERO;
-
-					//Check if there is lot level bid increment else use auction level value
-					increment_amount = lrMngr.getIncrementAmountByLotId(lot.getLot_id(), lot.getAmount_bid());
-					if(increment_amount.equals(BigDecimal.ZERO)) {
-						System.out.println("Using auction bid increment on lot");
-						increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), lot.getAmount_bid());
-					}
-					BigDecimal amount_bid_next=  increment_amount.add(lot.getAmount_bid());
-					lot.setAmount_bid_next(amount_bid_next);
-
 					
-					//check of there is lot level end_date_time
-					if(lot.getEnd_date_time()==null) {
-						System.out.println("Using auction end date time on lot");
-						lot.setEnd_date_time(a.getEnd_date_time());
-					}
+					delta_lot = lMngr.applyLotRules(lot);
 					
 					//check if the end time is expired
-					if(lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
-						lot.setIs_bid(0);
-						lot.setIs_buy(0);
-						lListExpired.add(lot);
+					if(delta_lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+						lListExpired.add(delta_lot);
 					} else {
-						lList.add(lot);
+						lList.add(delta_lot);
 					}
 					
 							

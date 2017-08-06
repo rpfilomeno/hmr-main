@@ -28,6 +28,7 @@ public class Lot extends SystemBean {
 	Integer bidder_id;
 	Integer lot_increment_time;
 	BigDecimal amount_bid_next;
+	BigDecimal starting_bid_amount;
 	Integer currency;
 	Integer bid_count;
 	Timestamp end_date_time;
@@ -239,6 +240,12 @@ public class Lot extends SystemBean {
 	}
 	public void setWeight_total(BigDecimal weight_total) {
 		this.weight_total = weight_total;
+	}
+	public BigDecimal getStarting_bid_amount() {
+		return starting_bid_amount;
+	}
+	public void setStarting_bid_amount(BigDecimal starting_bid_amount) {
+		this.starting_bid_amount = starting_bid_amount;
 	}
 
 }
