@@ -982,10 +982,10 @@ public class UploadAuctionManager {
 					if(ai!=null && ai.getAuction_id()!=null){
 						AuctionRangeManager arMngr = new AuctionRangeManager();
 						
-						arMngr.insertAuctionRangeOnCreate(as.getAuction_id(), new BigDecimal(1), new BigDecimal(100), new BigDecimal(50), user_id);
-						arMngr.insertAuctionRangeOnCreate(as.getAuction_id(), new BigDecimal(101), new BigDecimal(1000), new BigDecimal(100), user_id);
-						arMngr.insertAuctionRangeOnCreate(as.getAuction_id(), new BigDecimal(1001), new BigDecimal(10000), new BigDecimal(500), user_id);
-						arMngr.insertAuctionRangeOnCreate(as.getAuction_id(), new BigDecimal(10001), new BigDecimal(10000000), new BigDecimal(5000), user_id);
+						arMngr.insertAuctionRangeOnCreate(as.getAuction_id(), new BigDecimal(1), new BigDecimal(100), new BigDecimal(48), user_id);
+						arMngr.insertAuctionRangeOnCreate(as.getAuction_id(), new BigDecimal(101), new BigDecimal(1000), new BigDecimal(48), user_id);
+						arMngr.insertAuctionRangeOnCreate(as.getAuction_id(), new BigDecimal(1001), new BigDecimal(10000), new BigDecimal(48), user_id);
+						arMngr.insertAuctionRangeOnCreate(as.getAuction_id(), new BigDecimal(10001), new BigDecimal(10000000), new BigDecimal(48), user_id);
 					}
 				}
 				

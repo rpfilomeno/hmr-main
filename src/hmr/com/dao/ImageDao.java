@@ -55,7 +55,22 @@ public class ImageDao extends DBConnection {
 		DBConnection dbConn = new DBConnection();
 		
 		try {
-			conn = dbConn.getConnection7();
+
+
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
 			java.sql.Statement stmt = conn.createStatement();
 			System.out.println("sql : "+sb.toString());		
 			ResultSet rs = stmt.executeQuery(sb.toString());
@@ -93,7 +108,21 @@ public class ImageDao extends DBConnection {
 		
 		
 		try {
-			conn = dbConn.getConnection3();
+
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
 			java.sql.Statement stmt = conn.createStatement();
 			System.out.println("sql : "+sb.toString());		
 			ResultSet rs = stmt.executeQuery(sb.toString());
@@ -127,7 +156,23 @@ public class ImageDao extends DBConnection {
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		sb.append(" from image where item_id ="+  item_id);
 		try {
-			conn = getConnection2();
+
+
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
+			
 			java.sql.Statement stmt = conn.createStatement();
 			System.out.println("sql : "+sb.toString());		
 			ResultSet rs = stmt.executeQuery(sb.toString());
@@ -194,7 +239,19 @@ public class ImageDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -254,7 +311,22 @@ public class ImageDao extends DBConnection {
 		sb.append(" from image where id ="+id);
 		try {
 			DBConnection dbConn = new DBConnection();
-			conn = dbConn.getConnection();
+
+
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
 			if(conn==null){
 				dbConn = new DBConnection();
 				conn = dbConn.getConnection();
@@ -292,7 +364,22 @@ public class ImageDao extends DBConnection {
 		sb.append(" from image where id ="+id);
 		try {
 			DBConnection dbConn = new DBConnection();
-			conn = dbConn.getConnection();
+
+
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
 			if(conn==null){
 				dbConn = new DBConnection();
 				conn = dbConn.getConnection();
@@ -338,7 +425,19 @@ public class ImageDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -395,7 +494,19 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -452,7 +563,19 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -509,7 +632,19 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -623,8 +758,19 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
-			
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			System.out.println("conn : "+conn);
 			
 			if(conn==null){
@@ -681,7 +827,20 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 
 	try {
 		DBConnection dbConn = new DBConnection();
-		conn = dbConn.getConnection7();
+
+		if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+			conn = dbConn.getConnection2();
+		}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+			conn = dbConn.getConnection3();
+		}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+			conn = dbConn.getConnection4();
+		}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+			conn = dbConn.getConnection5();
+		}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+			conn = dbConn.getConnection6();
+		}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+			conn = dbConn.getConnection7();
+		}
 
 		StringBuilder sb = new StringBuilder("INSERT into image (auction_id, lot_id, item_id, active, image, thumbnail");
 		sb.append(", date_created, created_by)");
@@ -740,7 +899,19 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 		try {
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 
 			FileInputStream fis = null;
 			if(file!=null){
@@ -912,9 +1083,24 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 		
 		sb.append(" order by auction_id, item_id desc");
 
+		dbConn = new DBConnection();
+		
 		try {
-			conn = getConnection();
 
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
 			java.sql.Statement stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());

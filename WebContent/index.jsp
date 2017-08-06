@@ -40,7 +40,7 @@
 	
 	List<Auction> activeNegotiatedAuctionList = request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST");
 	
-	List<Auction> activeLiveAuctionList = request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-ONLINE-AUCTION-LIST");
+	List<Auction> activeLiveAuctionList = request.getAttribute("ACTIVE-LIVE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-LIVE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-LIVE-AUCTION-LIST");
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
 	
@@ -472,7 +472,7 @@
 										<a href="#negotiated-bids-tab" aria-controls="negotiated-bids-tab" role="tab" data-toggle="tab">Negotiated Bids</a>
 									</li>
 									<li role="presentation">
-										<a href="#live-auction-tab" aria-controls="negotiated-bids-tab" role="tab" data-toggle="tab">Live Auctions</a>
+										<a href="#live-bids-tab" aria-controls="live-bids-tab" role="tab" data-toggle="tab">Live Auctions</a>
 									</li>
 								</ul>
 							
@@ -567,8 +567,8 @@
 											<% } %>
 										</div>
 									</div>
-									<div role="tabpanel" class="tab-pane" id="negotiated-bids-tab">
-										<div id="negotiated-bidding-slider" class="owl-carousel featured-product-carousel">
+									<div role="tabpanel" class="tab-pane" id="live-bids-tab">
+										<div id="live-bidding-slider" class="owl-carousel featured-product-carousel">
 											<%for(Auction activeLiveAuction : activeLiveAuctionList) {%>
 											<div class="owl-slide">
 												<div class="hmr-card-wrap">

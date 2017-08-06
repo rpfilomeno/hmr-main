@@ -207,7 +207,7 @@
 						<% }else{ %>
 						
 						<div class="col-sm-3" id="divIDView2">
-						     <a class="btn btn-theme btn-block " href="bid?mngr=upload-auction-manager&a=uploadAuctionSearch&uid=<%=userId%>"">Processing Lot  <%=lotLovCountList%></a>
+						     <a class="btn btn-theme btn-block " href="bid?mngr=upload-auction-manager&a=uploadAuctionSearch&uid=<%=userId%>">Processing Lot  <%=lotLovCountList%></a>
 						</div>
 
 						<% } %>
@@ -280,7 +280,7 @@ function searchUploadAuction(){
 	}catch(e){}
 	
 	try{
-		document.getElementById("divIDSearch").innerHTML = "<a class=\"btn btn-theme btn-block \" href=\"#\">Processing</a>";
+		document.getElementById("divIDSearch").innerHTML = '<a class=\"btn btn-theme btn-block \" href=\"bid?mngr=upload-auction-manager&a=uploadAuctionSearch&uid=<%=userId%>\">Processing</a>';
 	}catch(e){}
 	
 	

@@ -526,8 +526,8 @@ public Auction getAuctionByToken(String token){
             	System.out.println("asdfasdf df terms_and_conditions "+a.getTerms_and_conditions());
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -639,8 +639,8 @@ public Auction getAuctionByToken(String token){
             	System.out.println("asdfasdf df terms_and_conditions "+a.getTerms_and_conditions());
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -703,8 +703,8 @@ public Auction getAuctionByToken(String token){
 
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -1247,7 +1247,7 @@ public Auction getAuctionByToken(String token){
 	        }
 		    
 
-			stmt.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -1354,7 +1354,7 @@ public Auction getAuctionByToken(String token){
 	        }
 		    
 
-			stmt.close();
+			//   stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -1498,7 +1498,7 @@ public Auction getAuctionByToken(String token){
 	        }
 		    
 
-			stmt.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -1596,8 +1596,8 @@ public Auction getAuctionByToken(String token){
 				aList.add(a);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -1706,8 +1706,8 @@ public Auction getAuctionByToken(String token){
 				aList.add(a);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -1823,8 +1823,8 @@ public Auction getAuctionByToken(String token){
 				aList.add(a);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

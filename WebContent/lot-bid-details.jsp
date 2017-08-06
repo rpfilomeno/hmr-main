@@ -480,11 +480,11 @@
 						<%for(Item i : items) {%>
 							<div class="col-md-6 col-xs-12 grid-item">
 								<div class="product-item">
-									
+									<!--
 										<div class="product-image-wrap">
-											<img style="width:100%;" class="lazy" data-original="image?id=<%=i.getId()%>&t=it">
-										</div>
-										<div class="clearfix top10"></div>
+											<img style="width:100%;" class="lazy" data-original="image?id=</%=i.getId()%>&t=it">
+										</div> 
+										<div class="clearfix top10"></div> -->
 										<div class="product-body">
 											
 											<h3 class="product-name">Item #<%=i.getReference_no()%></h3>
