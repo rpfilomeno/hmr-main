@@ -583,16 +583,15 @@ public class LotManager {
 		return new LotDao().getLotListBySearch(search);
 	}
 	
+	public ArrayList<Lot> getLotListJoinBiddingTransactionByUserId(Integer user_id){
+		return new LotDao().getLotListJoinBiddingTransactionByUserId(user_id);
+	}
+	
 	public Lot getLotByLotId(BigDecimal id){
-		
 		Lot l = new Lot();
-
 		LotDao ld = new LotDao();
-
 		l = ld.getLotByLotId(id);
-		
 		return l;
-		
 	}	
 	
 	public HashMap<BigDecimal, Lot> getLotHMByAuctionId(BigDecimal auction_id){

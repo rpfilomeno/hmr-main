@@ -62,13 +62,12 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<head>
-	<jsp:include page="includes/header-meta.jsp"></jsp:include>
-</head>
+    <head>
+		<jsp:include page="includes/header-meta.jsp"></jsp:include>
+    </head>
+    <body data-is-mobile="" id="c" >
     
-<body data-is-mobile="" id="c" >
-    
-    	<input type="hidden" id="base_url" value="">
+    <input type="hidden" id="base_url" value="">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -76,70 +75,88 @@
 <jsp:include page="includes/header.jsp"></jsp:include>
 
 <div id="ms--main--body">
+	
+
+
+
+
+
+
 	<div class="hmr-breadcrumb">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<ol class="breadcrumb">
-						<li>
-							<a href="">Home</a>
-						</li>
-					</ol>
-				</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ol class="breadcrumb">
+					<li>
+						<a href="">Home</a>
+					</li>
+				</ol>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<section id="hmr-main-container">
-		<div class="container">
-			<div class="row">
+<section id="hmr-main-container">
+	<div class="container">
+		<div class="row">
+			<div data-alerts="alerts" data-titles='{"warning": "<em>Warning!</em>", "error": "<em>Error!</em>"}' data-ids="myid" data-fade="3000"></div>
 			
-				<div data-alerts="alerts" data-titles='{"warning": "<em>Warning!</em>", "error": "<em>Error!</em>"}' data-ids="myid" data-fade="3000"></div>
-				<div class="col-md-4 col-lg-3">
-					<jsp:include page="includes/side-widget.jsp"></jsp:include>
-				</div>
+			<div class="col-md-4 col-lg-3">
+				<jsp:include page="includes/side-widget.jsp"></jsp:include>
+			
+			</div>
+			
+			<div class="col-md-8 col-lg-9">
 				
-				<div class="col-md-8 col-lg-9">
-					<div id="product-list-wrapper">
-						<ul class="nav nav-tabs nav-tabs-2" role="tablist">
-							<li role="presentation" class="active">
-								<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">Lots Matching Your Search</a>
-							</li>
-						</ul>
-						<div class="clearfix top10"></div>
-						<div class="row gutter-10">
-							<%for(Lot l : lList) {%>
-							<div class="col-md-6 col-xs-12">
-								<div class="product-item">
-										<div class="product-image-wrap">
-											<a href="#" onclick="viewLot('<%=l.getId()%>')">
-											<img style="width:100%" class="lazy" data-original="image?id=<%=l.getId()%>&t=lt">
-											</a>
+				<div id="product-list-wrapper">
+					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">Lots Matching Your Search</a>
+						</li>
+					</ul>
+					<div class="clearfix top10"></div>
+
+					<div class="row gutter-10">
+						<%for(Lot l : lList) {%>
+						<div class="col-md-6 col-xs-12">
+							<div class="product-item">
+								
+									<div class="product-image-wrap">
+										<a href="#" onclick="viewLot('<%=l.getId()%>')">
+										<img style="width:100%" class="lazy" data-original="image?id=<%=l.getId()%>&t=lt">
+										</a>
+									</div>
+									<div class="product-body">
+										<h3 class="product-name">#<%=l.getLot_no()%> : <%=l.getLot_name()%></h3>
+										<div class="product-details">
+											<div class="product-detail">Description: <%=l.getLot_desc()%></div>
+											<div class="product-detail product-price">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
+											<div class="product-detail">Highest Bid: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
+											<div class="product-detail">Bids: <%=l.getBid_count()%></div>
+
 										</div>
-										<div class="product-body">
-											<h3 class="product-name">#<%=l.getLot_no()%> : <%=l.getLot_name()%></h3>
-											<div class="product-details">
-												<div class="product-detail">Description: <%=l.getLot_desc()%></div>
-												<div class="product-detail product-price">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
-												<div class="product-detail">Highest Bid: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
-												<div class="product-detail">Bids: <%=l.getBid_count()%></div>
-	
-											</div>
-										</div>
-								</div>
+									</div>
+								
 							</div>
-							<% } %>
 						</div>
+						<% } %>
 					</div>
+					
 				</div>
+
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<div class="clearfix top100"></div>
-	<div class="clearfix top100"></div>
-	<div class="clearfix top100"></div>
-	<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+<div class="clearfix top100"></div>
+
+
+
+
 </div>
 
 <jsp:include page="includes/footer.jsp"></jsp:include>

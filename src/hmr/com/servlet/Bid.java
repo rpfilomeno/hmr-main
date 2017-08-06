@@ -310,7 +310,68 @@ public class Bid extends HttpServlet {
 		//all page get requests
 		if(manager.equals("get")){
 			
-			if("private-invite".equals(action)){
+			if("my-bids".equals(action)){ 
+
+				ArrayList<Lot> myBidLots = null;
+				if(user_id == null) {
+					req.setAttribute("msgbgcol", "green");
+					req.setAttribute("msgInfo", "No Bid History Found.");
+					page = "index.jsp";
+				} else {
+					myBidLots = new LotManager().getLotListJoinBiddingTransactionByUserId(user_id);
+					if(myBidLots.isEmpty()) {
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "No Bid History Found.");
+						page = "index.jsp";
+					} else {
+						
+						AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
+						LotManager lMngr = new LotManager(req,res);
+						ItemManager iMngr = new ItemManager(req,res);
+						List<Lot> lList = new ArrayList<Lot>();
+						List<Lot> lListExpired = new ArrayList<Lot>();
+						LotRangeManager lrMngr = new LotRangeManager();
+						
+						Auction a =null;
+						iMngr.setLovValuesCurrency(req, res);
+						
+						for(Lot lot : myBidLots){
+							a = aMngr.getAuctionByAuctionId(lot.getAuction_id());
+							BigDecimal increment_amount = BigDecimal.ZERO;
+	
+							//Check if there is lot level bid increment else use auction level value
+							increment_amount = lrMngr.getIncrementAmountByLotId(lot.getLot_id(), lot.getAmount_bid());
+							if(increment_amount.equals(BigDecimal.ZERO)) {
+								System.out.println("Using auction bid increment on lot");
+								increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), lot.getAmount_bid());
+							}
+							BigDecimal amount_bid_next=  increment_amount.add(lot.getAmount_bid());
+							lot.setAmount_bid_next(amount_bid_next);
+	
+							
+							//check of there is lot level end_date_time
+							if(lot.getEnd_date_time()==null) {
+								System.out.println("Using auction end date time on lot");
+								lot.setEnd_date_time(a.getEnd_date_time());
+							}
+							
+							//check if the end time is expired
+							if(lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+								lot.setIs_bid(0);
+								lot.setIs_buy(0);
+								lListExpired.add(lot);
+							} else {
+								lList.add(lot);
+							}
+							
+									
+						}//for loop
+	
+						req.setAttribute("lList", lList);
+						page = "my-bids.jsp";
+					}
+				}
+			} else if("private-invite".equals(action)){
 
 				Auction a = new AuctionManager().getAuctionByToken(aid);
 				req.setAttribute("auction", a);
@@ -321,9 +382,7 @@ public class Bid extends HttpServlet {
 				// Lets make sure user logs in first
 				page ="invite-login.jsp";
 				
-			} else
-			
-			if("login".equals(action)){
+			} else if("login".equals(action)){
 				
 				if(userId!=null){
 					req.setAttribute("userId", userId);
