@@ -111,7 +111,7 @@
 				<div id="product-list-wrapper">
 					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
 						<li role="presentation" class="active">
-							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">Lots Matching Your Search</a>
+							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">My Bids</a>
 						</li>
 					</ul>
 					<div class="clearfix top10"></div>
