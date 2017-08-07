@@ -753,6 +753,13 @@ public class ItemStagingDao extends DBConnection {
 	        if(consignor_id==null){
 	        	consignor_id = new BigDecimal("0");
 	        }
+	        if(delivery_receipt_id==null){
+	        	delivery_receipt_id = new BigDecimal("0");
+	        }
+	        if(weight==null){
+	        	weight = new BigDecimal("0");
+	        }
+	        
 	        stmt.setBigDecimal(1, item_id);
 	        stmt.setBigDecimal(2, lot_id);
 	        stmt.setInt(3, status_id);
@@ -779,6 +786,7 @@ public class ItemStagingDao extends DBConnection {
 	        stmt.setBigDecimal(17, srp);
 	        stmt.setBigDecimal(18, consignor_id);
 	        stmt.setString(19, description);
+	        //
 	        stmt.setBigDecimal(20, delivery_receipt_id);
 	        stmt.setBigDecimal(21, weight);
 	        stmt.setTimestamp(22, last_date_sync); 

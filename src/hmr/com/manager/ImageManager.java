@@ -454,7 +454,8 @@ public class ImageManager {
 
 		
 		InputStream image = resizeImageStream(is1,640,480);
-		InputStream thumbnail = resizeImageStream(is2,250,188);
+		//InputStream thumbnail = resizeImageStream(is2,250,188);
+		InputStream thumbnail = resizeImageStream(is2,125,94);
 		
 		ImageDao id = new ImageDao();
 		if(id.insertImageOnCreate(

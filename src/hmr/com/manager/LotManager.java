@@ -965,4 +965,67 @@ public class LotManager {
 		return l;
 	}
 	
+
+
+	public int updateLotSetStartingBidAmount(
+			BigDecimal auction_id,
+			BigDecimal starting_bid_amount,
+			Integer user_id
+		){
+	
+	LotDao ld = new LotDao();
+
+	int i = ld.updateLotSetStartingBidAmount(
+			auction_id,
+			starting_bid_amount,
+			user_id
+			);
+	
+	return i;
+	
+	}
+	
+	public int updateLotSetIsBuy(
+			BigDecimal auction_id,
+			Integer is_buy,
+			Integer user_id
+		){
+	
+	LotDao ld = new LotDao();
+
+	int i = ld.updateLotSetIsBuy(
+			auction_id,
+			is_buy,
+			user_id
+			);
+	
+	return i;
+	
+	}
+	
+	public int updateLotSetLotTotals(
+			BigDecimal lot_id,
+			BigDecimal reserve_price ,
+			BigDecimal srp, 
+			BigDecimal target_price, 
+			BigDecimal assess_value,
+			Integer user_id
+		){
+	
+	LotDao ld = new LotDao();
+
+	int i = ld.updateLotSetLotTotals(
+			lot_id,
+			reserve_price ,
+			srp, 
+			target_price, 
+			 assess_value,
+			user_id
+			);
+	
+	return i;
+	
+	}
+	
+	
 }

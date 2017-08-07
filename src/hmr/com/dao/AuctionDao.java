@@ -1219,6 +1219,7 @@ public Auction getAuctionByToken(String token){
 	        }else{
 	        	a = new Auction(); 
             	a.setId(auctionId_wip);
+            	a.setBid_qualifier_price(bid_qualifier_price);
             	/*
             	a.setEmail_address(emailAddress);
             	a.setFirst_name(firstName);
@@ -1629,6 +1630,8 @@ public Auction getAuctionByToken(String token){
 		
 		sb.append(" order by end_date_time asc");
 
+		Connection conn = null;
+		
 		try {
 			DBConnection dbConn = new DBConnection();
 			
@@ -1709,7 +1712,7 @@ public Auction getAuctionByToken(String token){
 			//rs.close();
 			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {

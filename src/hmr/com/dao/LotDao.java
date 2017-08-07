@@ -1838,6 +1838,218 @@ public class LotDao extends DBConnection {
 		return lList;
 	}
 	
+	public int updateLotSetStartingBidAmount(
+			BigDecimal auction_id,
+			BigDecimal starting_bid_amount,
+			Integer user_id
+		){
+	
+	Connection conn = null;
+	
+	int affectedRows = 0;
+	
+	Lot l = null;
+	
+	int replaceSBA = 0;
+	
+	if(starting_bid_amount.doubleValue() == 0){
+		replaceSBA = 1;
+	}else if(starting_bid_amount.doubleValue() == 1){
+		replaceSBA = 0;
+	}
+
+	try {
+		DBConnection dbConn = new DBConnection();
+		
+		conn = dbConn.getConnection();
+
+		StringBuilder sb = new StringBuilder("Update Lot Set starting_bid_amount=?");
+		
+		sb.append(", date_updated=?, updated_by=?");
+		
+		sb.append(" where auction_id="+auction_id+" and starting_bid_amount ="+replaceSBA);
+
+		
+		
+		
+	    String sql = sb.toString();
+	    
+        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        
+        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+
+        //stmt.setBigDecimal(1, auction_id);
+        stmt.setBigDecimal(1, starting_bid_amount);
+        
+        stmt.setTimestamp(2, sqlDate_t);
+        stmt.setInt(3, user_id);
+
+
+	    System.out.println("sql : "+sql);
+	    
+	    affectedRows = stmt.executeUpdate();
+	    
+	   
+        
+	    
+
+		stmt.close();
+	} catch (SQLException e) {
+		throw new RuntimeException(e);
+	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
+	}
+
+	return affectedRows;
+}
+	
+	public int updateLotSetIsBuy(
+			BigDecimal auction_id,
+			Integer is_buy,
+			Integer user_id
+		){
+	
+	Connection conn = null;
+	
+	int affectedRows = 0;
+	
+	//Lot l = null;
+	
+	int replaceSBA = 0;
+	
+	if(is_buy.doubleValue() == 0){
+		replaceSBA = 1;
+	}else if(is_buy.doubleValue() == 1){
+		replaceSBA = 0;
+	}
+
+	try {
+		DBConnection dbConn = new DBConnection();
+		
+		conn = dbConn.getConnection();
+
+		StringBuilder sb = new StringBuilder("Update Lot Set is_buy=?");
+		
+		sb.append(", date_updated=?, updated_by=?");
+		
+		sb.append(" where auction_id="+auction_id+" and is_buy ="+replaceSBA);
+
+		
+		
+		
+	    String sql = sb.toString();
+	    
+        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        
+        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+
+        //stmt.setBigDecimal(1, auction_id);
+        stmt.setInt(1, is_buy);
+        
+        stmt.setTimestamp(2, sqlDate_t);
+        stmt.setInt(3, user_id);
+
+
+	    System.out.println("sql : "+sql);
+	    
+	    affectedRows = stmt.executeUpdate();
+	    
+	   
+        
+	    
+
+		stmt.close();
+	} catch (SQLException e) {
+		throw new RuntimeException(e);
+	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
+	}
+
+	return affectedRows;
+}
+	
+	
+	
+	public int updateLotSetLotTotals(
+			BigDecimal lot_id,
+			BigDecimal reserve_price ,
+			BigDecimal srp, 
+			BigDecimal target_price, 
+			BigDecimal assess_value,
+			Integer user_id
+		){
+	
+	Connection conn = null;
+	
+	int affectedRows = 0;
+	
+
+
+	try {
+		DBConnection dbConn = new DBConnection();
+		
+		conn = dbConn.getConnection();
+
+		StringBuilder sb = new StringBuilder("Update Lot Set reserve_price_total=?, srp_total=?, target_price_total=?, assess_value_total=?");
+		
+		sb.append(", date_updated=?, updated_by=?");
+		
+		sb.append(" where lot_id="+lot_id);
+
+		
+		
+		
+	    String sql = sb.toString();
+	    
+        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        
+        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+
+        //stmt.setBigDecimal(1, auction_id);
+        stmt.setBigDecimal(1, reserve_price);
+        stmt.setBigDecimal(2, srp);
+        stmt.setBigDecimal(3, target_price);
+        stmt.setBigDecimal(4, assess_value);
+        
+        stmt.setTimestamp(5, sqlDate_t);
+        stmt.setInt(6, user_id);
+
+
+	    System.out.println("sql : "+sql);
+	    
+	    affectedRows = stmt.executeUpdate();
+	    
+	   
+        
+	    
+
+		stmt.close();
+	} catch (SQLException e) {
+		throw new RuntimeException(e);
+	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
+	}
+
+	return affectedRows;
+}
 	
  
     /**

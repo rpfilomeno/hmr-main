@@ -443,8 +443,8 @@ public class UserDao extends DBConnection {
 			  conn = getConnection();
 
 			  Statement stmt = conn.createStatement();
-		      String sql = "INSERT INTO user (first_name, last_name, email_address, mobile_no_1, verification_email_key, role, status, birth_date, company) " +
-		                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		      String sql = "INSERT INTO user (first_name, last_name, email_address, mobile_no_1, verification_email_key, role, status, birth_date, company, `date_created`) " +
+		                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 		      
 		      PreparedStatement prest = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		      prest.setString(1,firstName);

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -600,6 +601,43 @@ public class AuctionManager {
 				}else{
 					bidderUserList = (List<User>)req.getSession().getAttribute("BIDDER-USER-LIST");
 					req.setAttribute("BIDDER-USER-LIST", bidderUserList);
+				}
+				
+				
+				
+				//logic of all auction triggered
+				//One as Start Bidding
+				
+				if(a.getOne_start_bid()==1){
+					lMngr.updateLotSetStartingBidAmount(auction_id, new BigDecimal(1), user_id);
+				}else{
+					lMngr.updateLotSetStartingBidAmount(auction_id, new BigDecimal(0), user_id);
+				}
+			    
+				if(a.getAuction_type()==16){
+					lMngr.updateLotSetIsBuy(auction_id, 1, user_id);
+				}else{
+					lMngr.updateLotSetIsBuy(auction_id, 0, user_id);
+				}
+				
+				if(a.getBid_qualifier_price().doubleValue() > 0){
+					
+
+						RunnableItemManager rim = new RunnableItemManager("lotTotalsCompute", auction_id);
+						rim.start();
+					
+					
+					/*
+					if(a.getBid_qualifier_price() == 1){
+	            		//bid_qualifier_price = "Reserve Price";
+	            	}else if(a.getBid_qualifier_price() == 2){
+	            		//bid_qualifier_price = "SRP";
+	            	}else if(a.getBid_qualifier_price() == 3){
+	            		//bid_qualifier_price = "Target Price";
+	            	}else if(a.getBid_qualifier_price() == 4){
+	            		//bid_qualifier_price = "Assess Value Price";
+	            	}
+					*/
 				}
 				
 

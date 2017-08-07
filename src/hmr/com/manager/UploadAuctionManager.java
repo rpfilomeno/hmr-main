@@ -955,7 +955,7 @@ public class UploadAuctionManager {
 		
 		HashMap<BigDecimal, Item> iHM = null;
 		
-		if(asList!=null && asList.size() > 0){
+		//if(asList!=null && asList.size() > 0){
 			
 			for(AuctionStaging as : asList){
 				
@@ -1145,7 +1145,7 @@ public class UploadAuctionManager {
 			
 			
 			
-		}
+		//}
 		
 		
 		

@@ -32,7 +32,8 @@ public class Item extends SystemBean {
 	Integer currency;
 	Timestamp synched_date;
 	BigDecimal weight;
-	
+	BigDecimal srp;
+	BigDecimal assess_value;
 	
 	InputStream imageInputStream;
 	byte[] imageBytes;
@@ -197,6 +198,18 @@ public class Item extends SystemBean {
 	}
 	public void setWeight(BigDecimal weight) {
 		this.weight = weight;
+	}
+	public BigDecimal getSrp() {
+		return srp;
+	}
+	public void setSrp(BigDecimal srp) {
+		this.srp = srp;
+	}
+	public BigDecimal getAssess_value() {
+		return assess_value;
+	}
+	public void setAssess_value(BigDecimal assess_value) {
+		this.assess_value = assess_value;
 	}
 
 

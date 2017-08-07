@@ -511,7 +511,7 @@
 		                      <tr>
 		                        <th>Main Image</th>
 		                        <th>Lot ID</th>
-		                        <th>Auction ID</th>
+		                        <!-- <th>Auction ID</th> -->
 		                        <th>Lot No</th>
 		                        <th>Description</th>
 		                        <th>Active</th>
@@ -551,7 +551,7 @@
 								</div>
 		                    </td>
                             <td width="15px"><a href="#" onclick="viewLot('<%=l.getId()%>')"><%=l.getLot_id()%></a></td>
-                            <td width="15px"><%=l.getAuction_id()%></td>
+                            <!-- <td width="15px"><//%=l.getAuction_id()%></td> -->
                             <td width="15px"><%=l.getLot_no()%></td>
                             <td><%=l.getLot_desc()%></td>
                             <td width="15px"><%=active%></td> 
@@ -624,9 +624,9 @@
 		
 		                    <thead>
 		                      <tr>
-		                      	<th>Main Image</th>
+		                      	<!-- <th>Main Image</th> -->
 		                        <th>Item ID</th>
-		                        <th>Auction ID</th>
+		                        <!-- <th>Auction ID</th> -->
 		                        <th>Lot ID</th>
 		                        <th>Description</th>
 		                        <th>Reference No</th>
@@ -673,19 +673,19 @@
                             */
                       %>
 		                  <tr>
-		                   
+		                   <%-- 
 		                  	<td width="75px">
 			                    <div class="media">
-								  <a class="pull-left" href="#" onclick="itemImages('<%=i.getId()%>')">
+								  <a class="pull-left" href="#" onclick="itemImages('<//%=i.getId()%>')">
 								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=i.getId()%>&t=it" alt="Click to upload image" />
 								      <!--<span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
 								      	<//%= new ImageManager().getImageListByItemId(i.getId()).size() %>
 								      </span>-->
 								  </a>
 								</div>
-		                    </td>
+		                    </td> --%>
                             <td width="15px"><a href="#" onclick="viewItem('<%=i.getId()%>')"><%=i.getItem_id()%></a></td>
-                            <td width="15px"><%=i.getAuction_id()%></td>
+                            <!-- <td width="15px"><//%=i.getAuction_id()%></td> -->
                             <td width="15px"><%=i.getLot_id()%></td>
                             <td><%=i.getItem_desc()%></td>
                             <td><%=i.getReference_no()%></td>
@@ -1111,7 +1111,7 @@ $(function () {
 $(function () {
     $("#table3").DataTable({
     	"pageLength": 100,
-      	"order": [[ 4, "asc" ]],
+      	"order": [[ 1, "asc" ]],
       	"lengthMenu": [[100, 50, 25, 5], [100, 50, 25, 5]]
     });
   });

@@ -419,10 +419,12 @@ public class Bid extends HttpServlet {
 				page = uMngr.doUserManager();
 				
 			}else if("auctionBidDetails".equals(action)){
+				AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
 				LotManager lMngr = new LotManager(req,res);
 				ItemManager iMngr = new ItemManager(req,res);
 				List<Lot> lList = new ArrayList<Lot>();
 				List<Lot> lListExpired = new ArrayList<Lot>();
+				//LotRangeManager lrMngr = new LotRangeManager();
 				
 				Auction a = aMngr.getAuctionById(new BigDecimal(aid));
 				iMngr.setLovValuesCurrency(req, res);

@@ -1189,7 +1189,7 @@ public class ItemDao extends DBConnection {
 
 		sb.append(", reserve_price, amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price");
 		
-		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date, weight");
+		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date, weight, srp, assess_value");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -1197,6 +1197,7 @@ public class ItemDao extends DBConnection {
 		
 		sb.append(" order by item_desc");
 
+		Connection conn = null;
 		try {
 			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
 				conn = dbConn.getConnection2();
@@ -1262,6 +1263,11 @@ public class ItemDao extends DBConnection {
 				i.setBid_count(rs.getInt("bid_count"));
 				i.setSynched_date(rs.getTimestamp("synched_date"));
 				i.setWeight(rs.getBigDecimal("weight"));
+				
+				i.setSrp(rs.getBigDecimal("srp"));
+				i.setAssess_value(rs.getBigDecimal("assess_value"));
+				
+				
 				
 				//SystemBean - start
 				i.setDate_created(rs.getTimestamp("date_created"));
@@ -1297,14 +1303,14 @@ public class ItemDao extends DBConnection {
 
 		sb.append(", reserve_price, amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price");
 		
-		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date, weight");
+		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date, weight, srp, assess_value");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
 		sb.append(" from item where auction_id="+auction_id);
 		
 		sb.append(" order by item_desc");
-
+		Connection conn = null;
 		try {
 			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
 				conn = dbConn.getConnection2();
@@ -1371,6 +1377,9 @@ public class ItemDao extends DBConnection {
 				
 				i.setSynched_date(rs.getTimestamp("synched_date"));
 				i.setWeight(rs.getBigDecimal("weight"));
+				
+				i.setSrp(rs.getBigDecimal("srp"));
+				i.setAssess_value(rs.getBigDecimal("assess_value"));
 				
 				//SystemBean - start
 				
@@ -1407,7 +1416,7 @@ public class ItemDao extends DBConnection {
 
 		sb.append(", reserve_price, amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price");
 		
-		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date, weight");
+		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date, weight, srp, assess_value ");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -1505,6 +1514,9 @@ public class ItemDao extends DBConnection {
 				i.setSynched_date(rs.getTimestamp("synched_date"));
 				i.setWeight(rs.getBigDecimal("weight"));
 				
+				i.setSynched_date(rs.getTimestamp("synched_date"));
+				i.setWeight(rs.getBigDecimal("weight"));
+				
 				//SystemBean - start
 				
 				i.setDate_updated(rs.getTimestamp("date_updated"));
@@ -1552,7 +1564,7 @@ public class ItemDao extends DBConnection {
 
 		sb.append(", reserve_price, amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price");
 		
-		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date, weight");
+		sb.append(", bidder_id, item_increment_time, item_desc, image, category_level_1, category_level_2, category_level_3, currency, bid_count, synched_date, weight, srp, assess_value");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
