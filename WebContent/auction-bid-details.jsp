@@ -30,7 +30,6 @@
 	request.getSession().removeAttribute("msgInfo");
 	request.getSession().removeAttribute("msgbgcol");
 	
-	
 	String firstName = (String)request.getSession().getAttribute("firstName");
 	String lastName = (String)request.getSession().getAttribute("lastName");
 	String fullName = (String)request.getSession().getAttribute("fullName");
@@ -207,11 +206,17 @@
 										<div class="product-body">
 											<h3 class="product-name">#<%=l.getLot_no()%> : <%=l.getLot_name()%></h3>
 											<div class="product-details">
-												<div class="product-detail">Description: <%=l.getLot_desc()%></div>
-												<div class="product-detail product-price">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
-												<div class="product-detail">Highest Bid: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
-												<div class="product-detail">Bids: <%=l.getBid_count()%></div>
-	
+												<% if (auction.getAuction_type()== 15) { %>
+													<div class="product-detail">Description: <%=l.getLot_desc()%></div>
+													<div class="product-detail product-price">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
+													<div class="product-detail">Highest Bid: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
+													<div class="product-detail">Bids: <%=l.getBid_count()%></div>
+												<% } else if (auction.getAuction_type() == 16) { %>
+													<div class="product-detail">Description: <%=l.getLot_desc()%></div>
+													<div class="product-detail product-price">Buy Price: <%=df.format(l.getBuy_price())%> <%=currency%></div>
+													<div class="product-detail">Highest Offer: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
+													<div class="product-detail">Offers: <%=l.getBid_count()%></div>
+												<% } %>
 											</div>
 										</div>
 										<div class="clearfix top10"></div>

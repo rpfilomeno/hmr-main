@@ -138,9 +138,15 @@
 								<%  if( lot.getIs_available_lot() > 0) { %>
 								<div class="product-detail">Unit Quantity: <%=lot.getUnit_qty()%></div>
 								<% } %>
-								<div class="product-detail">Highest Bid: <%=df.format(lot.getAmount_bid())%> <%=currency%></div>
-								<div class="product-detail">Asking Bid: <%=df.format(lot.getAmount_bid_next())%> <%=currency%></div>
-								<div class="product-detail">Bids: <%=lot.getBid_count()%></div>
+								<% if (auction.getAuction_type()== 15) { %>
+									<div class="product-detail">Highest Bid: <%=df.format(lot.getAmount_bid())%> <%=currency%></div>
+									<div class="product-detail">Asking Bid: <%=df.format(lot.getAmount_bid_next())%> <%=currency%></div>
+									<div class="product-detail">Bids: <%=lot.getBid_count()%></div>
+								<% } else if (auction.getAuction_type() == 16) { %>
+									<div class="product-detail">Buy Price: <%=df.format(lot.getBuy_price())%> <%=currency%></div>
+									<div class="product-detail">Highest Offer: <%=df.format(lot.getAmount_bid())%> <%=currency%></div>
+									<div class="product-detail">Offers: <%=lot.getBid_count()%></div>
+								<% } %>
 							</div>
 							<div class="product-details">
 								<% if(user_id != null && user_role_id > 0){ %>
