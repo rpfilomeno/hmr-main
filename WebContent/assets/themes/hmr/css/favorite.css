@@ -1,0 +1,26 @@
+.favorite.glyphicon.glyphicon-heart {
+	float:right; 
+	font-size: 20px;
+	color: #fff;
+	text-shadow:
+    -1px -1px 0 #f00,
+    1px -1px 0 #f00,
+    -1px 1px 0 #f00,
+    1px 1px 0 #f00;  
+    cursor: pointer; 
+    cursor: hand;
+	
+    
+} 
+
+.favorite.glyphicon.glyphicon-heart:hover {
+	color: red;
+}	
+
+.favorite.glyphicon.glyphicon-heart.active {
+	color: red;
+}	
+
+.favorite.glyphicon.glyphicon-heart.active:hover {
+	color: grey;
+}	

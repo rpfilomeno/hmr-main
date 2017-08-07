@@ -82,12 +82,6 @@
 
 <div id="ms--main--body">
 	
-
-
-
-
-
-
 	<div class="hmr-breadcrumb">
 	<div class="container">
 		<div class="row">
@@ -137,11 +131,7 @@
 					<div class="row">
 						<div class="col-sm-7">
 							<div style="margin-top:15px;">
-							
 								<img style="width:100%" class="lazy" data-original="image?id=<%=auction.getAuction_id()%>&t=at" >
-							
-								 
-								
 							</div>
 						</div>
 						<div class="col-sm-5">
@@ -196,7 +186,6 @@
 						<%for(Lot l : lList) {%>
 							<div class="col-md-6 col-xs-12 grid-item">
 								<div class="product-item">
-									
 										<div class="product-image-wrap">
 											<a href="#" onclick="viewLot('<%=l.getId()%>')">
 											<img style="width:100%" class="lazy" data-original="image?id=<%=l.getId()%>&t=lt">
@@ -204,7 +193,16 @@
 										</div>
 										<div class="clearfix top10"></div>
 										<div class="product-body">
+											<% if(user_id != null && user_role_id > 0){ %>
+												<% if(l.getIsFav() == 1){ %>
+													<div class="glyphicon glyphicon-heart favorite active" onclick="favs('UNFAV','<%=l.getLot_id()%>','<%=l.getId()%>')"></div>
+												<% } else { %>
+													<div class="glyphicon glyphicon-heart favorite" onclick="favs('FAV','<%=l.getLot_id()%>','<%=l.getId()%>')"></div>
+												<% } %>
+											<% } %>
+											<div>
 											<h3 class="product-name">#<%=l.getLot_no()%> : <%=l.getLot_name()%></h3>
+											</div>
 											<div class="product-details">
 												<% if (auction.getAuction_type()== 15) { %>
 													<div class="product-detail">Description: <%=l.getLot_desc()%></div>
@@ -222,6 +220,7 @@
 													<div class="product-detail">Offers: <%=l.getBid_count()%></div>
 												<% } %>
 											</div>
+												
 										</div>
 										<div class="clearfix top10"></div>
 										
@@ -276,27 +275,17 @@
 							<% x++; %>
 						<% } %>
 					</div>
-					
 				</div>
-
 			</div>
 		</div>
 	</div>
-	
-
-	
 </section>
 
 
-
-
 <div class="clearfix top100"></div>
 <div class="clearfix top100"></div>
 <div class="clearfix top100"></div>
 <div class="clearfix top100"></div>
-
-
-
 
 </div>
 
@@ -426,6 +415,50 @@ function showNegotiatedBidForm(action, value, lot, id, qtyid) {
 			$("#negotiated-form").remove();
 		}
 	}).dialog('widget').position({ my: 'center', at: 'center', of: $(this) });
+}
+
+function favs(action,lot,id){
+	$('input[name="manager"]').val("bid-manager");
+	$('input[name="doaction"]').val(action);
+	$('input[name="amount"]').val(0);
+	$('input[name="lotId"]').val(lot);
+	$('input[name="lotId_wip"]').val(id);
+	$('input[name="unit_qty"]').val(1);
+	$('input[name="note"]').val(0);
+	
+	$('<div id="dialog-confirm"></div>').dialog({
+		resizable: false,
+	    height: "auto",
+	    width: 400,
+	    modal: true,
+	    title: "Watch List confirmation",
+	    closeOnEscape: false,
+        open: function (event, ui) {
+        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+      
+        	if(action=="FAV") {
+        		dialog_html = '<p>You will add this lot to your Watch List</p>'+
+        			'<p>Are you sure?</p>';
+        	}else if(action=="UNFAV") {
+        		dialog_html = '<p>You will remove this lot to your Watch List</p>'+
+        			'<p>Are you sure?</p>';
+        	}
+
+            $(this).html(dialog_html);
+        },
+        buttons: {
+        	"Yes": function() {
+  	          $( this ).dialog( "close" );
+  	          $( "#frm" ).submit();
+  	        },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        },
+		close: function() {
+			$("#dialog-confirm").remove();
+		}
+    }).dialog('widget').position({ my: 'center', at: 'center', of: $(this) }); //end confirm dialog
 }
 
 function submitPage(action, value, lot, id, qtyid, note) {

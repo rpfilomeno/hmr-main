@@ -97,8 +97,13 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 								class="main-nav-items nav-white visible-md visible-lg">
 
 								<ul class="nav navbar-nav navbar-right navbar-icons">
-									<% if (fullName!=null) {%>
-									<li><a href="#"><%=fullName%></a></li>
+								    <% if(user_id!=null){ %>
+									<li>
+									 	<a href="bid?mngr=get&a=my-watchlist">Watch List</a>
+									</li>
+									<% } %>
+									<% if (user_id!=null) {%>
+									<li><a href="#">My Account</a></li>
 									<% } %>
 									<li><a href="#"> <span id="bag-count"></span> <span
 											class="navbar-icon ion-bag"></span>

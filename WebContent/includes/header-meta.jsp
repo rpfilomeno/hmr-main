@@ -74,6 +74,7 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 <link rel="stylesheet" href="assets/themes/hmr/css/main.css?v=36502498">
 
 <link rel="stylesheet" href="assets/themes/hmr/css/ribbon.css?v=28374683" />
+<link rel="stylesheet" href="assets/themes/hmr/css/favorite.css?v=28374683" />
 <link rel="stylesheet"
 	href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css">
 <link rel="stylesheet"

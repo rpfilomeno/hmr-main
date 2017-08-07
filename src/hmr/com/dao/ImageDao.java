@@ -85,16 +85,9 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 				iList.add(i);
 			}
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
 		}
 		return iList;
 	}
@@ -137,16 +130,11 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 				iList.add(i);
 			}
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		return iList;
 	}
@@ -187,16 +175,11 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 				iList.add(i);
 			}
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		return iList;
 	}
@@ -213,11 +196,8 @@ public class ImageDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		return affectedRows;
 	}
@@ -286,19 +266,11 @@ public class ImageDao extends DBConnection {
 
 			}
 
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		
 		return i;
@@ -340,19 +312,11 @@ public class ImageDao extends DBConnection {
 				i = new Image();
 				i.setImageBytes(rs.getBytes("image"));
 			}
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		return i;
 	}
@@ -393,19 +357,11 @@ public class ImageDao extends DBConnection {
 				i = new Image();
 				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		return i;
 	}
@@ -461,19 +417,11 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 			}
 
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		
 		return i;
@@ -530,19 +478,11 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
 
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		
 		return i;
@@ -599,19 +539,11 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 				i.setImageBytes(rs.getBytes("image"));
 			}
 
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		
 		return i;
@@ -668,19 +600,11 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
 
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		
 		return i;
@@ -725,19 +649,11 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 				i.setImageBytes(rs.getBytes("image"));
 			}
 
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		
 		return i;
@@ -793,19 +709,11 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				i.setImageBytes(rs.getBytes("thumbnail"));
 			}
 
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		
 		return i;
@@ -867,15 +775,11 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	    affectedRows = stmt.executeUpdate();
 	    
 	    
-		stmt.close();
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
-		if (conn != null) {
-			try {
-			conn.close();
-			} catch (SQLException e) {}
-		}
+		// Do not close DB connection, it doesn't matter how many connection you make if you keep
+		// closing it it will cause error on other threads!
 	}
 	return affectedRows;
 }
@@ -970,16 +874,12 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	            }
 	        }
 		    
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 
 		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 
 		return i;
@@ -1057,15 +957,11 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	        }
 		    
 
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 	
 		return i;
@@ -1127,16 +1023,11 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				iList.add(i);
 			}
 
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
 		}
 		
 		return iList;

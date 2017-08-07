@@ -310,7 +310,50 @@ public class Bid extends HttpServlet {
 		//all page get requests
 		if(manager.equals("get")){
 			
-			if("my-bids".equals(action)){ 
+			if("my-watchlist".equals(action)){ 
+
+				ArrayList<Lot> myBidLots = null;
+				if(user_id == null) {
+					req.setAttribute("msgbgcol", "green");
+					req.setAttribute("msgInfo", "No Watch List Found.");
+					page = "index.jsp";
+				} else {
+					myBidLots = new LotManager().getLotListJoinAuctionUserWishlistByUserId(user_id);
+					if(myBidLots.isEmpty()) {
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "No Watch List Found.");
+						page = "index.jsp";
+					} else {
+						
+						LotManager lMngr = new LotManager(req,res);
+						ItemManager iMngr = new ItemManager(req,res);
+						List<Lot> lList = new ArrayList<Lot>();
+						
+						Auction a =null;
+						iMngr.setLovValuesCurrency(req, res);
+						Lot delta_lot = null;
+						for(Lot lot : myBidLots){
+							a = aMngr.getAuctionByAuctionId(lot.getAuction_id());
+							delta_lot = lMngr.applyLotRules(lot);
+							
+							List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+							for(BigDecimal favId: favList){
+								if(favId.compareTo(delta_lot.getLot_id())==0){
+									delta_lot.setIsFav(1);
+								} 
+							}
+
+							lList.add(delta_lot);
+							
+							
+									
+						}//for loop
+	
+						req.setAttribute("lList", lList);
+						page = "my-wishlist.jsp";
+					}
+				}
+			} else if("my-bids".equals(action)){ 
 
 				ArrayList<Lot> myBidLots = null;
 				if(user_id == null) {
@@ -429,16 +472,20 @@ public class Bid extends HttpServlet {
 				Auction a = aMngr.getAuctionById(new BigDecimal(aid));
 				iMngr.setLovValuesCurrency(req, res);
 				
-				//AuctionRange ar = new AuctionRange();
-				//List<AuctionRange> arList = arMngr.getAuctionRangeListByAuctionId(a.getAuction_id());
-				//HashMap<BigDecimal, Lot> lotHM  = lMngr.getLotHMByAuctionId(a.getAuction_id());
-				//List<Item> iList = iMngr.getItemListByAuctionId(a.getAuction_id());
 				
 				List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+				
 				Lot delta_lot = null;
 				for(Lot lot : lotList){
 					
 					delta_lot = lMngr.applyLotRules(lot);
+					
+					List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+					for(BigDecimal favId: favList){
+						if(favId.compareTo(delta_lot.getLot_id())==0){
+							delta_lot.setIsFav(1);
+						} 
+					}
 					
 					//check if the end time is expired
 					if(delta_lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
@@ -656,6 +703,7 @@ public class Bid extends HttpServlet {
 					UserDao ud = new UserDao();
 					User u = ud.getUser(userId);
 					
+					LotManager lMngr = new LotManager();
 					BiddingTransactionManager btMngr = new BiddingTransactionManager();
 					AuctionUserBiddingMaxManager auMngr1 = new AuctionUserBiddingMaxManager();
 					Integer lotId = Integer.valueOf(reqlotId);
@@ -663,7 +711,17 @@ public class Bid extends HttpServlet {
 					Integer unit_qty = Integer.valueOf(requnitqty);
 			
 					//BID, MAX BID and BUY button clicks
-					if(doAction.equals("BID")) {
+					if(doAction.equals("UNFAV")) {
+						Lot lot = lMngr.getLotByLotId(new BigDecimal(lotId));
+						lMngr.unFav(lot.getAuction_id(), new BigDecimal(reqlotId) , user_id);
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "Lot removed from Watch List.");
+					}else if(doAction.equals("FAV")) {
+						Lot lot = lMngr.getLotByLotId(new BigDecimal(lotId));
+						lMngr.addFav(lot.getAuction_id(), new BigDecimal(reqlotId) , user_id);
+						req.setAttribute("msgbgcol", "green");
+						req.setAttribute("msgInfo", "Lot added to Watch List.");
+					} else if(doAction.equals("BID")) {
 						btMngr.insertBiddingTransactionMakeBid(lotId, amount, u.getId(), unit_qty);
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Bid submitted.");
@@ -685,7 +743,6 @@ public class Bid extends HttpServlet {
 						req.setAttribute("msgInfo", "Negotiated bid submitted.");
 						
 						
-						LotManager lMngr = new LotManager();
 						
 						Lot lot = lMngr.getLotByLotId(new BigDecimal(lotId));
 						Auction auction = aMngr.getAuctionByAuctionId(lot.getAuction_id());
@@ -721,44 +778,27 @@ public class Bid extends HttpServlet {
 					ItemManager iMngr = new ItemManager(req,res);
 					LotRangeManager lrMngr = new LotRangeManager();
 					
-					LotManager lMngr = new LotManager();
 					Lot l = lMngr.getLotById(lotId_wip);
 					
 					Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
 					
 
-					BigDecimal increment_amount = BigDecimal.ZERO;
-
-					//Check if there is lot level bid increment else use auction level value
-					increment_amount = lrMngr.getIncrementAmountByLotId(l.getLot_id(), l.getAmount_bid());
-					if(increment_amount.equals(BigDecimal.ZERO)) {
-						System.out.println("Using auction bid increment on lot");
-						increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), l.getAmount_bid());
-					}
-					BigDecimal amount_bid_next=  increment_amount.add(l.getAmount_bid());
-					l.setAmount_bid_next(amount_bid_next);
+					Lot delta_l = lMngr.applyLotRules(l);
 					
-					//Check if there is lot level bid increment else use auction level value
-					if(l.getEnd_date_time() == null) {
-						
-						l.setEnd_date_time(a.getEnd_date_time());
+					List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+					for(BigDecimal favId: favList){
+						if(favId.compareTo(delta_l.getLot_id())==0){
+							delta_l.setIsFav(1);
+						} 
 					}
 					
-					//check if the end time is expired
-					if(l.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
-						l.setIs_bid(0);
-						l.setIs_buy(0);
-					} 
-					
-					List<Item> iL = iMngr.getLotItemsById(l.getLot_id());
-					
-					
-					List<Image> lot_images = new ImageManager().getImageListByLotId(l.getId());
+					List<Item> iL = iMngr.getLotItemsById(delta_l.getLot_id());
+					List<Image> lot_images = new ImageManager().getImageListByLotId(delta_l.getId());
 					
 					List<BiddingTransaction> bidding_transactions = new BiddingTransactionManager().getLatestBiddingTransactionLotId(l.getLot_id());
 					req.setAttribute("bidding_transactions", bidding_transactions);
 					req.setAttribute("lot_images", lot_images);
-					req.setAttribute("lot", l);
+					req.setAttribute("lot", delta_l);
 					req.setAttribute("items", iL);
 					req.setAttribute("auction", a);
 					

@@ -25,6 +25,7 @@ import hmr.com.bean.Image;
 import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
 import hmr.com.bean.User;
+import hmr.com.dao.AuctionUserWatchlistDao;
 import hmr.com.dao.LotDao;
 import hmr.com.dao.UserDao;
 
@@ -82,6 +83,9 @@ public class LotManager {
 		String action = req.getParameter("action")!=null ? req.getParameter("action") : (String)req.getSession().getAttribute("action");
 		//String file_name = "";
 		Integer user_id = 0;
+		if(req.getSession().getAttribute("user-id")!=null ) {
+			user_id =  (Integer) req.getSession().getAttribute("user-id");
+		}
 		
 		BigDecimal auctionId_wip = new BigDecimal(0);
 		
@@ -115,23 +119,25 @@ public class LotManager {
 			lotId_wip = req.getParameter("lotId_wip")!=null ? new BigDecimal(req.getParameter("lotId_wip")): new BigDecimal(0);
 			
 			System.out.println("lotId_wip : "+lotId_wip);
-			
 			AuctionManager aMngr = new AuctionManager(req,res);
-			AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
-			LotManager lMngr = new LotManager(req,res);
 			ItemManager iMngr = new ItemManager(req,res);
-			LotRangeManager lrMngr = new LotRangeManager();
 			
-			
-			Lot l = lMngr.getLotById(lotId_wip);
+			Lot l = this.getLotById(lotId_wip);
 			Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
 			
 			Lot delta_l = this.applyLotRules(l);
 			
-			List<Item> iL = iMngr.getLotItemsById(l.getLot_id());
-				
-			List<Image> lot_images = new ImageManager().getImageListByLotId(l.getId());
+			List<BigDecimal> favList = this.getFavsInAuction(a.getAuction_id(), user_id);
+			for(BigDecimal favId: favList){
+				if(favId.compareTo(delta_l.getLot_id())==0){
+					delta_l.setIsFav(1);
+				} else {
+					delta_l.setIsFav(0);
+				}
+			}
 			
+			List<Item> iL = iMngr.getLotItemsById(l.getLot_id());
+			List<Image> lot_images = new ImageManager().getImageListByLotId(l.getId());
 			List<BiddingTransaction> bidding_transactions = new BiddingTransactionManager().getLatestBiddingTransactionLotId(l.getLot_id());
 			
 			req.setAttribute("lot_images", lot_images);
@@ -930,11 +936,16 @@ public class LotManager {
 				base_amount =l.getAmount_buy();
 			}
 			
+			if(base_amount==null)base_amount = BigDecimal.ZERO;
+			if(l.getStarting_bid_amount() == null) l.setStarting_bid_amount(BigDecimal.ZERO);
+			
 			//Check for stupidity where they set the Amount on bid or buy 
 			// if less than required starting bid!
 			if(l.getStarting_bid_amount().compareTo(base_amount)>1) {
 				base_amount = l.getStarting_bid_amount();
 			}
+			
+			if(base_amount==null)base_amount = BigDecimal.ZERO;
 			
 			l.setAmount_bid_next(base_amount);
 		} else {
@@ -946,7 +957,9 @@ public class LotManager {
 				System.out.println("Using auction bid increment for lot");
 				increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), l.getAmount_bid());
 			}
-			BigDecimal amount_bid_next=  increment_amount.add(l.getAmount_bid());
+			BigDecimal amount_bid_next =  increment_amount.add(l.getAmount_bid());
+			
+			if(amount_bid_next==null)amount_bid_next = BigDecimal.ZERO;
 			
 			l.setAmount_bid_next(amount_bid_next);
 		}
@@ -961,12 +974,26 @@ public class LotManager {
 			l.setIs_bid(0);
 			l.setIs_buy(0);
 		} 
-		
+
 		return l;
 	}
 	
-
-
+	public ArrayList<Lot> getLotListJoinAuctionUserWishlistByUserId(Integer user_id){
+		return new LotDao().getLotListJoinAuctionUserWishlistByUserId(user_id);
+	}
+	
+	public int addFav(BigDecimal auction_id, BigDecimal lot_id, Integer user_id) {
+		return new AuctionUserWatchlistDao().insertAuctionUserWatchlist(auction_id, lot_id, user_id);
+	}
+	
+	public int unFav(BigDecimal auction_id, BigDecimal lot_id, Integer user_id){
+		return new AuctionUserWatchlistDao().deleteAuctionUserWatchlist(auction_id,lot_id, user_id);
+	}
+	
+	public List<BigDecimal> getFavsInAuction(BigDecimal auction_id, Integer user_id){
+		return new AuctionUserWatchlistDao().getAuctionUserWatchlistLotIdListByAuction(auction_id, user_id);
+	}
+	
 	public int updateLotSetStartingBidAmount(
 			BigDecimal auction_id,
 			BigDecimal starting_bid_amount,
@@ -1028,6 +1055,4 @@ public class LotManager {
 	return i;
 	
 	}
-	
-	
 }

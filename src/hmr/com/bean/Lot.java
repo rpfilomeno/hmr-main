@@ -41,6 +41,8 @@ public class Lot extends SystemBean {
 	Integer is_available_lot;
 	BigDecimal weight_total;
 	
+	Integer isFav;
+	
 	
 	public BigDecimal getId() {
 		return id;
@@ -246,6 +248,13 @@ public class Lot extends SystemBean {
 	}
 	public void setStarting_bid_amount(BigDecimal starting_bid_amount) {
 		this.starting_bid_amount = starting_bid_amount;
+	}
+	public Integer getIsFav() {
+		if(isFav==null)isFav = 0;
+		return isFav;
+	}
+	public void setIsFav(Integer isFav) {
+		this.isFav = isFav;
 	}
 
 }

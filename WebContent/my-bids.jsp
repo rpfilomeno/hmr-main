@@ -130,7 +130,6 @@
 										<h3 class="product-name">#<%=l.getLot_no()%> : <%=l.getLot_name()%></h3>
 										<div class="product-details">
 											<div class="product-detail">Description: <%=l.getLot_desc()%></div>
-											<div class="product-detail product-price">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
 											<div class="product-detail">Highest Bid: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
 											<div class="product-detail">Bids: <%=l.getBid_count()%></div>
 

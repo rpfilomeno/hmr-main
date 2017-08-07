@@ -133,7 +133,16 @@
 							</div>
 						</div>
 						<div class="col-sm-5"> 
-							<h3 class="full-product-name"><%=lot.getLot_name()%></h3>
+							<div>
+							<% if(user_id != null && user_role_id > 0){ %>
+								<% if(lot.getIsFav() == 1){ %>
+									<div class="glyphicon glyphicon-heart favorite active" onclick="favs('UNFAV','<%=lot.getLot_id()%>','<%=lot.getId()%>')"></div>
+								<% } else { %>
+									<div class="glyphicon glyphicon-heart favorite" onclick="favs('FAV','<%=lot.getLot_id()%>','<%=lot.getId()%>')"></div>
+								<% } %>
+							<% } %>
+							<div><h3 class="full-product-name"><%=lot.getLot_name()%></h3></div>
+							</div>
 							<div class="product-details">
 								<%  if( lot.getIs_available_lot() > 0) { %>
 								<div class="product-detail">Unit Quantity: <%=lot.getUnit_qty()%></div>
@@ -470,6 +479,50 @@ function showNegotiatedBidForm(action, value, lot, id, qtyid) {
 			$("#negotiated-form").remove();
 		}
 	}).dialog('widget').position({ my: 'center', at: 'center', of: $(this) });
+}
+
+function favs(action,lot,id){
+	$('input[name="manager"]').val("bid-manager");
+	$('input[name="doaction"]').val(action);
+	$('input[name="amount"]').val(0);
+	$('input[name="lotId"]').val(lot);
+	$('input[name="lotId_wip"]').val(id);
+	$('input[name="unit_qty"]').val(1);
+	$('input[name="note"]').val(0);
+	
+	$('<div id="dialog-confirm"></div>').dialog({
+		resizable: false,
+	    height: "auto",
+	    width: 400,
+	    modal: true,
+	    title: "Watch List confirmation",
+	    closeOnEscape: false,
+        open: function (event, ui) {
+        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+      
+        	if(action=="FAV") {
+        		dialog_html = '<p>You will add this lot to your Watch List</p>'+
+        			'<p>Are you sure?</p>';
+        	}else if(action=="UNFAV") {
+        		dialog_html = '<p>You will remove this lot to your Watch List</p>'+
+        			'<p>Are you sure?</p>';
+        	}
+
+            $(this).html(dialog_html);
+        },
+        buttons: {
+        	"Yes": function() {
+  	          $( this ).dialog( "close" );
+  	          $( "#frm" ).submit();
+  	        },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        },
+		close: function() {
+			$("#dialog-confirm").remove();
+		}
+    }).dialog('widget').position({ my: 'center', at: 'center', of: $(this) }); //end confirm dialog
 }
 
 function submitPage(action, value, lot, id, qtyid, note) {
