@@ -1009,6 +1009,7 @@ public class LotManager {
 			BigDecimal srp, 
 			BigDecimal target_price, 
 			BigDecimal assess_value,
+			String bid_qualifier_price,
 			Integer user_id
 		){
 	
@@ -1020,6 +1021,7 @@ public class LotManager {
 			srp, 
 			target_price, 
 			 assess_value,
+			 bid_qualifier_price,
 			user_id
 			);
 	

@@ -208,7 +208,11 @@
 											<div class="product-details">
 												<% if (auction.getAuction_type()== 15) { %>
 													<div class="product-detail">Description: <%=l.getLot_desc()%></div>
-													<div class="product-detail product-price">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
+												<%if(l.getAmount_bid().doubleValue() >=  1 ){%>
+												<div class="product-detail product-price">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
+												<%}else{%>
+												<div class="product-detail product-price">Asking Price: <%=df.format(l.getStarting_bid_amount())%> <%=currency%></div>
+												<%}%>
 													<div class="product-detail">Highest Bid: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
 													<div class="product-detail">Bids: <%=l.getBid_count()%></div>
 												<% } else if (auction.getAuction_type() == 16) { %>
@@ -240,7 +244,11 @@
 							                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
 							                                <button class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
 							                            <% } else { %>
+							                            	<%if(l.getAmount_bid().doubleValue() > 0){ %>
 								                            <button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
+								                            <%}else if(l.getAmount_bid().doubleValue() == 0){ %>
+								                            <button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
+								                             <% } %>
 								                            <button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
 							                            <% } %>
 						                            <% } else if(auction.getAuction_type() == 16){ %>

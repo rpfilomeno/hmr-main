@@ -1988,6 +1988,7 @@ public class LotDao extends DBConnection {
 			BigDecimal srp, 
 			BigDecimal target_price, 
 			BigDecimal assess_value,
+			String bid_qualifier_price,
 			Integer user_id
 		){
 	
@@ -2002,14 +2003,22 @@ public class LotDao extends DBConnection {
 		
 		conn = dbConn.getConnection();
 
-		StringBuilder sb = new StringBuilder("Update Lot Set reserve_price_total=?, srp_total=?, target_price_total=?, assess_value_total=?");
+		StringBuilder sb = new StringBuilder("Update Lot Set reserve_price_total=?, srp_total=?, target_price_total=?, assess_value_total=?, buy_price=?");
 		
 		sb.append(", date_updated=?, updated_by=?");
 		
 		sb.append(" where lot_id="+lot_id);
 
-		
-		
+		BigDecimal buy_price = new BigDecimal("0");
+    	if("Reserve Price".equals(bid_qualifier_price)){
+    		buy_price = reserve_price;
+    	}else if("SRP".equals(bid_qualifier_price)){
+    		buy_price = srp;
+    	}else if("Target Price".equals(bid_qualifier_price)){
+    		buy_price = target_price;
+    	}else if("Assess Value Price".equals(bid_qualifier_price)){
+    		buy_price = assess_value;
+    	}
 		
 	    String sql = sb.toString();
 	    
@@ -2024,9 +2033,10 @@ public class LotDao extends DBConnection {
         stmt.setBigDecimal(2, srp);
         stmt.setBigDecimal(3, target_price);
         stmt.setBigDecimal(4, assess_value);
+        stmt.setBigDecimal(5, buy_price);
         
-        stmt.setTimestamp(5, sqlDate_t);
-        stmt.setInt(6, user_id);
+        stmt.setTimestamp(6, sqlDate_t);
+        stmt.setInt(7, user_id);
 
 
 	    System.out.println("sql : "+sql);

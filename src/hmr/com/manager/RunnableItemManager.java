@@ -56,59 +56,7 @@ public class RunnableItemManager implements Runnable {
 
 	      
 	      try {
-	    	  if("lotTotalsCompute".equals(threadName)){
-	    		  
-	    		    LotManager lMngr = new LotManager();
-					List<Lot> BQPLotList = lMngr.getLotListByAuctionId(auction_id);
-						
-						for(Lot BQPLot : BQPLotList){
-							
-						
-		    		  	try{
-		    		  	//	Thread.sleep(1000);
-		    		  	}catch(Exception e){
-		    		  		
-		    		  	}
-		    		    
-		    		    
-		    		    ItemManager iMngr = new ItemManager();
-		    		    
-		    		    lot_id = BQPLot.getLot_id();
-						HashMap<BigDecimal, Item>itemHM = iMngr.getItemHMByLotId(lot_id);
-						
-						
-						BigDecimal reserve_price_total = new BigDecimal("0");
-						BigDecimal srp_total = new BigDecimal("0");
-						BigDecimal target_price_total = new BigDecimal("0");
-						BigDecimal assess_value_total = new BigDecimal("0");
-						
-						Iterator itItemHM = itemHM.keySet().iterator();
-						while(itItemHM.hasNext()){
-							BigDecimal item_id = (BigDecimal)itItemHM.next();
-							
-							Item item = itemHM.get(item_id);
-	
-			            	if(item.getReserve_price().doubleValue()>0) {
-			            		reserve_price_total = reserve_price_total.add(item.getReserve_price());
-			            	}else if(item.getSrp().doubleValue()>0) {
-			            		srp_total = srp_total.add(item.getSrp());
-			            	}else if(item.getTarget_price().doubleValue()>0) {
-			            		target_price_total = target_price_total.add(item.getTarget_price());
-			            	}else if(item.getAssess_value().doubleValue()>0) {
-			            		assess_value_total = assess_value_total.add(item.getAssess_value());
-			            	}
-							
-						}
-						
-						if(itemHM.size()>0){
-							if(reserve_price_total.add(srp_total).add(target_price_total).add(assess_value_total).doubleValue() > 0 ){
-								lMngr.updateLotSetLotTotals(lot_id, reserve_price_total ,srp_total, target_price_total, assess_value_total, 1);
-							}
-						}
-					}
-	    	  }
-	    	  
-	    	  
+
 				String jsonDataItem = "";
 				if(!"".equals(lot_id) && !"".equals(auction_id) && "itemStagingInsert".equals(threadName)){
 

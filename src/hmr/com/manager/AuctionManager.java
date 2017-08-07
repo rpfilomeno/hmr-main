@@ -608,6 +608,25 @@ public class AuctionManager {
 				//logic of all auction triggered
 				//One as Start Bidding
 				
+				if(a.getBid_qualifier_price().doubleValue() > 0){
+					String bid_qualifier_price_ = "";
+	            	if(a.getBid_qualifier_price() == 0){
+	            		bid_qualifier_price_ = "";
+	            	}else if(a.getBid_qualifier_price() == 1){
+	            		bid_qualifier_price_ = "Reserve Price";
+	            	}else if(a.getBid_qualifier_price() == 2){
+	            		bid_qualifier_price_ = "SRP";
+	            	}else if(a.getBid_qualifier_price() == 3){
+	            		bid_qualifier_price_ = "Target Price";
+	            	}else if(a.getBid_qualifier_price() == 4){
+	            		bid_qualifier_price_ = "Assess Value Price";
+	            	}
+					
+					RunnableAuctionManager ram = new RunnableAuctionManager("lotTotalsCompute", auction_id, bid_qualifier_price_);
+					ram.start();
+				}
+				
+				
 				if(a.getOne_start_bid()==1){
 					lMngr.updateLotSetStartingBidAmount(auction_id, new BigDecimal(1), user_id);
 				}else{
@@ -620,25 +639,7 @@ public class AuctionManager {
 					lMngr.updateLotSetIsBuy(auction_id, 0, user_id);
 				}
 				
-				if(a.getBid_qualifier_price().doubleValue() > 0){
-					
 
-						RunnableItemManager rim = new RunnableItemManager("lotTotalsCompute", auction_id);
-						rim.start();
-					
-					
-					/*
-					if(a.getBid_qualifier_price() == 1){
-	            		//bid_qualifier_price = "Reserve Price";
-	            	}else if(a.getBid_qualifier_price() == 2){
-	            		//bid_qualifier_price = "SRP";
-	            	}else if(a.getBid_qualifier_price() == 3){
-	            		//bid_qualifier_price = "Target Price";
-	            	}else if(a.getBid_qualifier_price() == 4){
-	            		//bid_qualifier_price = "Assess Value Price";
-	            	}
-					*/
-				}
 				
 
 				List<AuctionUser> auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
