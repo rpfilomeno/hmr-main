@@ -2,12 +2,18 @@ package hmr.com.dao;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import hmr.com.bean.Auction;
 import hmr.com.bean.AuctionUserBiddingMax;
 import hmr.com.util.DBConnection;
 
@@ -59,5 +65,99 @@ public class AuctionUserBiddingMaxDao extends DBConnection {
 
 		return i;		
 	}
+	
+	
+	public ArrayList<AuctionUserBiddingMax> getAuctionUserBiddingMaxList(Integer lot_id){
+		
+		//Date dtNow = new Date();
+		
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		//String dtToday = sdf.format(dtNow);
+
+		ArrayList<AuctionUserBiddingMax> aubmList = new ArrayList<AuctionUserBiddingMax>();
+		
+		StringBuilder sb = new StringBuilder("Select `id`, `lot_id`, `qty`, `auction_id`, `bidder_id`,`amount_bid`,`amount_buy`,`amount_offer`");
+		
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		
+		sb.append(" from auction_user_bidding_max where lot_id="+lot_id);
+		
+		sb.append(" order by date_created asc");
+
+		Connection conn = null;
+		try {
+			DBConnection dbConn = new DBConnection();
+			
+			
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+		
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}else{
+				
+			}
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			AuctionUserBiddingMax aubm = null;
+
+			while(rs.next()){
+				aubm = new AuctionUserBiddingMax();
+				aubm.setId(rs.getBigDecimal("id"));
+				// `id`, ``, ``, ``, ``,``,``,``
+
+				aubm.setLot_id(rs.getInt("lot_id"));
+				aubm.setQty(rs.getInt("qty"));
+				aubm.setAuction_id(rs.getBigDecimal("auction_id"));
+				aubm.setBidder_id(rs.getInt("bidder_id"));
+				aubm.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				aubm.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				aubm.setAmount_offer(rs.getBigDecimal("amount_offer"));
+				
+				//SystemBean - start
+				aubm.setDate_created(rs.getTimestamp("date_created"));
+				aubm.setDate_updated(rs.getTimestamp("date_updated"));
+				aubm.setCreated_by(rs.getInt("created_by"));
+				aubm.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				aubmList.add(aubm);
+			}
+
+			//rs.close();
+			//stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return aubmList;
+	}
+	
+	
 
 }

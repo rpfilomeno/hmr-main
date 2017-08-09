@@ -1656,8 +1656,6 @@ public Auction getAuctionByToken(String token){
 			
 			if(stmt==null || stmt.isClosed()){
 				stmt = conn.createStatement();
-			}else{
-				
 			}
 
 			System.out.println("sql : "+sb.toString());

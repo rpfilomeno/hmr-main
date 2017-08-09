@@ -212,9 +212,10 @@ System.out.println("fullName : "+fullName);
                     	<!-- <li><a href="bid?mngr=auction-manager&a=privateAuctionList&uid=</%=userId%>">My Private Biddings</a></li> -->
                     	<li><a href="#">My Bids</a></li>
                     	<%} %>
+                    	<!--
                     	<li><a href="#">Online Biddings</a></li>
                     	<li><a href="#">Negotiated Bids</a></li>
-                    	<li><a href="#">Live Auctions</a></li>
+                    	<li><a href="#">Live Auctions</a></li> -->
                     	<!-- <li><a href="#">Wines</a></li> -->
                     	<!-- <li><a href="#">Services</a></li> -->
                     	<!-- <li><a href="#">Gallery</a></li> -->

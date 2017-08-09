@@ -573,10 +573,36 @@ public class BiddingTransactionManager {
 				1, 
 				userId, 
 				qty, 
-				"")>0) return true;
-		return false;
+				"")>0){ 
+			
+			
+			
+			return true;
+			
+		}else{
+			return false;
+		}
+		
 	}
 	
+	//Action Taken 5 = Auto-Bid
+	public boolean insertBiddingTransactionMakeBidBySetMax(Integer lotId, BigDecimal amountBid, Integer userId, Integer qty) {	
+		BiddingTransactionDao btd = new BiddingTransactionDao();
+		if(btd.insertBiddingTransaction(lotId,
+				amountBid, 
+				BigDecimal.ZERO,
+				BigDecimal.ZERO, 
+				5, 
+				userId, 
+				qty, 
+				"")>0){ 
+			return true;
+			
+		}else{
+			return false;
+		}
+		
+	}
 	
 	public boolean insertBiddingTransactionMakeBuy(Integer lotId, BigDecimal amountBuy, Integer userId, Integer qty) {
 		BiddingTransactionDao btd = new BiddingTransactionDao();
@@ -587,8 +613,13 @@ public class BiddingTransactionManager {
 				2, 
 				userId, 
 				qty, 
-				"")>0) return true;
-		return false;
+				"")>0){ 
+			
+			return true;
+			
+		}else{
+			return false;
+		}
 	}
 	
 	public boolean insertBiddingTransactionNegotiated(Integer lotId, BigDecimal amountOffer, Integer userId, Integer qty, String offerNote) {
@@ -600,8 +631,13 @@ public class BiddingTransactionManager {
 				3, 
 				userId, 
 				qty, 
-				offerNote)>0) return true;
-		return false;
+				offerNote)>0){ 
+			
+			return true;
+			
+		}else{
+			return false;
+		}
 	}
 	
 	public BiddingTransaction insertBiddingTransactionOnCreate(
@@ -694,6 +730,24 @@ public class BiddingTransactionManager {
 		
 	}
 	
+	public BiddingTransaction updateBiddingTransactionStatus(
+			Integer status,
+			BigDecimal biddingTransactionId_wip
+		){
+	
+	BiddingTransaction bt = null;
+	
+	BiddingTransactionDao btd = new BiddingTransactionDao();
+
+	bt = btd.updateBiddingTransactionStatus(
+				 status,
+				biddingTransactionId_wip
+			);
+	
+	return bt;
+	
+}
+	
 	/*
 	public BiddingTransaction updateBiddingTransactionImage(
 			File file_small,
@@ -722,6 +776,13 @@ public class BiddingTransactionManager {
 		return new BiddingTransactionDao().getLatestBiddingTransactionLotId(lot_id);
 		
 	}
+	
+	public ArrayList<BiddingTransaction> getLatestBiddingTransactionByLotId(BigDecimal lot_id){
+		return new BiddingTransactionDao().getLatestBiddingTransactionByLotId(lot_id);
+		
+	}
+	
+	
 	
 	public List<BiddingTransaction> getBiddingTransactionList(){
 		

@@ -1537,7 +1537,7 @@ public class ItemDao extends DBConnection {
 				conn.close();
 				} catch (SQLException e) {}
 			}
-			
+			/*
 			if (stmt != null) {
 				try {
 					stmt.close();
@@ -1549,7 +1549,7 @@ public class ItemDao extends DBConnection {
 					rs.close();
 				} catch (SQLException e) {}
 			}
-			
+			*/
 		}
 		
 		return iHM;

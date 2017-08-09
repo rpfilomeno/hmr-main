@@ -13,6 +13,11 @@ public class AuctionUserBiddingMax extends SystemBean {
 	Integer updated_by;
 	Integer created_by;
 	Integer bidder_id;
+	Integer qty;
+	BigDecimal amount_bid;
+	BigDecimal amount_buy;
+	BigDecimal amount_offer;
+	
 	public BigDecimal getId() {
 		return id;
 	}
@@ -66,6 +71,30 @@ public class AuctionUserBiddingMax extends SystemBean {
 	}
 	public void setBidder_id(Integer bidder_id) {
 		this.bidder_id = bidder_id;
+	}
+	public Integer getQty() {
+		return qty;
+	}
+	public void setQty(Integer qty) {
+		this.qty = qty;
+	}
+	public BigDecimal getAmount_bid() {
+		return amount_bid;
+	}
+	public void setAmount_bid(BigDecimal amount_bid) {
+		this.amount_bid = amount_bid;
+	}
+	public BigDecimal getAmount_buy() {
+		return amount_buy;
+	}
+	public void setAmount_buy(BigDecimal amount_buy) {
+		this.amount_buy = amount_buy;
+	}
+	public BigDecimal getAmount_offer() {
+		return amount_offer;
+	}
+	public void setAmount_offer(BigDecimal amount_offer) {
+		this.amount_offer = amount_offer;
 	}
 	
 

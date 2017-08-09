@@ -182,7 +182,7 @@
 				                                   	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getStarting_bid_amount()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BID <%=df.format(lot.getStarting_bid_amount())%> <%=currency%> </button>
 				                                   	
 			                                	<%}%>
-			                                   	<button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">SET MAX BID</button>
+			                                   	<button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">SET MAX</button>
 			                               	<% } %>
 		                                <% }else if(auction.getAuction_type() == 16){ %>
 		                                   	 	<button class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">MAKE OFFER</button>
@@ -244,7 +244,7 @@
 						            	<tr>  
 						            	
 						            	
-						            	<% if(bidding_transaction.getAction_taken()==1){
+						            	<% if(bidding_transaction.getAction_taken()==1 || bidding_transaction.getAction_taken()==5){
 						            		bAmount = (bidding_transaction.getAmount_bid().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_bid()) : "0.00";
 						            	} else if(bidding_transaction.getAction_taken()==2){
 						            		bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00";
@@ -274,6 +274,8 @@
 					</div>
 				</div>
 
+
+<%--
 				<div id="product-list-wrapper">
 					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
 						<li role="presentation" class="active">
@@ -331,7 +333,7 @@
 						<% } %>
 					</div>
 					
-				</div>
+				</div> --%>
 				
 				<div class="clearfix top20"></div>
 
@@ -368,10 +370,10 @@ function viewLot(id) {
 
 
 function showMaxBidForm(action, value, lot, id, qtyid) {
-	$('<div id="maxbid-form" title="Set Maximum Bid"></div>').dialog({
+	$('<div id="maxbid-form" title="Set Max"></div>').dialog({
 		height: "auto",
 		width: 350,
-		title: "Set Maximum Bid",
+		title: "Set Max",
 		modal: true,
 		open: function (event, ui) {
 			var dialog_html = '<p id="validateTips">All fields are required.</p><label for="maxbid-'+ id +'">Amount</label><div class="input-group"><span class="input-group-addon">' + "<%=currency%>" + '</span>' +
@@ -566,8 +568,8 @@ function submitPage(action, value, lot, id, qtyid, note) {
         			'<p>Are you sure?</p>';
         	}else if(action=="SET-MAXIMUM-BID") {
         		amount =  parseFloat(value);
-        		dialog_title = "Set maximum bid confirmation";
-        		dialog_html = '<p>You will will set your maximum bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_title = "Set max bid confirmation";
+        		dialog_html = '<p>You will will set your max bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
         			'<p>Are you sure?</p>';
         	}else if(action=="NEGOTIATED") {
         		amount =  parseFloat(value);

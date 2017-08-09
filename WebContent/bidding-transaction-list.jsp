@@ -39,7 +39,7 @@
 		
 		List<BiddingTransaction> btList =(ArrayList<BiddingTransaction>) request.getAttribute("biddingTransactionList");
 		System.out.println("btList "+btList.size());
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			
 	%>
     <title><%=COMPANY_NAME%></title>
@@ -172,6 +172,10 @@
                             	actionTaken = "Bid";
                             }else if(bt.getAction_taken()==2){
                             	actionTaken = "Buy";
+                            }else if(bt.getAction_taken()==3){
+                            	actionTaken = "Make Offer";
+                            }else if(bt.getAction_taken()==5){
+                            	actionTaken = "Auto-Bid";
                             }
                             
     						/*
@@ -182,9 +186,13 @@
     		            	*/
                             String btStatus = "";
                             if(bt.getStatus()==1){
-                            	btStatus = "Win";
+                            	btStatus = "Accepted";
                             }else if(bt.getStatus()==2){
-                            	btStatus = "Loss";
+                            	btStatus = "Rejected";
+                            }else if(bt.getStatus()==3){
+                            	btStatus = "Auto-Accepted";
+                            }else if(bt.getStatus()==4){
+                            	btStatus = "Auto-Outbid";
                             }
     		            	
                             
@@ -376,7 +384,7 @@ setTimeout(onLoadPage,3000);
 <script>
 $(function () {
     $("#table1").DataTable({
-      	"order": [[ 6, "desc" ]],
+      	"order": [[ 0, "desc" ]],
       	"lengthMenu": [[5, 25, 50, 100], [5, 25, 50, 100]]
     });
   });

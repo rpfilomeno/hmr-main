@@ -568,7 +568,85 @@ public class BiddingTransactionDao extends DBConnection {
 		return bt;
 	}
 	
+	public BiddingTransaction updateBiddingTransactionStatus(
+			Integer status,
+			BigDecimal biddingTransactionId_wip
+
+		){
 	
+	Connection conn = null;
+	
+	int affectedRows = 0;
+	
+	BiddingTransaction bt = null;
+
+	try {
+		DBConnection dbConn = new DBConnection();
+		
+		conn = dbConn.getConnection();
+	      
+		StringBuilder sb = new StringBuilder("Update bidding_transaction SET status=?");
+		
+		sb.append(" where id="+biddingTransactionId_wip);
+
+	    String sql = sb.toString();
+	    
+        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        
+        stmt.setInt(1, status);
+        
+	    System.out.println("sql : "+sql);
+	    
+	    affectedRows = stmt.executeUpdate();
+	    
+	    if (affectedRows == 0) {
+	    	bt = null;
+        }else{
+        	bt = new BiddingTransaction(); 
+        	/*
+        	bt.setId(userId_wip);
+        	bt.setEmail_address(emailAddress);
+        	bt.setFirst_name(firstName);
+        	bt.setLast_name(lastName);
+        	bt.setMobile_no_1(mobileNo1);
+        	bt.setMobile_no_2(mobileNo2);
+        	
+        	bt.setGender(gender);
+        	bt.setRole(role);
+        	bt.setBidder_no(bidderNo);
+        	bt.setReserve_bidder_no(reserveBidderNo);
+        	bt.setCompany(company);
+        	bt.setStatus(userStatus);
+        	bt.setActive(active);
+        	bt.setLandline_no(landLineNo);
+        	
+        	bt.setNews_letter(newsLetter);
+        	bt.setNews_letter_registration_date(newsLetterRegistrationDate_t);
+        	bt.setVerification_email_key(verificationEmailKey);
+        	bt.setDate_registration(registrationDate_t);
+        	bt.setDate_password_change(passwordChangeDate_t);
+        	bt.setShowChangePasswordNextLogin(showChangePasswordNextLogin);
+        	bt.setBirth_date(birthDate_d);
+        	bt.setPass_word(passWord);
+        	
+        	*/
+        }
+	    
+
+		stmt.close();
+	} catch (SQLException e) {
+		throw new RuntimeException(e);
+	} finally {
+		if (conn != null) {
+			try {
+			conn.close();
+			} catch (SQLException e) {}
+		}
+	}
+
+	return bt;
+}
 	
 	public int updatePasswordOnActivation(String userId, String pw, Integer user_id){
 		
@@ -621,6 +699,7 @@ public class BiddingTransactionDao extends DBConnection {
 					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+amountOffer.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"','"+ qty.toString() +"',NOW(),'"+offerNote+"');";
 			i = stmt.executeUpdate(Sql);
 			
+			System.out.println("Sql "+Sql);
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -651,6 +730,73 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		sb.append(" limit 5");
 
+		try {
+			conn = getConnection();
+
+			java.sql.Statement stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			BiddingTransaction bt = null;
+
+			while(rs.next()){
+				bt = new BiddingTransaction();
+				bt.setId(rs.getBigDecimal("id"));
+				bt.setLot_id(rs.getBigDecimal("lot_id"));
+				bt.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				bt.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				bt.setAmount_offer(rs.getBigDecimal("amount_offer"));
+
+				bt.setAction_taken(rs.getInt("action_taken"));
+				bt.setStatus(rs.getInt("status"));
+				bt.setUser_id(rs.getInt("user_id"));
+				
+				//SystemBean - start
+				bt.setDate_created(rs.getTimestamp("date_created"));
+				bt.setDate_updated(rs.getTimestamp("date_updated"));
+				bt.setCreated_by(rs.getInt("created_by"));
+				bt.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				btList.add(bt);
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return btList;
+	}
+	
+	public ArrayList<BiddingTransaction> getLatestBiddingTransactionByLotId(BigDecimal lot_id) {
+		ArrayList<BiddingTransaction> btList = new ArrayList<BiddingTransaction>();
+		
+		StringBuilder sb = new StringBuilder("Select id, lot_id, amount_bid, amount_buy, amount_offer, action_taken");
+
+		sb.append(", status, user_id");
+		
+		sb.append(", date_created, date_updated, created_by, updated_by");
+		
+		sb.append(" from bidding_transaction");
+		
+		sb.append(" where lot_id="+lot_id);
+
+		sb.append(" order by amount_bid DESC, date_created DESC");
+		
+		sb.append(" limit 5");
+
+		Connection conn = null;
+		
 		try {
 			conn = getConnection();
 

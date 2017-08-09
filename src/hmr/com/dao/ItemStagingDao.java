@@ -810,12 +810,13 @@ public class ItemStagingDao extends DBConnection {
 				conn.close();
 				} catch (SQLException e) {}
 			}
-			
+			/*
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 
 		return affectedRows;

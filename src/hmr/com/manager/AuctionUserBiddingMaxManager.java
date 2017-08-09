@@ -3,11 +3,16 @@ package hmr.com.manager;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import hmr.com.bean.AuctionUser;
+import hmr.com.bean.AuctionUserBiddingMax;
 import hmr.com.dao.AuctionUserBiddingMaxDao;
+import hmr.com.dao.AuctionUserDao;
 
 public class AuctionUserBiddingMaxManager {
 	HttpServletRequest req = null;
@@ -33,6 +38,18 @@ public class AuctionUserBiddingMaxManager {
 		AuctionUserBiddingMaxDao aud = new AuctionUserBiddingMaxDao();
 		if(aud.insertAuctionUserBiddingMax(lot_id, amount, BigDecimal.ZERO, BigDecimal.ZERO,  qty, bidder_id)>0) return true;
 		return false;
+	}
+	
+	public ArrayList<AuctionUserBiddingMax> getAuctionUserBiddingMaxListByLotId(Integer lot_id){
+		
+		ArrayList<AuctionUserBiddingMax> aubmList = new ArrayList<AuctionUserBiddingMax>();
+
+		AuctionUserBiddingMaxDao aubm = new AuctionUserBiddingMaxDao();
+
+		aubmList = aubm.getAuctionUserBiddingMaxList(lot_id);
+		
+		return aubmList;
+		
 	}
 	
 	
