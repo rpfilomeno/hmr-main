@@ -6,6 +6,7 @@ public class UserAddress extends SystemBean {
 	Integer user_id;
 	String address_line_1;
 	String baranggay;
+	String province;
 	String city;	
 	String country;
 	Integer address_type;
@@ -24,24 +25,28 @@ public class UserAddress extends SystemBean {
 		this.user_id = user_id;
 	}
 	public String getAddress_line_1() {
+		if(address_line_1 == null) address_line_1 = "";
 		return address_line_1;
 	}
 	public void setAddress_line_1(String address_line_1) {
 		this.address_line_1 = address_line_1;
 	}
 	public String getBaranggay() {
+		if(baranggay == null)baranggay ="";
 		return baranggay;
 	}
 	public void setBaranggay(String baranggay) {
 		this.baranggay = baranggay;
 	}
 	public String getCity() {
+		if(city == null)city="";
 		return city;
 	}
 	public void setCity(String city) {
 		this.city = city;
 	}
 	public String getCountry() {
+		if (country ==null) country ="";
 		return country;
 	}
 	public void setCountry(String country) {
@@ -58,6 +63,13 @@ public class UserAddress extends SystemBean {
 	}
 	public void setPostal_code(Integer postal_code) {
 		this.postal_code = postal_code;
+	}
+	public String getProvince() {
+		if(province==null)province="";
+		return province;
+	}
+	public void setProvince(String province) {
+		this.province = province;
 	}
 
 	

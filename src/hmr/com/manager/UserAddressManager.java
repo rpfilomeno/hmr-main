@@ -247,6 +247,10 @@ public class UserAddressManager {
 		
 	}	
 	
+	public UserAddress getUserAddressByUserId(Integer user_id) {
+		return new UserAddressDao().getUserAddressByUserId(user_id);
+	}
+	
 	public List<UserAddress> getUserAddressList(){
 		
 		List<UserAddress> uList = new ArrayList<UserAddress>();

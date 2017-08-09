@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -51,6 +53,7 @@ import hmr.com.bean.Item;
 import hmr.com.bean.Lot;
 
 import hmr.com.bean.User;
+import hmr.com.bean.UserAddress;
 import hmr.com.dao.UserDao;
 
 @SuppressWarnings("serial")
@@ -311,7 +314,40 @@ public class Bid extends HttpServlet {
 		//all page get requests
 		if(manager.equals("get")){
 			
-			if("my-watchlist".equals(action)){ 
+			if("my-profile".equals(action)){
+				Date d = new Date();
+				Calendar c = Calendar.getInstance();
+				c.setTime(d);
+				int year = c.get(Calendar.YEAR);
+				
+				if( aid.equals("1") ) {
+					req.setAttribute("msgbgcol", "green");
+					req.setAttribute("msgInfo", "Profile updated!");
+				} else if( aid.equals("2") ) {
+					req.setAttribute("msgbgcol", "red");
+					req.setAttribute("msgInfo", "Confirm New Password does not match");
+				} else if( aid.equals("3") ) {
+					req.setAttribute("msgbgcol", "red");
+					req.setAttribute("msgInfo", "Invalid Current Password");
+				}else if( aid.equals("4") ) {
+					req.setAttribute("msgbgcol", "green");
+					req.setAttribute("msgInfo", "Password Updated");
+				}
+				
+
+				User u = new UserManager().getUserById(user_id);
+				UserAddress ua = new UserAddressManager().getUserAddressByUserId(user_id);
+				
+				c.setTime(u.getBirth_date());
+				
+				req.setAttribute("user", u);
+				req.setAttribute("address", ua);
+				req.setAttribute("dobyear", c.get(Calendar.YEAR));
+				req.setAttribute("dobmonth", c.get(Calendar.MONTH));
+				req.setAttribute("dobday", c.get(Calendar.DATE));
+				req.setAttribute("currentYear", year);
+				page = "my-profile.jsp";
+			}else if("my-watchlist".equals(action)){ 
 
 				ArrayList<Lot> myBidLots = null;
 				if(user_id == null) {

@@ -20,7 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.bean.Lov;
 import hmr.com.bean.User;
+import hmr.com.bean.UserAddress;
 import hmr.com.dao.LovDao;
+import hmr.com.dao.UserAddressDao;
 import hmr.com.dao.UserDao;
 import hmr.com.util.EmailUtil;
 import hmr.com.util.StringUtil;
@@ -56,8 +58,105 @@ public class UserManager {
 		System.out.println("Paramerters doUserManager - end");
 		System.out.println("");
 		
+		if(action.equals("update-password")){
+			String currentPassword = req.getParameter("currentPassword");
+			String inputPassword = req.getParameter("inputPassword");
+			String inputPasswordConfirm = req.getParameter("inputPasswordConfirm");
+			Integer user_id = null;
+			
+			if(req.getSession().getAttribute("user-id")!=null ) {
+				
+				if(inputPassword.equals(inputPasswordConfirm)) {
+					user_id =  (Integer) req.getSession().getAttribute("user-id");
+					User u = getUserById(user_id);
+					
+					if(u.getId() !=null ) {
+						if(currentPassword.equals(u.getPass_word())){
+							
+							new UserDao().updatePassword(u.getEmail_address(), inputPassword, user_id);
+							
+							page="redirect://bid?mngr=get&a=my-profile&aid=4";
+						} else {
+							page="redirect://bid?mngr=get&a=my-profile&aid=3";
+						}
+					} else {
+						page="redirect://bid";
+					}
+				} else {
+					page="redirect://bid?mngr=get&a=my-profile&aid=2";
+				}
+			} else {
+				page="redirect://bid";
+			}
+			
+		}else if(action.equals("update-profile")){
+			String firstName = req.getParameter("firstName");
+			String lastName = req.getParameter("lastName");
+			String emailAddress = req.getParameter("userEmail");
+			BigDecimal mobileNo = new BigDecimal(req.getParameter("mobileNo"));
+			Integer gender = Integer.parseInt(req.getParameter("gender"));
+			Integer dobmonth = Integer.parseInt(req.getParameter("dobmonth"));
+			Integer dobday = Integer.parseInt(req.getParameter("dobday"));
+			Integer dobyear = Integer.parseInt(req.getParameter("dobyear"));
+			String addressStreetNo = req.getParameter("addressStreetNo");
+			String addressBaranggay = req.getParameter("addressBaranggay");
+			String addressCity = req.getParameter("addressCity");
+			String addressProvince = req.getParameter("addressProvince");
+			String addressCountry = req.getParameter("addressCountry");
+			String addressZipCode = req.getParameter("addressZipCode");
+			String companyName = req.getParameter("companyName");
+			Integer user_id = null;
+			
+			
+			
+			if(req.getSession().getAttribute("user-id")!=null ) {
+				user_id =  (Integer) req.getSession().getAttribute("user-id");
+				User u = getUserById(user_id);
+				
+				if(u.getId() !=null ) {
+					
+					UserAddressDao uad = new UserAddressDao();
+					UserAddress ua = uad.getUserAddressByUserId(user_id);
+					if(ua.getId() != null) {
+						
+						
+						uad.updateUserAddressOnUpdate(user_id, addressStreetNo, addressBaranggay, addressCity, addressProvince, addressCountry, ua.getAddress_type(), Integer.parseInt(addressZipCode) , user_id, user_id);
+						
+						Date birthDate_d = null; 
+						 try {
+						    birthDate_d = INPUT_DATE_FMT.parse(dobyear+"/"+dobmonth+"/"+dobday+" 00:00:00");
+						    
+						    updateUserOnUpdate(firstName, lastName, birthDate_d, gender, companyName, 
+									u.getEmail_address(), u.getPass_word(), u.getStatus(), u.getActive() , 
+									u.getRole(), u.getNews_letter(), u.getNews_letter_registration_date(), 
+									u.getDate_registration(), u.getDate_password_change(), 
+									u.getMobile_no_1(), u.getMobile_no_2(), u.getLandline_no(), 
+									u.getBidder_no(), u.getReserve_bidder_no(), u.getVerification_email_key(), 
+									u.getShowChangePasswordNextLogin(), user_id, user_id);
+						    
+						    page="redirect://bid?mngr=get&a=my-profile&aid=1";
+						 } catch (ParseException e) {
+							 page="redirect://bid";
+						 }
+					} else {
+						page="redirect://bid";
+					}
+				} else {
+					page="redirect://bid";
+				}
+			} else {
+				page="redirect://bid";
+			}
+			
+			
+			
+			
 		
-		if(action.equals("registration")){
+			
+			
+			
+			
+		} else if(action.equals("registration")){
 			
 			
 			String firstName = req.getParameter("firstName");

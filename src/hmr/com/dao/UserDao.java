@@ -465,8 +465,8 @@ public class UserDao extends DBConnection {
 
 		      
 
-		      sql ="INSERT INTO `user_address` (`user_id`, `address_line_1`, `baranggay`, `city`, `country`, `address_type`, `postal_code`, `date_created`) "+
-		      "VALUES ('"+last_inserted_id+"', '"+addressStreetNo+"', '"+addressBaranggay+"', '"+addressCity+"', '"+addressCountry+"', '1', '"+addressZipCode+"', NOW());";
+		      sql ="INSERT INTO `user_address` (`user_id`, `address_line_1`, `baranggay`, `province`, `city`, `country`, `address_type`, `postal_code`, `date_created`) "+
+		      "VALUES ('"+last_inserted_id+"', '"+addressStreetNo+"', '"+addressBaranggay+"', "+ addressProvince +",'"+addressCity+"', '"+addressCountry+"', '1', '"+addressZipCode+"', NOW());";
 		      
 		      System.out.println("sql : "+sql);		      
 		      i = stmt.executeUpdate(sql);
@@ -966,6 +966,43 @@ public int insertUserOnRegistration(String firstName, String lastName, String us
 			
 			String sql = "update user SET pass_word='"+pw+"', active=1, status=11, date_registration=now()";
 			sql = sql+ ", updated_by="+user_id+", date_updated=now() where email_address='"+userId+"'";
+			System.out.println("sql : "+sql);
+			
+			i = stmt.executeUpdate(sql);
+			
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+
+		return i;
+		
+	}
+	
+public int updatePassword(String userId, String pw, Integer user_id){
+		
+		int i = 0;
+		
+		try {
+			
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+			
+			Statement stmt = conn.createStatement();
+			
+			stmt = conn.createStatement();
+			
+			//USER-STATUS - 11 - Registered
+			
+			String sql = "update user SET pass_word='"+pw+"',";
+			sql = sql+ " updated_by="+user_id+", date_updated=now() where email_address='"+userId+"'";
 			System.out.println("sql : "+sql);
 			
 			i = stmt.executeUpdate(sql);

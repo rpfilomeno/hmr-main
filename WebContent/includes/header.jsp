@@ -103,7 +103,7 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 									</li>
 									<% } %>
 									<% if (user_id!=null) {%>
-									<li><a href="#">My Account</a></li>
+									<li><a href="bid?mngr=get&a=my-profile">My Account</a></li>
 									<% } %>
 									<li><a href="#"> <span id="bag-count"></span> <span
 											class="navbar-icon ion-bag"></span>

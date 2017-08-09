@@ -14,6 +14,7 @@
 <script src=assets/themes/hmr/js/main.js?v=79186204></script>
 		
 <script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
-<script src="assets/plugins/gridder/jquery.gridder.min.js"></script>
+<script src="assets/plugins/bootstrap-validator.min.js"></script>
 <script src="assets/plugins/jquery.bsAlerts.min.js"></script>
 <script src="assets/plugins/gallery/js/blueimp-gallery.min.js"></script>
+
