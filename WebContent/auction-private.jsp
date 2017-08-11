@@ -480,9 +480,9 @@
                             
                       %>
 		                  <tr>
-                            <td><a href="#" onclick="viewAuctionUser('<%=au.getId()%>')"><%=email%></a></td>
-                            <td><%=ln%></td>
-                            <td><%=fn%></td>
+                            <td><a href="#" onclick="viewAuctionUser('<%=au.getId()%>')"><%=au.getEmail()%></a></td>
+                            <td><%=au.getLastname()%></td>
+                            <td><%=au.getFirstname()%></td>
                             <td><%=active%></td> 
                             <td><%=auctionUserStatus%></td> 
                             <td><%=au.getAuction_id()%></td> 
@@ -587,9 +587,9 @@
                             
                       %>
 		                  <tr>
-                            <td><a href="#" onclick="viewAuctionUser('<%=au.getId()%>')"><%=email%></a></td>
-                            <td><%=ln%></td>
-                            <td><%=fn%></td>
+                            <td><a href="#" onclick="viewAuctionUser('<%=au.getId()%>')"><%=au.getEmail()%></a></td>
+                            <td><%=au.getLastname()%></td>
+                            <td><%=au.getFirstname()%></td>
                             <td><%=active%></td> 
                             <td><%=auctionUserStatus%></td> 
                             <td><%=au.getAuction_id()%></td> 
@@ -687,9 +687,9 @@
                             
                       %>
 		                  <tr>
-                            <td><a href="#" onclick="viewAuctionUser('<%=au.getId()%>')"><%=email%></a></td>
-                            <td><%=ln%></td>
-                            <td><%=fn%></td>
+                            <td><a href="#" onclick="viewAuctionUser('<%=au.getId()%>')"><%=au.getEmail()%></a></td>
+                            <td><%=au.getLastname()%></td>
+                            <td><%=au.getFirstname()%></td>
                             <td><%=active%></td> 
                             <td><%=auctionUserStatus%></td> 
                             <td><%=au.getAuction_id()%></td> 

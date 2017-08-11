@@ -10,6 +10,12 @@ public class AuctionUser extends SystemBean {
 	Integer status;
 	Integer active;
 	String company_id_no;
+	
+	String email;
+	String lastname;
+	String firstname;
+	
+	
 	byte[] imageBytes;
 	
 	public BigDecimal getId() {
@@ -53,6 +59,24 @@ public class AuctionUser extends SystemBean {
 	}
 	public void setImageBytes(byte[] imageBytes) {
 		this.imageBytes = imageBytes;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getLastname() {
+		return lastname;
+	}
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+	public String getFirstname() {
+		return firstname;
+	}
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 	
 }

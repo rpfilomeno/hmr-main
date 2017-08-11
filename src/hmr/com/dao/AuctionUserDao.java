@@ -540,19 +540,17 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
 
 		List<AuctionUser> uList = new ArrayList<AuctionUser>();
 		
-		StringBuilder sb = new StringBuilder("SELECT id, auction_id, user_id, status, active");
+		StringBuilder sb = new StringBuilder("select user.email_address, user.first_name, user.last_name,");
 		
-		sb.append(", date_created, date_updated, created_by, updated_by");
+		sb.append(" auction_user.*");
 		
-		sb.append(", company_id_no, image_1");
-		
-		sb.append(" from auction_user where auction_id ="+auction_id);
+		sb.append(" from auction_user, user where user.id = auction_user.user_id AND auction_id ="+auction_id);
 		
 		sb.append(" order by id desc");
 
 		try {
 			conn = getConnection();
-
+ 
 			java.sql.Statement stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
@@ -570,6 +568,10 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
             	u.setActive(rs.getInt("active"));
             	u.setCompany_id_no(rs.getString("company_id_no"));
             	u.setImageBytes(rs.getBytes("image_1"));
+            	
+            	u.setEmail(rs.getString("email_address")); 
+            	u.setFirstname(rs.getString("first_name"));
+            	u.setLastname(rs.getString("last_name")); 
 
 
 				//SystemBean - start
