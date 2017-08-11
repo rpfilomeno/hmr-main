@@ -227,7 +227,10 @@
 										
 										<div class="">
 											<% if(user_id != null && user_role_id > 0){ %>
-												<% if( trapOneLotPerBidder.compareTo(BigDecimal.ZERO) ==0 || trapOneLotPerBidder.compareTo(l.getLot_id()) == 0) { %>
+												<% if( 	(trapOneLotPerBidder.compareTo(BigDecimal.ZERO) ==0 && auction.getOne_lot_per_bidder()==1) || 
+														(trapOneLotPerBidder.compareTo(l.getLot_id()) == 0 && auction.getOne_lot_per_bidder()==1) ||
+														auction.getOne_lot_per_bidder()==0) 
+												{ %>
 					                                <% if( l.getIs_available_lot() > 0) { %>
 							                            <% Integer i = l.getUnit_qty(); %>
 									                    <div class="form-group">
@@ -262,10 +265,10 @@
 						                                <% }%> 
 						                            <% } else { %>
 						                            	<% if(l.getIs_bid() == 1){ %>
-						                            		<button class="btn btn-theme btn-block" >YOUR BID <%=df.format(l.getAmount_bid())%> <%=currency%></button>
-						                            	<% } %> 
+						                            		<button class="btn btn-theme btn-block" >YOUR BID</button>
+						                            	<% } %>  
 						                            	<% if(l.getIs_buy() == 1){ %>
-						                            		<button class="btn btn-theme btn-block" >YOUR OFFER <%=df.format(l.getAmount_buy())%> <%=currency%></button>
+						                            		<button class="btn btn-theme btn-block" >YOUR OFFER</button>
 						                            	<% } %>
 						                            <% } %>
 					                                </div>
@@ -499,34 +502,39 @@ function submitPage(action, value, lot, id, qtyid, note) {
         	var currency_html = "<%=currency%>";
         	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure?</p>';
         	var unit_qty_html = "";
-        	if(unit_qty>0) unit_qty_html = ' with quantity of ' + unit_qty + ' units';
+        	if(unit_qty>1) unit_qty_html = ' with quantity of ' + unit_qty + ' units';
+        	var aggreement_html = "";
+        	<% if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0) { %>
+        	aggreement_html = "<p>By reading this you are agreeing on the terms and conditions of this auction.</p>"
+        	<%} %>
+
         	
         	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
       
         	if(action=="BID") {
         		dialog_title = "Bid confirmation";
         		amount = parseFloat(value) * parseInt(unit_qty);
-        		dialog_html = '<p>You will bid ' + 	amount.toFixed(2)  +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will bid ' + 	amount.toFixed(2)  +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
         			'<p>Are you sure?</p>';
         	}else if(action=="BUY") {
         		dialog_title = "Buy confirmation";
         		amount = parseFloat(value);
-        		dialog_html = '<p>You will buy this lot for ' + amount.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will buy this lot for ' + amount.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+ aggreement_html +
         			'<p>Are you sure?</p>';
         	}else if(action=="SET-MAXIMUM-BID") {
         		dialog_title = "Set maximum bid confirmation";
         		amount = parseFloat(value);
-        		dialog_html = '<p>You will will set your maximum bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will will set your maximum bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
         			'<p>Are you sure?</p>';
         	}else if(action=="NEGOTIATED") {
         		dialog_title = "Offer bid confirmation";
         		amount = parseFloat(value);
-        		dialog_html = '<p>You will will set your offer bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will will set your offer bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
         			'<p>Are you sure?</p>';
         	}else if(action=="PRE-BID") {
         		dialog_title = "Pre-bid confirmation";
         		amount = parseFloat(value);
-        		dialog_html = '<p>You will will set pre-bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		dialog_html = '<p>You will will set pre-bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
         			'<p>Are you sure?</p>';
         	}
 

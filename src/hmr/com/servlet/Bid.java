@@ -522,12 +522,9 @@ public class Bid extends HttpServlet {
 						delta_lot.setLastBidder(btList.get(0).getUser_id());
 					}
 					
-					if(	a.getOne_lot_per_bidder()==1) { 
-						if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
+					if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
 							delta_lot.setUserHadBid(1); 
-							if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
-						}
-						
+						if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 					}
 					
 					
@@ -857,13 +854,11 @@ public class Bid extends HttpServlet {
 					}
 					
 					
-					if(	a.getOne_lot_per_bidder()==1) { 
-						//get all lots on same auction
-						List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
-						for(Lot lot : lotList){
-							if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
-								if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
-							}
+					//get all lots on same auction
+					List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+					for(Lot lot : lotList){
+						if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
+							if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
 						}
 					}
 					

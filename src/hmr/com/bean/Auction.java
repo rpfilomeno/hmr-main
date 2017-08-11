@@ -207,6 +207,7 @@ public class Auction extends SystemBean {
 		this.default_premium = default_premium;
 	}
 	public Integer getOne_lot_per_bidder() {
+		if(one_lot_per_bidder==null)one_lot_per_bidder = 0;
 		return one_lot_per_bidder;
 	}
 	public void setOne_lot_per_bidder(Integer one_lot_per_bidder) {

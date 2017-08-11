@@ -135,13 +135,11 @@ public class LotManager {
 				delta_l.setLastBidder(btList.get(0).getUser_id());
 			}
 			
-			if(	a.getOne_lot_per_bidder()==1) { 
-				//get all lots on same auction
-				List<Lot> lotList = this.getLotListByAuctionId(a.getAuction_id());
-				for(Lot lot : lotList){
-					if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
-						if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
-					}
+			//get all lots on same auction
+			List<Lot> lotList = this.getLotListByAuctionId(a.getAuction_id());
+			for(Lot lot : lotList){
+				if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
+					if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
 				}
 			}
 			
