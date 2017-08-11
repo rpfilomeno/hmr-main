@@ -509,40 +509,8 @@ function favs(action,lot,id){
 	$('input[name="lotId_wip"]').val(id);
 	$('input[name="unit_qty"]').val(1);
 	$('input[name="note"]').val(0);
-	
-	$('<div id="dialog-confirm"></div>').dialog({
-		resizable: false,
-	    height: "auto",
-	    width: 400,
-	    modal: true,
-	    title: "Watch List confirmation",
-	    closeOnEscape: false,
-        open: function (event, ui) {
-        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-      
-        	if(action=="FAV") {
-        		dialog_html = '<p>You will add this lot to your Watch List</p>'+
-        			'<p>Are you sure?</p>';
-        	}else if(action=="UNFAV") {
-        		dialog_html = '<p>You will remove this lot to your Watch List</p>'+
-        			'<p>Are you sure?</p>';
-        	}
+	$( "#frm" ).submit();
 
-            $(this).html(dialog_html);
-        },
-        buttons: {
-        	"Yes": function() {
-  	          $( this ).dialog( "close" );
-  	          $( "#frm" ).submit();
-  	        },
-            Cancel: function () {
-                $(this).dialog("close");
-            }
-        },
-		close: function() {
-			$("#dialog-confirm").remove();
-		}
-    }).dialog('widget').position({ my: 'center', at: 'center', of: $(this) }); //end confirm dialog
 }
 
 function submitPage(action, value, lot, id, qtyid, note) {
@@ -581,35 +549,35 @@ function submitPage(action, value, lot, id, qtyid, note) {
         	if(action=="BID") {
         		dialog_title = "Bid confirmation";
         		amount = parseFloat(value) * parseInt(unit_qty);
-        		dialog_html = '<p>You will bid ' + amount.toFixed(2) +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will bid ' + amount.toFixed(2) +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
         	}else if(action=="BUY") {
         		dialog_title = "Buy confirmation";
         		amount =  parseFloat(value);
-        		dialog_html = '<p>You will buy this lot for ' + amount.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will buy this lot for ' + amount.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+ 
+        		aggreement_html;
         	}else if(action=="SET-MAXIMUM-BID") {
         		amount =  parseFloat(value);
         		dialog_title = "Set max bid confirmation";
-        		dialog_html = '<p>You will will set your max bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will will set your max bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+
+        		aggreement_html;
         	}else if(action=="NEGOTIATED") {
         		amount =  parseFloat(value);
         		dialog_title = "Negotiated bid confirmation";
-        		dialog_html = '<p>You will will set your offer bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will will set your offer bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
         	}else if(action=="PRE-BID") {
         		amount =  parseFloat(value);
         		dialog_title = "Pre-bid confirmation";
-        		dialog_html = '<p>You will will set pre-bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will will set pre-bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
         	}
 
             $(this).dialog( "option", "title", dialog_title);
             $(this).html(dialog_html);
         },
         buttons: {
-        	"Yes": function() {
+        	"Confirm": function() {
   	          $( this ).dialog( "close" );
   	          $( "#frm" ).submit();
   	        },

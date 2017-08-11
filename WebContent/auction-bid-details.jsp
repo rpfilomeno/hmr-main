@@ -11,7 +11,7 @@
 		 import="java.text.SimpleDateFormat"
 		 import="java.sql.Timestamp"
 		 import="java.math.BigDecimal"
-
+ 
 %>
 <%
 	System.out.println("PAGE auction-bid-details.jsp");
@@ -520,35 +520,35 @@ function submitPage(action, value, lot, id, qtyid, note) {
         	if(action=="BID") {
         		dialog_title = "Bid confirmation";
         		amount = parseFloat(value) * parseInt(unit_qty);
-        		dialog_html = '<p>You will bid ' + 	amount.toFixed(2)  +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will bid ' + 	amount.toFixed(2)  +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
         	}else if(action=="BUY") {
         		dialog_title = "Buy confirmation";
         		amount = parseFloat(value);
-        		dialog_html = '<p>You will buy this lot for ' + amount.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will buy this lot for ' + amount.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+ 
+        		aggreement_html;
         	}else if(action=="SET-MAXIMUM-BID") {
         		dialog_title = "Set maximum bid confirmation";
         		amount = parseFloat(value);
-        		dialog_html = '<p>You will will set your maximum bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will will set your maximum bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
         	}else if(action=="NEGOTIATED") {
         		dialog_title = "Offer bid confirmation";
         		amount = parseFloat(value);
-        		dialog_html = '<p>You will will set your offer bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will will set your offer bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
         	}else if(action=="PRE-BID") {
         		dialog_title = "Pre-bid confirmation";
         		amount = parseFloat(value);
-        		dialog_html = '<p>You will will set pre-bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ aggreement_html +
-        			'<p>Are you sure?</p>';
+        		dialog_html = '<p>You will will set pre-bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
         	}
 
             $(this).dialog( "option", "title", dialog_title);
             $(this).html(dialog_html);
-        },
+        }, 
         buttons: {
-        	"Yes": function() {
+        	"Confirm": function() {
   	          $( this ).dialog( "close" );
   	          $( "#frm" ).submit();
   	        },
