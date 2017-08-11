@@ -497,7 +497,6 @@ public class Bid extends HttpServlet {
 				page = uMngr.doUserManager();
 				
 			}else if("auctionBidDetails".equals(action)){
-				AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
 				LotManager lMngr = new LotManager(req,res);
 				ItemManager iMngr = new ItemManager(req,res);
 				List<Lot> lList = new ArrayList<Lot>();
@@ -829,64 +828,124 @@ public class Bid extends HttpServlet {
 						bidderRNB.start();
 						
 						
-						
-						
-					}
-					
-					BigDecimal lotId_wip = req.getParameter("lotId_wip")!=null ? new BigDecimal(req.getParameter("lotId_wip")): new BigDecimal(0);
-					
-					System.out.println("lotId_wip : "+lotId_wip);
-					
-					AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
-					ItemManager iMngr = new ItemManager(req,res);
-					LotRangeManager lrMngr = new LotRangeManager();
-					
-					BigDecimal trapOneLotPerBidder= BigDecimal.ZERO;
-					Lot l = lMngr.getLotById(lotId_wip);
-					Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
-					
-					Lot delta_l = lMngr.applyLotRules(l);
-					
-					List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(delta_l.getLot_id());
-					if(!btList.isEmpty()){
-						//get the last bidder
-						delta_l.setLastBidder(btList.get(0).getUser_id());
 					}
 					
 					
-					//get all lots on same auction
-					List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
-					for(Lot lot : lotList){
-						if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
-							if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
+					if(req.getParameter("auction-id")!=null) {
+
+						ItemManager iMngr = new ItemManager(req,res);
+						List<Lot> lList = new ArrayList<Lot>();
+						List<Lot> lListExpired = new ArrayList<Lot>();
+						Auction a = aMngr.getAuctionById(new BigDecimal(req.getParameter("auction-id")));
+						BigDecimal trapOneLotPerBidder= BigDecimal.ZERO;
+						
+						iMngr.setLovValuesCurrency(req, res);
+						
+						Lot delta_lot = null;
+						
+						List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+						for(Lot lot : lotList){
+							
+							delta_lot = lMngr.applyLotRules(lot);
+							
+							List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
+							
+							if(!btList.isEmpty()){
+								//get the last bidder
+								delta_lot.setLastBidder(btList.get(0).getUser_id());
+							}
+							
+							if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
+									delta_lot.setUserHadBid(1); 
+								if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+							}
+							
+							
+							
+							List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+							for(BigDecimal favId: favList){
+								if(favId.compareTo(delta_lot.getLot_id())==0){
+									delta_lot.setIsFav(1);
+								} 
+							}
+							
+							
+							
+							//check if the end time is expired
+							if(delta_lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+								lListExpired.add(delta_lot);
+							} else {
+								lList.add(delta_lot);
+							}
+							
+									
+						}//for loop
+						
+						//append the expired lots to end
+						if(!lListExpired.isEmpty()) lList.addAll(lListExpired);
+						List<Image> auction_images = new ImageManager().getImageListByAuctionId(a.getAuction_id());
+
+						req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder); 
+						req.setAttribute("lList", lList);
+						req.setAttribute("auction", a);
+						req.setAttribute("auction_images", auction_images);
+
+						
+						page ="auction-bid-details.jsp";
+					
+						
+					} else {
+						BigDecimal lotId_wip = req.getParameter("lotId_wip")!=null ? new BigDecimal(req.getParameter("lotId_wip")): new BigDecimal(0);
+						
+						System.out.println("lotId_wip : "+lotId_wip);
+						
+						AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
+						ItemManager iMngr = new ItemManager(req,res);
+						LotRangeManager lrMngr = new LotRangeManager();
+						
+						BigDecimal trapOneLotPerBidder= BigDecimal.ZERO;
+						Lot l = lMngr.getLotById(lotId_wip);
+						Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
+						
+						Lot delta_l = lMngr.applyLotRules(l);
+						
+						List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(delta_l.getLot_id());
+						if(!btList.isEmpty()){
+							//get the last bidder
+							delta_l.setLastBidder(btList.get(0).getUser_id());
 						}
+						
+						
+						//get all lots on same auction
+						List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+						for(Lot lot : lotList){
+							if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
+								if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
+							}
+						}
+						
+						
+						
+						List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+						for(BigDecimal favId: favList){
+							if(favId.compareTo(delta_l.getLot_id())==0){
+								delta_l.setIsFav(1);
+							} 
+						}
+						
+						List<Item> iL = iMngr.getLotItemsById(delta_l.getLot_id());
+						List<Image> lot_images = new ImageManager().getImageListByLotId(delta_l.getId());
+						
+						List<BiddingTransaction> bidding_transactions = new BiddingTransactionManager().getLatestBiddingTransactionLotId(l.getLot_id());
+						req.setAttribute("bidding_transactions", bidding_transactions);
+						req.setAttribute("lot_images", lot_images);
+						req.setAttribute("lot", delta_l);
+						req.setAttribute("items", iL);
+						req.setAttribute("auction", a);
+						req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder);
+						
+						page = "lot-bid-details.jsp";
 					}
-					
-					
-					
-					List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
-					for(BigDecimal favId: favList){
-						if(favId.compareTo(delta_l.getLot_id())==0){
-							delta_l.setIsFav(1);
-						} 
-					}
-					
-					List<Item> iL = iMngr.getLotItemsById(delta_l.getLot_id());
-					List<Image> lot_images = new ImageManager().getImageListByLotId(delta_l.getId());
-					
-					List<BiddingTransaction> bidding_transactions = new BiddingTransactionManager().getLatestBiddingTransactionLotId(l.getLot_id());
-					req.setAttribute("bidding_transactions", bidding_transactions);
-					req.setAttribute("lot_images", lot_images);
-					req.setAttribute("lot", delta_l);
-					req.setAttribute("items", iL);
-					req.setAttribute("auction", a);
-					req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder);
-					
-					
-					
-					page = "lot-bid-details.jsp";
-					
-					
 				}
 			} else if(manager.equals("login-manager")){
 				LoginManager liMngr = new LoginManager(req,res);

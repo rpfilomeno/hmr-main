@@ -11,7 +11,7 @@
 		 import="java.text.SimpleDateFormat"
 		 import="java.sql.Timestamp"
 		 import="java.math.BigDecimal"
- 
+  
 %>
 <%
 	System.out.println("PAGE auction-bid-details.jsp");
@@ -447,40 +447,7 @@ function favs(action,lot,id){
 	$('input[name="lotId_wip"]').val(id);
 	$('input[name="unit_qty"]').val(1);
 	$('input[name="note"]').val(0);
-	
-	$('<div id="dialog-confirm"></div>').dialog({
-		resizable: false,
-	    height: "auto",
-	    width: 400,
-	    modal: true,
-	    title: "Watch List confirmation",
-	    closeOnEscape: false,
-        open: function (event, ui) {
-        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-      
-        	if(action=="FAV") {
-        		dialog_html = '<p>You will add this lot to your Watch List</p>'+
-        			'<p>Are you sure?</p>';
-        	}else if(action=="UNFAV") {
-        		dialog_html = '<p>You will remove this lot to your Watch List</p>'+
-        			'<p>Are you sure?</p>';
-        	}
-
-            $(this).html(dialog_html);
-        },
-        buttons: {
-        	"Yes": function() {
-  	          $( this ).dialog( "close" );
-  	          $( "#frm" ).submit();
-  	        },
-            Cancel: function () {
-                $(this).dialog("close");
-            }
-        },
-		close: function() {
-			$("#dialog-confirm").remove();
-		}
-    }).dialog('widget').position({ my: 'center', at: 'center', of: $(this) }); //end confirm dialog
+	$( "#frm" ).submit();
 }
 
 function submitPage(action, value, lot, id, qtyid, note) {
@@ -661,6 +628,7 @@ jQuery(window).on('load', function(){
    <input type="hidden" name="amount" id="amount" value=""/>
    <input type="hidden" name="userId" id="userId" value="<%=userId %>"/>
    <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
+   <input type="hidden" name="auction-id" id="auction-id" value="<%=auction.getId() %>"/>
 </form>
 
 
