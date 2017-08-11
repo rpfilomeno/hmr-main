@@ -3,10 +3,12 @@ package hmr.com.manager;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import hmr.com.bean.Auction;
 import hmr.com.bean.AuctionUserBiddingMax;
 import hmr.com.bean.BiddingTransaction;
 import hmr.com.bean.Item;
@@ -62,12 +64,12 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    		  Thread.sleep(5000);
 	    		  System.out.println("btAutoPlaySetMax - Start");
 	    		  
-	    		  
+	    		    AuctionManager aucMngr = new AuctionManager();
 	    		  	AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
 	    		  	ArrayList<AuctionUserBiddingMax> aubmList = aubmMngr.getAuctionUserBiddingMaxListByLotId(lot_id);
 					for(AuctionUserBiddingMax aubm : aubmList){
 						System.out.println(aubm.getId()+" "+aubm.getLot_id()+" "+aubm.getAmount_bid()+" "+aubm.getAmount_buy()+" "+aubm.getAmount_offer()+" "+aubm.getBidder_id());
-					
+						
 						LotManager lotMngr = new LotManager();
 						Lot lot = lotMngr.getLotByLotId(new BigDecimal(aubm.getLot_id()));
 						
@@ -91,7 +93,14 @@ public class RunnableBiddingTransactionManager implements Runnable {
 							System.out.println("proceed to insert in Bidding History");
 							BiddingTransactionManager btMngr = new BiddingTransactionManager();
 							
-							btMngr.insertBiddingTransactionMakeBidBySetMax(Integer.parseInt(lot.getLot_id().toString()) , lot.getAmount_bid_next(), aubm.getBidder_id(), aubm.getQty());
+							Auction auc = aucMngr.getAuctionByAuctionId(lot.getAuction_id());
+					        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+					        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+							//if(auc.getStart_date_time().after(sqlDate_t) && sqlDate_t.before(lot.getEnd_date_time())){
+							if(auc.getStart_date_time().after(sqlDate_t)){
+								btMngr.insertBiddingTransactionMakeBidBySetMax(Integer.parseInt(lot.getLot_id().toString()) , lot.getAmount_bid_next(), aubm.getBidder_id(), aubm.getQty());
+							}
+							
 							cont = true;
 						}else{
 							cont = false;

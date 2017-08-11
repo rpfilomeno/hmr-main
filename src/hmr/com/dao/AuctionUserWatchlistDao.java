@@ -109,9 +109,9 @@ public class AuctionUserWatchlistDao extends DBConnection {
 		sb.append(" FROM `auction_user_watchlist`");
 		sb.append(" WHERE user_id=" + user_id);
 		sb.append(" AND auction_id=" + auction_id);
-
+		Connection conn = null;
 		try {
-			conn = getConnection();
+			conn = getConnection6();
 
 			java.sql.Statement stmt = conn.createStatement();
 

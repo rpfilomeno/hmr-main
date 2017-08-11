@@ -77,7 +77,7 @@ String msgbgcol = request.getAttribute("msgbgcol")!=null ? (String)request.getAt
 			<div class="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4">
 				
 				<div class="customer-register-wrap">
-					<h2 class="tac">Accept Invite </h2>
+					<h2 class="tac">Welcome to HMR BID Private Bidding </h2>
 					<div class="clearfix top20"></div>
 					
 					<form action="bid" class="form-login" name="frm" method="post" onkeypress="stopEnterSubmitting(window.event)">

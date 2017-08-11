@@ -568,7 +568,7 @@ public Auction getAuctionByToken(String token){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection7();
 			
 			System.out.println("conn : "+conn);
 			

@@ -31,8 +31,6 @@ public class ImageDao extends DBConnection {
 	private Connection conn = null;
 	DBConnection dbConn = null;
 
-	
-
 	HttpServletRequest req = null;
 	HttpServletResponse res = null;
 	

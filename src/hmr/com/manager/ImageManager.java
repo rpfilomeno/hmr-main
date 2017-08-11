@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -454,8 +457,10 @@ public class ImageManager {
 
 		
 		InputStream image = resizeImageStream(is1,640,480);
-		//InputStream thumbnail = resizeImageStream(is2,250,188);
-		InputStream thumbnail = resizeImageStream(is2,125,94);
+		InputStream thumbnail = resizeImageStream(is2,320,240);
+		//InputStream thumbnail = resizeImageStream(is2,240,180);
+		//InputStream thumbnail = resizeImageStream(is2,125,94);
+		
 		
 		ImageDao id = new ImageDao();
 		if(id.insertImageOnCreate(
@@ -689,7 +694,21 @@ public class ImageManager {
 		    }
 		};
 		ImageIO.write(scaledImg, "png", output);
-		is = new ByteArrayInputStream(output.toByteArray());
+		
+		
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		ImageWriter writer = (ImageWriter) ImageIO.getImageWritersByFormatName("jpeg").next();
+
+		ImageWriteParam param = writer.getDefaultWriteParam();
+		param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+		param.setCompressionQuality(1); // Change this, float between 0.0 and 1.0
+
+		writer.setOutput(ImageIO.createImageOutputStream(os));
+		writer.write(null, new IIOImage(scaledImg, null, null), param);
+		writer.dispose();
+		
+		
+		is = new ByteArrayInputStream(os.toByteArray());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -129,7 +129,7 @@
 					<div class="row">
 						<div class="col-sm-7">
 							<div style="margin-top:15px;">
-								<img style="width:100%" class="lazy" data-original="image?id=<%=lot.getId()%>&t=lt" >
+								<img style="width:100%" class="lazy" data-original="image?id=<%=lot.getId()%>&t=l" >
 							</div>
 						</div>
 						<div class="col-sm-5"> 
