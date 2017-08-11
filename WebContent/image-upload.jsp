@@ -541,6 +541,8 @@ function clearQueue() {
 		resizeHeight: 480,
 		resizeMethod: 'crop',
 		autoProcessQueue: false,
+		maxFilesize: 1000,
+		maxFiles: 300, 
 		parallelUploads: 1,
 		init: function() {
 	    	this.on("sending", function(file, xhr, formData){
