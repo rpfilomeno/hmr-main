@@ -63,7 +63,6 @@ public class Bid extends HttpServlet {
 	String actionGet = null;
 	String userIdGet = null;
 	String vekGet = null;
-	//private OutputStream out;
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -223,7 +222,6 @@ public class Bid extends HttpServlet {
 		File auction_file = null;
 		File auction_file_small = null;
 		File item_file = null;
-		//String file_name = "";
 		Integer user_id = 0;
 		if(req.getSession().getAttribute("user-id")!=null ) {
 			user_id =  (Integer) req.getSession().getAttribute("user-id");
@@ -504,18 +502,35 @@ public class Bid extends HttpServlet {
 				ItemManager iMngr = new ItemManager(req,res);
 				List<Lot> lList = new ArrayList<Lot>();
 				List<Lot> lListExpired = new ArrayList<Lot>();
-				//LotRangeManager lrMngr = new LotRangeManager();
-				
+				BiddingTransactionManager btMngr = new BiddingTransactionManager();
 				Auction a = aMngr.getAuctionById(new BigDecimal(aid));
+				BigDecimal trapOneLotPerBidder= BigDecimal.ZERO;
+				
 				iMngr.setLovValuesCurrency(req, res);
 				
+				Lot delta_lot = null;
 				
 				List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
-				
-				Lot delta_lot = null;
 				for(Lot lot : lotList){
 					
 					delta_lot = lMngr.applyLotRules(lot);
+					
+					List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
+					
+					if(!btList.isEmpty()){
+						//get the last bidder
+						delta_lot.setLastBidder(btList.get(0).getUser_id());
+					}
+					
+					if(	a.getOne_lot_per_bidder()==1) { 
+						if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
+							delta_lot.setUserHadBid(1); 
+							if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+						}
+						
+					}
+					
+					
 					
 					List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
 					for(BigDecimal favId: favList){
@@ -523,6 +538,8 @@ public class Bid extends HttpServlet {
 							delta_lot.setIsFav(1);
 						} 
 					}
+					
+					
 					
 					//check if the end time is expired
 					if(delta_lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
@@ -536,15 +553,13 @@ public class Bid extends HttpServlet {
 				
 				//append the expired lots to end
 				if(!lListExpired.isEmpty()) lList.addAll(lListExpired);
-				
 				List<Image> auction_images = new ImageManager().getImageListByAuctionId(a.getAuction_id());
 
+				req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder); 
 				req.setAttribute("lList", lList);
 				req.setAttribute("auction", a);
 				req.setAttribute("auction_images", auction_images);
-				//req.setAttribute("auction-item", a);
-				//req.setAttribute("lotHM", lotHM);
-				//req.setAttribute("arList", arList);
+
 				
 				page ="auction-bid-details.jsp";
 				
@@ -829,12 +844,30 @@ public class Bid extends HttpServlet {
 					ItemManager iMngr = new ItemManager(req,res);
 					LotRangeManager lrMngr = new LotRangeManager();
 					
+					BigDecimal trapOneLotPerBidder= BigDecimal.ZERO;
 					Lot l = lMngr.getLotById(lotId_wip);
-					
 					Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
 					
-
 					Lot delta_l = lMngr.applyLotRules(l);
+					
+					List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(delta_l.getLot_id());
+					if(!btList.isEmpty()){
+						//get the last bidder
+						delta_l.setLastBidder(btList.get(0).getUser_id());
+					}
+					
+					
+					if(	a.getOne_lot_per_bidder()==1) { 
+						//get all lots on same auction
+						List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+						for(Lot lot : lotList){
+							if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
+								if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
+							}
+						}
+					}
+					
+					
 					
 					List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
 					for(BigDecimal favId: favList){
@@ -852,6 +885,7 @@ public class Bid extends HttpServlet {
 					req.setAttribute("lot", delta_l);
 					req.setAttribute("items", iL);
 					req.setAttribute("auction", a);
+					req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder);
 					
 					
 					

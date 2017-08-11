@@ -45,8 +45,8 @@
 	//HashMap<BigDecimal, Lot> lotHM  = request.getAttribute("lotHM")!=null ? (HashMap<BigDecimal, Lot>)request.getAttribute("lotHM") : (HashMap<BigDecimal, Lot>)request.getSession().getAttribute("lotHM");
 	//List<Item> iList = request.getAttribute("iList")!=null ? (List<Item>)request.getAttribute("iList") : (List<Item>)request.getSession().getAttribute("iList");
 
+	BigDecimal trapOneLotPerBidder = request.getAttribute("trapOneLotPerBidder")!=null ? (BigDecimal)request.getAttribute("trapOneLotPerBidder") : BigDecimal.ZERO;
 	List<Image> lot_images = (List<Image>)request.getAttribute("lot_images");
-	
 	List<BiddingTransaction> bidding_transactions = (List<BiddingTransaction>)request.getAttribute("bidding_transactions");
 	
     DecimalFormat df = new DecimalFormat("#,###,##0");
@@ -159,40 +159,50 @@
 							</div>
 							<div class="product-details">
 								<% if(user_id != null && user_role_id > 0){ %>
-									<% if( lot.getIs_available_lot() > 0) { %>
-		                            	<% Integer i = lot.getUnit_qty(); %>
-		                                <div class="form-group">
-                        	 				<select class="form-control" id="qty_<%=lot.getId()%>" name="qty_<%=lot.getId()%>">
-		                                   	 	<% while(i > 0) { %>
-		                                   	 		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
-		                                   	 		<% i = i - 1; %>
-		                                   	 	<% } %>
-		                                   	</select>
-		                                 </div>
-		                             <% } %>
-		                             
-									<% if(lot.getIs_bid() == 1){ %>
-										<% if(auction.getAuction_type() == 15){ %>
-			                            	<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && lot.getActive()>0){ %>
-			                                	<button class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</button>
-			                                <% } else { %>
-			                                	<%if(lot.getAmount_bid().doubleValue() > 0){ %>
-				                                   	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BID <%=df.format(lot.getAmount_bid_next())%> <%=currency%> </button>
-				                               	<%}else if(lot.getAmount_bid().doubleValue() == 0){ %>
-				                                   	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getStarting_bid_amount()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BID <%=df.format(lot.getStarting_bid_amount())%> <%=currency%> </button>
-				                                   	
-			                                	<%}%>
-			                                   	<button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">SET MAX</button>
-			                               	<% } %>
-		                                <% }else if(auction.getAuction_type() == 16){ %>
-		                                   	 	<button class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">MAKE OFFER</button>
-		                               	<% } %>
+									<% if( trapOneLotPerBidder.compareTo(BigDecimal.ZERO) ==0 || trapOneLotPerBidder.compareTo(lot.getLot_id()) == 0) { %>
+										<% if( lot.getIs_available_lot() > 0) { %>
+			                            	<% Integer i = lot.getUnit_qty(); %>
+			                                <div class="form-group">
+	                        	 				<select class="form-control" id="qty_<%=lot.getId()%>" name="qty_<%=lot.getId()%>">
+			                                   	 	<% while(i > 0) { %>
+			                                   	 		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+			                                   	 		<% i = i - 1; %>
+			                                   	 	<% } %>
+			                                   	</select>
+			                                 </div>
+			                             <% } %>
+			                             
+			                             <% if(lot.getLastBidder() != user_id){  %>
+			                             
+											<% if(lot.getIs_bid() == 1){ %>
+												<% if(auction.getAuction_type() == 15){ %>
+					                            	<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && lot.getActive()>0){ %>
+					                                	<button class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</button>
+					                                <% } else { %>
+					                                	<%if(lot.getAmount_bid().doubleValue() > 0){ %>
+						                                   	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BID <%=df.format(lot.getAmount_bid_next())%> <%=currency%> </button>
+						                               	<%}else if(lot.getAmount_bid().doubleValue() == 0){ %>
+						                                   	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=lot.getStarting_bid_amount()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BID <%=df.format(lot.getStarting_bid_amount())%> <%=currency%> </button>
+						                                   	
+					                                	<%}%>
+					                                   	<button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">SET MAX</button>
+					                               	<% } %>
+				                                <% }else if(auction.getAuction_type() == 16){ %>
+				                                   	 	<button class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">MAKE OFFER</button>
+				                               	<% } %>
+											<% } %>
+											
+											<% if(lot.getIs_buy() == 1){ %>
+		                                		<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=lot.getBuy_price()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BUY <%=df.format(lot.getBuy_price())%> <%=currency%></button>
+		                                	<% } %>
+		                                <% } else { %>
+						                	<% if(lot.getIs_bid() == 1){ %>
+						                    	<button class="btn btn-theme btn-block" >YOUR BID <%=df.format(lot.getAmount_bid())%> <%=currency%></button>
+						                    <% } else if(lot.getIs_buy() == 1){ %>
+						                        <button class="btn btn-theme btn-block" >YOUR OFFER <%=df.format(lot.getAmount_buy())%> <%=currency%></button>
+						                    <% } %>
+						               <% } %>
 									<% } %>
-									
-									<% if(lot.getIs_buy() == 1){ %>
-                                		<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=lot.getBuy_price()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BUY <%=df.format(lot.getBuy_price())%> <%=currency%></button>
-                                	<% } %>
-									
 								<% } else { %>
 									<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
 									<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>

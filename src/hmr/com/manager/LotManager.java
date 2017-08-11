@@ -121,11 +121,29 @@ public class LotManager {
 			System.out.println("lotId_wip : "+lotId_wip);
 			AuctionManager aMngr = new AuctionManager(req,res);
 			ItemManager iMngr = new ItemManager(req,res);
+			BiddingTransactionManager btMngr = new BiddingTransactionManager();
 			
 			Lot l = this.getLotById(lotId_wip);
 			Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
+			BigDecimal trapOneLotPerBidder= BigDecimal.ZERO;
 			
 			Lot delta_l = this.applyLotRules(l);
+			
+			List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(delta_l.getLot_id());
+			if(!btList.isEmpty()){
+				//get the last bidder
+				delta_l.setLastBidder(btList.get(0).getUser_id());
+			}
+			
+			if(	a.getOne_lot_per_bidder()==1) { 
+				//get all lots on same auction
+				List<Lot> lotList = this.getLotListByAuctionId(a.getAuction_id());
+				for(Lot lot : lotList){
+					if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
+						if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
+					}
+				}
+			}
 			
 			List<BigDecimal> favList = this.getFavsInAuction(a.getAuction_id(), user_id);
 			for(BigDecimal favId: favList){
@@ -145,7 +163,8 @@ public class LotManager {
 			req.setAttribute("items", iL);
 			req.setAttribute("auction", a);
 			req.setAttribute("bidding_transactions", bidding_transactions);
-
+			req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder);
+ 
 			page ="lot-bid-details.jsp";
 			
 		}else if("createLot".equals(action)){

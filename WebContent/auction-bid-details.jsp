@@ -47,7 +47,8 @@
 	List<Auction> activeOnlineAuctionList = request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-ONLINE-AUCTION-LIST");
 	List<Auction> activeNegotiatedAuctionList = request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST");
 	List<Auction> activeLiveAuctionList = request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-ONLINE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-ONLINE-AUCTION-LIST");
-
+	
+	BigDecimal trapOneLotPerBidder = request.getAttribute("trapOneLotPerBidder")!=null ? (BigDecimal)request.getAttribute("trapOneLotPerBidder") : BigDecimal.ZERO;
 	Auction auction = request.getAttribute("auction")!=null ? (Auction)request.getAttribute("auction") : (Auction)request.getSession().getAttribute("auction");
 	List<Lot> lList = request.getAttribute("lList")!=null ? (List<Lot>)request.getAttribute("lList") : (List<Lot>)request.getSession().getAttribute("lList");
 	HashMap<Integer, Lov> currencyLovHM  = request.getAttribute("CURRENCY-HM")!=null ? (HashMap<Integer, Lov>)request.getAttribute("CURRENCY-HM") : (HashMap<Integer, Lov>)request.getSession().getAttribute("CURRENCY-HM");
@@ -226,42 +227,54 @@
 										
 										<div class="">
 											<% if(user_id != null && user_role_id > 0){ %>
-				                                <% if( l.getIs_available_lot() > 0) { %>
-						                            <% Integer i = l.getUnit_qty(); %>
-								                    <div class="form-group">
-								                        <select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
-								                            <% while(i > 0) { %>
-						                                   		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
-						                                   	 	<% i = i - 1; %>
-						                                   	<% } %>
-						                                </select>
-						                            </div>
-						                        <% } %>
-						                        <div class="form-group">
-				                                <% if(l.getIs_bid() == 1){ %>
-						                            <% if(auction.getAuction_type() == 15){ %>
-							                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
-							                                <button class="btn btn-theme btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
-							                            <% } else { %>
-							                            	<%if(l.getAmount_bid().doubleValue() > 0){ %>
-								                            <button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
-								                            <%}else if(l.getAmount_bid().doubleValue() == 0){ %>
-								                            <button class="btn btn-theme btn-block" href="#" onclick="submitPage('BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
-								                             <% } %>
-								                            <button class="btn btn-theme btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
-							                            <% } %>
-						                            <% } else if(auction.getAuction_type() == 16){ %>
-						                                <button class="btn btn-theme btn-block" href="#" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</button>
+												<% if( trapOneLotPerBidder.compareTo(BigDecimal.ZERO) ==0 || trapOneLotPerBidder.compareTo(l.getLot_id()) == 0) { %>
+					                                <% if( l.getIs_available_lot() > 0) { %>
+							                            <% Integer i = l.getUnit_qty(); %>
+									                    <div class="form-group">
+									                        <select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
+									                            <% while(i > 0) { %>
+							                                   		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+							                                   	 	<% i = i - 1; %>
+							                                   	<% } %>
+							                                </select>
+							                            </div>
+							                        <% } %>
+						                        	<div class="form-group">
+							                        <% if(l.getLastBidder() != user_id){  %>
+						                                <% if(l.getIs_bid() == 1){ %>
+								                            <% if(auction.getAuction_type() == 15){ %>
+									                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
+									                                <button class="btn btn-theme btn-block" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
+									                            <% } else { %>
+									                            	<%if(l.getAmount_bid().doubleValue() > 0){ %>
+										                            <button class="btn btn-theme btn-block" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
+										                            <%}else if(l.getAmount_bid().doubleValue() == 0){ %>
+										                            <button class="btn btn-theme btn-block" onclick="submitPage('BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
+										                             <% } %>
+										                            <button class="btn btn-theme btn-block" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
+									                            <% } %>
+								                            <% } else if(auction.getAuction_type() == 16){ %>
+								                                <button class="btn btn-theme btn-block" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</button>
+								                            <% } %>
+						                                <% }%>
+						                                <% if(l.getIs_buy() == 1){ %>
+						                                	<button class="btn btn-theme btn-block" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></button>
+						                                <% }%> 
+						                            <% } else { %>
+						                            	<% if(l.getIs_bid() == 1){ %>
+						                            		<button class="btn btn-theme btn-block" >YOUR BID <%=df.format(l.getAmount_bid())%> <%=currency%></button>
+						                            	<% } %> 
+						                            	<% if(l.getIs_buy() == 1){ %>
+						                            		<button class="btn btn-theme btn-block" >YOUR OFFER <%=df.format(l.getAmount_buy())%> <%=currency%></button>
+						                            	<% } %>
 						                            <% } %>
-				                                <% }%>
-				                                <% if(l.getIs_buy() == 1){ %>
-				                                	<button class="btn btn-theme btn-block" href="#" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></button>
-				                                <% }%> 
-				                                </div>
-				                            <% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
+					                                </div>
+					                            <% } %>
+					                        <% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
 												<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
 												<a class="btn btn-primary btn-theme btn-block" href="bid?mngr=get&a=login">LOGIN</a>
 											<% } %>
+
 											<div class="clearfix top10"></div>
 										</div>
 										<div class="clearfix top10"></div>

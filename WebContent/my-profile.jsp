@@ -553,6 +553,7 @@ String msgbgcol = request.getAttribute("msgbgcol") != null ? (String) request.ge
 	        									id="currentPassword" 
 	        									name="currentPassword"
 	        									placeholder="Password" 
+	        									autocomplete="off"
 	        									data-error="Minimum of 6 characters"
 	        									required />
 										</div>
@@ -576,6 +577,7 @@ String msgbgcol = request.getAttribute("msgbgcol") != null ? (String) request.ge
 		        												id="inputPassword" 
 		        												name="inputPassword"
 		        												placeholder="Password" 
+		        												autocomplete="off"
 		        												data-error="Minimum of 6 characters"
 		        												required />
 		        									</div>
@@ -592,6 +594,7 @@ String msgbgcol = request.getAttribute("msgbgcol") != null ? (String) request.ge
 			        										id="inputPasswordConfirm" 
 			        										name="inputPasswordConfirm"
 			        										data-match="#inputPassword" 
+			        										autocomplete="off"
 			        										data-match-error="Whoops, these don't match" 
 			        										placeholder="Confirm" required>
 		        									</div>

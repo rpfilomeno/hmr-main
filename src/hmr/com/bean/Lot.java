@@ -41,7 +41,9 @@ public class Lot extends SystemBean {
 	Integer is_available_lot;
 	BigDecimal weight_total;
 	
+	Integer lastBidder;
 	Integer isFav;
+	Integer userHadBid;
 	
 	
 	public BigDecimal getId() {
@@ -256,5 +258,18 @@ public class Lot extends SystemBean {
 	public void setIsFav(Integer isFav) {
 		this.isFav = isFav;
 	}
-
+	public Integer getLastBidder() {
+		return lastBidder;
+	}
+	public void setLastBidder(Integer lastBidder) {
+		this.lastBidder = lastBidder;
+	}
+	public Integer getUserHadBid() {
+		if(userHadBid==null) userHadBid = 0;
+		return userHadBid;
+	}
+	public void setUserHadBid(Integer userHadBid) {
+		this.userHadBid = userHadBid;
+	}
 }
+	

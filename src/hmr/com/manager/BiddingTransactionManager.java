@@ -44,12 +44,7 @@ public class BiddingTransactionManager {
 	public static final DateFormat INPUT_DATE_FMT = new SimpleDateFormat("yyyy/MM/dd HH:mm"); 
 	
 	public BiddingTransactionManager(){}
-	/*
-	public BiddingTransactionManager(HttpServletRequest req, HttpServletResponse res, String emailAdd){
-		this.req = req;
-		this.res = res;
-	}
-	*/
+
 	public BiddingTransactionManager(HttpServletRequest req, HttpServletResponse res){
 		this.req = req;
 		this.res = res;
@@ -62,7 +57,6 @@ public class BiddingTransactionManager {
 			
 			BiddingTransaction bt = new BiddingTransaction();
 			
-			//bt = updateBiddingTransactionImage(file_small, file,1,biddingTransactionId_wip);
 
 			if(bt!=null){
 				bt = getBiddingTransactionById(bt.getId());
@@ -965,6 +959,11 @@ public class BiddingTransactionManager {
 		}
 		
 		
+	}
+	
+	public boolean hasBiddingTransactionByLotIdAndUserId(BigDecimal lot_id, Integer user_id) {
+		if( new BiddingTransactionDao().getLatestBiddingTransactionByLotIdAndUserId(lot_id, user_id).isEmpty()) return false;
+		return true;
 	}
 	
 }
