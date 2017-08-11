@@ -112,16 +112,14 @@
 														<% if(activeOnlineAuction.getVisibility()==34) {%>
 														<div class="ribbon">Private</div>
 														<% } %>
-													</div>
+				 									</div>
 													<div class="card-body-wrap">
 														<h3 class="card-title">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeOnlineAuction.getId()%>">
 																<%=activeOnlineAuction.getAuction_name()%>
 															</a>
 														</h3>
-														<div class="card-snippet-wrap">
-															Description: <%=activeOnlineAuction.getAuction_desc() %>
-														</div>
+
 														<div class="card-snippet-wrap">
 															Location: <%=activeOnlineAuction.getLocation()%>
 														</div>
@@ -131,15 +129,7 @@
 														<div class="card-snippet-wrap">
 															Closing: <%=sdf.format(activeOnlineAuction.getEnd_date_time()) %>
 														</div>
-														<div class="card-snippet-wrap">
-															<% if(activeOnlineAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
-																Remarks: Upcoming Bidding
-															<% }else if (activeOnlineAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
-																Remarks: Accepting Bids
-															<% } else { %>
-																Remarks: Completed
-															<% } %>
-														</div>
+
 															
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeOnlineAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
