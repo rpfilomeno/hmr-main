@@ -310,6 +310,12 @@
 
 
 <script>
+
+function forceNumeric(){
+    var $input = $(this);
+    $input.val($input.val().replace(/[^\d]+/g,''));
+}
+
 function viewLot(id) {
 	$('input[name="manager"]').val("lot-manager");
 	$('input[name="action"]').val("lotBidDetails");
@@ -400,7 +406,7 @@ function showNegotiatedBidForm(action, value, lot, id, qtyid) {
 		modal: true,
 		open: function (event, ui) {
 			var dialog_html = '<p id="validateTips">All fields are required.</p><label for="negotiated-'+ id +'">Amount</label><div class="input-group"><span class="input-group-addon">' + "<%=currency%>" + '</span>' +
-			'<input type="text" name="negotiated-'+ id +'" id="negotiated-'+ id +'" placeholder="'+ value +'" class="form-control">' +
+			'<input type="number" name="negotiated-'+ id +'" id="negotiated-'+ id +'" placeholder="'+ value +'" class="form-control">' +
 			'</div>'+
 			'<label for="negotiated-note-'+ id +'">Note</label>'+
 			'<textarea maxlength="50" class="form-control" rows="5" id="negotiated-note-'+ id +'"></textarea>';
@@ -622,6 +628,8 @@ jQuery(window).on('load', function(){
 
         }
 	})
+	
+	$('body').on('propertychange input', 'input[type="number"]', forceNumeric);
 	
 	
 
