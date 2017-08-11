@@ -8,21 +8,23 @@
 	transform-origin: 0 100%;
 	box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .12), 0 1px 6px 0
 		rgba(0, 0, 0, .12);
-	background-color: #03a9f4;
+	background-color: red;
 	color: #fff;
 	height: 35px;
-	width: 150px;
-	top: -35px;
-	transform: rotateZ(30deg);
-	padding-left: 60.621778264911px;
-	padding-right: 20.207259421637px;
+	width: 150px; 
+	top: 40px;
+	transform: rotateZ(-30deg);
+	padding-left: 0px;
+	padding-right: 25.207259px;
 	line-height: 35px;
-	right: -20.096189432334px;
-	-webkit-transform: rotateZ(30deg);
-	-moz-transform: rotateZ(30deg);
-	-o-transform: rotateZ(30deg);
-	z-index:9999;
+	left: -2.096189px;
+	-webkit-transform: rotateZ(-30deg);
+	-moz-transform: rotateZ(-30deg);
+	-o-transform: rotateZ(-30deg);
+	z-index: 9999;
+	color: white; 
 }
+ 
 .ribbon-wrap{
 	overflow:hidden;
 	position:relative;
