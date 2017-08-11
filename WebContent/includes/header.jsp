@@ -102,7 +102,9 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 									 	<a href="bid?mngr=get&a=my-watchlist">Watch List</a>
 									</li>
 									<% } %>
-									<% if (user_id!=null) {%>
+									<% if (user_id==null) {%>
+									<li><a href="bid?mngr=get&a=login">My Account</a></li>
+									<% } else { %>
 									<li><a href="bid?mngr=get&a=my-profile">My Account</a></li>
 									<% } %>
 									<li><a href="#"> <span id="bag-count"></span> <span
