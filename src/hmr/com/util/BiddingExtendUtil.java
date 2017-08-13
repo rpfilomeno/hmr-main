@@ -23,21 +23,25 @@ public class BiddingExtendUtil {
     
     
     public static void main(String[] args) throws ParseException  {
+    	String lot_id_str = args[0];
+    	BigDecimal lot_id = new BigDecimal(lot_id_str);
     	AuctionDao aDao = new AuctionDao();
-    	List<Auction> aList = aDao.getAuctionListEndingTodayActiveOpen();
+    	//List<Auction> aList = aDao.getAuctionListEndingTodayActiveOpen();
         //BiddingTransactionManager btm = new BiddingTransactionManager();
     	BiddingTransactionDao btDao = new BiddingTransactionDao();
         
     	
-    	for(Auction a : aList){
-    		System.out.println(a.getAuction_name());
+    	//for(Auction a : aList){
+    		//System.out.println(a.getAuction_name());
     		
     		LotDao lDao = new LotDao();
-    		ArrayList<Lot> lList = lDao.getLotListByAuctionId(a.getAuction_id());
+    		//ArrayList<Lot> lList = lDao.getLotListByAuctionId(a.getAuction_id());
     		
-    		for(Lot l : lList){
-    			System.out.println(l.getLot_id() +" - "+l.getLot_name());
+    		//for(Lot l : lList){
+    			//System.out.println(l.getLot_id() +" - "+l.getLot_name());
     			
+    			Lot l = lDao.getLotByLotId(lot_id);
+    			Auction a = aDao.getAuctionByAuctionId(l.getAuction_id());
     			HashMap<BigDecimal, BiddingTransaction> btHM = btDao.getBiddingTransactionHMByLotId(l.getLot_id());
     			BiddingTransaction bt = btHM.get(l.getLot_id());
     			if(bt!=null && bt.getDate_created()!=null){
@@ -76,7 +80,7 @@ public class BiddingExtendUtil {
         			
         			Calendar cal3 = Calendar.getInstance();
         			cal3.setTime(dtNow);
-        			cal3.add(Calendar.MINUTE, 3);
+        			cal3.add(Calendar.MINUTE, 1);
         			System.out.println("3 reference date: "+cal3.getTime());
         			
         			if(createdBTCal.after(cal1) && createdBTCal.before(cal2)){
@@ -101,9 +105,9 @@ public class BiddingExtendUtil {
         			
     			}
 
-    		}
+    		//}
     		
-    	}
+    	//}
     	
     }
     

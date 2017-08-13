@@ -30,7 +30,7 @@ class ExmpThread extends Thread{
         this.suspendCount = count;
     }
     public void run(){
-        for(int i=0;i<1000;i++){
+        for(int i=0;i<1;i++){
             if(i%suspendCount == 0){
                 try {
                     System.out.println("Thread Sleep: " + getName());
@@ -44,7 +44,7 @@ class ExmpThread extends Thread{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-                    Thread.sleep(45000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException ex) {  
                 
                 

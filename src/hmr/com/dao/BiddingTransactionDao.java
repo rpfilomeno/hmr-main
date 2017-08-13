@@ -728,8 +728,8 @@ public class BiddingTransactionDao extends DBConnection {
 
 		sb.append(" order by amount_bid DESC, date_created DESC");
 		
-		sb.append(" limit 5");
-
+		//sb.append(" limit 5");
+		Connection conn = null;
 		try {
 			conn = getConnection();
 
@@ -793,7 +793,7 @@ public class BiddingTransactionDao extends DBConnection {
 
 		sb.append(" order by amount_bid DESC, date_created DESC");
 		
-		sb.append(" limit 5");
+		sb.append(" limit 3");
 
 		Connection conn = null;
 		

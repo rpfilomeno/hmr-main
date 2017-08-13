@@ -55,7 +55,7 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    	  if("btAutoPlaySetMax".equals(threadName) && !"".equals(lot_id) ){
 	    		  
 	    		  boolean cont = true;
-	    		  for(int z = 0; z < 100; z ++){
+	    		  for(int z = 0; z < 20; z ++){
 	    			  
 	    		  if(cont){
 	    			  
@@ -97,19 +97,21 @@ public class RunnableBiddingTransactionManager implements Runnable {
 					        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 					        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 							//if(auc.getStart_date_time().after(sqlDate_t) && sqlDate_t.before(lot.getEnd_date_time())){
-							if(auc.getStart_date_time().after(sqlDate_t)){
+							if(auc.getStart_date_time().before(sqlDate_t)){
 								btMngr.insertBiddingTransactionMakeBidBySetMax(Integer.parseInt(lot.getLot_id().toString()) , lot.getAmount_bid_next(), aubm.getBidder_id(), aubm.getQty());
 							}
 							
 							cont = true;
 						}else{
 							cont = false;
-							z = 100;
+							z = 20;
 						}
 						
 					}
 					
 					
+		    		  //if(cont){
+		    			  
 		    		  
 		    		  BiddingTransactionManager btMngr = new BiddingTransactionManager();
 						ArrayList<BiddingTransaction> BTList = btMngr.getLatestBiddingTransactionByLotId(new BigDecimal(lot_id));
@@ -127,6 +129,7 @@ public class RunnableBiddingTransactionManager implements Runnable {
 										status = 1;
 									}
 									btMngr.updateBiddingTransactionStatus(status, bt.getId());
+									cont = false;
 								}else{
 									int status = 0;
 									if(bt.getAction_taken()==5){
@@ -136,6 +139,7 @@ public class RunnableBiddingTransactionManager implements Runnable {
 									}
 									
 									btMngr.updateBiddingTransactionStatus(status, bt.getId());
+									cont = false;
 								}
 								first++;
 								//Integer status = 0;
@@ -144,11 +148,11 @@ public class RunnableBiddingTransactionManager implements Runnable {
 						}
 						
 					
-					
+		    		  }
 	    		    
 					System.out.println("btAutoPlaySetMax - End");
 	    		  }
-	    		  }
+	    		  //}
 	    	  }else if("btSetStatus".equals(threadName) && !"".equals(lot_id) ){
 	    		  
 	    		  Thread.sleep(10000);

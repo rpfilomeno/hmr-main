@@ -38,6 +38,7 @@ import hmr.com.manager.ItemManager;
 import hmr.com.manager.LoginManager;
 import hmr.com.manager.LotManager;
 import hmr.com.manager.LotRangeManager;
+import hmr.com.manager.MyThreadSuspend;
 import hmr.com.manager.RunnableBiddingTransactionManager;
 import hmr.com.manager.RunnableNegotiatedBidManager;
 import hmr.com.manager.UploadAuctionManager;
@@ -780,10 +781,25 @@ public class Bid extends HttpServlet {
 						RunnableBiddingTransactionManager rbtm1 = new RunnableBiddingTransactionManager("btSetStatus", lotId );
 						rbtm1.start();
 						
+						try{
+							String[] arg = {String.valueOf(lotId)};
+							MyThreadSuspend.main(arg);
+						}catch(Exception exe){
+							
+						}
+						
+						
 					}else if(doAction.equals("BUY")) {
 						btMngr.insertBiddingTransactionMakeBuy(lotId, amount, u.getId(), unit_qty);
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Buy submitted.");
+						
+						RunnableBiddingTransactionManager rbtm = new RunnableBiddingTransactionManager("btAutoPlaySetMax", lotId );
+						rbtm.start();
+						
+						RunnableBiddingTransactionManager rbtm1 = new RunnableBiddingTransactionManager("btSetStatus", lotId );
+						rbtm1.start();
+						
 					}else if(doAction.equals("SET-MAXIMUM-BID")) {					
 						auMngr1.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId(),unit_qty);
 						req.setAttribute("msgbgcol", "green");

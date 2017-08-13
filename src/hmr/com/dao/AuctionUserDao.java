@@ -204,8 +204,8 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
             	
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -298,7 +298,7 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
             }
         }
 	    
-		stmt.close();
+		//stmt.close();
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
