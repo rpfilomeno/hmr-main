@@ -243,7 +243,7 @@
 							                            </div>
 							                        <% } %>
 						                        	<div class="form-group">
-							                        <% if(l.getLastBidder() != user_id){  %>
+							                        <% if(l.getLastBidder()==null || !l.getLastBidder().equals(user_id) ){  %>
 						                                <% if(l.getIs_bid() == 1){ %>
 								                            <% if(auction.getAuction_type() == 15){ %>
 									                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
@@ -263,14 +263,16 @@
 						                                <% if(l.getIs_buy() == 1){ %>
 						                                	<button class="btn btn-primary btn-block" onclick="submitPage('BUY', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></button>
 						                                <% }%> 
-						                            <% } else { %>
+						                            <% } else if(l.getLastBidder()!=null || l.getLastBidder().equals(user_id) ){  %>
 						                            	<% if(l.getIs_bid() == 1){ %>
-						                            		<button class="btn btn-primary btn-block" >YOUR BID</button>
+						                            		<button class="btn btn-primary btn-block" >YOU BID <%=df.format(l.getAmount_bid() %></button>
+						                            		<button class="btn btn-primary btn-block" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
 						                            	<% } %>  
 						                            	<% if(l.getIs_buy() == 1){ %>
 						                            		<button class="btn btn-primary btn-block" >YOUR OFFER</button>
 						                            	<% } %>
 						                            <% } %>
+						                               
 					                                </div>
 					                            <% } %>
 					                        <% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
@@ -478,7 +480,7 @@ function submitPage(action, value, lot, id, qtyid, note) {
         	if(unit_qty>1) unit_qty_html = ' with quantity of ' + unit_qty + ' units';
         	var aggreement_html = "";
         	<% if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0) { %>
-        	aggreement_html = "<p>By reading this you are agreeing on the terms and conditions of this auction.</p>"
+        	aggreement_html = "<p>By clicking confirm, you agree to the terms and condition of this auction.</p>"
         	<%} %>
 
         	

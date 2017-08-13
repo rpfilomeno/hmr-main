@@ -149,7 +149,13 @@
 								<% } %>
 								<% if (auction.getAuction_type()== 15) { %>
 									<div class="product-detail">Highest Bid: <%=df.format(lot.getAmount_bid())%> <%=currency%></div>
+									<%if(lot.getAmount_bid().doubleValue() >=  1 ){%>
 									<div class="product-detail">Asking Bid: <%=df.format(lot.getAmount_bid_next())%> <%=currency%></div>
+									<%}else{%>
+									<div class="product-detail">Asking Bid: <%=df.format(lot.getStarting_bid_amount())%> <%=currency%></div>
+									<%}%>
+									
+									
 									<div class="product-detail">Bids: <%=lot.getBid_count()%></div>
 								<% } else if (auction.getAuction_type() == 16) { %>
 									<div class="product-detail">Buy Price: <%=df.format(lot.getBuy_price())%> <%=currency%></div>
@@ -175,7 +181,7 @@
 			                                 </div>
 			                             <% } %>
 			                             
-			                             <% if(lot.getLastBidder() != user_id){  %>
+			                             <% if(lot.getLastBidder()==null || !lot.getLastBidder().equals(user_id) ){  %>
 			                             
 											<% if(lot.getIs_bid() == 1){ %>
 												<% if(auction.getAuction_type() == 15){ %>
@@ -200,7 +206,8 @@
 		                                	<% } %>
 		                                <% } else { %>
 						                	<% if(lot.getIs_bid() == 1){ %>
-						                    	<button class="btn btn-primary btn-block" >YOUR BID</button>
+						                    	<button class="btn btn-primary btn-block" >YOU BID <%=lot.getAmount_bid() %></button>
+						                    	<button class="btn btn-primary btn-block" href="#" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>')">SET MAX</button>
 						                    <% } else if(lot.getIs_buy() == 1){ %>
 						                        <button class="btn btn-primary btn-block" >YOUR OFFER</button>
 						                    <% } %>
@@ -243,7 +250,7 @@
 						</div>
 						
 						<div role="tabpanel" class="tab-pane" id="product-description-tab2">
-							<h5>Last 5 Bids</h5>
+							<h5>Bids</h5>
 							<table class="table">
 						    	<thead>
 						        	<tr>
@@ -270,7 +277,7 @@
 						                    <%-- bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00"; --%>
 						                    <%-- bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00"; --%>
                                             <td>
-						                    	<% if(user_id == bidding_transaction.getUser_id()) { %>
+						                    	<% if(user_id.equals(bidding_transaction.getUser_id()) ) { %>
 						                        <div>You</div> 
 						                        <% } else { %>
 						                    	<div>User #<%=bidding_transaction.getUser_id() %></div>

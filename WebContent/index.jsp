@@ -121,6 +121,9 @@
 														</h3>
 
 														<div class="card-snippet-wrap">
+															<%=activeOnlineAuction.getAuction_desc() %>
+														</div>
+														<div class="card-snippet-wrap">
 															Location: <%=activeOnlineAuction.getLocation()%>
 														</div>
 														<div class="card-snippet-wrap">
@@ -158,7 +161,7 @@
 															</a>
 														</h3>
 														<div class="card-snippet-wrap">
-															Description: <%=activeNegotiatedAuction.getAuction_desc() %>
+															<%=activeNegotiatedAuction.getAuction_desc() %>
 														</div>
 														<div class="card-snippet-wrap">
 															<%=activeNegotiatedAuction.getLocation()%>
@@ -171,11 +174,11 @@
 														</div>
 														<div class="card-snippet-wrap">
 															<% if(activeNegotiatedAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
-																Remarks: Upcoming Bidding
+																Upcoming Bidding
 															<% }else if (activeNegotiatedAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
-																Remarks: Accepting Bids
+																Accepting Bids
 															<% } else { %>
-																Remarks: Completed
+																Completed
 															<% } %>
 														</div>
 														<div class="card-action-btns">
@@ -205,7 +208,7 @@
 															</a>
 														</h3>
 														<div class="card-snippet-wrap">
-															Description: <%=activeLiveAuction.getAuction_desc() %>
+															<%=activeLiveAuction.getAuction_desc() %>
 														</div>
 														<div class="card-snippet-wrap">
 															<%=activeLiveAuction.getLocation()%>
@@ -218,11 +221,11 @@
 														</div>
 														<div class="card-snippet-wrap">
 															<% if(activeLiveAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
-																Remarks: Upcoming Bidding
+																Upcoming Bidding
 															<% }else if (activeLiveAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
-																Remarks: Accepting Bids
+																Accepting Bids
 															<% } else { %>
-																Remarks: Completed
+																Completed
 															<% } %>
 														</div>
 														<div class="card-action-btns">
