@@ -182,7 +182,7 @@
 
 					
 
-					<div class="row grid" id="d">
+					<div class="row grid" >
 						<% Integer x =1; %>
 						<%for(Lot l : lList) {%>
 							<div class="col-md-6 col-xs-12 grid-item">
