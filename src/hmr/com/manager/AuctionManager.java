@@ -359,45 +359,48 @@ public class AuctionManager {
 					page ="auction-private.jsp";
 				
 				}else if("USER-APPROVE".equals(action)){
+					
 					AuctionUser au = auMngr.getAuctionUserById(auctionUserId_wip);
-					au = auMngr.updateAuctionUserOnUpdate(auctionId_wip, au.getUser_id(), 25, au.getActive(), user_id, au.getId(), au.getCompany_id_no());
-					
-					try{
-
-						String ADMIN_EMAIL_ADD_CC = (String)req.getSession().getAttribute("ADMIN_EMAIL_ADD_CC");
-						String PROTOCOL = (String)req.getSession().getAttribute("PROTOCOL");
-						String HOST_NAME = (String)req.getSession().getAttribute("HOST_NAME");
-						String login_link = "";
-						String SERVER_DIRECTORY = (String)req.getSession().getAttribute("SERVER_DIRECTORY");
-						//String SERVER_DIRECTORY_ONLINE = "";					
-						EmailUtil.setSERVER_DIRECTORY(SERVER_DIRECTORY);
-						//EmailUtil.sendVerifyEmailUser(userId, ADMIN_EMAIL_ADD_CC, firstName, lastName, login_link);
-						
-						UserManager usrMngr = new UserManager(req,res);
-						
-						User user = usrMngr.getUserById(au.getUser_id());
-						
-						RunnableEmailManager REM = new RunnableEmailManager("HMR Auctions : Private Registration Accepted", SERVER_DIRECTORY, user.getEmail_address(), ADMIN_EMAIL_ADD_CC, user.getFirst_name(), user.getLast_name(), login_link);
-						REM.start();
-						
-					}catch(Exception ex){
-						
-					}
-					
-					
+					auMngr.updateAuctionUserOnUpdate(auctionId_wip, au.getUser_id(), 25, au.getActive(), user_id, au.getId(), au.getCompany_id_no());
 					req.setAttribute("msgbgcol", "green");
 					req.setAttribute("msgInfo", "Auction user has been approved.");
 					auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
 					req.setAttribute("auctionUserList", auctionUserList);
+					
+					User u = uMngr.getUserById(au.getUser_id());
+					Auction auction = new AuctionManager().getAuctionByAuctionId(auctionId_wip);
+					
+					RunnablePrivateBidManager bidderRPBM = new RunnablePrivateBidManager(
+							"HMR Auctions : Private Bid Accept User Notification", 
+							u.getEmail_address(), "", 
+							auction.getAuction_id().toString(), auction.getAuction_name(), auction.getAuction_desc(), 
+							u.getId().toString(), u.getFirst_name(), u.getLast_name(), u.getEmail_address(),
+							au.getCompany_id_no()
+							);
+					bidderRPBM.start();
+					
 					page ="auction-private.jsp";
 
 				}else if("USER-REJECT".equals(action)){
 					AuctionUser au = auMngr.getAuctionUserById(auctionUserId_wip);
-					au = auMngr.updateAuctionUserOnUpdate(auctionId_wip, au.getUser_id(), 28, au.getActive(), user_id, au.getId(), au.getCompany_id_no());
+					auMngr.updateAuctionUserOnUpdate(auctionId_wip, au.getUser_id(), 28, au.getActive(), user_id, au.getId(), au.getCompany_id_no());
 					req.setAttribute("msgbgcol", "red");
 					req.setAttribute("msgInfo", "Auction user has been rejected.");
 					auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
 					req.setAttribute("auctionUserList", auctionUserList);
+					
+					User u = uMngr.getUserById(au.getUser_id());
+					Auction auction = new AuctionManager().getAuctionByAuctionId(auctionId_wip);
+					
+					RunnablePrivateBidManager bidderRPBM = new RunnablePrivateBidManager(
+							"HMR Auctions : Private Bid Reject User Notification", 
+							u.getEmail_address(), "", 
+							auction.getAuction_id().toString(), auction.getAuction_name(), auction.getAuction_desc(), 
+							u.getId().toString(), u.getFirst_name(), u.getLast_name(), u.getEmail_address(),
+							au.getCompany_id_no()
+							);
+					bidderRPBM.start();
+					
 					page ="auction-private.jsp";
 					
 				}else if("USER-APPROVE-TO-PENDING".equals(action)){

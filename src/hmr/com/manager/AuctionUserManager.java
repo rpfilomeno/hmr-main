@@ -167,7 +167,6 @@ public class AuctionUserManager {
 					try {
 						bidderUserHM = uMngr.getUserHMByRole(2);
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					req.getSession().setAttribute("BIDDER-USER-HM", bidderUserHM);
@@ -182,7 +181,6 @@ public class AuctionUserManager {
 					try {
 						bidderUserList = uMngr.getUserListByRole(2);
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					req.getSession().setAttribute("BIDDER-USER-LIST", bidderUserList);
