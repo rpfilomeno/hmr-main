@@ -552,6 +552,10 @@ public class Bid extends HttpServlet {
 				if(!lListExpired.isEmpty()) lList.addAll(lListExpired);
 				List<Image> auction_images = new ImageManager().getImageListByAuctionId(a.getAuction_id());
 
+				
+				//AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+				//aubmMngr.getAuctionUserBiddingMaxListByLotId(lot_id)
+				
 				req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder); 
 				req.setAttribute("lList", lList);
 				req.setAttribute("auction", a);

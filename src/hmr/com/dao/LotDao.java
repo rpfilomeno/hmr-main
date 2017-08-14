@@ -159,7 +159,7 @@ public class LotDao extends DBConnection {
 		
 		sb.append(", amount_bid, amount_buy, action_taken, is_buy, is_bid, buy_price, bidder_id, lot_increment_time, bid_count, weight_total");
 
-		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot");
+		sb.append(", date_created, created_by, date_updated, updated_by, end_date_time, is_available_lot, starting_bid_amount");
 		
 		sb.append(" from lot where lot_id ="+id);
 
@@ -217,6 +217,8 @@ public class LotDao extends DBConnection {
 				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
 				l.setIs_available_lot(rs.getInt("is_available_lot"));
 				l.setWeight_total(rs.getBigDecimal("weight_total"));
+				l.setStarting_bid_amount(rs.getBigDecimal("starting_bid_amount"));
+				
 
             	l.setDate_created(rs.getTimestamp("date_created"));
             	l.setCreated_by(rs.getInt("created_by"));
@@ -1439,8 +1441,12 @@ public class LotDao extends DBConnection {
 		
 		sb.append(" order by lot_no asc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = new DBConnection();
+		
 		try {
-			conn = getConnection();
+			conn = dbConn.getConnection();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -1492,10 +1498,10 @@ public class LotDao extends DBConnection {
 				lList.add(l);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
@@ -1526,8 +1532,12 @@ public class LotDao extends DBConnection {
 		
 		sb.append(" order by id desc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = new DBConnection();
+		
 		try {
-			conn = getConnection();
+			conn = dbConn.getConnection();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -1579,8 +1589,8 @@ public class LotDao extends DBConnection {
 				lList.add(l);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -1762,8 +1772,12 @@ public class LotDao extends DBConnection {
 		sb.append(" AND bidding_transaction.user_id = " + user_id);
 		sb.append(" GROUP BY lot.id");
 		
+		Connection conn = null;
+		
+		DBConnection dbConn = new DBConnection();
+		
 		try {
-			conn = getConnection();
+			conn = dbConn.getConnection();
 			java.sql.Statement stmt = conn.createStatement();
 			System.out.println("sql : "+sb.toString());
 			

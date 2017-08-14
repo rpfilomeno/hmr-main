@@ -778,6 +778,8 @@ public class BiddingTransactionManager {
 	
 	
 	
+	
+	
 	public List<BiddingTransaction> getBiddingTransactionList(){
 		
 		List<BiddingTransaction> btList = new ArrayList<BiddingTransaction>();
@@ -965,5 +967,18 @@ public class BiddingTransactionManager {
 		if( new BiddingTransactionDao().getLatestBiddingTransactionByLotIdAndUserId(lot_id, user_id).isEmpty()) return false;
 		return true;
 	}
+	
+	
+	public BiddingTransaction getBiddingTransactionLatestByLotId(BigDecimal lot_id){
+		
+		BiddingTransaction bt = new BiddingTransaction();
+
+		BiddingTransactionDao btd = new BiddingTransactionDao();
+
+		bt = btd.getBiddingTransactionLatestByLotId(lot_id);
+		
+		return bt;
+		
+	}	
 	
 }

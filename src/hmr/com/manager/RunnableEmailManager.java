@@ -156,7 +156,11 @@ public class RunnableEmailManager implements Runnable {
 	    	  
 				EmailUtils.setSERVER_DIRECTORY(SERVER_DIRECTORY);
 				
-				if("HMR Auctions : Activation".equals(threadName)){
+				if("HMR Auctions : Private Registration Accepted".equals(threadName)){
+					
+					EmailUtil.sendPrivateRegistrationAccepted(email_add_to, email_add_cc, first_name, last_name);
+				
+				}else if("HMR Auctions : Activation".equals(threadName)){
 					
 					EmailUtil.sendRegisteredSuccessfulEmailUser(email_add_to, email_add_cc, first_name, last_name, login_link);
 

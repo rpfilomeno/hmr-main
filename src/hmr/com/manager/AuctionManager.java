@@ -25,6 +25,7 @@ import hmr.com.bean.Lov;
 import hmr.com.bean.User;
 import hmr.com.dao.AuctionDao;
 import hmr.com.dao.UserDao;
+import hmr.com.util.EmailUtil;
 import hmr.com.util.Hash;
 
 
@@ -360,6 +361,30 @@ public class AuctionManager {
 				}else if("USER-APPROVE".equals(action)){
 					AuctionUser au = auMngr.getAuctionUserById(auctionUserId_wip);
 					au = auMngr.updateAuctionUserOnUpdate(auctionId_wip, au.getUser_id(), 25, au.getActive(), user_id, au.getId(), au.getCompany_id_no());
+					
+					try{
+
+						String ADMIN_EMAIL_ADD_CC = (String)req.getSession().getAttribute("ADMIN_EMAIL_ADD_CC");
+						String PROTOCOL = (String)req.getSession().getAttribute("PROTOCOL");
+						String HOST_NAME = (String)req.getSession().getAttribute("HOST_NAME");
+						String login_link = "";
+						String SERVER_DIRECTORY = (String)req.getSession().getAttribute("SERVER_DIRECTORY");
+						//String SERVER_DIRECTORY_ONLINE = "";					
+						EmailUtil.setSERVER_DIRECTORY(SERVER_DIRECTORY);
+						//EmailUtil.sendVerifyEmailUser(userId, ADMIN_EMAIL_ADD_CC, firstName, lastName, login_link);
+						
+						UserManager usrMngr = new UserManager(req,res);
+						
+						User user = usrMngr.getUserById(au.getUser_id());
+						
+						RunnableEmailManager REM = new RunnableEmailManager("HMR Auctions : Private Registration Accepted", SERVER_DIRECTORY, user.getEmail_address(), ADMIN_EMAIL_ADD_CC, user.getFirst_name(), user.getLast_name(), login_link);
+						REM.start();
+						
+					}catch(Exception ex){
+						
+					}
+					
+					
 					req.setAttribute("msgbgcol", "green");
 					req.setAttribute("msgInfo", "Auction user has been approved.");
 					auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);

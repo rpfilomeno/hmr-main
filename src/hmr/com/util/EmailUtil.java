@@ -257,6 +257,106 @@ public class EmailUtil {
 		      }
 	   }
 	   
+	   public static void sendPrivateRegistrationAccepted(String to, String cc, String first_name, String last_name){
+			 
+		      String from = "noreplyhmrauctions@gmail.com";
+		      final String username = "noreplyhmrauctions@gmail.com";
+		      final String password = "hmrAuctions";
+		      String host = "smtp.gmail.com";
+		      String port = "587";
+
+		      Properties props = new Properties();
+		      props.put("mail.smtp.auth", "true");
+		      props.put("mail.smtp.starttls.enable", "true");
+		      props.put("mail.smtp.host", host);
+		      props.put("mail.smtp.port", port);
+
+		      Session session = Session.getInstance(props,
+		         new javax.mail.Authenticator() {
+		            protected PasswordAuthentication getPasswordAuthentication() {
+		               return new PasswordAuthentication(username, password);
+		            }
+		         });
+
+		      try {
+
+		         // Create a default MimeMessage object.
+		         Message message = new MimeMessage(session);
+		         
+		         // Set From: header field of the header.
+		         message.setFrom(new InternetAddress(from));
+
+		         // Set To: header field of the header.
+		         message.setRecipients(Message.RecipientType.TO,
+		            InternetAddress.parse(to));
+		         /*
+		         message.setRecipients(Message.RecipientType.CC,
+		 	            InternetAddress.parse(cc));
+		         */
+		         // Set Subject: header field
+		         message.setSubject("HMR Auctions : Registration Successful");
+
+		         // This mail has 2 part, the BODY and the embedded image
+		         MimeMultipart multipart = new MimeMultipart("related");
+
+		         // first part (the html)
+		         BodyPart messageBodyPart = new MimeBodyPart();
+		         
+		         String htmlText = EmailMessage.getPrivateRegistrationAccepted(first_name, last_name);
+		         
+		         System.out.println("html "+htmlText);
+
+		         messageBodyPart.setContent(htmlText, "text/html");
+		         // add it
+		         multipart.addBodyPart(messageBodyPart);
+
+		         
+		         /*
+		         // second part (the image)
+		         messageBodyPart = new MimeBodyPart();
+		         DataSource fds1 = new FileDataSource(
+		        		 getSERVER_DIRECTORY()+"mhi-logo.png");
+		        // DataSource fds1 = new FileDataSource(
+		 	     //       "/opt/apache-tomcat-7.0.54/webapps/google/WEB-INF/img/GoogleAppsEmailHeader.png");
+		         
+		         
+		         messageBodyPart.setDataHandler(new DataHandler(fds1));
+		         messageBodyPart.setHeader("Content-ID", "<image1>");
+		         multipart.addBodyPart(messageBodyPart);
+		         
+		         messageBodyPart = new MimeBodyPart();
+		        DataSource fds2 = new FileDataSource(
+		        		getSERVER_DIRECTORY()+"google-work-logo-white.png");
+		        // DataSource fds2 = new FileDataSource(
+		        //		 "/opt/apache-tomcat-7.0.54/webapps/google/WEB-INF/img/cloud_com_ph.png");
+		         messageBodyPart = new MimeBodyPart();
+		         messageBodyPart.setDataHandler(new DataHandler(fds2));
+		         messageBodyPart.setHeader("Content-ID", "<image2>");
+		         multipart.addBodyPart(messageBodyPart);
+		         */
+		         
+		         messageBodyPart = new MimeBodyPart();
+		        DataSource fds3 = new FileDataSource(
+		        		getSERVER_DIRECTORY()+"header_3.png");
+		        // DataSource fds3 = new FileDataSource(
+		        //		 "/opt/apache-tomcat-7.0.54/webapps/google/WEB-INF/img/ipc.png");
+		         messageBodyPart.setDataHandler(new DataHandler(fds3));
+		         messageBodyPart.setHeader("Content-ID", "<image1>");
+		         multipart.addBodyPart(messageBodyPart);
+
+		         // put everything together
+		         message.setContent(multipart);
+		         // Send message
+		         //message.setContent(htmlText, "text/html");
+		         Transport.send(message);
+
+		         System.out.println("Sent message successfully....");
+
+		      } catch (MessagingException e) {
+		         throw new RuntimeException(e);
+		      }
+	   }
+	   
 	   public static void sendNegotiatedBidEmailAdmin(
 			   String to, String cc,
 			   String AuctionId, String AuctionName, String AuctionDescription,

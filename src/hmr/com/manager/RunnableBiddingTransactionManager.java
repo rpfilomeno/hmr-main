@@ -54,8 +54,14 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	      try {
 	    	  if("btAutoPlaySetMax".equals(threadName) && !"".equals(lot_id) ){
 	    		  
+	    		  LotManager lotMngr = new LotManager();
+	    		  Lot lotex = lotMngr.getLotByLotId(new BigDecimal(lot_id));
+	    		  
+	    		  Integer bidder_id = lotex.getBidder_id();
+	    		  
+	    		  
 	    		  boolean cont = true;
-	    		  for(int z = 0; z < 20; z ++){
+	    		  for(int z = 0; z < 5; z ++){
 	    			  
 	    		  if(cont){
 	    			  
@@ -67,49 +73,110 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    		    AuctionManager aucMngr = new AuctionManager();
 	    		  	AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
 	    		  	ArrayList<AuctionUserBiddingMax> aubmList = aubmMngr.getAuctionUserBiddingMaxListByLotId(lot_id);
+	    		  	
 					for(AuctionUserBiddingMax aubm : aubmList){
-						System.out.println(aubm.getId()+" "+aubm.getLot_id()+" "+aubm.getAmount_bid()+" "+aubm.getAmount_buy()+" "+aubm.getAmount_offer()+" "+aubm.getBidder_id());
+						System.out.println("aubm "+aubm.getId());
+						System.out.println("aubm "+aubm.getAmount_bid());
+						System.out.println("aubm "+aubm.getBidder_id());
+
 						
-						LotManager lotMngr = new LotManager();
 						Lot lot = lotMngr.getLotByLotId(new BigDecimal(aubm.getLot_id()));
 						
 						BigDecimal increment_amount = BigDecimal.ZERO;
 
 						LotRangeManager lrMngr = new LotRangeManager();
 						AuctionRangeManager arMngr = new AuctionRangeManager();
-						//Check if there is lot level bid increment else use auction level value
-						increment_amount = lrMngr.getIncrementAmountByLotId(lot.getLot_id(), lot.getAmount_bid());
-						if(increment_amount.equals(BigDecimal.ZERO)) {
-							System.out.println("Using auction bid increment on lot");
-							increment_amount = arMngr.getIncrementAmountByAuctionId(lot.getAuction_id(), lot.getAmount_bid());
-						}
-						BigDecimal amount_bid_next=  increment_amount.add(lot.getAmount_bid());
-						lot.setAmount_bid_next(amount_bid_next);
 						
 						
-						System.out.println(lot.getId()+" "+lot.getLot_id()+" "+lot.getAmount_bid()+" "+lot.getAmount_buy()+" "+lot.getAmount_bid_next());
+						System.out.println("lot.getAmount_bid() "+lot.getAmount_bid());
+						System.out.println("aubm "+aubm.getBidder_id());
 						
-						if(lot.getAmount_bid_next().doubleValue() < aubm.getAmount_bid().doubleValue() && aubm.getBidder_id() != lot.getBidder_id()){
-							System.out.println("proceed to insert in Bidding History");
+						if(lot.getAmount_bid().doubleValue() == 0){
+							System.out.println("lot.getAmount_bid() "+lot.getAmount_bid());
+							System.out.println("lot.getStarting_bid_amount() "+lot.getStarting_bid_amount());
+							lot.setAmount_bid(lot.getStarting_bid_amount());
 							BiddingTransactionManager btMngr = new BiddingTransactionManager();
+							btMngr.insertBiddingTransactionMakeBidBySetMax(Integer.parseInt(lot.getLot_id().toString()) , lot.getAmount_bid(), aubm.getBidder_id(), aubm.getQty());
 							
-							Auction auc = aucMngr.getAuctionByAuctionId(lot.getAuction_id());
-					        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-					        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
-							//if(auc.getStart_date_time().after(sqlDate_t) && sqlDate_t.before(lot.getEnd_date_time())){
-							if(auc.getStart_date_time().before(sqlDate_t)){
-								btMngr.insertBiddingTransactionMakeBidBySetMax(Integer.parseInt(lot.getLot_id().toString()) , lot.getAmount_bid_next(), aubm.getBidder_id(), aubm.getQty());
+						}else{
+							
+							
+
+							//Check if there is lot level bid increment else use auction level value
+							increment_amount = lrMngr.getIncrementAmountByLotId(lot.getLot_id(), lot.getAmount_bid());
+							
+							
+							
+							if(increment_amount.equals(BigDecimal.ZERO)) {
+								System.out.println("Using auction bid increment on lot");
+								increment_amount = arMngr.getIncrementAmountByAuctionId(lot.getAuction_id(), lot.getAmount_bid());
 							}
 							
-							cont = true;
-						}else{
-							cont = false;
-							z = 20;
+							System.out.println("increment_amount "+increment_amount);
+							
+							BigDecimal amount_bid_next=  increment_amount.add(lot.getAmount_bid());
+							lot.setAmount_bid_next(amount_bid_next);
+							
+							System.out.println("amount_bid_next "+amount_bid_next);
+							
+							
+							
+							
+							System.out.println(lot.getId()+" "+lot.getLot_id()+" "+lot.getAmount_bid()+" "+lot.getAmount_buy()+" "+lot.getAmount_bid_next());
+							
+							System.out.println("lot.getAmount_bid_next().doubleValue() "+lot.getAmount_bid_next().doubleValue());
+							System.out.println("aubm.getAmount_bid().doubleValue( "+aubm.getAmount_bid().doubleValue());
+							System.out.println("aubm.getBidder_id( "+aubm.getBidder_id());
+							System.out.println("lot.getBidder_id() "+lot.getBidder_id());
+							
+							if(lot.getAmount_bid_next().doubleValue() < aubm.getAmount_bid().doubleValue() && aubm.getBidder_id() != lot.getBidder_id()){
+								System.out.println("proceed to insert in Bidding History");
+								BiddingTransactionManager btMngr = new BiddingTransactionManager();
+								
+								ArrayList<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionByLotId(new BigDecimal( lot_id));
+								BiddingTransaction btLast = new BiddingTransaction();
+								int i = 1;
+								for(BiddingTransaction bt : btList){
+									
+									System.out.println("bt "+bt.getUser_id()+" "+i+ " "+ lot.getBidder_id());
+									
+									if(i==2){
+										btLast = bt;
+									}
+									i++;
+								}
+								
+								
+								
+								Auction auc = aucMngr.getAuctionByAuctionId(lot.getAuction_id());
+						        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+						        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+								//if(auc.getStart_date_time().after(sqlDate_t) && sqlDate_t.before(lot.getEnd_date_time())){
+						        //if(auc.getStart_date_time().before(sqlDate_t) && !lot.getBidder_id().equals(btLast.getUser_id())  ){
+								if(auc.getStart_date_time().before(sqlDate_t)  ){
+									
+									BiddingTransaction bt1 = btMngr.getBiddingTransactionLatestByLotId(new BigDecimal( lot_id));
+									System.out.println("bt1 "+bt1.getUser_id()+" "+i+ " "+ lot.getBidder_id()+" "+aubm.getBidder_id());
+									
+									if(bt1.getUser_id().doubleValue() != aubm.getBidder_id().doubleValue()){
+										btMngr.insertBiddingTransactionMakeBidBySetMax(Integer.parseInt(lot.getLot_id().toString()) , lot.getAmount_bid_next(), aubm.getBidder_id(), aubm.getQty());
+									}
+									
+									
+									
+								}
+								
+								cont = true;
+							}else{
+								cont = false;
+								z = 20;
+							}
+							
 						}
 						
+						
 					}
-					
-					
+
 		    		  //if(cont){
 		    			  
 		    		  

@@ -652,6 +652,39 @@ public class EmailMessage {
     	return sb.toString();
     }
     
+    public static String getPrivateRegistrationAccepted(String first_name, String last_name){
+    	StringBuilder sb = new StringBuilder();
+
+    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+    	sb.append("<head>");
+    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
+    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+    	sb.append("<title>HMR Auctions</title>");
+    	sb.append("</head>");
+    	sb.append("<body bgcolor=\"#FFFFFF\">");
+        sb.append("<div style=\"padding:1px; max-width:700px; margin:0 auto; display:block;\">");
+        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
+        sb.append("<p style=\"margin-bottom: 2px; \"><img src=\"cid:image1\"></p><br>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
+        sb.append(getMainContentPrivateRegistrationAccepted());
+        sb.append("<br>");
+        sb.append("<p style=\"font-size: 12px;\">Sincerely,</p>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR Auctions Team</strong> </h4>");
+        sb.append("<br>");
+        sb.append(getFooterContent());
+        sb.append("</td></tr></table>");
+        sb.append("</div>");
+        //sb.append("</td>");
+        //sb.append("<td></td>");
+        //sb.append("</tr>");
+        //sb.append("</table>");
+        sb.append("</body>");
+        sb.append("</html>");
+        
+    	return sb.toString();
+    }
+    
+    
     
     public static String getNegotiatedBidEmailAdmin( 
     		String AuctionId, String AuctionName, String AuctionDescription,
@@ -1273,6 +1306,16 @@ public class EmailMessage {
   	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Thank you for choosing HMR Auctions.</p>"; 
     	   return body;
        }
+    
+    public static String getMainContentPrivateRegistrationAccepted(){
+ 	   
+ 	   String body = "<p style=\"margin-bottom: 10px;font-size: 12px;\">Good day!</p>";
+	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Your private bid request have been accepted.";
+	  	  // body = body +"<p style=\"margin-bottom: 10px;font-size: 12px;\"><a href=\""+login_link+"\" style=\"	text-decoration:none;	color: #FFF;	background-color: #03499A;	padding:10px 16px;	font-weight:bold;	margin-right:10px;	text-align:center;	cursor:pointer;	display: inline-block;\">Login</a></p>";
+	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auction@hmrbid.com for questions or concerns.</p>";
+	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Thank you for choosing HMR Auctions.</p>"; 
+ 	   return body;
+    }
 
     public static String getMainContentNewPasswordEmail(String newPassword){
  	   

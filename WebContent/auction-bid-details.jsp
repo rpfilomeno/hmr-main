@@ -265,7 +265,7 @@
 						                                <% }%> 
 						                            <% } else if(l.getLastBidder()!=null || l.getLastBidder().equals(user_id) ){  %>
 						                            	<% if(l.getIs_bid() == 1){ %>
-						                            		<button class="btn btn-primary btn-block" >YOU BID <%=df.format(l.getAmount_bid() %></button>
+						                            		<button class="btn btn-primary btn-block" >YOU BID <%=df.format(l.getAmount_bid())%></button>
 						                            		<button class="btn btn-primary btn-block" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
 						                            	<% } %>  
 						                            	<% if(l.getIs_buy() == 1){ %>
@@ -274,6 +274,50 @@
 						                            <% } %>
 						                               
 					                                </div>
+					                            <% } else { %>
+					                            		
+					                                <% if( l.getIs_available_lot() > 0) { %>
+							                            <% Integer i = l.getUnit_qty(); %>
+									                    <div class="form-group">
+									                        <select class="form-control" id="qty_<%=l.getId()%>" name="qty_<%=l.getId()%>">
+									                            <% while(i > 0) { %>
+							                                   		<option value="<%=i%>"><%=i%> unit<% if(i>1){ %>s<%}%></option>
+							                                   	 	<% i = i - 1; %>
+							                                   	<% } %>
+							                                </select>
+							                            </div>
+							                        <% } %>
+						                        	<div class="form-group">
+							                        <% if(l.getLastBidder()==null || !l.getLastBidder().equals(user_id) ){  %>
+						                                <% if(l.getIs_bid() == 1){ %>
+								                            <% if(auction.getAuction_type() == 15){ %>
+									                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
+									                                <button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
+									                            <% } else { %>
+									                            	<%if(l.getAmount_bid().doubleValue() > 0){ %>
+										                            <button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
+										                            <%}else if(l.getAmount_bid().doubleValue() == 0){ %>
+										                            <button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
+										                             <% } %>
+										                            <button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
+									                            <% } %>
+								                            <% } else if(auction.getAuction_type() == 16){ %>
+								                                <button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</button>
+								                            <% } %>
+						                                <% }%>
+						                                <% if(l.getIs_buy() == 1){ %>
+						                                	<button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getBuy_price()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BUY <%=df.format(l.getBuy_price())%> <%=currency%></button>
+						                                <% }%> 
+						                            <% } else if(l.getLastBidder()!=null || l.getLastBidder().equals(user_id) ){  %>
+						                            	<% if(l.getIs_bid() == 1){ %>
+						                            		<button class="btn btn-primary btn-block" >YOU BID <%=df.format(l.getAmount_bid())%></button>
+						                            		<button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
+						                            	<% } %>  
+						                            	<% if(l.getIs_buy() == 1){ %>
+						                            		<button class="btn btn-primary btn-block" >YOUR OFFER</button>
+						                            	<% } %>
+						                            <% } %>
+					                            	</div>
 					                            <% } %>
 					                        <% }else if(user_id == null && user_role_id == 0 && (l.getIs_bid() == 1 || l.getIs_buy() == 1) ){ %>
 												<a class="btn btn-primary btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
@@ -511,6 +555,11 @@ function submitPage(action, value, lot, id, qtyid, note) {
         		amount = parseFloat(value);
         		dialog_html = '<p>You will will set pre-bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
         		aggreement_html;
+        	}else if(action=="BID-ONE-LOT") {
+        		dialog_title = "One Lot Per Bidder";
+        		amount = parseFloat(value);
+        		dialog_html = '<p>You are allowed to bid one lot only.</p>'+ 
+        		aggreement_html;
         	}
 
             $(this).dialog( "option", "title", dialog_title);
@@ -524,6 +573,87 @@ function submitPage(action, value, lot, id, qtyid, note) {
             Cancel: function () {
                 $(this).dialog("close");
             }
+        },
+		close: function() {
+			$("#dialog-confirm").remove();
+		}
+    }).dialog('widget').position({ my: 'center', at: 'center', of: $(this) }); //end confirm dialog
+}
+
+
+function showAlertPage(action, value, lot, id, qtyid, note) {
+	var unit_qty = 1;
+	if($("#"+qtyid+" :selected").length ) unit_qty = $("#"+qtyid+" :selected").attr('value');
+	
+	$('input[name="manager"]').val("bid-manager");
+	$('input[name="doaction"]').val(action);
+	$('input[name="amount"]').val(value);
+	$('input[name="lotId"]').val(lot);
+	$('input[name="lotId_wip"]').val(id);
+	$('input[name="unit_qty"]').val(unit_qty);
+	$('input[name="note"]').val(note);
+	
+	$('<div id="dialog-confirm"></div>').dialog({
+		resizable: false,
+	    height: "auto",
+	    width: 400,
+	    modal: true,
+	    title: "Confirmation",
+	    closeOnEscape: false,
+        open: function (event, ui) {
+        	var amount = 0;
+        	var dialog_title = "Confirmation";
+        	var currency_html = "<%=currency%>";
+        	var dialog_html = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure?</p>';
+        	var unit_qty_html = "";
+        	if(unit_qty>1) unit_qty_html = ' with quantity of ' + unit_qty + ' units';
+        	var aggreement_html = "";
+        	<% if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0) { %>
+        	aggreement_html = "<p>By clicking confirm, you agree to the terms and condition of this auction.</p>"
+        	<%} %>
+
+        	
+        	$(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+      
+        	if(action=="BID") {
+        		dialog_title = "Bid confirmation";
+        		amount = parseFloat(value) * parseInt(unit_qty);
+        		dialog_html = '<p>You will bid ' + 	amount.toFixed(2)  +' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
+        	}else if(action=="BUY") {
+        		dialog_title = "Buy confirmation";
+        		amount = parseFloat(value);
+        		dialog_html = '<p>You will buy this lot for ' + amount.toFixed(2) + ' '+currency_html + unit_qty_html +'.</p>'+ 
+        		aggreement_html;
+        	}else if(action=="SET-MAXIMUM-BID") {
+        		dialog_title = "Set maximum bid confirmation";
+        		amount = parseFloat(value);
+        		dialog_html = '<p>You will will set your maximum bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
+        	}else if(action=="NEGOTIATED") {
+        		dialog_title = "Offer bid confirmation";
+        		amount = parseFloat(value);
+        		dialog_html = '<p>You will will set your offer bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
+        	}else if(action=="PRE-BID") {
+        		dialog_title = "Pre-bid confirmation";
+        		amount = parseFloat(value);
+        		dialog_html = '<p>You will will set pre-bid of ' + amount.toFixed(2) + ' '+currency_html+' for this lot'+ unit_qty_html +'.</p>'+ 
+        		aggreement_html;
+        	}else if(action=="BID-ONE-LOT") {
+        		dialog_title = "One Lot Per Bidder";
+        		amount = parseFloat(value);
+        		dialog_html = '<p>You are allowed to bid one lot only.</p>'+ 
+        		aggreement_html;
+        	}
+
+            $(this).dialog( "option", "title", dialog_title);
+            $(this).html(dialog_html);
+        }, 
+        buttons: {
+        	"OK": function() {
+  	          $( this ).dialog( "close" );
+  	        }
         },
 		close: function() {
 			$("#dialog-confirm").remove();

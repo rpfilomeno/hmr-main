@@ -132,7 +132,15 @@
 														<div class="card-snippet-wrap">
 															Closing: <%=sdf.format(activeOnlineAuction.getEnd_date_time()) %>
 														</div>
-
+														<div class="card-snippet-wrap">
+															<% if(activeOnlineAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+																Upcoming Bidding
+															<% }else if (activeOnlineAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+																Accepting Bids
+															<% } else { %>
+																Completed
+															<% } %>
+														</div>
 															
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeOnlineAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
