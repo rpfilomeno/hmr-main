@@ -311,7 +311,30 @@ public class Bid extends HttpServlet {
         
 		
 		//all page get requests
-		if(manager.equals("get")){
+        if(manager.equals("pages")){
+        	if("auctiontips".equals(action)){
+        		page ="pages/faq-auctiontips.jsp";
+        	}else if("basicauctionfaqs".equals(action)){
+        		page ="pages/faq-basicauctionfaqs.jsp";
+        	}else if("auctionterminologies".equals(action)){
+        		page ="pages/faq-auctionterminologies.jsp";
+        	}else if("onlineauctionfaqs".equals(action)){
+        		page ="pages/faq-onlineauctionfaqs.jsp";
+        	}else if("services".equals(action)){
+        		page ="pages/services.jsp";
+        	}else if("gallery".equals(action)){
+        		page ="index.jsp";
+        	}else if("contactus".equals(action)){
+        		page ="pages/contactus.jsp";
+        	}else if("contactus-send".equals(action)){
+        		req.setAttribute("msgbgcol", "green");
+				req.setAttribute("msgInfo", "Message sent!");
+        		page ="pages/contactus.jsp";
+        	}
+        	
+        	
+        } else 	if(manager.equals("get")){
+
 			
 			if("my-profile".equals(action)){
 				Date d = new Date();

@@ -96,12 +96,20 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 	<h4 class="text-primary">Quick Links</h4>
 	<ul class="simple-nav-list">
 		<% if(user_id!=null){ %>
-		<li><a href="bid?mngr=get&a=my-bids">My Bids</a></li>
+		<li><a href="bid?mngr=get&a=my-profile">My Profile
+			<span class="icon-right ion-chevron-right"></span></a></li>
+		<li><a href="bid?mngr=get&a=my-bids">My Bids
+			<span class="icon-right ion-chevron-right"></span></a></li>
+		<li><a href="bid?mngr=get&a=my-watchlist">Watch List
+			<span class="icon-right ion-chevron-right"></span></a></li>
+		<% } else { %>
+		<li><a href="bid?mngr=get&a=login">Login
+			<span class="icon-right ion-chevron-right"></span></a></li>
+		<li><a href="bid?mngr=get&a=registration">Register
+			<span class="icon-right ion-chevron-right"></span></a></li>
 		<% } %>
-		<li><a href="#">Services <span
-				class="icon-right ion-chevron-right"></span></a></li>
-		<li><a href="#">Contact Us <span
-				class="icon-right ion-chevron-right"></span></a></li>
+		
+		
 	</ul>
 </div>
 
@@ -109,13 +117,16 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 <div class="side-widget">
 	<h4 class="text-primary">FAQ</h4>
 	<ul class="simple-nav-list">
-		<li><a href="#">Auction Tips <span
-				class="icon-right ion-chevron-right"></span></a></li>
-		<li><a href="#">Basic Auction FAQs <span
-				class="icon-right ion-chevron-right"></span></a></li>
-		<li><a href="#">Auction Terminologies <span
-				class="icon-right ion-chevron-right"></span></a></li>
-		<li><a href="#">Online Auction FAQs <span
-				class="icon-right ion-chevron-right"></span></a></li>
+		<li><a href="bid?mngr=pages&a=auctiontips">Auction Tips 
+			<span class="icon-right ion-chevron-right"></span></a></li>
+			
+		<li><a href="bid?mngr=pages&a=basicauctionfaqs">Basic Auction FAQs 
+			<span class="icon-right ion-chevron-right"></span></a></li>
+			
+		<li><a href="bid?mngr=pages&a=auctionterminologies">Auction Terminologies 
+			<span class="icon-right ion-chevron-right"></span></a></li>
+		
+		<li><a href="bid?mngr=pages&a=onlineauctionfaqs">Online Auction FAQs 
+			<span class="icon-right ion-chevron-right"></span></a></li>
 	</ul>
 </div>

@@ -31,6 +31,9 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
       <div class="row">
         <div class="col-md-12">
           <ul class="navbar-subnav">
+          	<li>
+              <a href="">Home</a>
+            </li>
           	<% if(user_role_id==1 || user_role_id ==4) { %>
           	<li>
               <a href="bid?mngr=auction-manager&a=auctionList&uid=<%=userId %>">Administration</a>
@@ -42,13 +45,13 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 			</li>
 			<% } %>
             <li>
-              <a href="">Services</a>
+              <a href="bid?mngr=pages&a=services">Services</a>
             </li>
             <li>
-              <a href="">Gallery</a>
+              <a href="bid?mngr=pages&a=gallery">Gallery</a>
             </li>
             <li>
-              <a href="">Contact Us</a>
+              <a href="bid?mngr=pages&a=contactus">Contact Us</a>
             </li>
           </ul>    
         </div>
