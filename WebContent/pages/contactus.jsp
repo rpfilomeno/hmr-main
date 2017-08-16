@@ -308,9 +308,7 @@
 					                                </div>
 					  								 
 					                                <input type="hidden" name="action" id="action" value="contactus-send"/>
-					                            	<input type="hidden" name="manager" id="manager" value="page"/>
-					                            	<input type="hidden" name="userId" id="userId" value="<%=userId %>"/>
-					   								<input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
+					                            	<input type="hidden" name="manager" id="manager" value="pages"/>
 				                                	
 				                                </div>
 			                            	</div>
