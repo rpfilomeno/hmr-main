@@ -42,7 +42,8 @@
 	
 	List<Auction> activeLiveAuctionList = request.getAttribute("ACTIVE-LIVE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-LIVE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-LIVE-AUCTION-LIST");
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
+	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm");
+	SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 	
 %>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -126,21 +127,37 @@
 														<div class="card-snippet-wrap">
 															Location: <%=activeOnlineAuction.getLocation()%>
 														</div>
-														<div class="card-snippet-wrap">
-															Start: <%=sdf.format(activeOnlineAuction.getStart_date_time()) %>
-														</div>
-														<div class="card-snippet-wrap">
-															Closing: <%=sdf.format(activeOnlineAuction.getEnd_date_time()) %>
-														</div>
-														<div class="card-snippet-wrap">
-															<% if(activeOnlineAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+														<% if(activeOnlineAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+															<div class="card-snippet-wrap">
+																Start: <%=sdf.format(activeOnlineAuction.getStart_date_time()) %>
+															</div>
+															<div class="card-snippet-wrap">
 																Upcoming Bidding
-															<% }else if (activeOnlineAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+															</div>
+															<div class="card-snippet-wrap">
+																<div class="countdown" id="timer-<%=activeOnlineAuction.getId() %>" 
+																	data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time()) %>" 
+																	data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>">
+																</div>
+															</div>
+														<% }else if (activeOnlineAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+															<div class="card-snippet-wrap">
+																Closing: <%=sdf.format(activeOnlineAuction.getEnd_date_time()) %>
+															</div>
+															<div class="card-snippet-wrap">
 																Accepting Bids
-															<% } else { %>
+															</div>
+															<div class="card-snippet-wrap">
+																<div class="countdown" id="timer-<%=activeOnlineAuction.getId() %>" 
+																	data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time()) %>" 
+																	data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>">
+																</div>
+															</div>
+														<% } else { %>
+															<div class="card-snippet-wrap">
 																Completed
-															<% } %>
-														</div>
+															</div>
+														<% } %>
 															
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeOnlineAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
@@ -174,21 +191,40 @@
 														<div class="card-snippet-wrap">
 															<%=activeNegotiatedAuction.getLocation()%>
 														</div>
-														<div class="card-snippet-wrap">
-															Start: <%=sdf.format(activeNegotiatedAuction.getStart_date_time()) %>
-														</div>
-														<div class="card-snippet-wrap">
-															Closing: <%=sdf.format(activeNegotiatedAuction.getEnd_date_time()) %>
-														</div>
-														<div class="card-snippet-wrap">
-															<% if(activeNegotiatedAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+														
+														<% if(activeNegotiatedAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+															<div class="card-snippet-wrap">
+																Start: <%=sdf.format(activeNegotiatedAuction.getStart_date_time()) %>
+															</div>
+															<div class="card-snippet-wrap">
 																Upcoming Bidding
-															<% }else if (activeNegotiatedAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+															</div>
+															<div class="card-snippet-wrap">
+																<div class="countdown" id="timer-<%=activeNegotiatedAuction.getId() %>" 
+																	data-startdate="<%=sdfTimer.format(activeNegotiatedAuction.getStart_date_time()) %>" 
+																	data-enddate="<%=sdfTimer.format(activeNegotiatedAuction.getEnd_date_time()) %>">
+																</div>
+															</div>
+																
+														<% }else if (activeNegotiatedAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+															<div class="card-snippet-wrap">
+																Closing: <%=sdf.format(activeNegotiatedAuction.getEnd_date_time()) %>
+															</div>
+															<div class="card-snippet-wrap">
 																Accepting Bids
-															<% } else { %>
+															</div>
+															<div class="card-snippet-wrap">
+																<div class="countdown" id="timer-<%=activeNegotiatedAuction.getId() %>" 
+																	data-startdate="<%=sdfTimer.format(activeNegotiatedAuction.getStart_date_time()) %>" 
+																	data-enddate="<%=sdfTimer.format(activeNegotiatedAuction.getEnd_date_time()) %>">
+																</div>
+															</div>
+														<% } else { %>
+															<div class="card-snippet-wrap">
 																Completed
-															<% } %>
-														</div>
+															</div>
+														<% } %>
+														
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeNegotiatedAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
 														</div>
@@ -221,21 +257,39 @@
 														<div class="card-snippet-wrap">
 															<%=activeLiveAuction.getLocation()%>
 														</div>
-														<div class="card-snippet-wrap">
-															Start: <%=sdf.format(activeLiveAuction.getStart_date_time()) %>
-														</div>
-														<div class="card-snippet-wrap">
-															Closing: <%=sdf.format(activeLiveAuction.getEnd_date_time()) %>
-														</div>
-														<div class="card-snippet-wrap">
-															<% if(activeLiveAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+														
+														<% if(activeLiveAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+															<div class="card-snippet-wrap">
+																Start: <%=sdf.format(activeLiveAuction.getStart_date_time()) %>
+															</div>
+															<div class="card-snippet-wrap">
 																Upcoming Bidding
-															<% }else if (activeLiveAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+															</div>
+															<div class="card-snippet-wrap">
+																<div class="countdown" id="timer-<%=activeLiveAuction.getId() %>" 
+																	data-startdate="<%=sdfTimer.format(activeLiveAuction.getStart_date_time()) %>" 
+																	data-enddate="<%=sdfTimer.format(activeLiveAuction.getEnd_date_time()) %>">
+																</div>
+															</div>
+														<% }else if (activeLiveAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+															<div class="card-snippet-wrap">
+																Closing: <%=sdf.format(activeLiveAuction.getEnd_date_time()) %>
+															</div>
+															<div class="card-snippet-wrap">
 																Accepting Bids
-															<% } else { %>
+															</div>
+															<div class="card-snippet-wrap">
+																<div class="countdown" id="timer-<%=activeLiveAuction.getId() %>" 
+																	data-startdate="<%=sdfTimer.format(activeLiveAuction.getStart_date_time()) %>" 
+																	data-enddate="<%=sdfTimer.format(activeLiveAuction.getEnd_date_time()) %>">
+																</div>
+															</div>
+														<% } else { %>
+															<div class="card-snippet-wrap">
 																Completed
-															<% } %>
-														</div>
+															</div>
+														<% } %>
+														
 														<div class="card-action-btns">
 															<a href="bid?mngr=get&a=auctionBidDetails&uid=<%=userId%>&aid=<%=activeLiveAuction.getId()%>" class="btn btn-sm btn-warning">View Auction</a>
 														</div>
@@ -306,7 +360,36 @@ $(document).ready(function(){
 	showAlert(msgInfo, msgbgcol);
 	<%}%>
 	
+	$('.countdown').each(function() {
+		var $this = $(this);
+		
+		var sDate = $(this).data('startdate');
+		var eDate = $(this).data('enddate');
+		var startDate = new Date(sDate);
+		var endDate  = new Date(eDate);
+		var today = new Date();
+		var targetDate;
+		  
+		if(today < startDate) {
+			targetDate = $(this).data('startdate');
+		} else if (today <= endDate) {
+			targetDate = $(this).data('enddate');
+		} 
+		$this.countdown(targetDate, function(event) {
+			var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+			if(totalHours < 24) {
+				$(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+			} else {
+				$this.html(event.strftime('%D days %H:%M:%S'));
+			}
+		});
+	});
+
+	
 });
+
+
+
 
 
 </script>

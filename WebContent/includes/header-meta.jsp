@@ -79,5 +79,10 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 	href="assets/plugins/jquery-ui/themes/smoothness/jquery-ui.min.css">
 <link rel="stylesheet"
 	href="assets/plugins/gallery/css/blueimp-gallery.min.css">
-
-
+	
+<link rel="stylesheet" type="text/css" href="assets/plugins/fontawesome/css/font-awesome.min.css">
+<script type="text/javascript" src="assets/plugins/fontawesome/fonts/FontAwesome.otf"></script>
+<script type="text/javascript" src="assets/plugins/fontawesome/fonts/fontawesome-webfont.eot"></script>
+<script type="text/javascript" src="assets/plugins/fontawesome/fonts/fontawesome-webfont.svg"></script>
+<script type="text/javascript" src="assets/plugins/fontawesome/fonts/fontawesome-webfont.ttf"></script>
+<script type="text/javascript" src="assets/plugins/fontawesome/fonts/fontawesome-webfont.woff"></script>

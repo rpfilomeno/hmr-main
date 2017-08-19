@@ -17,4 +17,4 @@
 <script src="assets/plugins/bootstrap-validator.min.js"></script>
 <script src="assets/plugins/jquery.bsAlerts.min.js"></script>
 <script src="assets/plugins/gallery/js/blueimp-gallery.min.js"></script>
-
+<script src="assets/plugins/jquery.countdown.min.js"></script>
