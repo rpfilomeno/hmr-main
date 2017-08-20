@@ -514,8 +514,19 @@ public class Bid extends HttpServlet {
 				
 				Lot delta_lot = null;
 				
+				List<BigDecimal> favList = null;
+				
 				List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+				
+				int favCnt = 0;
+				
 				for(Lot lot : lotList){
+					
+					if(favCnt==0){
+						favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+						favCnt = 1;
+						
+					}
 					
 					delta_lot = lMngr.applyLotRules(lot);
 					
@@ -533,7 +544,7 @@ public class Bid extends HttpServlet {
 					
 					
 					
-					List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+					//List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
 					for(BigDecimal favId: favList){
 						if(favId.compareTo(delta_lot.getLot_id())==0){
 							delta_lot.setIsFav(1);

@@ -72,520 +72,6 @@ public class EmailMessage {
  
   
     
-    public static String getMainEmail1(String first_name, String last_name, String login_link){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
-        sb.append(getMainContent1(login_link));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    
-    public static String getMainEmail2(String first_name, String last_name, String login_link){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
-        sb.append(getMainContent2(login_link));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    public static String getMainEmail3(String c_first_name, String c_last_name, String a_first_name, String a_last_name, String login_link){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+c_first_name + " "+ c_last_name +"</strong>, </h4>");
-        sb.append(getMainContent3(a_first_name, a_last_name, login_link));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    
-    public static String getMainEmail4(String first_name, String last_name, String login_link){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
-        sb.append(getMainContent4(login_link));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    public static String getMainEmail5(String c_first_name, String c_last_name, String a_first_name, String a_last_name, String login_link){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+c_first_name + " "+ c_last_name +"</strong>, </h4>");
-        sb.append(getMainContent5(a_first_name, a_last_name, login_link));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    public static String getMainEmailScheduledTraining(String first_name, String last_name, String login_link, String access_key, Integer calendar_id){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
-        sb.append(getMainContentScheduledTraining(login_link, access_key, calendar_id));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    
-    public static String getMainEmailReScheduledTraining(String first_name, String last_name, String login_link, String access_key, Integer calendar_id){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
-        sb.append(getMainContentReScheduledTraining(login_link, access_key, calendar_id));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    
-    public static String getMainEmailCancelTraining(String first_name, String last_name, String login_link, String access_key, Integer calendar_id){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
-        sb.append(getMainContentCancelTraining(login_link, access_key, calendar_id));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-
-
-    public static String getMainEmailScheduledTraining_Admin(String first_name, String last_name, String comp_name){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+comp_name +"</strong>, </h4>");
-        sb.append(getMainContentScheduledTraining_Admin(first_name, last_name));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    
-    
-    public static String getMainEmailCancelTraining_Admin(String first_name, String last_name, String comp_name){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+comp_name +"</strong>, </h4>");
-        sb.append(getMainContentCancelTraining_Admin(first_name, last_name));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    
-    public static String getMainEmailRescheduledTraining_Admin(String first_name, String last_name, String comp_name){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+comp_name +"</strong>, </h4>");
-        sb.append(getMainContentReScheduledTraining_Admin(first_name, last_name));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
     
     public static String getVerifyEmailUser(String first_name, String last_name, String login_link){
     	StringBuilder sb = new StringBuilder();
@@ -684,7 +170,37 @@ public class EmailMessage {
     	return sb.toString();
     }
     
-    
+    public static String getPrivateRegistrationRejected(String first_name, String last_name){
+    	StringBuilder sb = new StringBuilder();
+
+    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+    	sb.append("<head>");
+    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
+    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+    	sb.append("<title>HMR Auctions</title>");
+    	sb.append("</head>");
+    	sb.append("<body bgcolor=\"#FFFFFF\">");
+        sb.append("<div style=\"padding:1px; max-width:700px; margin:0 auto; display:block;\">");
+        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
+        sb.append("<p style=\"margin-bottom: 2px; \"><img src=\"cid:image1\"></p><br>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
+        sb.append(getMainContentPrivateRegistrationRejected());
+        sb.append("<br>");
+        sb.append("<p style=\"font-size: 12px;\">Sincerely,</p>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR Auctions Team</strong> </h4>");
+        sb.append("<br>");
+        sb.append(getFooterContent());
+        sb.append("</td></tr></table>");
+        sb.append("</div>");
+        //sb.append("</td>");
+        //sb.append("<td></td>");
+        //sb.append("</tr>");
+        //sb.append("</table>");
+        sb.append("</body>");
+        sb.append("</html>");
+        
+    	return sb.toString();
+    }
     
     public static String getNegotiatedBidEmailAdmin( 
     		String AuctionId, String AuctionName, String AuctionDescription,
@@ -785,7 +301,7 @@ public class EmailMessage {
         sb.append("<div style=\"padding:1px; max-width:700px; margin:0 auto; display:block;\">");
         sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
         sb.append("<p style=\"margin-bottom: 2px; \"><img src=\"cid:image1\"></p><br>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\">Dear <strong style=\"color: #03499A\">HMR Auctions Team</strong>, </h4>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\">Dear <strong style=\"color: #03499A\">HMR BID Team</strong>, </h4>");
         sb.append(getMainContentPrivateBidApproveEmailAdmin( 
         		AuctionId, AuctionName, AuctionDescription,
         		BidderId, BidderFirstName, BidderLastName, BidderEmail,
@@ -793,7 +309,7 @@ public class EmailMessage {
         		));
         sb.append("<br>");
         sb.append("<p style=\"font-size: 12px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR Auctions Team</strong> </h4>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR BID Team</strong> </h4>");
         sb.append("<br>");
         sb.append(getFooterContent());
         sb.append("</td></tr></table>");
@@ -832,7 +348,7 @@ public class EmailMessage {
         		AuctionId, AuctionName, AuctionDescription));
         sb.append("<br>");
         sb.append("<p style=\"font-size: 12px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR Auctions Team</strong> </h4>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR BID Team</strong> </h4>");
         sb.append("<br>");
         sb.append(getFooterContent());
         sb.append("</td></tr></table>");
@@ -871,7 +387,46 @@ public class EmailMessage {
         		AuctionId, AuctionName, AuctionDescription));
         sb.append("<br>");
         sb.append("<p style=\"font-size: 12px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR Auctions Team</strong> </h4>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR BID Team</strong> </h4>");
+        sb.append("<br>");
+        sb.append(getFooterContent());
+        sb.append("</td></tr></table>");
+        sb.append("</div>");
+        sb.append("</body>");
+        sb.append("</html>");
+        
+    	return sb.toString();
+    	
+    }
+    
+    public static String getPrivateBidInviteRejectEmailBidder797( 
+    		String AuctionId, 
+    		String AuctionName, 
+    		String AuctionDescription,
+    		String BidderId, 
+    		String BidderFirstName, 
+    		String BidderLastName, 
+    		String BidderEmail
+    		) {
+    	
+    	StringBuilder sb = new StringBuilder();
+
+    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+    	sb.append("<head>");
+    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
+    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+    	sb.append("<title>HMR Auctions</title>");
+    	sb.append("</head>");
+    	sb.append("<body bgcolor=\"#FFFFFF\">");
+        sb.append("<div style=\"padding:1px; max-width:700px; margin:0 auto; display:block;\">");
+        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
+        sb.append("<p style=\"margin-bottom: 2px; \"><img src=\"cid:image1\"></p><br>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\">Dear <strong style=\"color: #03499A\"> "+ BidderFirstName + " " + BidderLastName + ", </h4>");
+        sb.append(getMainContentPrivateBidRejectEmailBidder797( 
+        		AuctionId, AuctionName, AuctionDescription));
+        sb.append("<br>");
+        sb.append("<p style=\"font-size: 12px;\">Thank you,</p>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR BID Team</strong> </h4>");
         sb.append("<br>");
         sb.append(getFooterContent());
         sb.append("</td></tr></table>");
@@ -900,7 +455,7 @@ public class EmailMessage {
         sb.append(getMainContentNewPasswordEmail(newPassword));
         sb.append("<br>");
         sb.append("<p style=\"font-size: 12px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR Auctions Team</strong> </h4>");
+        sb.append("<h4 style=\"font-weight:500; font-size: 12px;\"><strong style=\"color: #03499A\">HMR BID Team</strong> </h4>");
         sb.append("<br>");
         sb.append(getFooterContent());
         sb.append("</td></tr></table>");
@@ -909,332 +464,6 @@ public class EmailMessage {
         //sb.append("<td></td>");
         //sb.append("</tr>");
         //sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    
-    
-    
-    public static String getMainEmailRequest(String first_name, String last_name, String login_link){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>MARCVENTURES</title>");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 0px; background-color: #FFFFFF; display:block!important; max-width:600px!important; margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:0px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<table bgcolor=\"#FFFFFF\" style=\"width: 100%;\">");
-    	sb.append("<tr><td align=\"center\" bgcolor=\"#FFFFFF\"><img align=\"center\" src=\"cid:image1\" style=\"height:20%\" /> <img align=\"center\" src=\"cid:image2\" style=\"width:30%\" /></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
-        sb.append(getMainContentRequest(login_link));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">Marcventures Google Admin</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-
-    public static String getMainEmailRequest(String first_name, String last_name, String login_link, String pass_word){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>MARCVENTURES</title>");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 0px; background-color: #FFFFFF; display:block!important; max-width:600px!important; margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:0px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<table bgcolor=\"#FFFFFF\" style=\"width: 100%;\">");
-    	sb.append("<tr><td align=\"center\" bgcolor=\"#FFFFFF\"><img align=\"center\" src=\"cid:image1\" style=\"height:20%\" /> <img align=\"center\" src=\"cid:image2\" style=\"width:30%\" /></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+first_name + " "+ last_name +"</strong>, </h4>");
-        sb.append(getMainContentRequest(login_link));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">Marcventures Google Admin</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    
-    
-    public static String getMainEmailChangePassword(String first_name, String last_name, String login_link){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>MARCVENTURES</title>");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 0px; background-color: #FFFFFF; display:block!important; max-width:600px!important; margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:0px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<table bgcolor=\"#FFFFFF\" style=\"width: 100%;\">");
-    	sb.append("<tr><td align=\"center\" bgcolor=\"#FFFFFF\"><img align=\"center\" src=\"cid:image1\" style=\"height:20%\" /> <img align=\"center\" src=\"cid:image2\" style=\"width:30%\" /></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\"> "+first_name +" "+ last_name+" </strong>, </h4>");
-        sb.append(getMainContentChangePassword(login_link, first_name, last_name));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">Marcventures Google Admin</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    public static String getMainEmailChangePasswordAdmin(String first_name, String last_name, String login_link){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>MARCVENTURES</title>");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 0px; background-color: #FFFFFF; display:block!important; max-width:600px!important; margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:0px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<table bgcolor=\"#FFFFFF\" style=\"width: 100%;\">");
-    	sb.append("<tr><td align=\"center\" bgcolor=\"#FFFFFF\"><img align=\"center\" src=\"cid:image1\" style=\"height:20%\" /> <img align=\"center\" src=\"cid:image2\" style=\"width:30%\" /></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\"> Google Admin </strong>, </h4>");
-        sb.append(getMainContentChangePasswordAdmin(login_link, first_name, last_name));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">Marcventures Google Admin</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    public static String getMainEmailChangePassword(String first_name, String last_name, String login_link, String pass_word){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>MARCVENTURES</title>");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 0px; background-color: #FFFFFF; display:block!important; max-width:600px!important; margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:0px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#FFFFFF\">");
-    	sb.append("<table bgcolor=\"#FFFFFF\" style=\"width: 100%;\">");
-    	sb.append("<tr><td align=\"center\" bgcolor=\"#FFFFFF\"><img align=\"center\" src=\"cid:image1\" style=\"height:20%\" /> <img align=\"center\" src=\"cid:image2\" style=\"width:30%\" /></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\"> "+first_name+ " "+last_name+" </strong>, </h4>");
-        sb.append(getMainContentChangePassword(login_link, first_name, last_name, pass_word));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">Marcventures Google Admin</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-    
-    
-    public static String getMainEmailTransferTraining_Admin(String comp_name, String old_first_name,  String old_last_name , String first_name, String last_name){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+comp_name +"</strong>, </h4>");
-        sb.append(getMainContentTransferTraining_Admin(old_first_name, old_last_name, first_name, last_name));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
-        
-    	return sb.toString();
-    }
-
-    
-
-    
-    public static String getMainEmailTransferTraining_OldAttendee(String old_a_first_name, String old_a_last_name, String a_first_name, String a_last_name, String comp_name){
-    	StringBuilder sb = new StringBuilder();
-
-    	sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-    	sb.append("<head>");
-    	sb.append("<meta name=\"viewport\" content=\"width=device-width\" />");
-    	sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-    	sb.append("<title>IPC Google</title>");
-    	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://reg.cloud.com.ph/IPCGoogle/css/email.css\" />");
-    	sb.append("</head>");
-    	sb.append("<body bgcolor=\"#FFFFFF\">");
-    	sb.append("<table style=\"width: 100%;\" bgcolor=\"#03499A\">");
-    	sb.append("<tr><td></td>");
-    	sb.append("<td style=\"padding: 15px; background-color: #0A5098; display:block!important;	max-width:600px!important;	margin:0 auto!important;clear:both!important\">");
-    	sb.append("<div style=\"padding:10px;max-width:500px;margin:0 auto;display:block;\" bgcolor=\"#03499A\">");
-    	sb.append("<table bgcolor=\"#03499A\" style=\"width: 100%;\">");
-    	sb.append("<tr><td bgcolor=\"#03499A\"><img src=\"cid:image1\"> </td><td align=\"right\" bgcolor=\"#03499A\"><img src=\"cid:image2\"></td></tr>");
-    	sb.append("</table>");
-    	sb.append("</div>");
-    	sb.append("</td>");
-    	sb.append("<td></td></tr></table>");
-        sb.append("<table style=\"width: 100%;\">");
-        sb.append("<tr><td></td>");
-        sb.append("<td style=\"	display:block!important;	max-width:600px!important;	margin:0 auto!important; clear:both!important;\" bgcolor=\"#FFFFFF\">");
-        sb.append("<div style=\"	padding:15px;	max-width:600px;	margin:0 auto;	display:block; \">");
-        sb.append("<table><tr><td style=\"font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;\">");
-        sb.append("<p style=\"margin-bottom: 10px; \"><img src=\"cid:image3\"></p><br/>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\">Dear <strong style=\"color: #03499A\">"+comp_name +"</strong>, </h4>");
-        sb.append(getMainContentTransferTraining_OldAttendee(a_first_name, a_last_name));
-        sb.append("<br/><br/>");
-        sb.append("<p style=\"font-size: 16px;\">Sincerely,</p>");
-        sb.append("<h4 style=\"font-weight:500; font-size: 23px;\"><strong style=\"color: #03499A\">IPC Google Solutions Team</strong> </h4>");
-        sb.append("<br/>");
-        sb.append(getFooterContent());
-        sb.append("</td></tr></table>");
-        sb.append("</div>");
-        sb.append("</td>");
-        sb.append("<td></td>");
-        sb.append("</tr>");
-        sb.append("</table>");
         sb.append("</body>");
         sb.append("</html>");
         
@@ -1430,6 +659,16 @@ public class EmailMessage {
 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Thank you for choosing HMR Auctions.</p>"; 
  	   return body;
     }
+    
+    public static String getMainContentPrivateRegistrationRejected(){
+  	   
+  	   String body = "<p style=\"margin-bottom: 10px;font-size: 12px;\">Good day!</p>";
+ 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Your private bid request have been rejected.";
+ 	  	  // body = body +"<p style=\"margin-bottom: 10px;font-size: 12px;\"><a href=\""+login_link+"\" style=\"	text-decoration:none;	color: #FFF;	background-color: #03499A;	padding:10px 16px;	font-weight:bold;	margin-right:10px;	text-align:center;	cursor:pointer;	display: inline-block;\">Login</a></p>";
+ 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auction@hmrbid.com for questions or concerns.</p>";
+ 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Thank you for choosing HMR Auctions.</p>"; 
+  	   return body;
+     }
 
     public static String getMainContentNewPasswordEmail(String newPassword){
  	   
@@ -1515,23 +754,7 @@ public class EmailMessage {
  	   return body;
     }
     
-    //Confirmation email to admin that transfer is successful
-    public static String getMainContentTransferTraining_Admin(String old_a_first_name, String old_a_last_name, String a_first_name, String a_last_name){
-   	   
-   	   String body = "<p style=\"margin-bottom: 10px;font-size: 16px;\">Good day! We are sending this email to inform you that you have successfully transferred "+old_a_first_name+" "+old_a_last_name+" training slot to "+a_first_name+" "+a_last_name+". The new nominee will be receiving an email notification to book his/her training schedule.</p>";
-   	   body = body + "<p style=\"margin-bottom: 10px;font-size: 16px;\">Please feel free to reach out to your dedicated account manager for questions or concerns.</p>";
-   	   body = body + "<p style=\"margin-bottom: 10px;font-size: 16px;\">Thank you for choosing IP Converge Data Services Inc,.</p>";
-   	   return body;
-      }
-    
-    //Confirmation email to old attendee that transfer is successful
-    public static String getMainContentTransferTraining_OldAttendee(String a_first_name, String a_last_name){
-   	   
-   	   String body = "<p style=\"margin-bottom: 10px;font-size: 16px;\">Good day! We are sending this email to inform you that your Google for Work Service Administrator transferred your training slot to "+a_first_name+" "+a_last_name+".</p>";
-   	   body = body + "<p style=\"margin-bottom: 10px;font-size: 16px;\">Please feel free to reach out to your Google for Work Service Administrator for questions or concerns.</p>";
-   	   body = body + "<p style=\"margin-bottom: 10px;font-size: 16px;\">Thank you for choosing IP Converge Data Services Inc,.</p>";
-   	   return body;
-      }
+
     
     public static String getMainContentNegotiatedBidEmailAdmin(
     		String AuctionId, String AuctionName, String AuctionDescription,
@@ -1626,4 +849,32 @@ public class EmailMessage {
      	body = body + "</p>";
      	return body;
     }
+    
+    public static String getMainContentPrivateBidRejectEmailBidder797(
+    		String AuctionId, String AuctionName, String AuctionDescription
+    		) {
+    	String body = "<p style=\"margin-bottom: 10px;font-size: 12px;\">Good day!</p>";
+     	body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Your registration of join the private bidding has not been approved due or may of the following criteria;</p>";
+
+     	body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">";
+     	body = body + "Who are eligible to join?<br/>";
+     	body = body + "This Company Vehicle Purchase Program (\"Program\") is open to employees of PMFTC, Inc or Philip Morris Manufacturing Inc (\"Company\") provided such employees meet the following criteria below at the date of offering:<br/>";
+     	body = body + "1. Should have at least one (1) year tenure;<br/>";
+     	body = body + "1. Should have at least one (1) year tenure;<br/>";
+     	body = body + "2. No disciplinary leave for the last two (2) years; and<br/>";
+     	body = body + "3. No other company vehicle purchased (Except Benefit Vehicle) for the last two (2) years.<br/><br/>";
+     	
+     	body = body + "Who are not qualified from joining the bidding?<br/>";
+     	body = body + "All employees under Fleet Department, employees under agency and those who have won vehicle on previous Employee Bidding.<br/><br/>";
+     	
+     	body = body + "Furthermore, aside from required base eligibility, those employees with won units who cancelled or withdraw from their original bids last cycle are not also allowed or qualified to join in this cycle.<br/>";
+     	body = body + "</p>";
+     	
+     	
+     	body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">For further assistance please call our Customer Service at 0945-3211-495 or 0945-3211-496</p>";
+
+     	
+     	return body;
+    }
+    
 }

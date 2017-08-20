@@ -796,9 +796,12 @@ public class BiddingTransactionDao extends DBConnection {
 		sb.append(" limit 3");
 
 		Connection conn = null;
-		
+
 		try {
-			conn = getConnection();
+			
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -866,9 +869,12 @@ public class BiddingTransactionDao extends DBConnection {
 		sb.append(" limit 5");
 
 		Connection conn = null;
-		
+
 		try {
-			conn = getConnection();
+			
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -900,10 +906,10 @@ public class BiddingTransactionDao extends DBConnection {
 				btList.add(bt);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
@@ -929,8 +935,13 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		sb.append(" order by id desc");
 
+		Connection conn = null;
+		
 		try {
-			conn = getConnection();
+			
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -992,8 +1003,13 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		sb.append(" order by id desc");
 
+		Connection conn = null;
+		
 		try {
-			conn = getConnection();
+			
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -1066,8 +1082,13 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		sb.append(" order by id desc");
 
+		Connection conn = null;
+		
 		try {
-			conn = getConnection();
+			
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -1113,7 +1134,7 @@ public class BiddingTransactionDao extends DBConnection {
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {
@@ -1171,9 +1192,14 @@ public class BiddingTransactionDao extends DBConnection {
 		sb.append(" from bidding_transaction where lot_id="+lot_id);
 		
 		sb.append(" order by id desc limit 1");
-
+		
+		Connection conn = null;
+		
 		try {
-			conn = getConnection();
+			
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -1212,7 +1238,7 @@ public class BiddingTransactionDao extends DBConnection {
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {

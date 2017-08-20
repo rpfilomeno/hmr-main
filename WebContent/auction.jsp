@@ -521,6 +521,9 @@
 		                    </thead>
 		                    <tbody>
                       <%
+                      
+                      int imgNum = 0;
+                      String imgDom = "";
                       	for(Lot l : lList){
                             String date_created = "";
                             if(l.getDate_created()!=null){
@@ -542,7 +545,17 @@
 		                    <td width="75px">
 			                    <div class="media">
 								  <a class="pull-left" href="#" onclick="lotImages('<%=l.getId()%>')">
-								      <img class="media-object lazy" style="width:75px; " src="" data-src="image?id=<%=l.getId()%>&t=lt" alt="Click to upload image" />
+								      <img class="media-object lazy" style="width:75px; " src="" data-src="<%=imgDom%>image?id=<%=l.getId()%>&t=lt" alt="Click to upload image" />
+								      <% imgNum = imgNum+1; 
+
+								      if(imgNum>=1 && imgNum <=2){
+								    	  imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
+								    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR/";
+								      }	else {
+								    	  imgNum = 0;
+								    	  imgDom = "";
+								      }
+								      %>
 								      <!--
 								      <span class="badge badge-success pull-right" style="position: relative; top: -20px; left: -2px;">
 								      	  <//%= new ImageManager().getImageListByLotId(l.getLot_id()).size() %>  

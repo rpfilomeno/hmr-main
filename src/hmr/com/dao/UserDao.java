@@ -466,7 +466,7 @@ public class UserDao extends DBConnection {
 		      
 
 		      sql ="INSERT INTO `user_address` (`user_id`, `address_line_1`, `baranggay`, `province`, `city`, `country`, `address_type`, `postal_code`, `date_created`) "+
-		      "VALUES ('"+last_inserted_id+"', '"+addressStreetNo+"', '"+addressBaranggay+"', "+ addressProvince +",'"+addressCity+"', '"+addressCountry+"', '1', '"+addressZipCode+"', NOW());";
+		      "VALUES ('"+last_inserted_id+"', '"+addressStreetNo+"', '"+addressBaranggay+"', '"+ addressProvince +"','"+addressCity+"', '"+addressCountry+"', '1', '"+addressZipCode+"', NOW());";
 		      
 		      System.out.println("sql : "+sql);		      
 		      i = stmt.executeUpdate(sql);

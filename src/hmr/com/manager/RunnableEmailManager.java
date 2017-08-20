@@ -159,6 +159,14 @@ public class RunnableEmailManager implements Runnable {
 				if("HMR Auctions : Private Registration Accepted".equals(threadName)){
 					
 					EmailUtil.sendPrivateRegistrationAccepted(email_add_to, email_add_cc, first_name, last_name);
+					
+				} else if("HMR Auctions : Private Registration Rejected".equals(threadName)){
+						
+					EmailUtil.sendPrivateRegistrationRejected(email_add_to, email_add_cc, first_name, last_name);
+					
+				} else if("HMR Auctions : Private Registration Rejected - Auction ".equals(threadName)){
+					
+					EmailUtil.sendPrivateRegistrationRejected(email_add_to, email_add_cc, first_name, last_name);
 				
 				}else if("HMR Auctions : Activation".equals(threadName)){
 					

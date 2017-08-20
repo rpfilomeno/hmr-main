@@ -1,5 +1,7 @@
 package hmr.com.manager;
 
+import java.math.BigDecimal;
+
 import hmr.com.util.EmailUtil;
 
 public class RunnablePrivateBidManager implements Runnable {
@@ -48,14 +50,22 @@ public class RunnablePrivateBidManager implements Runnable {
 	   
 	   
 	   public void run() {	
-		      System.out.println("Running " +  threadName );
+		      System.out.println("Running " +  threadName+ " "+AuctionId );
 		      try {
-		    	  if("HMR Auctions : Private Bid Accept Admin Notification".equals(threadName)){
+		    	  
+				   if((AuctionId.equals("797") || AuctionId.equals("804")) && "HMR Auctions : Private Bid Reject User Notification".equals(threadName)){
+					threadName = "HMR Auctions : Private Bid Reject User Notification - Auction 260";
+					EmailUtil.sendPrivateBidInviteRejectBidder797(to, cc, AuctionId, AuctionName, AuctionDescription, BidderId, BidderFirstName, BidderLastName, BidderEmail);
+				  } else if("HMR Auctions : Private Bid Accept Admin Notification".equals(threadName)){
 		    		  EmailUtil.sendPrivateBidInviteApproveAdmin(to, cc, AuctionId, AuctionName, AuctionDescription, BidderId, BidderFirstName, BidderLastName, BidderEmail, CompanyIdNo);
-		    	  }else if("HMR Auctions : Private Bid Accept User Notification".equals(threadName)){
-		    		  EmailUtil.sendPrivateBidInviteApproveBidder(to, cc, AuctionId, AuctionName, AuctionDescription, BidderId, BidderFirstName, BidderLastName, BidderEmail);
+				  }else if("HMR Auctions : Private Bid Accept User Notification".equals(threadName)){
+		    		  //EmailUtil.sendPrivateBidInviteApproveBidder(to, cc, AuctionId, AuctionName, AuctionDescription, BidderId, BidderFirstName, BidderLastName, BidderEmail);
+		    		  EmailUtil.sendPrivateRegistrationAccepted(to, cc, BidderFirstName, BidderLastName);
 		    	  }else if("HMR Auctions : Private Bid Reject User Notification".equals(threadName)){
-		    		  EmailUtil.sendPrivateBidInviteRejectBidder(to, cc, AuctionId, AuctionName, AuctionDescription, BidderId, BidderFirstName, BidderLastName, BidderEmail);
+		    		  //EmailUtil.sendPrivateBidInviteRejectBidder(to, cc, AuctionId, AuctionName, AuctionDescription, BidderId, BidderFirstName, BidderLastName, BidderEmail);
+		    		  EmailUtil.sendPrivateRegistrationRejected(to, cc, BidderFirstName, BidderLastName);
+		    	  }else if("HMR Auctions : Private Bid Reject User Notification - Auction 260".equals(threadName)){
+		    		  
 		    	  } 
 		      } catch (RuntimeException e) {
 		    	  System.out.println("Thread " +  threadName + " interrupted.");

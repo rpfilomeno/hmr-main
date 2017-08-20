@@ -47,9 +47,10 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
             <li>
               <a href="bid?mngr=pages&a=services">Services</a>
             </li>
+            <!-- 
             <li>
               <a href="bid?mngr=pages&a=gallery">Gallery</a>
-            </li>
+            </li> -->
             <li>
               <a href="bid?mngr=pages&a=contactus">Contact Us</a>
             </li>

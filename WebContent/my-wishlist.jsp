@@ -129,6 +129,14 @@
 						%>
 						<%for(Lot l : lList) {%>
 							<%  
+							
+							System.out.println("l.getAmount_bid_next() "+l.getAmount_bid_next());
+							System.out.println("l.getStarting_bid_amount() "+l.getStarting_bid_amount());
+							
+							if(l.getStarting_bid_amount()==null){
+								l.setStarting_bid_amount(new BigDecimal(0));
+							}
+							
 							auction = new AuctionManager().getAuctionByAuctionId(l.getAuction_id()); 
 							trapOneLotPerBidder= BigDecimal.ZERO;
 							

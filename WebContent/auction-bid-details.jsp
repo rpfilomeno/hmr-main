@@ -183,13 +183,27 @@
 					
 
 					<div class="row grid" >
-						<% Integer x =1; %>
+						<% Integer x =1; 
+						
+	                      int imgNum = 0;
+	                      String imgDom = "";
+						%>
 						<%for(Lot l : lList) {%>
 							<div class="col-md-6 col-xs-12 grid-item">
 								<div class="product-item">
 										<div class="product-image-wrap">
 											<a href="#" onclick="viewLot('<%=l.getId()%>')">
-											<img style="width:100%" class="lazy" data-original="image?id=<%=l.getId()%>&t=l">
+											<img style="width:100%" class="lazy" data-original="<%=imgDom%>image?id=<%=l.getId()%>&t=l">
+											  <% imgNum = imgNum+1; 
+
+										      if(imgNum>=1 && imgNum <=2){
+										    	  imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
+										    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR/";
+										      }	else {
+										    	  imgNum = 0;
+										    	  imgDom = "";
+										      }
+										      %>
 											</a>
 										</div>
 										<div class="clearfix top10"></div>

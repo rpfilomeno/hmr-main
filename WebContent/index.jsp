@@ -94,7 +94,7 @@
 										<a href="#online-bidding-tab" aria-controls="online-bidding-tab" role="tab" data-toggle="tab">Online Bidding</a>
 									</li>
 									<li role="presentation">
-										<a href="#negotiated-bids-tab" aria-controls="negotiated-bids-tab" role="tab" data-toggle="tab">Negotiated Bids</a>
+										<a href="#negotiated-bids-tab" aria-controls="negotiated-bids-tab" role="tab" data-toggle="tab">Buy Now</a>
 									</li>
 									<li role="presentation">
 										<a href="#live-bids-tab" aria-controls="live-bids-tab" role="tab" data-toggle="tab">Live Auctions</a>
@@ -136,8 +136,8 @@
 															</div>
 															<div class="card-snippet-wrap">
 																<div class="countdown" id="timer-<%=activeOnlineAuction.getId() %>" 
-																	data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time()) %>" 
-																	data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>">
+																	data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time())%>" 
+																	data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>">Starts
 																</div>
 															</div>
 														<% }else if (activeOnlineAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
@@ -148,7 +148,8 @@
 																Accepting Bids
 															</div>
 															<div class="card-snippet-wrap">
-																<div class="countdown" id="timer-<%=activeOnlineAuction.getId() %>" 
+															Ends
+																<div class="countdown" id="timer-<%=activeOnlineAuction.getId()%>" 
 																	data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time()) %>" 
 																	data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>">
 																</div>

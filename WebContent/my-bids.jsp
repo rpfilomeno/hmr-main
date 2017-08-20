@@ -118,6 +118,12 @@
 							<a href="#online-bidding-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">My Bids</a>
 						</li>
 					</ul>
+					
+					<ul class="nav nav-tabs nav-tabs-2" role="tablist">
+						<li role="presentation" class="">
+							<a href="#checkout-tab" aria-controls="lots-tab" role="tab" data-toggle="tab">My Checkout</a>
+						</li>
+					</ul>
 					<div class="clearfix top10"></div>
 
 					<div class="row gutter-10">
