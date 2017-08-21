@@ -37,7 +37,7 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 							<ul class="top-navbar">
 								<li>(02)548-6962</li>
 								<!-- <li>0917 548 3603</li>-->
-								<li><a href="mailto:ONLINE-AUCTION@HMRBID.COM">ONLINE-AUCTION@HMRBID.COM</a>
+								<li><a href="mailto:online-auctions@HMRBID.COM">online-auctions@HMRBID.COM</a>
 								</li>
 								<li><a href="">Home</a></li>
 								<% if(fullName!=null && !"null".equals(fullName)){%>

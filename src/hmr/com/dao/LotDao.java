@@ -985,6 +985,8 @@ public class LotDao extends DBConnection {
 				Integer bidder_id,
 				Integer lot_increment_time,
 				String lot_name,
+				
+				BigDecimal starting_bid_amount,
 
 				Integer user_id,
 				BigDecimal lotId_wip
@@ -1005,7 +1007,7 @@ public class LotDao extends DBConnection {
 
 			sb.append(", duties=?, vat=?, unit=?, premium_rate=?, lot_type_id=?, active=?, unit_qty=?");
 			
-			sb.append(", amount_bid=?, amount_buy=?, action_taken=?, is_buy=?, is_bid=?, buy_price=?, bidder_id=?, lot_increment_time=?, lot_name=?");
+			sb.append(", amount_bid=?, amount_buy=?, action_taken=?, is_buy=?, is_bid=?, buy_price=?, bidder_id=?, lot_increment_time=?, lot_name=?, starting_bid_amount=?");
 
 			sb.append(", date_updated=?, updated_by=?");
 			
@@ -1046,9 +1048,12 @@ public class LotDao extends DBConnection {
 	        stmt.setInt(20, lot_increment_time);
 	        stmt.setString(21, lot_name);
 	        
+	        stmt.setBigDecimal(22, starting_bid_amount);
 	        
-	        stmt.setTimestamp(22, sqlDate_t);
-	        stmt.setInt(23, user_id);
+	        
+	        
+	        stmt.setTimestamp(23, sqlDate_t);
+	        stmt.setInt(24, user_id);
 
 
 		    System.out.println("sql : "+sql);
@@ -1446,7 +1451,7 @@ public class LotDao extends DBConnection {
 		DBConnection dbConn = new DBConnection();
 		
 		try {
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection4();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -2013,7 +2018,7 @@ public class LotDao extends DBConnection {
 	try {
 		DBConnection dbConn = new DBConnection();
 		
-		conn = dbConn.getConnection();
+		conn = dbConn.getConnection5();
 
 		StringBuilder sb = new StringBuilder("Update Lot Set is_buy=?");
 		
@@ -2047,7 +2052,7 @@ public class LotDao extends DBConnection {
         
 	    
 
-		stmt.close();
+		//stmt.close();
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
@@ -2141,6 +2146,67 @@ public class LotDao extends DBConnection {
 
 	return affectedRows;
 }
+	
+	
+	public int updateLotSetEndDateTime(
+			BigDecimal lot_id,
+			Timestamp end_date_time,
+			Integer user_id
+		){
+	
+		Connection conn = null;
+		
+		int affectedRows = 0;
+		
+	
+		try {
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection7();
+	
+			StringBuilder sb = new StringBuilder("Update Lot Set end_date_time=?");
+			
+			sb.append(", date_updated=?, updated_by=?");
+			
+			sb.append(" where lot_id="+lot_id);
+
+		    String sql = sb.toString();
+		    
+	        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        
+	        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+	
+	        
+	        java.sql.Timestamp sqlDate_t2 = new java.sql.Timestamp(end_date_time.getTime());
+	        
+	        //stmt.setBigDecimal(1, auction_id);
+	        stmt.setTimestamp(1, sqlDate_t2);
+	        
+	        stmt.setTimestamp(2, sqlDate_t);
+	        stmt.setInt(3, user_id);
+	
+	
+		    System.out.println("sql : "+sql);
+		    
+		    affectedRows = stmt.executeUpdate();
+
+			//stmt.close();
+		} catch (SQLException e) {
+			//throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	
+		return affectedRows;
+	}
+	
+	
 	
  
     /**

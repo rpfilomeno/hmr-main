@@ -624,7 +624,7 @@ public class EmailMessage {
   	   String body = "<p style=\"margin-bottom: 10px;font-size: 16px;\">Good day! </p>";
 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 16px;\">Please click the Veriy Email button below.</p>";
 	  	   body = body +"<p style=\"margin-bottom: 10px;font-size: 16px;\"><a href=\""+login_link+"\" style=\"	text-decoration:none;	color: #FFF;	background-color: #03499A;	padding:10px 16px;	font-weight:bold;	margin-right:10px;	text-align:center;	cursor:pointer;	display: inline-block;\">Verify Email</a></p>";
-	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 16px;\">Please feel free to reach out to online-auction@hmrbid.com for questions or concerns.</p>";
+	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 16px;\">Please feel free to reach out to online-auctions@hmrbid.com for questions or concerns.</p>";
 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 16px;\">Thank you for choosing HMR Auctions.</p>"; 
   	   return body;
      }
@@ -634,7 +634,7 @@ public class EmailMessage {
    	   String body = "<p style=\"margin-bottom: 10px;font-size: 12px;\">Good day!</p>";
  	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">You are one step from bidding. Click the button below to continue.</p>";
  	  	   body = body +"<p style=\"margin-bottom: 10px;font-size: 12px;\"><a href=\""+login_link+"\" style=\"	text-decoration:none;	color: #FFF;	background-color: #03499A;	padding:10px 16px;	font-weight:bold;	margin-right:10px;	text-align:center;	cursor:pointer;	display: inline-block;\">Verify Email</a></p>";
- 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auction@hmrbid.com for questions or concerns.</p>";
+ 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auctions@hmrbid.com for questions or concerns.</p>";
  	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Thank you for choosing HMR Auctions.</p>"; 
    	   return body;
       }
@@ -645,7 +645,7 @@ public class EmailMessage {
     	   String body = "<p style=\"margin-bottom: 10px;font-size: 12px;\">Good day!</p>";
   	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">You have successfully registered. Click button below to login.</p>";
   	  	   body = body +"<p style=\"margin-bottom: 10px;font-size: 12px;\"><a href=\""+login_link+"\" style=\"	text-decoration:none;	color: #FFF;	background-color: #03499A;	padding:10px 16px;	font-weight:bold;	margin-right:10px;	text-align:center;	cursor:pointer;	display: inline-block;\">Login</a></p>";
-  	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auction@hmrbid.com for questions or concerns.</p>";
+  	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auctions@hmrbid.com for questions or concerns.</p>";
   	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Thank you for choosing HMR Auctions.</p>"; 
     	   return body;
        }
@@ -655,7 +655,7 @@ public class EmailMessage {
  	   String body = "<p style=\"margin-bottom: 10px;font-size: 12px;\">Good day!</p>";
 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Your private bid request have been accepted.";
 	  	  // body = body +"<p style=\"margin-bottom: 10px;font-size: 12px;\"><a href=\""+login_link+"\" style=\"	text-decoration:none;	color: #FFF;	background-color: #03499A;	padding:10px 16px;	font-weight:bold;	margin-right:10px;	text-align:center;	cursor:pointer;	display: inline-block;\">Login</a></p>";
-	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auction@hmrbid.com for questions or concerns.</p>";
+	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auctions@hmrbid.com for questions or concerns.</p>";
 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Thank you for choosing HMR Auctions.</p>"; 
  	   return body;
     }
@@ -665,7 +665,7 @@ public class EmailMessage {
   	   String body = "<p style=\"margin-bottom: 10px;font-size: 12px;\">Good day!</p>";
  	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Your private bid request have been rejected.";
  	  	  // body = body +"<p style=\"margin-bottom: 10px;font-size: 12px;\"><a href=\""+login_link+"\" style=\"	text-decoration:none;	color: #FFF;	background-color: #03499A;	padding:10px 16px;	font-weight:bold;	margin-right:10px;	text-align:center;	cursor:pointer;	display: inline-block;\">Login</a></p>";
- 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auction@hmrbid.com for questions or concerns.</p>";
+ 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auctions@hmrbid.com for questions or concerns.</p>";
  	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Thank you for choosing HMR Auctions.</p>"; 
   	   return body;
      }
@@ -675,7 +675,7 @@ public class EmailMessage {
  	   String body = "<p style=\"margin-bottom: 10px;font-size: 12px;\">Good day!</p>";
 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please see your new password below.</p>";
 	  	   body = body +"<p style=\"margin-bottom: 10px;font-size: 12px;\">New Password : "+newPassword+"</p>";
-	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auction@hmrbid.com for questions or concerns.</p>";
+	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Please feel free to reach out to online-auctions@hmrbid.com for questions or concerns.</p>";
 	  	   body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Thank you for choosing HMR Auctions.</p>"; 
  	   return body;
     }

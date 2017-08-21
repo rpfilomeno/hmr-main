@@ -648,7 +648,7 @@ function submitPage(){
 	if(validateSignUp()){
 		document.frm.submit();
 	}
-	setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},5000);
+	setTimeout(function(){document.getElementById("msgDiv").innerHTML="";},20000);
 }
 
 

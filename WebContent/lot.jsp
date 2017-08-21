@@ -229,6 +229,10 @@
 
 		              <div class="form-group">
 		                <label><b>Description : </b><%=lot.getLot_desc()%></label>
+		              </div>
+		              
+		              <div class="form-group">
+		                <label><b>End Date Time : </b><%=lot.getEnd_date_time()%></label>
 		              </div>	
 					</div>
 					
@@ -335,6 +339,11 @@
 		                <label><b>Total Weight : </b><%=lot.getWeight_total()%></label>
 					
 		              </div>
+		              <div class="form-group">
+		                <label><b>Starting Bid Amount : </b><%=lot.getStarting_bid_amount()%></label>
+					
+		              </div>
+		              
 		              
 				</div>
 				

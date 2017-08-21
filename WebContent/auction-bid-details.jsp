@@ -58,6 +58,7 @@
 
     DecimalFormat df = new DecimalFormat("#,###,##0");
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
+	SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 	
 	List<Image> auction_images = (List<Image>)request.getAttribute("auction_images");
 	
@@ -234,6 +235,12 @@
 													<div class="product-detail">Highest Offer: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
 													<div class="product-detail">Offers: <%=l.getBid_count()%></div>
 												<% } %>
+												<div class="card-snippet-wrap">
+													<div class="countdown" id="timer-<%=auction.getId() %>" 
+														data-startdate="<%=sdfTimer.format(auction.getStart_date_time()) %>" 
+														data-enddate="<%=sdfTimer.format(l.getEnd_date_time()) %>">
+													</div>
+												</div>
 											</div>
 												
 										</div>
@@ -261,7 +268,12 @@
 						                                <% if(l.getIs_bid() == 1){ %>
 								                            <% if(auction.getAuction_type() == 15){ %>
 									                            <% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
+									                            
+									                            	<%if(l.getAmount_bid().doubleValue() > 0){ %>
 									                                <button class="btn btn-primary btn-block" onclick="showPreBidForm('PRE-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
+									                                <%}else if(l.getAmount_bid().doubleValue() == 0){ %>
+									                                <button class="btn btn-primary btn-block" onclick="showPreBidForm('PRE-BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">PRE-BID</button>
+									                                 <% } %>
 									                            <% } else { %>
 									                            	<%if(l.getAmount_bid().doubleValue() > 0){ %>
 										                            <button class="btn btn-primary btn-block" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
@@ -747,6 +759,37 @@ jQuery(window).on('load', function(){
 	
 
 
+
+	
+});
+
+
+$(document).ready(function(){
+
+	$('.countdown').each(function() {
+		var $this = $(this);
+		
+		var sDate = $(this).data('startdate');
+		var eDate = $(this).data('enddate');
+		var startDate = new Date(sDate);
+		var endDate  = new Date(eDate);
+		var today = new Date();
+		var targetDate;
+		  
+		if(today < startDate) {
+			targetDate = $(this).data('startdate');
+		} else if (today <= endDate) {
+			targetDate = $(this).data('enddate');
+		} 
+		$this.countdown(targetDate, function(event) {
+			var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+			if(totalHours < 24) {
+				$(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+			} else {
+				$this.html(event.strftime('%D days %H:%M:%S'));
+			}
+		});
+	});
 
 	
 });

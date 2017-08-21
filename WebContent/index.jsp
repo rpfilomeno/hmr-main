@@ -132,6 +132,9 @@
 																Start: <%=sdf.format(activeOnlineAuction.getStart_date_time()) %>
 															</div>
 															<div class="card-snippet-wrap">
+																End: <%=sdf.format(activeOnlineAuction.getEnd_date_time()) %>
+															</div>
+															<div class="card-snippet-wrap">
 																Upcoming Bidding
 															</div>
 															<div class="card-snippet-wrap">

@@ -47,7 +47,7 @@ import hmr.com.manager.UserManager;
 
 import hmr.com.util.DBConnection;
 import hmr.com.bean.Auction;
-
+import hmr.com.bean.AuctionUserBiddingMax;
 import hmr.com.bean.BiddingTransaction;
 import hmr.com.bean.Image;
 import hmr.com.bean.Item;
@@ -391,11 +391,23 @@ public class Bid extends HttpServlet {
 						Auction a =null;
 						iMngr.setLovValuesCurrency(req, res);
 						Lot delta_lot = null;
+						
+						List<BigDecimal> favList = null;
+						
+						int favCnt = 0;
+						
 						for(Lot lot : myBidLots){
 							a = aMngr.getAuctionByAuctionId(lot.getAuction_id());
 							delta_lot = lMngr.applyLotRules(lot);
 							
-							List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+							//List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+							
+							if(favCnt==0){
+								favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+								favCnt = 1;
+								
+							}
+							
 							for(BigDecimal favId: favList){
 								if(favId.compareTo(delta_lot.getLot_id())==0){
 									delta_lot.setIsFav(1);
@@ -434,11 +446,24 @@ public class Bid extends HttpServlet {
 						Auction a =null;
 						iMngr.setLovValuesCurrency(req, res);
 						Lot delta_lot = null;
+						
+						
+						List<BigDecimal> favList = null;
+						
+						int favCnt = 0;
+						
 						for(Lot lot : myBidLots){
 							a = aMngr.getAuctionByAuctionId(lot.getAuction_id());
 							delta_lot = lMngr.applyLotRules(lot);
 							
-							List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+							//List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+							
+							if(favCnt==0){
+								favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+								favCnt = 1;
+								
+							}
+							
 							for(BigDecimal favId: favList){
 								if(favId.compareTo(delta_lot.getLot_id())==0){
 									delta_lot.setIsFav(1);
@@ -522,6 +547,8 @@ public class Bid extends HttpServlet {
 				
 				for(Lot lot : lotList){
 					
+
+					
 					if(favCnt==0){
 						favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
 						favCnt = 1;
@@ -540,9 +567,16 @@ public class Bid extends HttpServlet {
 					if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
 							delta_lot.setUserHadBid(1); 
 						if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+					}else{
+						
+						AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+						ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(delta_lot.getLot_id(), user_id);
+						if(aubmUser.size() > 0){
+							delta_lot.setUserHadBid(1); 
+							if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+						}
+						
 					}
-					
-					
 					
 					//List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
 					for(BigDecimal favId: favList){
@@ -846,7 +880,7 @@ public class Bid extends HttpServlet {
 						
 						RunnableNegotiatedBidManager adminRNBM = new RunnableNegotiatedBidManager(
 								"HMR Auctions : Negotiated Bid Admin Notification", 
-								"noreplyhmrauctions@gmail.com", "", 
+								"online-auctions@HMRBID.COM", "", 
 								lot.getAuction_id().toString(), auction.getAuction_name(), auction.getAuction_desc(), 
 								lot.getId().toString(), lot.getLot_no().toString(), lot.getLot_name(), lot.getLot_desc(), 
 								u.getId().toString(), u.getFirst_name(), u.getLast_name(), u.getEmail_address(), 
@@ -879,6 +913,11 @@ public class Bid extends HttpServlet {
 						Lot delta_lot = null;
 						
 						List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+						
+						List<BigDecimal> favList = null;
+						
+						int favCnt = 0;
+						
 						for(Lot lot : lotList){
 							
 							delta_lot = lMngr.applyLotRules(lot);
@@ -893,11 +932,25 @@ public class Bid extends HttpServlet {
 							if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
 									delta_lot.setUserHadBid(1); 
 								if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+							}else{
+								
+								AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+								ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(delta_lot.getLot_id(), user_id);
+								if(aubmUser.size() > 0){
+									delta_lot.setUserHadBid(1); 
+									if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+								}
+								
 							}
 							
 							
+							if(favCnt==0){
+								favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+								favCnt = 1;
+								
+							}
 							
-							List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+							//List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
 							for(BigDecimal favId: favList){
 								if(favId.compareTo(delta_lot.getLot_id())==0){
 									delta_lot.setIsFav(1);
@@ -953,15 +1006,37 @@ public class Bid extends HttpServlet {
 						
 						//get all lots on same auction
 						List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+						
+						List<BigDecimal> favList = null;
+						
+						int favCnt = 0;
+						
 						for(Lot lot : lotList){
 							if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
 								if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
+							}else{
+								
+								AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+								ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(lot.getLot_id(), user_id);
+								if(aubmUser.size() > 0){
+									lot.setUserHadBid(1); 
+									if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
+								}
+								
 							}
+							
 						}
 						
 						
 						
-						List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+						//List<BigDecimal> favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+						
+						if(favCnt==0){
+							favList = lMngr.getFavsInAuction(a.getAuction_id(), user_id);
+							favCnt = 1;
+							
+						}
+						
 						for(BigDecimal favId: favList){
 							if(favId.compareTo(delta_l.getLot_id())==0){
 								delta_l.setIsFav(1);

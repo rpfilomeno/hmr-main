@@ -444,11 +444,7 @@ public Auction getAuctionByToken(String token){
 
 			DBConnection dbConn = new DBConnection();
 			
-			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
-				conn = dbConn.getConnection2();
-			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
-				conn = dbConn.getConnection3();
-			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+			if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
 				conn = dbConn.getConnection4();
 			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
 				conn = dbConn.getConnection5();
@@ -517,8 +513,8 @@ public Auction getAuctionByToken(String token){
             	//InputStream binaryStream = rs.getBinaryStream("image");
             	//a.setImageInputStream(binaryStream);
             	
-            	a.setImageBytes(rs.getBytes("image"));
-            	a.setImageSmallBytes(rs.getBytes("image_small"));
+            	//a.setImageBytes(rs.getBytes("image"));
+            	//a.setImageSmallBytes(rs.getBytes("image_small"));
             	
             	//a.
             	//binaryStream.
@@ -557,7 +553,7 @@ public Auction getAuctionByToken(String token){
 		
 		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, image, image_small, auction_name, category_level_1, one_lot_per_bidder");
 		
-		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification");
+		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification, lot_per_auction_item_increment_time");
 		
 		sb.append(", date_created, created_by, date_updated, updated_by");
 		
@@ -621,6 +617,8 @@ public Auction getAuctionByToken(String token){
 				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
 				a.setToken(rs.getString("token"));
 				a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
+				a.setLot_per_auction_item_increment_time(rs.getInt("lot_per_auction_item_increment_time"));
+				
 	
             	a.setDate_created(rs.getTimestamp("date_created"));
             	a.setCreated_by(rs.getInt("created_by"));
@@ -630,13 +628,13 @@ public Auction getAuctionByToken(String token){
             	//InputStream binaryStream = rs.getBinaryStream("image");
             	//a.setImageInputStream(binaryStream);
             	
-            	a.setImageBytes(rs.getBytes("image"));
-            	a.setImageSmallBytes(rs.getBytes("image_small"));
+            	//a.setImageBytes(rs.getBytes("image"));
+            	//a.setImageSmallBytes(rs.getBytes("image_small"));
             	
             	//a.
             	//binaryStream.
             	
-            	System.out.println("asdfasdf df terms_and_conditions "+a.getTerms_and_conditions());
+            	//System.out.println("asdfasdf df terms_and_conditions "+a.getTerms_and_conditions());
 			}
 
 			//rs.close();
@@ -1113,6 +1111,7 @@ public Auction getAuctionByToken(String token){
 				Integer one_start_bid,
 				Integer bid_qualifier_price,
 				Integer auto_send_post_notification,
+				Integer lot_per_auction_item_increment_time,
 				Integer user_id,
 				BigDecimal auctionId_wip
 			){
@@ -1134,7 +1133,7 @@ public Auction getAuctionByToken(String token){
 			
 			sb.append(", no_of_lots=?, no_of_items=?, auction_item_increment_time=?, bid_deposit=?, date_sync=?, status=?");
 		
-			sb.append(", date_updated=?, updated_by=?, auction_name=?, category_level_1=?, one_lot_per_bidder=?, one_start_bid=?, bid_qualifier_price=?, auto_send_post_notification=?");
+			sb.append(", date_updated=?, updated_by=?, auction_name=?, category_level_1=?, one_lot_per_bidder=?, one_start_bid=?, bid_qualifier_price=?, auto_send_post_notification=?, lot_per_auction_item_increment_time=?");
 			
 			sb.append(" where auction_id="+auctionId_wip);
 
@@ -1208,7 +1207,7 @@ public Auction getAuctionByToken(String token){
 	        stmt.setInt(24, one_start_bid); 
 	        stmt.setInt(25, bid_qualifier_price);
 	        stmt.setInt(26, auto_send_post_notification);
-	        
+	        stmt.setInt(27, lot_per_auction_item_increment_time);
 
 		    System.out.println("sql : "+sql);
 		    
@@ -1220,6 +1219,7 @@ public Auction getAuctionByToken(String token){
 	        	a = new Auction(); 
             	a.setId(auctionId_wip);
             	a.setBid_qualifier_price(bid_qualifier_price);
+            	a.setEnd_date_time(a.getEnd_date_time());
             	/*
             	a.setEmail_address(emailAddress);
             	a.setFirst_name(firstName);

@@ -186,7 +186,16 @@
 											<% if(lot.getIs_bid() == 1){ %>
 												<% if(auction.getAuction_type() == 15){ %>
 					                            	<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && lot.getActive()>0){ %>
-					                                	<button class="btn btn-primary btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</button>
+					                                	
+					                                	
+					                                	
+						                            	<%if(lot.getAmount_bid().doubleValue() > 0){ %>
+							                            <button class="btn btn-primary btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</button>
+							                            <%}else if(lot.getAmount_bid().doubleValue() == 0){ %>
+							                            <button class="btn btn-primary btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=lot.getStarting_bid_amount()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</button>
+							                             <% } %>
+					                                	
+					                                	
 					                                <% } else { %>
 					                                	<%if(lot.getAmount_bid().doubleValue() > 0){ %>
 						                                   	<button class="btn btn-primary btn-block" href="#" onclick="submitPage('BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BID <%=df.format(lot.getAmount_bid_next())%> <%=currency%> </button>

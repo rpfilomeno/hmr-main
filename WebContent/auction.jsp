@@ -341,7 +341,9 @@
 		              <div class="form-group">
 		                <label><b>Auction Item Increment Time : </b><%=auction.getAuction_item_increment_time()%></label>
 		              </div>
-
+		              <div class="form-group">
+		                <label><b>Lot Per Auction Item Increment Time : </b><%=auction.getLot_per_auction_item_increment_time()%></label>
+		              </div>
 				</div>
 		
 		

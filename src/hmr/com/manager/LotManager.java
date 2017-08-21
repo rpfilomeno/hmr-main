@@ -460,10 +460,11 @@ public class LotManager {
 			Integer is_buy = !req.getParameter("is_buy").equals("") ? Integer.valueOf(req.getParameter("is_buy")) : 0;
 			Integer is_bid= !req.getParameter("is_bid").equals("") ? Integer.valueOf(req.getParameter("is_bid")) : 0;
 			BigDecimal buy_price = !req.getParameter("buy_price").equals("") ? new BigDecimal(req.getParameter("buy_price")) : new BigDecimal(0);
-			Integer bidder_id = !req.getParameter("bidder_id").equals("") ? Integer.valueOf(req.getParameter("bidder_id")) : 0;
+			Integer bidder_id = req.getParameter("bidder_id")!=null && !req.getParameter("bidder_id").equals("")  ? Integer.valueOf(req.getParameter("bidder_id")) : 0;
 			Integer lot_increment_time = !req.getParameter("lot_increment_time").equals("") ? Integer.valueOf(req.getParameter("lot_increment_time")) : 0;
 			String lot_name = req.getParameter("lot_name")!=null ? req.getParameter("lot_name") : "";
 			
+			BigDecimal starting_bid_amount = !req.getParameter("starting_bid_amount").equals("") ? new BigDecimal(req.getParameter("starting_bid_amount")) : new BigDecimal(0);
 
 			Lot l = updateLotOnUpdate(
 						lot_no,
@@ -488,6 +489,8 @@ public class LotManager {
 						bidder_id,
 						lot_increment_time,
 						lot_name,
+						
+						starting_bid_amount,
 						
 						user_id,
 						lotId_wip
@@ -776,6 +779,8 @@ public class LotManager {
 				Integer lot_increment_time,
 				String lot_name,
 				
+				BigDecimal starting_bid_amount,
+				
 				Integer user_id,
 				BigDecimal lotId_wip
 			
@@ -808,6 +813,8 @@ public class LotManager {
 					bidder_id,
 					lot_increment_time,
 					lot_name,
+					
+					starting_bid_amount,
 					
 					user_id,
 					lotId_wip
@@ -912,10 +919,7 @@ public class LotManager {
 		return lList;
 		
 	}
-	
-	
 
-	
 	public List<Lot> getLotListByTypeAndActive(Integer lotType){
 		
 		List<Lot> lList = new ArrayList<Lot>();
@@ -1072,4 +1076,23 @@ public class LotManager {
 	return i;
 	
 	}
+	
+	public int updateLotSetEndDateTime(
+			BigDecimal lot_id,
+			Timestamp end_date_time,
+			Integer user_id
+		){
+	
+	LotDao ld = new LotDao();
+
+	int i = ld.updateLotSetEndDateTime(
+			lot_id,
+			end_date_time,
+			user_id
+			);
+	
+	return i;
+	
+	}
+	
 }

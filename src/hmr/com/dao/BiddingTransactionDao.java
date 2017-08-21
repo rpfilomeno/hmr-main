@@ -328,8 +328,13 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		int i = 0;
 		
+		Connection conn = null;
+		
 		try {
-			 conn = getConnection();
+
+			DBConnection dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
 
 			  Statement stmt = conn.createStatement();
 			
@@ -689,7 +694,10 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		int i = 0;
 		
+		Connection conn = null;
+		
 		try {
+
 			DBConnection dbConn = new DBConnection();
 			
 			conn = dbConn.getConnection();

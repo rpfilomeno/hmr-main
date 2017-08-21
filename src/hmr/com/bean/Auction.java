@@ -39,6 +39,7 @@ public class Auction extends SystemBean {
 	Integer bid_qualifier_price;
 	String token;
 	Integer auto_send_post_notification;
+	Integer lot_per_auction_item_increment_time;
 	
 	public BigDecimal getId() {
 		return id;
@@ -258,5 +259,11 @@ public class Auction extends SystemBean {
 	}
 	public void setAuto_send_post_notification(Integer auto_send_post_notification) {
 		this.auto_send_post_notification = auto_send_post_notification;
+	}
+	public Integer getLot_per_auction_item_increment_time() {
+		return lot_per_auction_item_increment_time;
+	}
+	public void setLot_per_auction_item_increment_time(Integer lot_per_auction_item_increment_time) {
+		this.lot_per_auction_item_increment_time = lot_per_auction_item_increment_time;
 	}
 }

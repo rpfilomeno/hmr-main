@@ -125,7 +125,7 @@ String msgbgcol = request.getAttribute("msgbgcol")!=null ? (String)request.getAt
 
 						<div class="clearfix top20"></div>
 						<div class="tac">
-							<div><a href="bid?mngr=get&a=registration">Don't have an account? Register here.</a></div>
+							<div><a href="bid?mngr=get&a=registration">Don't have an account? REGISTER.</a></div>
 						</div>
 						
 						<input class="form-control" type="hidden" id="privateInviteId" name="privateInviteId" value="<%=auction.getToken()%>">

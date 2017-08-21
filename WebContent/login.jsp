@@ -88,7 +88,7 @@
 
 						<div class="clearfix top20"></div>
 						<div class="tac">
-							<div><a href="bid?mngr=get&a=registration">Don't have an account? Register here.</a></div>
+							<div><a href="bid?mngr=get&a=registration">Don't have an account? REGISTER.</a></div>
 						</div>
 						
 						<input type="hidden" name="manager" id="manager" value="login-manager"/>
@@ -164,13 +164,7 @@ function validateLogin(){
 	return isLogin;
 }
 
-function clearPage(){
-	document.frm.userId.value="";
-	document.frm.pw.value="";
-	document.frm.userId.focus();
-	document.frm.userId.value="administrator@hmrauctions.com.ph";
-	document.frm.pw.value="administrator";
-}
+
 
 function submitPage(){
 

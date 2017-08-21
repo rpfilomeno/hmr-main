@@ -52,5 +52,18 @@ public class AuctionUserBiddingMaxManager {
 		
 	}
 	
+	public ArrayList<AuctionUserBiddingMax> getAuctionUserBiddingMaxListByLotIdAndUser(BigDecimal lot_id, Integer bidder_id){
+		
+		ArrayList<AuctionUserBiddingMax> aubmList = new ArrayList<AuctionUserBiddingMax>();
+
+		AuctionUserBiddingMaxDao aubm = new AuctionUserBiddingMaxDao();
+
+		aubmList = aubm.getAuctionUserBiddingMaxListByLotIdAndUser(lot_id, bidder_id);
+		
+		return aubmList;
+		
+	}
+	
+	
 	
 }

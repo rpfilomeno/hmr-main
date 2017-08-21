@@ -8,7 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -491,6 +491,9 @@ public class AuctionManager {
 			
 			Integer auto_send_post_notification = !req.getParameter("auto_send_post_notification").equals("") ? Integer.valueOf(req.getParameter("auto_send_post_notification")) : 0;
 			
+			Integer lot_per_auction_item_increment_time = !req.getParameter("lot_per_auction_item_increment_time").equals("") ? Integer.valueOf(req.getParameter("lot_per_auction_item_increment_time")) : 0;
+			
+			
 			Date date_sync_d = null; 
 			if(!"".equals(date_sync))
 			{
@@ -546,6 +549,7 @@ public class AuctionManager {
 						one_start_bid,
 						bid_qualifier_price,
 						auto_send_post_notification,
+						lot_per_auction_item_increment_time,
 						user_id,
 						auctionId_wip
 					);
@@ -636,6 +640,66 @@ public class AuctionManager {
 				//logic of all auction triggered
 				//One as Start Bidding
 				
+
+				
+				
+				
+				if(a.getAuction_item_increment_time() > 0 && lot_per_auction_item_increment_time > 0){
+					
+					ArrayList<Lot> lotList = lMngr.getLotListByAuctionId(auction_id);
+					
+					Integer lot_per_auction_item_increment_time_count = 0;
+					
+					Integer lot_per_auction_item_increment_time_total = 0;
+					
+					for(Lot lot : lotList){
+
+					    Timestamp timestamp = new Timestamp(new Date().getTime());
+					    System.out.println(timestamp);
+					 
+					    Calendar cal = Calendar.getInstance();
+					    cal.setTimeInMillis(a.getEnd_date_time().getTime());
+					 
+					    // add 1 minute
+					    
+					    
+					    if(lot_per_auction_item_increment_time_count == lot_per_auction_item_increment_time){
+					    	lot_per_auction_item_increment_time_total = lot_per_auction_item_increment_time_total + a.getAuction_item_increment_time();
+					    	lot_per_auction_item_increment_time_count = 0;
+					    }else if(lot_per_auction_item_increment_time_count == 0){
+					    	lot_per_auction_item_increment_time_total = lot_per_auction_item_increment_time_total + a.getAuction_item_increment_time();
+					    }
+					    
+					    lot_per_auction_item_increment_time_count = lot_per_auction_item_increment_time_count + 1;
+					    
+					    
+					    
+					    
+					    cal.add(Calendar.MINUTE, lot_per_auction_item_increment_time_total);
+					    timestamp = new Timestamp(cal.getTime().getTime());
+					    System.out.println(timestamp);
+						
+
+					    lot.setEnd_date_time(timestamp);
+					    
+							if(lot.getEnd_date_time()!=null){
+								
+								
+								//System.out.println("asdfasdfasdfsadf");
+								lMngr.updateLotSetEndDateTime(lot.getLot_id(), lot.getEnd_date_time(), user_id);
+							}
+							
+							
+							
+						//}
+						
+						
+						
+					}
+					
+					
+				}
+				
 				if(a.getBid_qualifier_price().doubleValue() > 0){
 					String bid_qualifier_price_ = "";
 	            	if(a.getBid_qualifier_price() == 0){
@@ -666,8 +730,6 @@ public class AuctionManager {
 				}else{
 					lMngr.updateLotSetIsBuy(auction_id, 0, user_id);
 				}
-				
-
 				
 
 				List<AuctionUser> auctionUserList = auMngr.getAuctionUserListByAuctionId(auctionId_wip);
@@ -918,6 +980,7 @@ public class AuctionManager {
 				Integer one_start_bid,
 				Integer bid_qualifier_price,
 				Integer auto_send_post_notification,
+				Integer lot_per_auction_item_increment_time,
 				Integer user_id,
 				BigDecimal auctionId_wip
 			
@@ -952,6 +1015,7 @@ public class AuctionManager {
 					one_start_bid,
 					bid_qualifier_price,
 					auto_send_post_notification,
+					lot_per_auction_item_increment_time,
 					user_id,
 					auctionId_wip
 				);
