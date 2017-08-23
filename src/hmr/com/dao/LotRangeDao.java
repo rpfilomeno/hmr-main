@@ -16,14 +16,14 @@ import hmr.com.bean.LotRange;
 
 public class LotRangeDao extends DBConnection {
 
-	private Connection conn = null;
-	DBConnection dbConn = null;
+	//private Connection conn = null;
+	//DBConnection dbConn = null;
 
 	HttpServletRequest req = null;
 	HttpServletResponse res = null;
 	
 	public LotRangeDao(){
-		dbConn = new DBConnection();
+		//dbConn = new DBConnection();
 	}
 	
 
@@ -34,8 +34,6 @@ public class LotRangeDao extends DBConnection {
 	}
 
 	public LotRange getLotRangeById(BigDecimal id){
-		
-		Connection conn = null;
 
 		LotRange lr = null;
 		
@@ -46,26 +44,22 @@ public class LotRangeDao extends DBConnection {
 		sb.append(" from lot_range where id ="+id);
 
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
 
-			DBConnection dbConn = new DBConnection();
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection2();
 			
-			System.out.println("conn : "+conn);
-			
-			if(conn==null){
-				dbConn = new DBConnection();
-				conn = dbConn.getConnection();
-			}
-		
-			java.sql.Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
-			
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
-			}
+
 
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
@@ -112,17 +106,12 @@ public class LotRangeDao extends DBConnection {
 				BigDecimal increment_amount,
 				Integer user_id
 			) {
-		
-		Connection conn = null;
-		
+
 		int affectedRows = 0;
 		
 		LotRange ar = null;
 
-		try {
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
+
 
 			StringBuilder sb = new StringBuilder("INSERT into lot_range (lot_id, range_start, range_end, increment_amount");
 			sb.append(", date_created, created_by)");
@@ -131,8 +120,22 @@ public class LotRangeDao extends DBConnection {
 			sb.append(",?, ?");
 			sb.append(")");
 			
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		PreparedStatement stmt = null;
+		
+		try {
+
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+
+			
 		    String sql = sb.toString();
-	        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	        
 	        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
@@ -208,16 +211,22 @@ public class LotRangeDao extends DBConnection {
 				BigDecimal lotRangeId_wip
 			){
 		
-		Connection conn = null;
-		
+
 		int affectedRows = 0;
 		
 		LotRange lr = null;
-	
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		PreparedStatement stmt = null;
+		
 		try {
-			DBConnection dbConn = new DBConnection();
+
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection2();
 
 			StringBuilder sb = new StringBuilder("UPDATE lot_range SET lot_id=?, range_start=?, range_end=?, increment_amount=?");
 
@@ -229,7 +238,7 @@ public class LotRangeDao extends DBConnection {
 		    String sql = sb.toString();
 		    
 	        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        stmt = conn.prepareStatement(sql);
 	        
 	        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
@@ -283,10 +292,19 @@ public class LotRangeDao extends DBConnection {
 		
 		sb.append(" order by range_start, range_end asc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection5();
+			
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -342,10 +360,19 @@ public class LotRangeDao extends DBConnection {
 		
 		sb.append(" order by range_start, range_end asc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection5();
+			
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -388,10 +415,21 @@ public class LotRangeDao extends DBConnection {
 	
 	public LotRange getLotRangeByLotIdAndBidAmount(BigDecimal lot_id, BigDecimal bid_amount) {
 		LotRange lr = null;
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			conn = getConnection();
-			Statement stmt = conn.createStatement();	
-		    stmt = conn.createStatement();
+
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection6();
+			
+			stmt = conn.createStatement();
+		
 		    String sql ="SELECT * FROM lot_range WHERE"+
 		    		" lot_id = "+lot_id.toString()+
 		    		" AND "+bid_amount.toString()+" >= range_start"+

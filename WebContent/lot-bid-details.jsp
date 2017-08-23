@@ -36,7 +36,7 @@
 	System.out.println("PAGE user_role_id : "+user_role_id);
 	
 	Lot lot = request.getAttribute("lot")!=null ? (Lot)request.getAttribute("lot") : (Lot)request.getSession().getAttribute("lot");
-	List<Item> items = request.getAttribute("items")!=null ? (List<Item>)request.getAttribute("items") : (List<Item>)request.getSession().getAttribute("items");
+	//List<Item> items = request.getAttribute("items")!=null ? (List<Item>)request.getAttribute("items") : (List<Item>)request.getSession().getAttribute("items");
 	
 	Auction auction = request.getAttribute("auction")!=null ? (Auction)request.getAttribute("auction") : (Auction)request.getSession().getAttribute("auction");
 	
@@ -187,14 +187,14 @@
 												<% if(auction.getAuction_type() == 15){ %>
 					                            	<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && lot.getActive()>0){ %>
 					                                	
+					                                	<%if(!auction.getAuction_id().equals(new BigDecimal("797"))){  %>
 					                                	
-					                                	
-						                            	<%if(lot.getAmount_bid().doubleValue() > 0){ %>
+						                            	<%if(lot.getAmount_bid().doubleValue() > 0 ){ %>
 							                            <button class="btn btn-primary btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</button>
-							                            <%}else if(lot.getAmount_bid().doubleValue() == 0){ %>
+							                            <%}else if(lot.getAmount_bid().doubleValue() == 0 ){ %>
 							                            <button class="btn btn-primary btn-block" href="#" onclick="showPreBidForm('PRE-BID', '<%=lot.getStarting_bid_amount()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</button>
 							                             <% } %>
-					                                	
+					                                	 <% } %>
 					                                	
 					                                <% } else { %>
 					                                	<%if(lot.getAmount_bid().doubleValue() > 0){ %>
@@ -240,7 +240,11 @@
 											<% if(lot.getIs_bid() == 1){ %>
 												<% if(auction.getAuction_type() == 15){ %>
 					                            	<% if(auction.getStart_date_time().after(new Timestamp(System.currentTimeMillis())) && lot.getActive()>0){ %>
+					                            	
+					                            		<%if(!auction.getAuction_id().equals(new BigDecimal("797"))){  %>
+					                            	
 					                                	<button class="btn btn-primary btn-block" href="#" onclick="showAlertPage('BID-ONE-LOT', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','qty_<%=lot.getId()%>')">PRE-BID</button>
+					                                	<%}%>
 					                                <% } else { %>
 					                                	<%if(lot.getAmount_bid().doubleValue() > 0){ %>
 						                                   	<button class="btn btn-primary btn-block" href="#" onclick="showAlertPage('BID-ONE-LOT', '<%=lot.getAmount_bid_next()%>','<%=lot.getLot_id()%>','<%=lot.getId()%>','qty_<%=lot.getId()%>','')">BID <%=df.format(lot.getAmount_bid_next())%> <%=currency%> </button>
@@ -334,7 +338,7 @@
 						                    <%-- bAmount = (bidding_transaction.getAmount_buy().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_buy()) : "0.00"; --%>
 						                    <%-- bAmount = (bidding_transaction.getAmount_offer().compareTo(BigDecimal.ZERO) != 0) ? df.format(bidding_transaction.getAmount_offer()) : "0.00"; --%>
                                             <td>
-						                    	<% if(user_id.equals(bidding_transaction.getUser_id()) ) { %>
+						                    	<% if(bidding_transaction.getUser_id().equals(user_id) ) { %>
 						                        <div>You</div> 
 						                        <% } else { %>
 						                    	<div>User #<%=bidding_transaction.getUser_id() %></div>
@@ -801,6 +805,8 @@ jQuery(window).on('load', function(){
 	    blueimp.Gallery(links, options);
 	};
 	
+	<%--
+	
 	<%for(Item i : items) {%>
 	<%  item_images = iMngr.getImageListByItemId(i.getId()); %>
 		<% if(item_images.size() > 0) { %>
@@ -815,6 +821,8 @@ jQuery(window).on('load', function(){
 		};
 		<% } %>
 	<% } %>
+	
+	--%>
 	
 	$('body').on('propertychange input', 'input[type="number"]', forceNumeric);
 	

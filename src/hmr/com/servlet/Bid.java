@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -206,7 +207,7 @@ public class Bid extends HttpServlet {
 		
 
     
-		String sid = req.getSession().getId();
+		//String sid = req.getSession().getId();
 		String manager = req.getParameter("manager")!=null ? (String)req.getParameter("manager") : "";
 		String action = req.getParameter("action")!=null ? (String)req.getParameter("action") : "";
 		String userId = req.getParameter("userId")!=null ? (String)req.getParameter("userId") : (String)req.getAttribute("userId");
@@ -541,9 +542,13 @@ public class Bid extends HttpServlet {
 				
 				List<BigDecimal> favList = null;
 				
-				List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+				List<Lot> lotList = lMngr.getActiveLotListByAuctionId(a.getAuction_id());
 				
 				int favCnt = 0;
+				
+				HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(a.getAuction_id());
+				
+				HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(a.getAuction_id());
 				
 				for(Lot lot : lotList){
 					
@@ -557,16 +562,26 @@ public class Bid extends HttpServlet {
 					
 					delta_lot = lMngr.applyLotRules(lot);
 					
-					List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
-					
-					if(!btList.isEmpty()){
-						//get the last bidder
-						delta_lot.setLastBidder(btList.get(0).getUser_id());
+					if(btHM.get(lot.getLot_id())==null){
+						List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
+						
+						if(!btList.isEmpty()){
+							//get the last bidder
+							delta_lot.setLastBidder(btList.get(0).getUser_id());
+						}
+					}else{
+						BiddingTransaction bt = btHM.get(lot.getLot_id());
+						delta_lot.setLastBidder(bt.getUser_id());
 					}
 					
-					if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
-							delta_lot.setUserHadBid(1); 
+					if(btLotIdUserIdHM.get(delta_lot.getLot_id()+"_"+user_id)!=null){
+						
+						delta_lot.setUserHadBid(1); 
 						if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+
+					//}else if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
+					//			delta_lot.setUserHadBid(1); 
+					//		if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 					}else{
 						
 						AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
@@ -835,8 +850,8 @@ public class Bid extends HttpServlet {
 						rbtm1.start();
 						
 						try{
-							String[] arg = {String.valueOf(lotId)};
-							MyThreadSuspend.main(arg);
+							RunnableBiddingTransactionManager rbtm2 = new RunnableBiddingTransactionManager("btExtendTime", lotId );
+							rbtm2.start();
 						}catch(Exception exe){
 							
 						}
@@ -872,9 +887,7 @@ public class Bid extends HttpServlet {
 						btMngr.insertBiddingTransactionNegotiated(lotId, amount, u.getId(), unit_qty, note);
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Negotiated bid submitted.");
-						
-						
-						
+
 						Lot lot = lMngr.getLotByLotId(new BigDecimal(lotId));
 						Auction auction = aMngr.getAuctionByAuctionId(lot.getAuction_id());
 						
@@ -905,6 +918,9 @@ public class Bid extends HttpServlet {
 						ItemManager iMngr = new ItemManager(req,res);
 						List<Lot> lList = new ArrayList<Lot>();
 						List<Lot> lListExpired = new ArrayList<Lot>();
+						
+						System.out.println("req.getParameter(auction-id) "+req.getParameter("auction-id"));
+						
 						Auction a = aMngr.getAuctionById(new BigDecimal(req.getParameter("auction-id")));
 						BigDecimal trapOneLotPerBidder= BigDecimal.ZERO;
 						
@@ -912,7 +928,11 @@ public class Bid extends HttpServlet {
 						
 						Lot delta_lot = null;
 						
-						List<Lot> lotList = lMngr.getLotListByAuctionId(a.getAuction_id());
+						List<Lot> lotList = lMngr.getActiveLotListByAuctionId(a.getAuction_id());
+						
+						HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(a.getAuction_id());
+						
+						HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(a.getAuction_id());
 						
 						List<BigDecimal> favList = null;
 						
@@ -922,16 +942,28 @@ public class Bid extends HttpServlet {
 							
 							delta_lot = lMngr.applyLotRules(lot);
 							
-							List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
 							
-							if(!btList.isEmpty()){
-								//get the last bidder
-								delta_lot.setLastBidder(btList.get(0).getUser_id());
+							if(btHM.get(lot.getLot_id())==null){
+								//List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
+								
+								//if(!btList.isEmpty()){
+									//get the last bidder
+								//	delta_lot.setLastBidder(btList.get(0).getUser_id());
+								//}
+							}else{
+								BiddingTransaction bt = btHM.get(lot.getLot_id());
+								delta_lot.setLastBidder(bt.getUser_id());
 							}
+
 							
-							if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
-									delta_lot.setUserHadBid(1); 
+							if(btLotIdUserIdHM.get(delta_lot.getLot_id()+"_"+user_id)!=null){
+								
+								delta_lot.setUserHadBid(1); 
 								if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+
+							//}else if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
+							//			delta_lot.setUserHadBid(1); 
+							//		if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 							}else{
 								
 								AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
@@ -942,6 +974,7 @@ public class Bid extends HttpServlet {
 								}
 								
 							}
+						
 							
 							
 							if(favCnt==0){
@@ -987,20 +1020,41 @@ public class Bid extends HttpServlet {
 						
 						System.out.println("lotId_wip : "+lotId_wip);
 						
-						AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
-						ItemManager iMngr = new ItemManager(req,res);
-						LotRangeManager lrMngr = new LotRangeManager();
+						//AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
+						//ItemManager iMngr = new ItemManager(req,res);
+						//LotRangeManager lrMngr = new LotRangeManager();
 						
 						BigDecimal trapOneLotPerBidder= BigDecimal.ZERO;
 						Lot l = lMngr.getLotById(lotId_wip);
 						Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
 						
+						
+						HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(a.getAuction_id());
+						
+						HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(a.getAuction_id());
+						
+						
 						Lot delta_l = lMngr.applyLotRules(l);
 						
+						/*
 						List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(delta_l.getLot_id());
 						if(!btList.isEmpty()){
 							//get the last bidder
 							delta_l.setLastBidder(btList.get(0).getUser_id());
+						}
+						
+						*/
+						
+						if(btHM.get(l.getLot_id())==null){
+							//List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(l.getLot_id());
+							
+							//if(!btList.isEmpty()){
+								//get the last bidder
+							//	delta_l.setLastBidder(btList.get(0).getUser_id());
+							//}
+						}else{
+							BiddingTransaction bt = btHM.get(l.getLot_id());
+							delta_l.setLastBidder(bt.getUser_id());
 						}
 						
 						
@@ -1012,14 +1066,21 @@ public class Bid extends HttpServlet {
 						int favCnt = 0;
 						
 						for(Lot lot : lotList){
-							if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
+							
+							if(btLotIdUserIdHM.get(lot.getLot_id()+"_"+user_id)!=null){
+								
+								delta_l.setUserHadBid(1); 
 								if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
+
+							//}else if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
+							//			delta_lot.setUserHadBid(1); 
+							//		if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 							}else{
 								
 								AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
 								ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(lot.getLot_id(), user_id);
 								if(aubmUser.size() > 0){
-									lot.setUserHadBid(1); 
+									delta_l.setUserHadBid(1); 
 									if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
 								}
 								
@@ -1043,14 +1104,15 @@ public class Bid extends HttpServlet {
 							} 
 						}
 						
-						List<Item> iL = iMngr.getLotItemsById(delta_l.getLot_id());
+						//ItemManager iMngr = new ItemManager(req,res);
+						//List<Item> iL = iMngr.getLotItemsById(delta_l.getLot_id());
 						List<Image> lot_images = new ImageManager().getImageListByLotId(delta_l.getId());
 						
 						List<BiddingTransaction> bidding_transactions = new BiddingTransactionManager().getLatestBiddingTransactionLotId(l.getLot_id());
 						req.setAttribute("bidding_transactions", bidding_transactions);
 						req.setAttribute("lot_images", lot_images);
 						req.setAttribute("lot", delta_l);
-						req.setAttribute("items", iL);
+						//req.setAttribute("items", iL);
 						req.setAttribute("auction", a);
 						req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder);
 						
@@ -1076,7 +1138,7 @@ public class Bid extends HttpServlet {
 			}else if(manager.equals("auction-manager")){		
 				if("saveAuctionImage".equals(action) && (auction_file_small!=null || auction_file!=null) ){
 					System.out.println("BID saveAuctionImage "+auction_file_small+" - "+auction_file);
-					page = aMngr.doAuctionManager(auction_file_small, auction_file, action, auctionId_wip);
+					//page = aMngr.doAuctionManager(auction_file_small, auction_file, action, auctionId_wip);
 				}else{
 					page = aMngr.doAuctionManager();
 				}
@@ -1140,7 +1202,7 @@ public class Bid extends HttpServlet {
 					} else {
 						
 						AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
-						LotManager lMngr = new LotManager(req,res);
+						//LotManager lMngr = new LotManager(req,res);
 						ItemManager iMngr = new ItemManager(req,res);
 						List<Lot> lList = new ArrayList<Lot>();
 						List<Lot> lListExpired = new ArrayList<Lot>();

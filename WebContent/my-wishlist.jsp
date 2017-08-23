@@ -225,6 +225,9 @@
 										                            <button class="btn btn-primary btn-block" onclick="submitPage('BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
 										                             <% } %>
 										                            <button class="btn btn-primary btn-block" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
+						                            				<%if(auction.getAuction_id().equals(new BigDecimal("797")) || auction.getAuction_id().equals(new BigDecimal("804"))){  %>
+										                            	<div class="product-detail product-price" style="font-size: 12px; font-weight: bold;">* All prices are subject to 12% VAT</div>
+										                            <% } %>
 									                            <% } %>
 								                            <% } else if(auction.getAuction_type() == 16){ %>
 								                                <button class="btn btn-primary btn-block" onclick="showNegotiatedBidForm('NEGOTIATED', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</button>
@@ -237,6 +240,9 @@
 						                            	<% if(l.getIs_bid() == 1){ %>
 						                            		<button class="btn btn-primary btn-block" >YOU BID <%=df.format(l.getAmount_bid())%></button>
 						                            		<button class="btn btn-primary btn-block" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
+						                            				<%if(auction.getAuction_id().equals(new BigDecimal("797")) || auction.getAuction_id().equals(new BigDecimal("804"))){  %>
+										                            	<div class="product-detail product-price" style="font-size: 12px; font-weight: bold;">* All prices are subject to 12% VAT</div>
+										                            <% } %>
 						                            	<% } %>  
 						                            	<% if(l.getIs_buy() == 1){ %>
 						                            		<button class="btn btn-primary btn-block" >YOUR OFFER</button>
@@ -270,6 +276,10 @@
 										                            <button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
 										                             <% } %>
 										                            <button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
+						                            				<%if(auction.getAuction_id().equals(new BigDecimal("797")) || auction.getAuction_id().equals(new BigDecimal("804"))){  %>
+										                            	<div class="product-detail product-price" style="font-size: 12px; font-weight: bold;">* All prices are subject to 12% VAT</div>
+										                            <% } %>
+										                            
 									                            <% } %>
 								                            <% } else if(auction.getAuction_type() == 16){ %>
 								                                <button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">MAKE OFFER</button>
@@ -282,6 +292,9 @@
 						                            	<% if(l.getIs_bid() == 1){ %>
 						                            		<button class="btn btn-primary btn-block" >YOU BID <%=df.format(l.getAmount_bid())%></button>
 						                            		<button class="btn btn-primary btn-block" onclick="showAlertPage('BID-ONE-LOT', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
+						                            				<%if(auction.getAuction_id().equals(new BigDecimal("797")) || auction.getAuction_id().equals(new BigDecimal("804"))){  %>
+										                            	<div class="product-detail product-price" style="font-size: 12px; font-weight: bold;">* All prices are subject to 12% VAT</div>
+										                            <% } %>
 						                            	<% } %>  
 						                            	<% if(l.getIs_buy() == 1){ %>
 						                            		<button class="btn btn-primary btn-block" >YOUR OFFER</button>
@@ -708,7 +721,7 @@ jQuery(window).on('load', function(){
    <input type="hidden" name="amount" id="amount" value=""/>
    <input type="hidden" name="userId" id="userId" value="<%=userId %>"/>
    <input type="hidden" name="user-id" id="user-id" value="<%=user_id%>"/>
-   <input type="hidden" name="auction-id" id="auction-id" value=""/>
+   <input type="hidden" name="auction-id" id="auction-id" value="<%=auction.getId()%>"/>
 </form>
 
 

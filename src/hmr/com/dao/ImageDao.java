@@ -16,26 +16,24 @@ import java.util.Calendar;
 
 import java.util.List;
 
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.util.DBConnection;
 import hmr.com.bean.Image;
-import hmr.com.bean.Lot;
-import hmr.com.manager.AuctionManager;
-import hmr.com.manager.LotManager;
 
 
 public class ImageDao extends DBConnection {
 
-	private Connection conn = null;
-	DBConnection dbConn = null;
+	//private Connection conn = null;
+	//DBConnection dbConn = null;
 
 	HttpServletRequest req = null;
 	HttpServletResponse res = null;
 	
 	public ImageDao(){
-		dbConn = new DBConnection();
+		//dbConn = new DBConnection();
 	}
 	
 	
@@ -44,7 +42,7 @@ public class ImageDao extends DBConnection {
 		this.res = res;
 	}
 	
-	public List<Image> getImageListByAuctionId(BigDecimal auction_id) {
+	public List<Image> getImageListByAuctionId(BigDecimal auction_id){
 		List<Image> iList= new ArrayList<Image>();
 		StringBuilder sb = new StringBuilder("Select id, auction_id, lot_id, item_id, active, image");
 		sb.append(", date_created, created_by, date_updated, updated_by");
@@ -52,9 +50,14 @@ public class ImageDao extends DBConnection {
 		
 		Connection conn = null;
 		
-		DBConnection dbConn = new DBConnection();
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
 		
 		try {
+			
+			dbConn = new DBConnection();
+
 			if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
 				conn = dbConn.getConnection4();
 			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
@@ -65,7 +68,21 @@ public class ImageDao extends DBConnection {
 				conn = dbConn.getConnection7();
 			}
 			
-			java.sql.Statement stmt = conn.createStatement();
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}
+			
 			System.out.println("sql : "+sb.toString());		
 			ResultSet rs = stmt.executeQuery(sb.toString());
 			Image i = null;
@@ -82,10 +99,12 @@ public class ImageDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+
+
 		}
 		return iList;
 	}
-	public List<Image> getImageListByLotId(BigDecimal lot_id) {
+	public List<Image> getImageListByLotId(BigDecimal lot_id)  {
 		List<Image> iList= new ArrayList<Image>();
 		StringBuilder sb = new StringBuilder("Select id, auction_id, lot_id, item_id, active, image");
 		sb.append(", date_created, created_by, date_updated, updated_by");
@@ -93,117 +112,14 @@ public class ImageDao extends DBConnection {
 
 		Connection conn = null;
 		
-		DBConnection dbConn = new DBConnection();
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
 		
 		try {
-			if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
-				conn = dbConn.getConnection5();
-			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
-				conn = dbConn.getConnection6();
-			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
-				conn = dbConn.getConnection7();
-			}
 			
-			java.sql.Statement stmt = conn.createStatement();
-			System.out.println("sql : "+sb.toString());		
-			ResultSet rs = stmt.executeQuery(sb.toString());
-			Image i = null;
-			while(rs.next()){
-				i = new Image();
-				i.setId(rs.getBigDecimal("id"));
-				i.setAuction_id(rs.getBigDecimal("auction_id"));
-				i.setLot_id(rs.getBigDecimal("lot_id"));
-				i.setItem_id(rs.getBigDecimal("item_id"));
-				i.setActive(rs.getInt("active"));
-				i.setImageBytes(rs.getBytes("image"));
-				iList.add(i);
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
-		}
-		return iList;
-	}
-	public List<Image> getImageListByItemId(BigDecimal item_id) {
-		List<Image> iList= new ArrayList<Image>();
-		StringBuilder sb = new StringBuilder("Select id, auction_id, lot_id, item_id, active, image");
-		sb.append(", date_created, created_by, date_updated, updated_by");
-		sb.append(" from image where item_id ="+  item_id);
+			dbConn = new DBConnection();
 
-		Connection conn = null;
-		
-		DBConnection dbConn = new DBConnection();
-		
-		try {
-			if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
-				conn = dbConn.getConnection5();
-			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
-				conn = dbConn.getConnection6();
-			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
-				conn = dbConn.getConnection7();
-			}
-			
-			
-			java.sql.Statement stmt = conn.createStatement();
-			System.out.println("sql : "+sb.toString());		
-			ResultSet rs = stmt.executeQuery(sb.toString());
-			Image i = null;
-			while(rs.next()){
-				i = new Image();
-				i.setId(rs.getBigDecimal("id"));
-				i.setAuction_id(rs.getBigDecimal("auction_id"));
-				i.setLot_id(rs.getBigDecimal("lot_id"));
-				i.setItem_id(rs.getBigDecimal("item_id"));
-				i.setActive(rs.getInt("active"));
-				i.setImageBytes(rs.getBytes("image"));
-				iList.add(i);
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
-		}
-		return iList;
-	}
-	
-	public int deleteImage(BigDecimal image_id) {
-		Connection conn = null;
-		int affectedRows = 0;
-		try {
-			DBConnection dbConn = new DBConnection();
-			conn = dbConn.getConnection();
-			Statement stmt = conn.createStatement();
-			String Sql ="DELETE FROM `image` WHERE `id`='"+image_id.toString()+"'";
-			affectedRows = stmt.executeUpdate(Sql);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
-		}
-		return affectedRows;
-	}
-
-	public Image getImageById(BigDecimal id){
-		
-		Connection conn = null;
-
-		Image i = null;
-		
-		StringBuilder sb = new StringBuilder("Select id, auction_id, item_id, active, image");
-		
-		sb.append(", date_created, created_by, date_updated, updated_by");
-		
-		sb.append(" from image where id ="+id);
-
-
-		try {
-
-			DBConnection dbConn = new DBConnection();
-			
 			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
 				conn = dbConn.getConnection2();
 			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
@@ -225,13 +141,176 @@ public class ImageDao extends DBConnection {
 				conn = dbConn.getConnection();
 			}
 		
-			java.sql.Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
 			if(stmt==null || stmt.isClosed()){
 				stmt = conn.createStatement();
 			}
+			System.out.println("sql : "+sb.toString());		
+			ResultSet rs = stmt.executeQuery(sb.toString());
+			Image i = null;
+			while(rs.next()){
+				i = new Image();
+				i.setId(rs.getBigDecimal("id"));
+				i.setAuction_id(rs.getBigDecimal("auction_id"));
+				i.setLot_id(rs.getBigDecimal("lot_id"));
+				i.setItem_id(rs.getBigDecimal("item_id"));
+				i.setActive(rs.getInt("active"));
+				i.setImageBytes(rs.getBytes("image"));
+				iList.add(i);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+
+			
+		}
+		return iList;
+	}
+	public List<Image> getImageListByItemId(BigDecimal item_id)  {
+		List<Image> iList= new ArrayList<Image>();
+		StringBuilder sb = new StringBuilder("Select id, auction_id, lot_id, item_id, active, image");
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		sb.append(" from image where item_id ="+  item_id);
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+			
+			dbConn = new DBConnection();
+
+			if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}
+			System.out.println("sql : "+sb.toString());		
+			ResultSet rs = stmt.executeQuery(sb.toString());
+			Image i = null;
+			while(rs.next()){
+				i = new Image();
+				i.setId(rs.getBigDecimal("id"));
+				i.setAuction_id(rs.getBigDecimal("auction_id"));
+				i.setLot_id(rs.getBigDecimal("lot_id"));
+				i.setItem_id(rs.getBigDecimal("item_id"));
+				i.setActive(rs.getInt("active"));
+				i.setImageBytes(rs.getBytes("image"));
+				iList.add(i);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+
+			
+
+		}
+		return iList;
+	}
+	
+	public int deleteImage(BigDecimal image_id) {
+
+		int affectedRows = 0;
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+			
+			dbConn = new DBConnection();
+
+			if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			String Sql ="DELETE FROM `image` WHERE `id`='"+image_id.toString()+"'";
+			affectedRows = stmt.executeUpdate(Sql);
+
+			System.out.println("sql : "+Sql);
+
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			// Do not close DB connection, it doesn't matter how many connection you make if you keep
+			// closing it it will cause error on other threads!
+		}
+		return affectedRows;
+	}
+
+	public Image getImageById(BigDecimal id) {
+		
+		Image i = null;
+		
+		StringBuilder sb = new StringBuilder("Select id, auction_id, item_id, active, image");
+		
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		
+		sb.append(" from image where id ="+id);
+
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+			
+			dbConn = new DBConnection();
+
+			if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
@@ -254,25 +333,74 @@ public class ImageDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+
+			
+
 		}
 		
 		return i;
 	}
 	
 	public Image getImageBytesById(BigDecimal id) {
-		Connection conn = null;
 		Image i = null;	
 		StringBuilder sb = new StringBuilder("Select image");
 		sb.append(" from image where id ="+id);
+	
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			DBConnection dbConn = new DBConnection();
+			
+			dbConn = new DBConnection();
 
+			if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
+			System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			stmt = conn.createStatement();
+		
+			ResultSet rs = stmt.executeQuery(sb.toString());
+			while(rs.next()){
+				i = new Image();
+				i.setImageBytes(rs.getBytes("image"));
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+		
 
-			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
-				conn = dbConn.getConnection2();
-			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+		}
+		return i;
+	}
+	
+	public Image getThumbnailBytesById(BigDecimal id) {
+		
+		Image i = null;	
+		StringBuilder sb = new StringBuilder("Select thumbnail");
+		sb.append(" from image where id ="+id);
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+			
+			dbConn = new DBConnection();
+
+			if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
 				conn = dbConn.getConnection3();
 			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
 				conn = dbConn.getConnection4();
@@ -284,49 +412,16 @@ public class ImageDao extends DBConnection {
 				conn = dbConn.getConnection7();
 			}
 			
-			if(conn==null){
-				dbConn = new DBConnection();
-				conn = dbConn.getConnection();
-			}		
-			java.sql.Statement stmt = conn.createStatement();
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
-			}
-			ResultSet rs = stmt.executeQuery(sb.toString());
-			while(rs.next()){
-				i = new Image();
-				i.setImageBytes(rs.getBytes("image"));
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
-		}
-		return i;
-	}
-	
-	public Image getThumbnailBytesById(BigDecimal id) {
-		Connection conn = null;
-		Image i = null;	
-		StringBuilder sb = new StringBuilder("Select thumbnail");
-		sb.append(" from image where id ="+id);
-		try {
-			DBConnection dbConn = new DBConnection();
-
-
-			if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
-				conn = dbConn.getConnection7();
-			}
+			System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
 				conn = dbConn.getConnection();
-			}		
-			java.sql.Statement stmt = conn.createStatement();
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
 			}
+		
+			stmt = conn.createStatement();
+		
+		
 			ResultSet rs = stmt.executeQuery(sb.toString());
 			while(rs.next()){
 				i = new Image();
@@ -335,15 +430,14 @@ public class ImageDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+
+			
+
 		}
 		return i;
 	}
 
 	public Image getImageByAuctionId(BigDecimal auction_id){
-		
-		Connection conn = null;
 
 		Image i = null;
 		
@@ -352,16 +446,24 @@ public class ImageDao extends DBConnection {
 		sb.append(" from image where auction_id ="+auction_id+" ORDER BY id LIMIT 1");
 
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-
-			DBConnection dbConn = new DBConnection();
 			
-			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
-				conn = dbConn.getConnection2();
-			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
-				conn = dbConn.getConnection3();
-			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+			dbConn = new DBConnection();
+
+			if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
 				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
 			}
 			
 			System.out.println("conn : "+conn);
@@ -371,13 +473,7 @@ public class ImageDao extends DBConnection {
 				conn = dbConn.getConnection();
 			}
 		
-			java.sql.Statement stmt = conn.createStatement();
-
-			System.out.println("sql : "+sb.toString());
-			
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
-			}
+			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
@@ -389,28 +485,32 @@ public class ImageDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+
+			
+
 		}
 		
 		return i;
 	}
 	
 public Image getThumbnailByAuctionId(BigDecimal auction_id){
-		
-		Connection conn = null;
-
+	
 		Image i = null;
 		
 		StringBuilder sb = new StringBuilder("Select thumbnail");
 
 		sb.append(" from image where auction_id ="+auction_id+" LIMIT 1");
 
-
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-
-			DBConnection dbConn = new DBConnection();
 			
+			dbConn = new DBConnection();
+
 			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
 				conn = dbConn.getConnection2();
 			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
@@ -432,13 +532,7 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 				conn = dbConn.getConnection();
 			}
 		
-			java.sql.Statement stmt = conn.createStatement();
-
-			System.out.println("sql : "+sb.toString());
-			
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
-			}
+			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
@@ -450,8 +544,16 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+			if (conn != null) {
+				try {
+				//System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				//System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+
 		}
 		
 		return i;
@@ -459,19 +561,22 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 	
 	public Image getImageByLotId(BigDecimal lot_id){
 		
-		Connection conn = null;
-
 		Image i = null;
 		
 		StringBuilder sb = new StringBuilder("Select image");
 
 		sb.append(" from image where lot_id ="+lot_id+" ORDER BY id LIMIT 1");
-
-
+		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-
-			DBConnection dbConn = new DBConnection();
 			
+			dbConn = new DBConnection();
+
 			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
 				conn = dbConn.getConnection2();
 			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
@@ -493,13 +598,7 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 				conn = dbConn.getConnection();
 			}
 		
-			java.sql.Statement stmt = conn.createStatement();
-
-			System.out.println("sql : "+sb.toString());
-			
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
-			}
+			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
@@ -511,16 +610,22 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+			if (conn != null) {
+				try {
+				//System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				//System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+
 		}
 		
 		return i;
 	}
 	
 public Image getThumbnailByLotId(BigDecimal lot_id){
-		
-		Connection conn = null;
 
 		Image i = null;
 		
@@ -528,11 +633,16 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 
 		sb.append(" from image where lot_id ="+lot_id+" LIMIT 1");
 
-
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-
-			DBConnection dbConn = new DBConnection();
 			
+			dbConn = new DBConnection();
+
 			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
 				conn = dbConn.getConnection2();
 			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
@@ -554,13 +664,9 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 				conn = dbConn.getConnection();
 			}
 		
-			java.sql.Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
-			
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
-			}
 
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
@@ -572,8 +678,16 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+			if (conn != null) {
+				try {
+				//System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				//System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+
 		}
 		
 		return i;
@@ -581,8 +695,6 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 	
 	public Image getImageByItemId(BigDecimal item_id){
 		
-		Connection conn = null;
-
 		Image i = null;
 		
 		StringBuilder sb = new StringBuilder("Select image");
@@ -590,11 +702,29 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 		sb.append(" from image where item_id ="+item_id+" ORDER BY id LIMIT 1");
 
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-
-			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			dbConn = new DBConnection();
+
+			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+				conn = dbConn.getConnection2();
+			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+				conn = dbConn.getConnection3();
+			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 			
 			System.out.println("conn : "+conn);
 			
@@ -603,13 +733,7 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 				conn = dbConn.getConnection();
 			}
 		
-			java.sql.Statement stmt = conn.createStatement();
-
-			System.out.println("sql : "+sb.toString());
-			
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
-			}
+			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
@@ -621,16 +745,29 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+			if (conn != null) {
+				try {
+				//System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				//System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+			if (stmt != null) {
+				try {
+				//System.out.println("stmt closing : "+stmt);
+				stmt.close();
+				stmt = null;
+				//System.out.println("stmt after closing : "+stmt);
+				} catch (SQLException e) {}
+			}
 		}
 		
 		return i;
 	}
 	
 public Image getThumbnailByItemId(BigDecimal item_id){
-		
-		Connection conn = null;
 
 		Image i = null;
 		
@@ -638,11 +775,16 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 
 		sb.append(" from image where item_id ="+item_id+" LIMIT 1");
 
-
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-
-			DBConnection dbConn = new DBConnection();
 			
+			dbConn = new DBConnection();
+
 			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
 				conn = dbConn.getConnection2();
 			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
@@ -656,6 +798,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
 				conn = dbConn.getConnection7();
 			}
+			
 			System.out.println("conn : "+conn);
 			
 			if(conn==null){
@@ -663,13 +806,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				conn = dbConn.getConnection();
 			}
 		
-			java.sql.Statement stmt = conn.createStatement();
-
-			System.out.println("sql : "+sb.toString());
-			
-			if(stmt==null || stmt.isClosed()){
-				stmt = conn.createStatement();
-			}
+			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
@@ -681,8 +818,16 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+			if (conn != null) {
+				try {
+				//System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				//System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+
 		}
 		
 		return i;
@@ -698,26 +843,9 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 			BigDecimal user_id
 		) {
 	
-	Connection conn = null;
 	
 	int affectedRows = 0;
 
-	try {
-		DBConnection dbConn = new DBConnection();
-
-		if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
-			conn = dbConn.getConnection2();
-		}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
-			conn = dbConn.getConnection3();
-		}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
-			conn = dbConn.getConnection4();
-		}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
-			conn = dbConn.getConnection5();
-		}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
-			conn = dbConn.getConnection6();
-		}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
-			conn = dbConn.getConnection7();
-		}
 
 		StringBuilder sb = new StringBuilder("INSERT into image (auction_id, lot_id, item_id, active, image, thumbnail");
 		sb.append(", date_created, created_by)");
@@ -726,9 +854,21 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 		sb.append(",?, ?");
 		sb.append(")");
 		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		PreparedStatement stmt = null;
+		
+		try {
+
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection();
+		
 	    String sql = sb.toString();
-        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
         stmt.setInt(1, auction_id);
@@ -747,8 +887,16 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
-		// Do not close DB connection, it doesn't matter how many connection you make if you keep
-		// closing it it will cause error on other threads!
+		if (conn != null) {
+			try {
+			//System.out.println("conn closing : "+conn);
+			conn.close();
+			conn = null;
+			//System.out.println("conn after closing : "+conn);
+			} catch (SQLException e) {}
+		}
+		
+
 	}
 	return affectedRows;
 }
@@ -763,28 +911,22 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				Integer user_id
 			) {
 		
-		Connection conn = null;
 		
 		int affectedRows = 0;
 		
 		Image i = null;
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		PreparedStatement stmt = null;
+		
 		try {
-			DBConnection dbConn = new DBConnection();
+
+			dbConn = new DBConnection();
 			
-			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
-				conn = dbConn.getConnection2();
-			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
-				conn = dbConn.getConnection3();
-			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
-				conn = dbConn.getConnection4();
-			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
-				conn = dbConn.getConnection5();
-			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
-				conn = dbConn.getConnection6();
-			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
-				conn = dbConn.getConnection7();
-			}
+			conn = dbConn.getConnection();
 
 			FileInputStream fis = null;
 			if(file!=null){
@@ -808,9 +950,9 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 			
 			
 		    String sql = sb.toString();
-	        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	        
-	        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+	        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
 
@@ -847,8 +989,16 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 			throw new RuntimeException(e);
 
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+			if (conn != null) {
+				try {
+				//System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				//System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+
 		}
 
 		return i;
@@ -865,8 +1015,6 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				BigDecimal imageId_wip
 			){
 		
-		Connection conn = null;
-		
 		int affectedRows = 0;
 		
 		Image i = null;
@@ -880,12 +1028,15 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 			}
 		}
 		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		PreparedStatement stmt = null;
+		
 		try {
-			
 
-			
-			
-			DBConnection dbConn = new DBConnection();
+			dbConn = new DBConnection();
 			
 			conn = dbConn.getConnection();
 
@@ -898,9 +1049,9 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 		    String sql = sb.toString();
 		    
 	        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        stmt = conn.prepareStatement(sql);
 	        
-	        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+	        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
 	    
@@ -929,8 +1080,16 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+			if (conn != null) {
+				try {
+				//System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				//System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+
 		}
 	
 		return i;
@@ -950,17 +1109,18 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 
 		Connection conn = null;
 		
-		DBConnection dbConn = new DBConnection();
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
 		
 		try {
-			if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
-				conn = dbConn.getConnection6();
-			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
-				conn = dbConn.getConnection7();
-			}
-			
-			java.sql.Statement stmt = conn.createStatement();
 
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection3();
+
+			stmt = conn.createStatement();
+			
 			System.out.println("sql : "+sb.toString());
 			
 			ResultSet rs = stmt.executeQuery(sb.toString());
@@ -988,8 +1148,16 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			// Do not close DB connection, it doesn't matter how many connection you make if you keep
-			// closing it it will cause error on other threads!
+			if (conn != null) {
+				try {
+				//System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				//System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+
 		}
 		
 		return iList;

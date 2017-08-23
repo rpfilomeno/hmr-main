@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import hmr.com.bean.Auction;
+import hmr.com.bean.AuctionUserBiddingMax;
 import hmr.com.bean.BiddingTransaction;
 import hmr.com.bean.Image;
 import hmr.com.bean.Item;
@@ -130,20 +131,53 @@ public class LotManager {
 			Lot delta_l = this.applyLotRules(l);
 			
 			List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(delta_l.getLot_id());
-			if(!btList.isEmpty()){
-				//get the last bidder
-				delta_l.setLastBidder(btList.get(0).getUser_id());
+			
+			HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(a.getAuction_id());
+			
+			HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(a.getAuction_id());
+			
+			List<BigDecimal> favList = null;
+			
+			int favCnt = 0;
+			
+			if(btHM.get(l.getLot_id())==null){
+				//List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
+				
+				//if(!btList.isEmpty()){
+					//get the last bidder
+				//	delta_lot.setLastBidder(btList.get(0).getUser_id());
+				//}
+			}else{
+				BiddingTransaction bt = btHM.get(l.getLot_id());
+				delta_l.setLastBidder(bt.getUser_id());
 			}
 			
-			//get all lots on same auction
-			List<Lot> lotList = this.getLotListByAuctionId(a.getAuction_id());
-			for(Lot lot : lotList){
-				if(btMngr.hasBiddingTransactionByLotIdAndUserId(lot.getLot_id(), user_id)){
-					if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
+			if(btLotIdUserIdHM.get(delta_l.getLot_id()+"_"+user_id)!=null){
+				
+				delta_l.setUserHadBid(1); 
+				if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_l.getLot_id();
+
+			//}else if(btMngr.hasBiddingTransactionByLotIdAndUserId(delta_lot.getLot_id(), user_id)){
+			//			delta_lot.setUserHadBid(1); 
+			//		if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+			}else{
+				
+				AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+				ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(delta_l.getLot_id(), user_id);
+				if(aubmUser.size() > 0){
+					delta_l.setUserHadBid(1); 
+					if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_l.getLot_id();
 				}
+				
 			}
 			
-			List<BigDecimal> favList = this.getFavsInAuction(a.getAuction_id(), user_id);
+			//List<BigDecimal> favList = this.getFavsInAuction(a.getAuction_id(), user_id);
+			
+			if(favCnt==0){
+				favList = this.getFavsInAuction(a.getAuction_id(), user_id);
+				favCnt = 1;
+			}
+			
 			for(BigDecimal favId: favList){
 				if(favId.compareTo(delta_l.getLot_id())==0){
 					delta_l.setIsFav(1);
@@ -915,6 +949,18 @@ public class LotManager {
 		LotDao ld = new LotDao();
 
 		lList = ld.getLotListByAuctionId(auction_id);
+		
+		return lList;
+		
+	}
+	
+	public ArrayList<Lot> getActiveLotListByAuctionId(BigDecimal auction_id){
+		
+		ArrayList<Lot> lList = new ArrayList<Lot>();
+
+		LotDao ld = new LotDao();
+
+		lList = ld.getActiveLotListByAuctionId(auction_id);
 		
 		return lList;
 		

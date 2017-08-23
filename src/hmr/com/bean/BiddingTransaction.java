@@ -16,6 +16,7 @@ public class BiddingTransaction extends SystemBean {
 	Integer is_extended;
 	Integer qty;
 	String note_offer;
+	Integer auction_id;
 	
 	public BigDecimal getId() {
 		return id;
@@ -83,6 +84,12 @@ public class BiddingTransaction extends SystemBean {
 	}
 	public void setAmount_offer(BigDecimal amount_offer) {
 		this.amount_offer = amount_offer;
+	}
+	public Integer getAuction_id() {
+		return auction_id;
+	}
+	public void setAuction_id(Integer auction_id) {
+		this.auction_id = auction_id;
 	}
 
 }

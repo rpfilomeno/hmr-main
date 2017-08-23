@@ -48,7 +48,7 @@ public class AuctionManager {
 		this.req = req;
 		this.res = res;
 	}
-	
+	/*
 	public String doAuctionManager(File file_small, File file, String action, BigDecimal auctionId_wip){
 		String page = "index.jsp";
 		
@@ -73,7 +73,7 @@ public class AuctionManager {
 		
 		return page;
 	}
-	
+	*/
 	public String doAuctionManager(){
 		String page = null;
 		
@@ -1052,7 +1052,7 @@ public class AuctionManager {
 	return a;
 	
 }
-	
+	/*
 	
 	public Auction updateAuctionImage(
 			File file_small,
@@ -1076,7 +1076,7 @@ public class AuctionManager {
 	
 }
 	
-
+*/
 	
 	public List<Auction> getAuctionList(){
 		

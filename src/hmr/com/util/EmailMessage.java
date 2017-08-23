@@ -854,12 +854,11 @@ public class EmailMessage {
     		String AuctionId, String AuctionName, String AuctionDescription
     		) {
     	String body = "<p style=\"margin-bottom: 10px;font-size: 12px;\">Good day!</p>";
-     	body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Your registration of join the private bidding has not been approved due or may of the following criteria;</p>";
+     	body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">Your registration to join the private bidding was not approved due or may of the following criteria;</p>";
 
      	body = body + "<p style=\"margin-bottom: 10px;font-size: 12px;\">";
      	body = body + "Who are eligible to join?<br/>";
      	body = body + "This Company Vehicle Purchase Program (\"Program\") is open to employees of PMFTC, Inc or Philip Morris Manufacturing Inc (\"Company\") provided such employees meet the following criteria below at the date of offering:<br/>";
-     	body = body + "1. Should have at least one (1) year tenure;<br/>";
      	body = body + "1. Should have at least one (1) year tenure;<br/>";
      	body = body + "2. No disciplinary leave for the last two (2) years; and<br/>";
      	body = body + "3. No other company vehicle purchased (Except Benefit Vehicle) for the last two (2) years.<br/><br/>";

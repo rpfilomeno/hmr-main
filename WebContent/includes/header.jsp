@@ -45,7 +45,7 @@ Integer user_role_id = request.getSession().getAttribute("user-role-id")!=null ?
 								</li>
 								<% } else { %>
 								<li><a href="bid?mngr=get&a=login">Login</a></li>
-								<li><a href="bid?mngr=get&a=registration">Register</a></li>
+								<li><a href="bid?mngr=get&a=registration">Sign-Up</a></li>
 								<% } %>
 
 							</ul>

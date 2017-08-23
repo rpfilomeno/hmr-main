@@ -161,8 +161,6 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
 
 		AuctionUser u = null;
 		
-
-		
 		StringBuilder sb = new StringBuilder("Select id, auction_id, user_id, status, active");
 
 		sb.append(", company_id_no, image_1");
@@ -176,7 +174,7 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection2();
 			
 			System.out.println("conn : "+conn);
 
@@ -207,7 +205,7 @@ public AuctionUser getAuctionUserByUserId(Integer user_id){
 			//rs.close();
 			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {

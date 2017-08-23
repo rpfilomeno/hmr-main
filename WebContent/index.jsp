@@ -151,7 +151,6 @@
 																Accepting Bids
 															</div>
 															<div class="card-snippet-wrap">
-															Ends
 																<div class="countdown" id="timer-<%=activeOnlineAuction.getId()%>" 
 																	data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time()) %>" 
 																	data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>">
@@ -382,9 +381,9 @@ $(document).ready(function(){
 		$this.countdown(targetDate, function(event) {
 			var totalHours = event.offset.totalDays * 24 + event.offset.hours;
 			if(totalHours < 24) {
-				$(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+				$(this).html('Ends ' +event.strftime(totalHours + ' hr %M min %S sec'));
 			} else {
-				$this.html(event.strftime('%D days %H:%M:%S'));
+				$this.html('Ends ' +event.strftime('%D days %H:%M:%S'));
 			}
 		});
 	});

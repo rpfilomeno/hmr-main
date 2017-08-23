@@ -14,24 +14,23 @@ import java.util.List;
 
 import hmr.com.util.DBConnection;
 import hmr.com.bean.User;
-import hmr.com.util.StringUtil;
 
 public class UserDao extends DBConnection {
 
-	private Connection conn = null;
-	DBConnection dbConn = null;
-	private Integer id = null;
-	private String email_add = null;
+	//private Connection conn = null;
+	//DBConnection dbConn = null;
+	//private Integer id = null;
+	//private String email_add = null;
 	
 	public UserDao(){
-		dbConn = new DBConnection();
+		//dbConn = new DBConnection();
 	}
 	
-	public UserDao(Integer id, String email_add){
-		this.id = id;
-		this.email_add = email_add;
-		dbConn = new DBConnection();
-	}
+	//public UserDao(Integer id, String email_add){
+	//	this.id = id;
+		//this.email_add = email_add;
+		//dbConn = new DBConnection();
+	//}
 	
 
 	
@@ -246,7 +245,7 @@ public class UserDao extends DBConnection {
 
 			DBConnection dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection2();
 			
 			System.out.println("conn : "+conn);
 
@@ -439,10 +438,21 @@ public class UserDao extends DBConnection {
 		int last_inserted_id = 0;
 		String dob = dobyear+"/"+String.format("%02d", dobmonth)+"/"+String.format("%02d", dobday);
 		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			  conn = getConnection();
 
-			  Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+
+			stmt = conn.createStatement();
+
+			  stmt = conn.createStatement();
 		      String sql = "INSERT INTO user (first_name, last_name, email_address, mobile_no_1, verification_email_key, role, status, birth_date, company, `date_created`) " +
 		                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 		      
@@ -490,12 +500,20 @@ public int insertUserOnRegistration(String firstName, String lastName, String us
 		
 		int i = 0;
 		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			 conn = getConnection();
 
-			  Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
 			
-		      stmt = conn.createStatement();
+			conn = dbConn.getConnection2();
+
+			stmt = conn.createStatement();
+			
 
 		      String sql = "INSERT INTO user (first_name, last_name, email_address, mobile_no_1, verification_email_key, role, status, date_created) " +
 		                   "VALUES ('"+firstName+"', '"+lastName+"', '"+userId+"' ,"+ mobileNo+", '"+verification_email_key+"', 2, 12, now())";
@@ -660,35 +678,35 @@ public int insertUserOnRegistration(String firstName, String lastName, String us
 		    String sql = sb.toString();
 	        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	        
-	        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+	        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
-	        java.sql.Date newsLetterRegistrationDate_d = null;
+	        //java.sql.Date newsLetterRegistrationDate_d = null;
 	        java.sql.Timestamp newsLetterRegistrationDate_t = null;
 	        if(newsLetterRegistrationDate!=null){
-	        	newsLetterRegistrationDate_d = new java.sql.Date(newsLetterRegistrationDate.getTime());
+	        	//newsLetterRegistrationDate_d = new java.sql.Date(newsLetterRegistrationDate.getTime());
 	        	newsLetterRegistrationDate_t = new java.sql.Timestamp(newsLetterRegistrationDate.getTime());
 	        }
 	        
-	        java.sql.Date registrationDate_d = null;
+	        //java.sql.Date registrationDate_d = null;
 	        java.sql.Timestamp registrationDate_t = null;
 	        if(registrationDate!=null){
-	        	registrationDate_d = new java.sql.Date(registrationDate.getTime());
+	        	//registrationDate_d = new java.sql.Date(registrationDate.getTime());
 	        	registrationDate_t = new java.sql.Timestamp(registrationDate.getTime());
 	        }
 	        
-	        java.sql.Date passwordChangeDate_d = null;
+	        //java.sql.Date passwordChangeDate_d = null;
 	        java.sql.Timestamp passwordChangeDate_t = null;
 	        if(passwordChangeDate!=null){
-	        	passwordChangeDate_d = new java.sql.Date(passwordChangeDate.getTime());
+	        	//passwordChangeDate_d = new java.sql.Date(passwordChangeDate.getTime());
 	        	passwordChangeDate_t = new java.sql.Timestamp(passwordChangeDate.getTime());
 	        }
 	        
 	        java.sql.Date birthDate_d = null;
-	        java.sql.Timestamp birthDate_t = null;
+	        //java.sql.Timestamp birthDate_t = null;
 	        if(birthDate!=null){
 	        	birthDate_d = new java.sql.Date(birthDate.getTime());
-	        	birthDate_t = new java.sql.Timestamp(birthDate.getTime());
+	        	//birthDate_t = new java.sql.Timestamp(birthDate.getTime());
 	        }
 	        
 	        
@@ -835,27 +853,27 @@ public int insertUserOnRegistration(String firstName, String lastName, String us
 	        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	        PreparedStatement stmt = conn.prepareStatement(sql);
 	        
-	        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+	        //java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 	
-	        java.sql.Date newsLetterRegistrationDate_d = null;
+	        //java.sql.Date newsLetterRegistrationDate_d = null;
 	        java.sql.Timestamp newsLetterRegistrationDate_t = null;
 	        if(newsLetterRegistrationDate!=null){
-	        	newsLetterRegistrationDate_d = new java.sql.Date(newsLetterRegistrationDate.getTime());
+	        	//newsLetterRegistrationDate_d = new java.sql.Date(newsLetterRegistrationDate.getTime());
 	        	newsLetterRegistrationDate_t = new java.sql.Timestamp(newsLetterRegistrationDate.getTime());
 	        }
 	        
-	        java.sql.Date registrationDate_d = null;
+	        //java.sql.Date registrationDate_d = null;
 	        java.sql.Timestamp registrationDate_t = null;
 	        if(registrationDate!=null){
-	        	registrationDate_d = new java.sql.Date(registrationDate.getTime());
+	        	//registrationDate_d = new java.sql.Date(registrationDate.getTime());
 	        	registrationDate_t = new java.sql.Timestamp(registrationDate.getTime());
 	        }
 	        
-	        java.sql.Date passwordChangeDate_d = null;
+	        //java.sql.Date passwordChangeDate_d = null;
 	        java.sql.Timestamp passwordChangeDate_t = null;
 	        if(passwordChangeDate!=null){
-	        	passwordChangeDate_d = new java.sql.Date(passwordChangeDate.getTime());
+	        	//passwordChangeDate_d = new java.sql.Date(passwordChangeDate.getTime());
 	        	passwordChangeDate_t = new java.sql.Timestamp(passwordChangeDate.getTime());
 	        }
 	        
@@ -952,14 +970,18 @@ public int insertUserOnRegistration(String firstName, String lastName, String us
 		
 		int i = 0;
 		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			
-			DBConnection dbConn = new DBConnection();
+
+			dbConn = new DBConnection();
 			
 			conn = dbConn.getConnection();
-			
-			Statement stmt = conn.createStatement();
-			
+
 			stmt = conn.createStatement();
 			
 			//USER-STATUS - 11 - Registered
@@ -989,14 +1011,18 @@ public int updatePassword(String userId, String pw, Integer user_id){
 		
 		int i = 0;
 		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
+
+			dbConn = new DBConnection();
 			
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
-			
-			Statement stmt = conn.createStatement();
-			
+			conn = dbConn.getConnection2();
+
 			stmt = conn.createStatement();
 			
 			//USER-STATUS - 11 - Registered
@@ -1039,10 +1065,19 @@ public int updatePassword(String userId, String pw, Integer user_id){
 		
 		sb.append(" order by id desc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection3();
+
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -1112,10 +1147,19 @@ public int updatePassword(String userId, String pw, Integer user_id){
 		
 		sb.append(" order by id desc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -1185,10 +1229,19 @@ public int updatePassword(String userId, String pw, Integer user_id){
 		
 		sb.append(" order by id desc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+
+			stmt = conn.createStatement();
 
 			System.out.println("sql HM : "+sb.toString());
 			
@@ -1247,12 +1300,19 @@ public int updatePassword(String userId, String pw, Integer user_id){
 		
 		int i = 0;
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			 conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
 			
-		      stmt = conn.createStatement();
+			conn = dbConn.getConnection2();
+
+			stmt = conn.createStatement();
 		      
 		      String sql = "update user SET pass_word = '"+pw+"', date_password_change=now(), show_change_password_next_login = 1 where email_address='"+userId+"'";
 
@@ -1278,12 +1338,19 @@ public int updatePassword(String userId, String pw, Integer user_id){
 		
 		int i = 0;
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			 conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
 			
-		      stmt = conn.createStatement();
+			conn = dbConn.getConnection2();
+
+			stmt = conn.createStatement();
 		      
 		      String sql = "update user SET new_password = '"+pw+"', date_password_change=now(), show_change_password_next_login = 1 where email_address='"+userId+"'";
 
@@ -1308,12 +1375,19 @@ public int updatePassword(String userId, String pw, Integer user_id){
 		
 		int i = 0;
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			 conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
 			
-		      stmt = conn.createStatement();
+			conn = dbConn.getConnection2();
+
+			stmt = conn.createStatement();
 		      
 		      String sql = "update user SET new_password = '"+pw+"', date_password_change=now(), show_change_password_next_login = "+showChangePasswordNextLogin+" where email_address='"+userId+"'";
 

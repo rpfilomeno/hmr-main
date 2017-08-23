@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.bean.Auction;
 import hmr.com.bean.AuctionUserBiddingMax;
+import hmr.com.bean.Lot;
+import hmr.com.manager.LotManager;
 import hmr.com.util.DBConnection;
 
 public class AuctionUserBiddingMaxDao extends DBConnection {
@@ -39,16 +41,36 @@ public class AuctionUserBiddingMaxDao extends DBConnection {
 	}
 	
 	public int insertAuctionUserBiddingMax(Integer lot_id, BigDecimal amount_bid, BigDecimal amount_buy, BigDecimal amount_offer, Integer qty,Integer bidder_id) {
+		
+		BigDecimal auction_id = new BigDecimal("0");
+		try {
+		
+		LotManager lMngr = new LotManager();
+		Lot lot = lMngr.getLotByLotId(new BigDecimal(lot_id));
+		auction_id = lot.getAuction_id();
+		
+		} catch(Exception ex){
+			
+		}
+		
 		int i = 0;
 		
+		Connection conn = null;
 		try {
-			 conn = getConnection();
+			DBConnection dbConn = new DBConnection();
+			
+			
+			if(dbConn.getConnection5()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
 
 			  Statement stmt = conn.createStatement();
 			
 		      stmt = conn.createStatement();
 		      String sql = "INSERT INTO `auction_user_bidding_max` (`id`, `lot_id`, `qty`, `auction_id`, `date_created`, `date_updated`, `updated_by`, `created_by`, `bidder_id`,`amount_bid`,`amount_buy`,`amount_offer`) " +
-		                   "VALUES (NULL, '"+lot_id.toString()+"', '"+qty.toString()+"', NULL, now(), NULL, NULL, NULL, '"+bidder_id.toString()+"','"+amount_bid.toString()+"','"+amount_buy.toString()+"','"+amount_offer+"')";
+		                   "VALUES (NULL, '"+lot_id.toString()+"', '"+qty.toString()+"', '"+auction_id+"', now(), NULL, NULL, NULL, '"+bidder_id.toString()+"','"+amount_bid.toString()+"','"+amount_buy.toString()+"','"+amount_offer+"')";
 
 		      System.out.println("sql : "+sql);
 		      i = stmt.executeUpdate(sql);

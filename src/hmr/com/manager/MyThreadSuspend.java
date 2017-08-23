@@ -33,6 +33,8 @@ class ExmpThread extends Thread{
         for(int i=0;i<1;i++){
             if(i%suspendCount == 0){
                 try {
+                	
+                	Thread.sleep(30000);
                     System.out.println("Thread Sleep: " + getName());
                     
                     

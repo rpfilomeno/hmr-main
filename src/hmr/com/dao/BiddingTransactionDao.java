@@ -18,18 +18,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.util.DBConnection;
 import hmr.com.bean.BiddingTransaction;
-import hmr.com.util.StringUtil;
+import hmr.com.bean.Lot;
+import hmr.com.manager.LotManager;
 
 public class BiddingTransactionDao extends DBConnection {
 
-	private Connection conn = null;
-	DBConnection dbConn = null;
+	//private Connection conn = null;
+	//DBConnection dbConn = null;
 	
 	HttpServletRequest req = null;
 	HttpServletResponse res = null;
 	
 	public BiddingTransactionDao(){
-		dbConn = new DBConnection();
+		//dbConn = new DBConnection();
 	}
 	
 	public BiddingTransactionDao(HttpServletRequest req, HttpServletResponse res){
@@ -38,12 +39,9 @@ public class BiddingTransactionDao extends DBConnection {
 	}
 
 	public BiddingTransaction getBiddingTransactionById(BigDecimal id){
-		
-		Connection conn = null;
 
 		BiddingTransaction bt = null;
-		
-		
+
 		StringBuilder sb = new StringBuilder("Select id, lot_id, amount_bid, amount_buy, action_taken");
 
 		sb.append(", status, user_id");
@@ -52,16 +50,19 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		sb.append(" from user where id ="+id);
 
-
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
 
-			DBConnection dbConn = new DBConnection();
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
-			
-			System.out.println("conn : "+conn);
+			conn = dbConn.getConnection3();
 
-			java.sql.Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -127,11 +128,8 @@ public class BiddingTransactionDao extends DBConnection {
 
 	public BiddingTransaction getBiddingTransactionByBiddingTransactionId(BigDecimal biddingTransaction_id){
 		
-		Connection conn = null;
-
 		BiddingTransaction bt = null;
-		
-		
+
 		StringBuilder sb = new StringBuilder("Select id, lot_id, amount_bid, amount_buy, action");
 
 		sb.append(", status, user_id");
@@ -141,15 +139,19 @@ public class BiddingTransactionDao extends DBConnection {
 		sb.append(" from user where id ="+biddingTransaction_id);
 
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
 
-			DBConnection dbConn = new DBConnection();
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
-			
-			System.out.println("conn : "+conn);
+			conn = dbConn.getConnection3();
 
-			java.sql.Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -214,25 +216,25 @@ public class BiddingTransactionDao extends DBConnection {
 	
 	public BiddingTransaction getBiddingTransaction(String userId){
 		
-		Connection conn = null;
-
 		BiddingTransaction bt = null;
 		
 		StringBuilder sb = new StringBuilder("SELECT id, email_address, first_name, last_name, mobile_no_1, role from user where ");
 
 		sb.append("email_address = '"+userId+"'") ;
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
 
-			DBConnection dbConn = new DBConnection();
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
-			
-			System.out.println("conn : "+conn);
+			conn = dbConn.getConnection3();
 
-			java.sql.Statement stmt = conn.createStatement();
-
-			System.out.println("sql : "+sb.toString());
+			stmt = conn.createStatement();
 			
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
@@ -268,24 +270,26 @@ public class BiddingTransactionDao extends DBConnection {
 	}
 	
 	public BiddingTransaction getBiddingTransactionRegistration(String userId, String vek){
-		
-		Connection conn = null;
 
 		BiddingTransaction bt = null;
 		
 		StringBuilder sb = new StringBuilder("SELECT id, email_address, first_name, last_name, mobile_no_1, verification_email_key, date_registration from user where ");
 
 		sb.append("email_address = '"+userId+"' and verification_email_key = '"+vek+"'");
-
+		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
 
-			DBConnection dbConn = new DBConnection();
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
-			
-			System.out.println("conn : "+conn);
+			conn = dbConn.getConnection3();
 
-			java.sql.Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -324,45 +328,6 @@ public class BiddingTransactionDao extends DBConnection {
 	}
 	
 	
-	public int insertBiddingTransactionOnRegistration(String firstName, String lastName, String userId, BigDecimal mobileNo, String verification_email_key){
-		
-		int i = 0;
-		
-		Connection conn = null;
-		
-		try {
-
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
-
-			  Statement stmt = conn.createStatement();
-			
-		      stmt = conn.createStatement();
-
-		      String sql = "INSERT INTO user (first_name, last_name, email_address, mobile_no_1, verification_email_key, role, date_created) " +
-		                   "VALUES ('"+firstName+"', '"+lastName+"', '"+userId+"' ,"+ mobileNo+", '"+verification_email_key+"', 2, now())";
-		      
-		      
-		      System.out.println("sql : "+sql);
-		      i = stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
-		}
-
-		return i;
-		
-	}
-	
-	
-	
 	public BiddingTransaction insertBiddingTransactionOnCreate(
 			BigDecimal lot_id,
 			BigDecimal amount_bid,
@@ -373,16 +338,21 @@ public class BiddingTransactionDao extends DBConnection {
 			Integer user_id
 			){
 		
-		Connection conn = null;
-		
 		int affectedRows = 0;
 		
 		BiddingTransaction bt = null;
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		PreparedStatement stmt = null;
+		
 		try {
-			DBConnection dbConn = new DBConnection();
+
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection3();
 
 			StringBuilder sb = new StringBuilder("INSERT INTO user (lot_id, amount_bid, amount_buy ");
 
@@ -400,7 +370,7 @@ public class BiddingTransactionDao extends DBConnection {
 			
 			
 		    String sql = sb.toString();
-	        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	        
 	        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
@@ -485,17 +455,22 @@ public class BiddingTransactionDao extends DBConnection {
 				BigDecimal biddingTransactionId_wip
 	
 			){
-		
-		Connection conn = null;
-		
+
 		int affectedRows = 0;
 		
 		BiddingTransaction bt = null;
 	
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		PreparedStatement stmt = null;
+		
 		try {
-			DBConnection dbConn = new DBConnection();
+
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection3();
 		      
 			StringBuilder sb = new StringBuilder("Update bidding_transaction SET lot_id=?, amount_bid=?, amount_buy=? ");
 
@@ -507,7 +482,7 @@ public class BiddingTransactionDao extends DBConnection {
 		    String sql = sb.toString();
 		    
 	        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        stmt = conn.prepareStatement(sql);
 	        
 	        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
@@ -559,7 +534,7 @@ public class BiddingTransactionDao extends DBConnection {
 	        }
 		    
 
-			stmt.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -578,17 +553,22 @@ public class BiddingTransactionDao extends DBConnection {
 			BigDecimal biddingTransactionId_wip
 
 		){
-	
-	Connection conn = null;
-	
+
 	int affectedRows = 0;
 	
 	BiddingTransaction bt = null;
 
+	Connection conn = null;
+	
+	DBConnection dbConn = null;
+	
+	PreparedStatement stmt = null;
+	
 	try {
-		DBConnection dbConn = new DBConnection();
+
+		dbConn = new DBConnection();
 		
-		conn = dbConn.getConnection();
+		conn = dbConn.getConnection6();
 	      
 		StringBuilder sb = new StringBuilder("Update bidding_transaction SET status=?");
 		
@@ -596,8 +576,7 @@ public class BiddingTransactionDao extends DBConnection {
 
 	    String sql = sb.toString();
 	    
-        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt = conn.prepareStatement(sql);
         
         stmt.setInt(1, status);
         
@@ -639,7 +618,7 @@ public class BiddingTransactionDao extends DBConnection {
         }
 	    
 
-		stmt.close();
+		//stmt.close();
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
@@ -657,14 +636,19 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		int i = 0;
 		
+		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
+
+			dbConn = new DBConnection();
 			
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
-			
-			Statement stmt = conn.createStatement();
-			
+			conn = dbConn.getConnection3();
+
 			stmt = conn.createStatement();
 			
 			//USER-STATUS - 11 - Registered
@@ -692,19 +676,36 @@ public class BiddingTransactionDao extends DBConnection {
 	
 	public int insertBiddingTransaction(Integer lotId, BigDecimal amountBid, BigDecimal amountBuy,BigDecimal amountOffer, Integer actionTaken, Integer userId, Integer qty, String offerNote) {
 		
+		BigDecimal auction_id = new BigDecimal("0");
+		try {
+		
+		LotManager lMngr = new LotManager();
+		Lot lot = lMngr.getLotByLotId(new BigDecimal(lotId));
+		auction_id = lot.getAuction_id();
+		
+		} catch(Exception ex){
+			
+		}
+		
 		int i = 0;
+		
 		
 		Connection conn = null;
 		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
 
-			DBConnection dbConn = new DBConnection();
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection3();
+
+			stmt = conn.createStatement();
 			
-			Statement stmt = conn.createStatement();
-			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`,`amount_offer`, `action_taken`, `user_id`, `qty`, `date_created`,`note_offer`) "+
-					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+amountOffer.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"','"+ qty.toString() +"',NOW(),'"+offerNote+"');";
+			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`,`amount_offer`, `action_taken`, `user_id`, `qty`, `date_created`,`note_offer`,`auction_id` ) "+
+					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+amountOffer.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"','"+ qty.toString() +"',NOW(),'"+offerNote+"', '"+auction_id.toString()+"');";
 			i = stmt.executeUpdate(Sql);
 			
 			System.out.println("Sql "+Sql);
@@ -736,12 +737,20 @@ public class BiddingTransactionDao extends DBConnection {
 
 		sb.append(" order by amount_bid DESC, date_created DESC");
 		
-		//sb.append(" limit 5");
+		
 		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection3();
+
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -786,6 +795,165 @@ public class BiddingTransactionDao extends DBConnection {
 		return btList;
 	}
 	
+	
+	public HashMap<BigDecimal, BiddingTransaction> getLatestBiddingTransactionHMByAuctionIdSetLotId(BigDecimal auction_id) {
+		//List<BiddingTransaction> btList = new ArrayList<BiddingTransaction>();
+		
+		HashMap<BigDecimal, BiddingTransaction> btHM = new HashMap<BigDecimal, BiddingTransaction>();
+		
+		StringBuilder sb = new StringBuilder("Select id, lot_id, amount_bid, amount_buy, amount_offer, action_taken");
+
+		sb.append(", status, user_id, auction_id");
+		
+		sb.append(", date_created, date_updated, created_by, updated_by");
+		
+		sb.append(" from bidding_transaction");
+		
+		sb.append(" where auction_id="+auction_id);
+
+		sb.append(" order by amount_bid DESC, date_created DESC LIMIT 1");
+		
+		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection4();
+
+			stmt = conn.createStatement();
+
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			BiddingTransaction bt = null;
+
+			while(rs.next()){
+				bt = new BiddingTransaction();
+				bt.setId(rs.getBigDecimal("id"));
+				bt.setLot_id(rs.getBigDecimal("lot_id"));
+				bt.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				bt.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				bt.setAmount_offer(rs.getBigDecimal("amount_offer"));
+
+				bt.setAction_taken(rs.getInt("action_taken"));
+				bt.setStatus(rs.getInt("status"));
+				bt.setUser_id(rs.getInt("user_id"));
+				bt.setAuction_id(rs.getInt("auction_id"));
+				
+				
+				//SystemBean - start
+				bt.setDate_created(rs.getTimestamp("date_created"));
+				bt.setDate_updated(rs.getTimestamp("date_updated"));
+				bt.setCreated_by(rs.getInt("created_by"));
+				bt.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				//btList.add(bt);
+				btHM.put(bt.getLot_id(), bt);
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return btHM;
+	}
+	
+	public HashMap<String, BiddingTransaction> getBiddingTransactionHMByAuctionIdSetLotIdUserId(BigDecimal auction_id) {
+		//List<BiddingTransaction> btList = new ArrayList<BiddingTransaction>();
+		
+		HashMap<String, BiddingTransaction> btHM = new HashMap<String, BiddingTransaction>();
+		
+		StringBuilder sb = new StringBuilder("Select id, lot_id, amount_bid, amount_buy, amount_offer, action_taken");
+
+		sb.append(", status, user_id, auction_id");
+		
+		sb.append(", date_created, date_updated, created_by, updated_by");
+		
+		sb.append(" from bidding_transaction");
+		
+		sb.append(" where auction_id="+auction_id);
+
+		//sb.append(" order by amount_bid DESC, date_created DESC");
+		
+		//sb.append(" limit 5");
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection3();
+			
+			stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			BiddingTransaction bt = null;
+
+			while(rs.next()){
+				bt = new BiddingTransaction();
+				bt.setId(rs.getBigDecimal("id"));
+				bt.setLot_id(rs.getBigDecimal("lot_id"));
+				bt.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				bt.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				bt.setAmount_offer(rs.getBigDecimal("amount_offer"));
+
+				bt.setAction_taken(rs.getInt("action_taken"));
+				bt.setStatus(rs.getInt("status"));
+				bt.setUser_id(rs.getInt("user_id"));
+				bt.setAuction_id(rs.getInt("auction_id"));
+				
+				
+				//SystemBean - start
+				bt.setDate_created(rs.getTimestamp("date_created"));
+				bt.setDate_updated(rs.getTimestamp("date_updated"));
+				bt.setCreated_by(rs.getInt("created_by"));
+				bt.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				//btList.add(bt);
+				btHM.put(bt.getLot_id()+"_"+bt.getUser_id(), bt);
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return btHM;
+	}
+	
+	
 	public ArrayList<BiddingTransaction> getLatestBiddingTransactionByLotId(BigDecimal lot_id) {
 		ArrayList<BiddingTransaction> btList = new ArrayList<BiddingTransaction>();
 		
@@ -804,14 +972,18 @@ public class BiddingTransactionDao extends DBConnection {
 		sb.append(" limit 3");
 
 		Connection conn = null;
-
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+			
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -877,14 +1049,18 @@ public class BiddingTransactionDao extends DBConnection {
 		sb.append(" limit 5");
 
 		Connection conn = null;
-
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+			
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -945,13 +1121,17 @@ public class BiddingTransactionDao extends DBConnection {
 
 		Connection conn = null;
 		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+			
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -1013,13 +1193,17 @@ public class BiddingTransactionDao extends DBConnection {
 
 		Connection conn = null;
 		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+			
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -1059,8 +1243,8 @@ public class BiddingTransactionDao extends DBConnection {
 				btList.add(bt);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -1092,13 +1276,17 @@ public class BiddingTransactionDao extends DBConnection {
 
 		Connection conn = null;
 		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+			
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -1139,8 +1327,8 @@ public class BiddingTransactionDao extends DBConnection {
 				btHM.put(bt.getId(),bt);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			//throw new RuntimeException(e);
 		} finally {
@@ -1159,12 +1347,20 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		int i = 0;
 
+		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			 conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
 			
-		      stmt = conn.createStatement();
+			conn = dbConn.getConnection3();
+
+			stmt = conn.createStatement();
 		      
 		      String sql = "update user SET pass_word = '"+pw+"', date_password_change=now(), show_change_password_next_login = 1 where email_address='"+userId+"'";
 
@@ -1201,15 +1397,20 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		sb.append(" order by id desc limit 1");
 		
+		
 		Connection conn = null;
 		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			
-			DBConnection dbConn = new DBConnection();
-			
-			conn = dbConn.getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection6();
+
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -1265,17 +1466,22 @@ public class BiddingTransactionDao extends DBConnection {
 				BigDecimal biddingTransactionId_wip
 	
 			){
-		
-		Connection conn = null;
-		
+
 		int affectedRows = 0;
 		
 		BiddingTransaction bt = null;
 	
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		PreparedStatement stmt = null;
+		
 		try {
-			DBConnection dbConn = new DBConnection();
+
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection2();
 		      
 			StringBuilder sb = new StringBuilder("Update bidding_transaction SET is_extended=?");
 
@@ -1286,7 +1492,7 @@ public class BiddingTransactionDao extends DBConnection {
 		    String sql = sb.toString();
 		    
 	        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        stmt = conn.prepareStatement(sql);
 	        
 	        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
@@ -1340,12 +1546,21 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		sb.append(" limit 1");
 
-		Connection conn = null;
 		BiddingTransaction bt = null;
+		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection2();
+
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -1375,8 +1590,8 @@ public class BiddingTransactionDao extends DBConnection {
 				btList.add(bt);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

@@ -771,6 +771,16 @@ public class BiddingTransactionManager {
 		
 	}
 	
+	public HashMap<BigDecimal,BiddingTransaction> getLatestBiddingTransactionHMByAuctionIdSetLotId(BigDecimal auction_id){
+		return new BiddingTransactionDao().getLatestBiddingTransactionHMByAuctionIdSetLotId(auction_id);
+		
+	}
+	
+	public HashMap<String,BiddingTransaction> getBiddingTransactionHMByAuctionIdSetLotIdUserId(BigDecimal auction_id){
+		return new BiddingTransactionDao().getBiddingTransactionHMByAuctionIdSetLotIdUserId(auction_id);
+		
+	}
+	
 	public ArrayList<BiddingTransaction> getLatestBiddingTransactionByLotId(BigDecimal lot_id){
 		return new BiddingTransactionDao().getLatestBiddingTransactionByLotId(lot_id);
 		
