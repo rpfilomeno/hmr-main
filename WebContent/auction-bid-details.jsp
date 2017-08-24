@@ -56,11 +56,14 @@
 	//HashMap<BigDecimal, Lot> lotHM  = request.getAttribute("lotHM")!=null ? (HashMap<BigDecimal, Lot>)request.getAttribute("lotHM") : (HashMap<BigDecimal, Lot>)request.getSession().getAttribute("lotHM");
 	//List<Item> iList = request.getAttribute("iList")!=null ? (List<Item>)request.getAttribute("iList") : (List<Item>)request.getSession().getAttribute("iList");
 
-    DecimalFormat df = new DecimalFormat("#,###,##0");
+    DecimalFormat df = new DecimalFormat("#,###,##0.00");
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
 	SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 	
 	List<Image> auction_images = (List<Image>)request.getAttribute("auction_images");
+	
+	String url = request.getRequestURL().toString();
+	String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
 	
 	
 	
@@ -205,7 +208,7 @@
 											  <% imgNum = imgNum+1; 
 
 										      if(imgNum>=1 && imgNum <=2){
-										    	  imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
+										    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
 										    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR/";
 										      }	else {
 										    	  imgNum = 0;
@@ -284,9 +287,9 @@
 									                            <% } %>     
 									                            <% } else { %>
 									                            	<%if(l.getAmount_bid().doubleValue() > 0){ %>
-										                            <button class="btn btn-primary btn-block" onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
+										                            <button class="btn btn-primary btn-block autorefresh" data-bid-lotId="<%=l.getLot_id()%>" data-bid-amount="<%=l.getAmount_bid_next()%>"  onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
 										                            <%}else if(l.getAmount_bid().doubleValue() == 0){ %>
-										                            <button class="btn btn-primary btn-block" onclick="submitPage('BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
+										                            <button class="btn btn-primary btn-block autorefresh" data-bid-lotId="<%=l.getLot_id()%>" data-bid-amount="<%=l.getStarting_bid_amount()%>" onclick="submitPage('BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
 										                             <% } %>
 										                            <button class="btn btn-primary btn-block" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
 										                            
@@ -304,7 +307,7 @@
 						                                <% }%> 
 						                            <% } else if(l.getLastBidder()!=null || l.getLastBidder().equals(user_id) ){  %>
 						                            	<% if(l.getIs_bid() == 1){ %>
-						                            		<button class="btn btn-primary btn-block" >YOU BID <%=df.format(l.getAmount_bid())%></button>
+						                            		<button class="btn btn-primary btn-block autorefresh" >YOU BID <%=df.format(l.getAmount_bid())%></button>
 						                            		<button class="btn btn-primary btn-block" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
 						                            				<%if(auction.getAuction_id().equals(new BigDecimal("797")) || auction.getAuction_id().equals(new BigDecimal("804"))){  %>
 										                            	<div class="product-detail product-price" style="font-size: 12px; font-weight: bold;">* All prices are subject to 12% VAT</div>
@@ -554,6 +557,12 @@ function submitPage(action, value, lot, id, qtyid, note) {
 	var unit_qty = 1;
 	if($("#"+qtyid+" :selected").length ) unit_qty = $("#"+qtyid+" :selected").attr('value');
 	
+	if(action=="BID") {
+		var bidButton = $('.autorefresh[data-bid-lotid="'+lot+'"]');
+		value = bidButton.attr('data-bid-amount');
+	}
+	
+
 	$('input[name="manager"]').val("bid-manager");
 	$('input[name="doaction"]').val(action);
 	$('input[name="amount"]').val(value);
@@ -785,6 +794,29 @@ jQuery(window).on('load', function(){
 	$('body').on('propertychange input', 'input[type="number"]', forceNumeric);
 	
 	
+	(function poll() {
+	    $.ajax({
+	        url: "<%=baseURL%>api?auctionId=<%=auction.getAuction_id()%>&UserId=<%=user_id%>",
+	        type: "GET",
+	        success: function(data) {
+	        	$.each(data, function(index, element) {
+	    	    	var bidButton = $('.autorefresh[data-bid-lotid="'+element.id+'"]');
+	    	    	var lastAmount = bidButton.attr('data-bid-amount');
+	    	    	var amount = parseFloat(element.bid);
+	    	    	if(element.bid != lastAmount) {
+	    	    		var labelHtml = 'BID ' + amount.toFixed(2) + ' <%=currency%>';
+		    	    	bidButton.attr("data-bid-amount",amount.toFixed(2));
+		    	    	bidButton.html(labelHtml);
+		    	    	bidButton.fadeIn(1000).fadeOut(1000).fadeIn(500).fadeOut(500).fadeIn(250);
+	    	    	}
+	    	    	console.log("#" + index + " Lot-Id: " + element.id + " Name: "+element.name + " Bid: " +amount.toFixed(2));
+	    	    });
+	        },
+	        dataType: "json",
+	        complete: setTimeout(function() {poll()}, 5000),
+	        timeout: 2000
+	    })
+	})();
 
 
 
@@ -818,7 +850,10 @@ $(document).ready(function(){
 			}
 		});
 	});
-
+	
+	
+	
+	
 	
 });
 

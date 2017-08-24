@@ -7,18 +7,19 @@
 List<Lot> lList = request.getAttribute("lList")!=null ? (List<Lot>)request.getAttribute("lList") : null;
 Integer lotSize = lList.size();
 Integer i = 0;
-Double bid = 0.00;
+String bid = "0.00";
+
 %>
 
 [
 	<% for(Lot l : lList) { %>
   	<%	i++; 
   		if(l.getAmount_bid().doubleValue() > 0){ 
-  			bid = l.getAmount_bid_next().doubleValue();
+  			bid = String.format( "%.2f", l.getAmount_bid_next().doubleValue());
   		}else if(l.getAmount_bid().doubleValue() == 0){
-  			bid = l.getStarting_bid_amount().doubleValue();
+  			bid = String.format( "%.2f",l.getStarting_bid_amount().doubleValue());
   		} else {
-  			bid = l.getAmount_bid().doubleValue();
+  			bid = String.format( "%.2f",l.getAmount_bid().doubleValue());
   		}
   	%>
 	{

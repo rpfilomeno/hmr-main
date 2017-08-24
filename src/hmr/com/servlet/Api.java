@@ -67,8 +67,8 @@ public class Api extends HttpServlet {
 				//user is a bidder of this lot
 				if(btLotIdUserIdHM.get(delta_lot.getLot_id()+"_"+UserId)!=null){
 					lList.add(delta_lot);
-					continue;
 				}
+				continue;
 			} 
 			
 			//check if user has max-bid for this lot
