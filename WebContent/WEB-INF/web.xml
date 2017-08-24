@@ -24,6 +24,14 @@
     <servlet-name>Image</servlet-name>
     <url-pattern>/image</url-pattern>
   </servlet-mapping>
+    <servlet>
+    <servlet-name>Api</servlet-name>
+    <servlet-class>hmr.com.servlet.Api</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Api</servlet-name>
+    <url-pattern>/api</url-pattern>
+  </servlet-mapping>
   <servlet>
     <servlet-name>ImageDownload</servlet-name>
     <servlet-class>hmr.com.servlet.ImageDownload</servlet-class>

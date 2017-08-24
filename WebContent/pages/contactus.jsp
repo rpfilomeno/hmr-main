@@ -27,9 +27,6 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <jsp:include page="../includes/header-meta.jsp"></jsp:include>
-        
-        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
-    
         <style type="text/css">
         	ul.contact {
         		list-style: none;
@@ -77,14 +74,6 @@
 			
 			
         </style>
-        
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/fonts/FontAwesome.otf"></script>
-      	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/fonts/fontawesome-webfont.eot"></script>
-      	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/fonts/fontawesome-webfont.svg"></script>
-      	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/fonts/fontawesome-webfont.ttf"></script>
-      	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/fonts/fontawesome-webfont.woff"></script>
-        
-                
     </head>
     <body data-is-mobile="" id="c" >
     
