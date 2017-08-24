@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import hmr.com.bean.Auction;
 import hmr.com.bean.AuctionUserBiddingMax;
 import hmr.com.bean.BiddingTransaction;
 import hmr.com.bean.Lot;
@@ -34,19 +35,30 @@ public class Api extends HttpServlet {
 		String UserId = req.getParameter("UserId")!=null ? (String)req.getParameter("UserId") : "";
 		Integer user_id = Integer.parseInt(UserId);
 		
+		AuctionManager aMngr = new AuctionManager();
 		LotManager lMngr = new LotManager();
 		BiddingTransactionManager btMngr = new BiddingTransactionManager();
 		AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
 		
-		List<Lot> lotList = lMngr.getActiveLotListByAuctionId(new BigDecimal(auctionId) );
+		//List<Lot> lotList = lMngr.getActiveLotListByAuctionId(new BigDecimal(auctionId) );
+		
+		
+		List<Lot> lotList = lMngr.getActiveLotListByAuctionIdwithBidder(new BigDecimal(auctionId) );
 		//HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(new BigDecimal(auctionId));
 		HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(new BigDecimal(auctionId));
+		Auction a = aMngr.getAuctionByAuctionId(new BigDecimal(auctionId));
 		
+		//System.out.println("user_id "+user_id);
 		
-		System.out.println("user_id "+user_id);
+		//HashMap<BigDecimal,BigDecimal> hmLotId = new HashMap<BigDecimal,BigDecimal>();
 		
 		for(Lot lot : lotList){
-			delta_lot = lMngr.applyLotRules(lot);
+			
+			//if(hmLotId.get(lot.getLot_id())==null){
+				delta_lot = lMngr.applyLotRules(lot, a);
+			//}
+			
+			
 			ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(delta_lot.getLot_id(), user_id);
 			
 			//check if user is last bidder

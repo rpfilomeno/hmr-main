@@ -33,7 +33,8 @@ String curbid = "0.00";
       "name": "<%=l.getLot_name() %>",
       "bid": "<%=bid %>",
       "bidcnt": "<%=l.getBid_count() %>",
-      "curbid": "<%=curbid%>"
+      "curbid": "<%=curbid%>",
+      "bidder": "<%=l.getBidder_id()%>"
       
 	}<% if(i < lotSize){ %>,<% } %>
     <% } %>

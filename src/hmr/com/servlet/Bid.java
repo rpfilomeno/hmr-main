@@ -545,7 +545,14 @@ public class Bid extends HttpServlet {
 				
 				List<BigDecimal> favList = null;
 				
-				List<Lot> lotList = lMngr.getActiveLotListByAuctionId(a.getAuction_id());
+				
+				List<Lot> lotList = null;
+
+				try{
+					lotList = lMngr.getActiveLotListByAuctionId2(a.getAuction_id());
+				}catch(Exception eex){
+					lotList = lMngr.getActiveLotListByAuctionId(a.getAuction_id());
+				}
 				
 				int favCnt = 0;
 				
@@ -898,8 +905,7 @@ public class Bid extends HttpServlet {
 						
 						RunnableBiddingTransactionManager rbtm1 = new RunnableBiddingTransactionManager("btSetStatus", lotId );
 						rbtm1.start();
-						
-						
+
 					}else if(doAction.equals("PRE-BID")) {
 						auMngr1.insertAuctionUserBiddingMaxManager(lotId, amount, u.getId(),unit_qty);
 						req.setAttribute("msgbgcol", "green");
@@ -949,7 +955,14 @@ public class Bid extends HttpServlet {
 						
 						Lot delta_lot = null;
 						
-						List<Lot> lotList = lMngr.getActiveLotListByAuctionId(a.getAuction_id());
+						List<Lot> lotList = null;
+
+						try{
+							lotList = lMngr.getActiveLotListByAuctionId2(a.getAuction_id());
+						}catch(Exception eex){
+							lotList = lMngr.getActiveLotListByAuctionId(a.getAuction_id());
+						}
+						
 						
 						HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(a.getAuction_id());
 						

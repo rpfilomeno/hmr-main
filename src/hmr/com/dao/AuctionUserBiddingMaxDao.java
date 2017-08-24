@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import hmr.com.bean.Auction;
 import hmr.com.bean.AuctionUserBiddingMax;
 import hmr.com.bean.Lot;
+import hmr.com.manager.BiddingTransactionManager;
 import hmr.com.manager.LotManager;
 import hmr.com.util.DBConnection;
 
@@ -75,15 +76,29 @@ public class AuctionUserBiddingMaxDao extends DBConnection {
 
 		      System.out.println("sql : "+sql);
 		      i = stmt.executeUpdate(sql);
-			stmt.close();
+		      
+			//stmt.close();
+		      
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			
+			try {
+				
+				
+				
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/*
 			if (conn != null) {
 				try {
 				conn.close();
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 
 		return i;		

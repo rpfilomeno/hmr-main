@@ -616,6 +616,8 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -633,6 +635,8 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			
+			*/
 		}
 		
 		return lotHM;
@@ -784,7 +788,7 @@ public class LotDao extends DBConnection {
 			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
-		} finally {
+		} finally {/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -802,6 +806,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+		*/	
 		}
 
 		return l;
@@ -942,6 +947,7 @@ public class LotDao extends DBConnection {
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
+		/*
 		if (conn != null) {
 			try {
 			System.out.println("conn closing : "+conn);
@@ -959,6 +965,7 @@ public class LotDao extends DBConnection {
 			System.out.println("stmt after closing : "+stmt);
 			} catch (SQLException e) {}
 		}
+		*/
 	}
 
 	return l;
@@ -1104,6 +1111,8 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
+			
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -1121,6 +1130,8 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			
+			*/
 		}
 	
 		return l;
@@ -1241,6 +1252,8 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
+			
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -1258,6 +1271,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 	
 		return l;
@@ -1377,6 +1391,8 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -1394,6 +1410,8 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			
+			*/
 			
 		}
 	
@@ -1483,6 +1501,8 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
+			
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -1500,6 +1520,8 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			
+			*/
 		}
 		
 		return lList;
@@ -1583,6 +1605,9 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			//throw new RuntimeException(e);
 		} finally {
+			
+			
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -1600,6 +1625,8 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			
+			*/
 		}
 		
 		System.out.println("getLotListByAuctionId "+lList.size());
@@ -1628,6 +1655,277 @@ public class LotDao extends DBConnection {
 			dbConn = new DBConnection();
 			
 			conn = dbConn.getConnection6();
+
+			stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			Lot l = null;
+
+			while(rs.next()){
+				l = new Lot();
+				l.setId(rs.getBigDecimal("id"));
+				l.setLot_no(rs.getBigDecimal("lot_no"));
+				l.setLot_name(rs.getString("lot_name"));
+				l.setLot_id(rs.getBigDecimal("lot_id"));
+				l.setAuction_id(rs.getBigDecimal("auction_id"));
+				l.setLot_desc(rs.getString("lot_desc"));
+				l.setAssessment_value(rs.getBigDecimal("assessment_value"));
+				l.setDuties(rs.getBigDecimal("duties"));
+				l.setVat(rs.getBigDecimal("vat"));
+				l.setUnit(rs.getString("unit"));
+				l.setPremium_rate(rs.getBigDecimal("premium_rate"));
+				l.setLot_type_id(rs.getInt("lot_type_id"));
+				l.setActive(rs.getInt("active"));
+				l.setUnit_qty(rs.getInt("unit_qty"));
+				
+				l.setStarting_bid_amount(rs.getBigDecimal("starting_bid_amount"));
+				
+				l.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				l.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				l.setAction_taken(rs.getInt("action_taken"));
+				l.setIs_buy(rs.getInt("is_buy"));
+				l.setIs_bid(rs.getInt("is_bid"));
+				l.setBuy_price(rs.getBigDecimal("buy_price"));
+				l.setBidder_id(rs.getInt("bidder_id"));
+				l.setLot_increment_time(rs.getInt("lot_increment_time"));
+				l.setBid_count(rs.getInt("bid_count"));
+				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
+
+				//SystemBean - start
+				l.setDate_created(rs.getTimestamp("date_created"));
+				l.setDate_updated(rs.getTimestamp("date_updated"));
+				l.setCreated_by(rs.getInt("created_by"));
+				l.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				lList.add(l);
+			}
+
+			//rs.close();
+			//stmt.close();
+		} catch (Exception e) {
+			
+			
+			try {
+
+				dbConn = new DBConnection();
+				
+				conn = dbConn.getConnection6();
+
+				stmt = conn.createStatement();
+
+				System.out.println("sql : "+sb.toString());
+				
+				ResultSet rs = stmt.executeQuery(sb.toString());
+
+				Lot l = null;
+
+				while(rs.next()){
+					l = new Lot();
+					l.setId(rs.getBigDecimal("id"));
+					l.setLot_no(rs.getBigDecimal("lot_no"));
+					l.setLot_name(rs.getString("lot_name"));
+					l.setLot_id(rs.getBigDecimal("lot_id"));
+					l.setAuction_id(rs.getBigDecimal("auction_id"));
+					l.setLot_desc(rs.getString("lot_desc"));
+					l.setAssessment_value(rs.getBigDecimal("assessment_value"));
+					l.setDuties(rs.getBigDecimal("duties"));
+					l.setVat(rs.getBigDecimal("vat"));
+					l.setUnit(rs.getString("unit"));
+					l.setPremium_rate(rs.getBigDecimal("premium_rate"));
+					l.setLot_type_id(rs.getInt("lot_type_id"));
+					l.setActive(rs.getInt("active"));
+					l.setUnit_qty(rs.getInt("unit_qty"));
+					
+					l.setStarting_bid_amount(rs.getBigDecimal("starting_bid_amount"));
+					
+					l.setAmount_bid(rs.getBigDecimal("amount_bid"));
+					l.setAmount_buy(rs.getBigDecimal("amount_buy"));
+					l.setAction_taken(rs.getInt("action_taken"));
+					l.setIs_buy(rs.getInt("is_buy"));
+					l.setIs_bid(rs.getInt("is_bid"));
+					l.setBuy_price(rs.getBigDecimal("buy_price"));
+					l.setBidder_id(rs.getInt("bidder_id"));
+					l.setLot_increment_time(rs.getInt("lot_increment_time"));
+					l.setBid_count(rs.getInt("bid_count"));
+					l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+					l.setIs_available_lot(rs.getInt("is_available_lot"));
+					l.setWeight_total(rs.getBigDecimal("weight_total"));
+
+					//SystemBean - start
+					l.setDate_created(rs.getTimestamp("date_created"));
+					l.setDate_updated(rs.getTimestamp("date_updated"));
+					l.setCreated_by(rs.getInt("created_by"));
+					l.setUpdated_by(rs.getInt("updated_by"));
+					//SystemBean - end
+					
+					lList.add(l);
+				}
+
+				//rs.close();
+				//stmt.close();
+			} catch (Exception ex) {}
+			
+			
+			//throw new RuntimeException(e);
+		} finally {
+			/*
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+			if (stmt != null) {
+				try {
+				System.out.println("stmt closing : "+stmt);
+				stmt.close();
+				stmt = null;
+				System.out.println("stmt after closing : "+stmt);
+				} catch (SQLException e) {}
+			}
+			*/
+		}
+		
+		//System.out.println("getLotListByAuctionId "+lList.size());
+		
+		return lList;
+	}
+	
+	
+	public ArrayList<Lot> getActiveLotListByAuctionIdwithBidder(BigDecimal auction_id){
+
+		ArrayList<Lot> lList = new ArrayList<Lot>();
+		
+		StringBuilder sb = new StringBuilder("SELECT *");
+		
+		sb.append(" from lot where auction_id= "+auction_id+" and active = 1 and bidder_id > 0");
+		
+		sb.append(" order by lot_no asc");
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection7();
+
+			stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			Lot l = null;
+
+			while(rs.next()){
+				l = new Lot();
+				l.setId(rs.getBigDecimal("id"));
+				l.setLot_no(rs.getBigDecimal("lot_no"));
+				l.setLot_name(rs.getString("lot_name"));
+				l.setLot_id(rs.getBigDecimal("lot_id"));
+				l.setAuction_id(rs.getBigDecimal("auction_id"));
+				l.setLot_desc(rs.getString("lot_desc"));
+				l.setAssessment_value(rs.getBigDecimal("assessment_value"));
+				l.setDuties(rs.getBigDecimal("duties"));
+				l.setVat(rs.getBigDecimal("vat"));
+				l.setUnit(rs.getString("unit"));
+				l.setPremium_rate(rs.getBigDecimal("premium_rate"));
+				l.setLot_type_id(rs.getInt("lot_type_id"));
+				l.setActive(rs.getInt("active"));
+				l.setUnit_qty(rs.getInt("unit_qty"));
+				
+				l.setStarting_bid_amount(rs.getBigDecimal("starting_bid_amount"));
+				
+				l.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				l.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				l.setAction_taken(rs.getInt("action_taken"));
+				l.setIs_buy(rs.getInt("is_buy"));
+				l.setIs_bid(rs.getInt("is_bid"));
+				l.setBuy_price(rs.getBigDecimal("buy_price"));
+				l.setBidder_id(rs.getInt("bidder_id"));
+				l.setLot_increment_time(rs.getInt("lot_increment_time"));
+				l.setBid_count(rs.getInt("bid_count"));
+				l.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				l.setIs_available_lot(rs.getInt("is_available_lot"));
+				l.setWeight_total(rs.getBigDecimal("weight_total"));
+
+				//SystemBean - start
+				l.setDate_created(rs.getTimestamp("date_created"));
+				l.setDate_updated(rs.getTimestamp("date_updated"));
+				l.setCreated_by(rs.getInt("created_by"));
+				l.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				lList.add(l);
+			}
+
+			//rs.close();
+			//stmt.close();
+		} catch (SQLException e) {
+			//throw new RuntimeException(e);
+		} finally {
+			/*
+			if (conn != null) {
+				try {
+				System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+			if (stmt != null) {
+				try {
+				System.out.println("stmt closing : "+stmt);
+				stmt.close();
+				stmt = null;
+				System.out.println("stmt after closing : "+stmt);
+				} catch (SQLException e) {}
+			}
+			*/
+		}
+		
+		//System.out.println("getLotListByAuctionId "+lList.size());
+		
+		return lList;
+	}
+	
+	
+	public ArrayList<Lot> getActiveLotListByAuctionId2(BigDecimal auction_id){
+
+		ArrayList<Lot> lList = new ArrayList<Lot>();
+		
+		StringBuilder sb = new StringBuilder("SELECT *");
+		
+		sb.append(" from lot where auction_id= "+auction_id+" and active = 1");
+		
+		sb.append(" order by lot_no asc");
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection10();
 
 			stmt = conn.createStatement();
 
@@ -2204,6 +2502,8 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -2221,6 +2521,8 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			
+			*/
 		}
 		
 		System.out.println("getLotListByAuctionId "+lList.size());
@@ -2289,6 +2591,8 @@ public class LotDao extends DBConnection {
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
+		/*
+		
 		if (conn != null) {
 			try {
 			System.out.println("conn closing : "+conn);
@@ -2306,6 +2610,7 @@ public class LotDao extends DBConnection {
 			System.out.println("stmt after closing : "+stmt);
 			} catch (SQLException e) {}
 		}
+		*/
 	}
 
 	return affectedRows;
@@ -2375,6 +2680,8 @@ public class LotDao extends DBConnection {
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
+		
+		/*
 		if (conn != null) {
 			try {
 			System.out.println("conn closing : "+conn);
@@ -2392,6 +2699,8 @@ public class LotDao extends DBConnection {
 			System.out.println("stmt after closing : "+stmt);
 			} catch (SQLException e) {}
 		}
+		
+		*/
 	}
 
 	return affectedRows;
@@ -2470,6 +2779,9 @@ public class LotDao extends DBConnection {
 	} catch (SQLException e) {
 		throw new RuntimeException(e);
 	} finally {
+		
+		
+		/*
 		if (conn != null) {
 			try {
 			System.out.println("conn closing : "+conn);
@@ -2487,6 +2799,8 @@ public class LotDao extends DBConnection {
 			System.out.println("stmt after closing : "+stmt);
 			} catch (SQLException e) {}
 		}
+		
+		*/
 	}
 
 	return affectedRows;
@@ -2552,6 +2866,8 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			//throw new RuntimeException(e);
 		} finally {
+			
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -2569,6 +2885,8 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			
+			*/
 		}
 	
 		return affectedRows;

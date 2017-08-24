@@ -978,6 +978,31 @@ public class LotManager {
 		
 	}
 	
+	public ArrayList<Lot> getActiveLotListByAuctionId2(BigDecimal auction_id){
+		
+		ArrayList<Lot> lList = new ArrayList<Lot>();
+
+		LotDao ld = new LotDao();
+
+		lList = ld.getActiveLotListByAuctionId(auction_id);
+		
+		return lList;
+		
+	}
+	
+	public ArrayList<Lot> getActiveLotListByAuctionIdwithBidder(BigDecimal auction_id){
+		
+		ArrayList<Lot> lList = new ArrayList<Lot>();
+
+		LotDao ld = new LotDao();
+
+		lList = ld.getActiveLotListByAuctionIdwithBidder(auction_id);
+		
+		return lList;
+		
+	}
+	
+	
 	public ArrayList<Lot> getActiveLotListByAuctionIdLatest(BigDecimal auction_id){
 		
 		ArrayList<Lot> lList = new ArrayList<Lot>();

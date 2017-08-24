@@ -218,11 +218,65 @@ public class LovDao extends DBConnection {
 				lovList.add(l);
 			}
 
-			rs.close();
+			//rs.close();
 			//stmt.close();
-		} catch (SQLException e) {
+		} catch (Exception e) {
+			
+			
+			
+			try {
+
+				DBConnection dbConn = new DBConnection();
+				
+				if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
+					conn = dbConn.getConnection2();
+				}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
+					conn = dbConn.getConnection3();
+				}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+					conn = dbConn.getConnection4();
+				}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+					conn = dbConn.getConnection5();
+				}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+					conn = dbConn.getConnection6();
+				}
+				
+				System.out.println("conn : "+conn);
+				
+				stmt = conn.createStatement();
+
+				System.out.println("sql : "+sb.toString());
+				
+				ResultSet rs = stmt.executeQuery(sb.toString());
+
+				while(rs.next()){
+					l = new Lov();
+					l.setId(rs.getInt("id"));
+					l.setName(rs.getString("name"));
+					l.setValue(rs.getString("value"));
+					l.setGroup(rs.getString("group"));
+					l.setDescription(rs.getString("description"));
+					l.setActive(rs.getBoolean("active"));
+					l.setOrder(rs.getInt("order"));
+					
+					//SystemBean - start
+					l.setDate_created(rs.getTimestamp("date_created"));
+					l.setDate_updated(rs.getTimestamp("date_updated"));
+					l.setCreated_by(rs.getInt("created_by"));
+					l.setUpdated_by(rs.getInt("updated_by"));
+					//SystemBean - end
+					
+					lovList.add(l);
+				}
+
+				//rs.close();
+				//stmt.close();
+			} catch (SQLException e2) {}
+			
+			
 			//throw new RuntimeException(e);
 		} finally {
+			
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -239,7 +293,7 @@ public class LovDao extends DBConnection {
 				System.out.println("conn after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
-			
+			*/
 		}
 		
 		return lovList;

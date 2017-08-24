@@ -682,9 +682,9 @@ public class BiddingTransactionDao extends DBConnection {
 				
 		try {
 		
-		LotManager lMngr = new LotManager();
-		lot = lMngr.getLotByLotId(new BigDecimal(lotId));
-		auction_id = lot.getAuction_id();
+			LotManager lMngr = new LotManager();
+			lot = lMngr.getLotByLotId(new BigDecimal(lotId));
+			auction_id = lot.getAuction_id();
 		
 		} catch(Exception ex){
 			
@@ -692,7 +692,7 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		int i = 0;
 		
-		if(lot.getAmount_bid().doubleValue() < amountBid.doubleValue()){
+		if(lot.getAmount_bid().doubleValue() < amountBid.doubleValue() && (lot.getBidder_id() != userId) ){
 
 			Connection conn = null;
 			
@@ -717,11 +717,15 @@ public class BiddingTransactionDao extends DBConnection {
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			} finally {
+				
+				/*
 				if (conn != null) {
 					try {
 					conn.close();
 					} catch (SQLException e) {}
 				}
+				
+				*/
 			} 
 		
 		}
@@ -786,16 +790,18 @@ public class BiddingTransactionDao extends DBConnection {
 				btList.add(bt);
 			}
 
-			rs.close();
-			stmt.close();
+			//rs.close();
+			//stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				conn.close();
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return btList;
@@ -944,16 +950,60 @@ public class BiddingTransactionDao extends DBConnection {
 				btHM.put(bt.getLot_id()+"_"+bt.getUser_id(), bt);
 			}
 
-			rs.close();
-			stmt.close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//rs.close();
+			//stmt.close();
+		} catch (Exception e) {
+			//throw new RuntimeException(e);
+			
+			try{
+			
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection8();
+			
+			stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			BiddingTransaction bt = null;
+
+			while(rs.next()){
+				bt = new BiddingTransaction();
+				bt.setId(rs.getBigDecimal("id"));
+				bt.setLot_id(rs.getBigDecimal("lot_id"));
+				bt.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				bt.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				bt.setAmount_offer(rs.getBigDecimal("amount_offer"));
+
+				bt.setAction_taken(rs.getInt("action_taken"));
+				bt.setStatus(rs.getInt("status"));
+				bt.setUser_id(rs.getInt("user_id"));
+				bt.setAuction_id(rs.getInt("auction_id"));
+				
+				
+				//SystemBean - start
+				bt.setDate_created(rs.getTimestamp("date_created"));
+				bt.setDate_updated(rs.getTimestamp("date_updated"));
+				bt.setCreated_by(rs.getInt("created_by"));
+				bt.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				//btList.add(bt);
+				btHM.put(bt.getLot_id()+"_"+bt.getUser_id(), bt);
+			}			
+			}catch(Exception ex2){}
+			
+			
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				conn.close();
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return btHM;
@@ -987,7 +1037,7 @@ public class BiddingTransactionDao extends DBConnection {
 
 			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection2();
+			conn = dbConn.getConnection();
 			
 			stmt = conn.createStatement();
 
@@ -1024,11 +1074,13 @@ public class BiddingTransactionDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				conn.close();
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return btList;

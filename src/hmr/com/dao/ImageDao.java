@@ -151,7 +151,50 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 				iList.add(i);
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
+			try{
+			dbConn = new DBConnection();
+
+			if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
+				conn = dbConn.getConnection4();
+			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
+				conn = dbConn.getConnection5();
+			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
+				conn = dbConn.getConnection6();
+			}else if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+				conn = dbConn.getConnection7();
+			}
+			
+			//System.out.println("conn : "+conn);
+			
+			if(conn==null){
+				dbConn = new DBConnection();
+				conn = dbConn.getConnection();
+			}
+		
+			stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			if(stmt==null || stmt.isClosed()){
+				stmt = conn.createStatement();
+			}			
+			
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+			Image i = null;
+			while(rs.next()){
+				i = new Image();
+				i.setId(rs.getBigDecimal("id"));
+				i.setAuction_id(rs.getBigDecimal("auction_id"));
+				i.setLot_id(rs.getBigDecimal("lot_id"));
+				i.setItem_id(rs.getBigDecimal("item_id"));
+				i.setActive(rs.getInt("active"));
+				i.setImageBytes(rs.getBytes("image"));
+				iList.add(i);
+			}			
+			} catch (Exception ex) {}
+			
 			//throw new RuntimeException(e);
 		} finally {
 
@@ -242,12 +285,14 @@ public class ImageDao extends DBConnection {
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
 				conn = dbConn.getConnection();
 			}
+			
+			stmt = conn.createStatement();
 		
 			String Sql ="DELETE FROM `image` WHERE `id`='"+image_id.toString()+"'";
 			affectedRows = stmt.executeUpdate(Sql);
@@ -293,7 +338,7 @@ public class ImageDao extends DBConnection {
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
@@ -351,7 +396,7 @@ public class ImageDao extends DBConnection {
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
@@ -402,7 +447,7 @@ public class ImageDao extends DBConnection {
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
@@ -456,7 +501,7 @@ public class ImageDao extends DBConnection {
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
@@ -515,7 +560,7 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
@@ -581,7 +626,7 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
@@ -600,14 +645,6 @@ public Image getThumbnailByAuctionId(BigDecimal auction_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-				//System.out.println("conn closing : "+conn);
-				conn.close();
-				conn = null;
-				//System.out.println("conn after closing : "+conn);
-				} catch (SQLException e) {}
-			}
 			
 
 		}
@@ -647,7 +684,7 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
@@ -717,7 +754,7 @@ public Image getThumbnailByLotId(BigDecimal lot_id){
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
@@ -792,7 +829,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				conn = dbConn.getConnection7();
 			}
 			
-			System.out.println("conn : "+conn);
+			//System.out.println("conn : "+conn);
 			
 			if(conn==null){
 				dbConn = new DBConnection();
@@ -1078,6 +1115,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				//System.out.println("conn closing : "+conn);
@@ -1086,7 +1124,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				//System.out.println("conn after closing : "+conn);
 				} catch (SQLException e) {}
 			}
-			
+			*/
 
 		}
 	
@@ -1146,6 +1184,8 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
+			
 			if (conn != null) {
 				try {
 				//System.out.println("conn closing : "+conn);
@@ -1154,7 +1194,7 @@ public Image getThumbnailByItemId(BigDecimal item_id){
 				//System.out.println("conn after closing : "+conn);
 				} catch (SQLException e) {}
 			}
-			
+			*/
 
 		}
 		
