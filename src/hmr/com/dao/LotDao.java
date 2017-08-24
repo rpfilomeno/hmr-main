@@ -108,6 +108,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			//throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -125,6 +126,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return l;
@@ -205,6 +207,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -222,6 +225,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return l;
@@ -303,6 +307,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -320,6 +325,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return l;
@@ -399,6 +405,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -416,6 +423,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return l;
@@ -502,6 +510,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -519,6 +528,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return lotHM;
@@ -1617,7 +1627,7 @@ public class LotDao extends DBConnection {
 
 			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection4();
+			conn = dbConn.getConnection6();
 
 			stmt = conn.createStatement();
 
@@ -1674,6 +1684,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			//throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -1691,6 +1702,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		//System.out.println("getLotListByAuctionId "+lList.size());
@@ -1781,6 +1793,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -1798,6 +1811,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return lList;
@@ -1888,6 +1902,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -1905,6 +1920,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 
 		return l;
@@ -1982,6 +1998,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -1999,6 +2016,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return lList;
@@ -2078,6 +2096,7 @@ public class LotDao extends DBConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -2095,6 +2114,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
+			*/
 		}
 		
 		return lList;
@@ -2443,9 +2463,6 @@ public class LotDao extends DBConnection {
         
         stmt.setTimestamp(6, sqlDate_t);
         stmt.setInt(7, user_id);
-
-
-	    System.out.println("sql : "+sql);
 	    
 	    affectedRows = stmt.executeUpdate();
 

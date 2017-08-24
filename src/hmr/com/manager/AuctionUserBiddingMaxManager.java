@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,6 +65,17 @@ public class AuctionUserBiddingMaxManager {
 		
 	}
 	
+	public HashMap<String, AuctionUserBiddingMax> getAuctionUserBiddingMaxHMByAuctionIdSetLotIdAndUser(BigDecimal auction_id){
+		
+		HashMap<String, AuctionUserBiddingMax> aubmLotUserHM = new HashMap<String, AuctionUserBiddingMax>();
+
+		AuctionUserBiddingMaxDao aubm = new AuctionUserBiddingMaxDao();
+
+		aubmLotUserHM = aubm.getAuctionUserBiddingMaxHMByAuctionIdSetLotIdAndUser(auction_id);
+		
+		return aubmLotUserHM;
+		
+	}
 	
 	
 }

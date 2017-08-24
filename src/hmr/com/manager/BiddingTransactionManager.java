@@ -991,4 +991,17 @@ public class BiddingTransactionManager {
 		
 	}	
 	
+	public BiddingTransaction getBiddingTransactionLatestByDate(Date dtStart, Date dtEnd){
+		
+		BiddingTransaction bt = new BiddingTransaction();
+
+		BiddingTransactionDao btd = new BiddingTransactionDao();
+
+		bt = btd.getBiddingTransactionLatestByDate(dtStart, dtEnd);
+		
+		return bt;
+		
+	}
+	
+	
 }

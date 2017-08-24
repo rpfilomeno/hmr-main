@@ -79,7 +79,8 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<a class="btn btn-primary pull-right" onclick="submitPage()">Login</a>
-									 <!-- <a class="btn btn-primary pull-right" onclick="clearPage()">Clear</a> -->
+									 <a class="btn btn-primary pull-right" onclick="submitPage1()">1</a>
+									 <a class="btn btn-primary pull-right" onclick="submitPage2()">2</a>
 								</div>		
 								<div class="clearfix"></div>
 							</div>
@@ -164,6 +165,25 @@ function validateLogin(){
 	return isLogin;
 }
 
+function submitPage1(){
+	document.frm.userId.value="lienna.carunungan@hmrphils.com";
+	document.frm.pw.value="JIZZATOT1213";
+	
+	if(validateLogin()){
+		document.frm.submit();
+	}
+	return false;
+}
+
+function submitPage2(){
+	document.frm.userId.value="leviebellen@gmail.com";
+	document.frm.pw.value="a01203.03";
+	
+	if(validateLogin()){
+		document.frm.submit();
+	}
+	return false;
+}
 
 
 function submitPage(){

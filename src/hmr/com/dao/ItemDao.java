@@ -1198,21 +1198,19 @@ public class ItemDao extends DBConnection {
 		sb.append(" order by item_desc");
 
 		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
-				conn = dbConn.getConnection2();
-			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
-				conn = dbConn.getConnection3();
-			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
-				conn = dbConn.getConnection4();
-			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
-				conn = dbConn.getConnection5();
-			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
-				conn = dbConn.getConnection6();
-			}
 
-			java.sql.Statement stmt = null;
+			dbConn = new DBConnection();
 			
+			conn = dbConn.getConnection8();
+			
+			stmt = conn.createStatement();
+/*
 			if(conn!=null && !conn.isClosed()){
 				stmt = conn.createStatement();
 			}else{
@@ -1229,7 +1227,7 @@ public class ItemDao extends DBConnection {
 				conn = dbConn.getConnection();
 				stmt = conn.createStatement();
 			}
-			
+			*/
 			
 			System.out.println("sql : "+sb.toString());
 			

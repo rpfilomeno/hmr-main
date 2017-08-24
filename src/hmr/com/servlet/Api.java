@@ -39,11 +39,11 @@ public class Api extends HttpServlet {
 		AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
 		
 		List<Lot> lotList = lMngr.getActiveLotListByAuctionId(new BigDecimal(auctionId) );
-		HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(new BigDecimal(auctionId));
+		//HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(new BigDecimal(auctionId));
 		HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(new BigDecimal(auctionId));
 		
 		
-		
+		System.out.println("user_id "+user_id);
 		
 		for(Lot lot : lotList){
 			delta_lot = lMngr.applyLotRules(lot);

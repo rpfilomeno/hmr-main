@@ -8,7 +8,7 @@ List<Lot> lList = request.getAttribute("lList")!=null ? (List<Lot>)request.getAt
 Integer lotSize = lList.size();
 Integer i = 0;
 String bid = "0.00";
-
+String curbid = "0.00";
 %>
 
 [
@@ -21,11 +21,20 @@ String bid = "0.00";
   		} else {
   			bid = String.format( "%.2f",l.getAmount_bid().doubleValue());
   		}
+  		
+  		if(l.getAmount_bid().doubleValue() > 0){
+  		curbid = String.format( "%.2f",l.getAmount_bid().doubleValue());
+  		}else if(l.getAmount_bid().doubleValue() == 0){
+  			curbid = String.format( "%.2f",l.getStarting_bid_amount().doubleValue());
+  		}
   	%>
 	{
 	  "id": "<%=l.getLot_id() %>",
       "name": "<%=l.getLot_name() %>",
-      "bid": "<%=bid %>"
+      "bid": "<%=bid %>",
+      "bidcnt": "<%=l.getBid_count() %>",
+      "curbid": "<%=curbid%>"
+      
 	}<% if(i < lotSize){ %>,<% } %>
     <% } %>
 ]

@@ -51,6 +51,7 @@
 	
     DecimalFormat df = new DecimalFormat("#,###,##0");
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm:ss");
+	SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 	
 	ImageManager iMngr = new ImageManager();
 	List<Image> item_images = null;
@@ -163,6 +164,12 @@
 									<div class="product-detail">Offers: <%=lot.getBid_count()%></div>
 								<% } %>
 							</div>
+							<div class="product-detail">
+									<div class="countdown" id="timer-<%=auction.getId() %>" 
+										data-startdate="<%=sdfTimer.format(auction.getStart_date_time()) %>" 
+										data-enddate="<%=sdfTimer.format(auction.getEnd_date_time()) %>">
+									</div>
+								</div>
 							<div class="product-details">
 								<% if(user_id != null && user_role_id > 0){ %>
 									<% if( 	(trapOneLotPerBidder.compareTo(BigDecimal.ZERO) ==0 && auction.getOne_lot_per_bidder()==1) || 
@@ -826,6 +833,37 @@ jQuery(window).on('load', function(){
 	
 	$('body').on('propertychange input', 'input[type="number"]', forceNumeric);
 	
+
+	
+});
+
+
+$(document).ready(function(){
+
+	$('.countdown').each(function() {
+		var $this = $(this);
+		
+		var sDate = $(this).data('startdate');
+		var eDate = $(this).data('enddate');
+		var startDate = new Date(sDate);
+		var endDate  = new Date(eDate);
+		var today = new Date();
+		var targetDate;
+		  
+		if(today < startDate) {
+			targetDate = $(this).data('startdate');
+		} else if (today <= endDate) {
+			targetDate = $(this).data('enddate');
+		} 
+		$this.countdown(targetDate, function(event) {
+			var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+			if(totalHours < 24) {
+				$(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+			} else {
+				$this.html('Ends ' + event.strftime('%D days %H:%M:%S'));
+			}
+		});
+	});
 
 	
 });

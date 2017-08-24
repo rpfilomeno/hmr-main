@@ -367,8 +367,8 @@ public class LoginManager {
 		HashMap<Integer,User> bidderUserHM = null;
 		List<User> bidderUserList = null;
 		
-		HashMap<Integer,User> allUserHM = null;
-		List<User> allUserList = null;
+		//HashMap<Integer,User> allUserHM = null;
+		//List<User> allUserList = null;
 		
 		try {
 			

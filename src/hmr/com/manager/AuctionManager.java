@@ -1104,6 +1104,17 @@ public class AuctionManager {
 	}
 	
 	
+	public List<Auction> getAuctionListByTypeAndActiveMultiple(String auctionTypeClause){
+		
+		List<Auction> aList = new ArrayList<Auction>();
+
+		AuctionDao ad = new AuctionDao(req,res);
+
+		aList = ad.getAuctionListByTypeAndActiveMultiple(auctionTypeClause);
+		
+		return aList;
+		
+	}
 	
 	
 	private void setLovValuesCategoryLevel(HttpServletRequest req, HttpServletResponse res){

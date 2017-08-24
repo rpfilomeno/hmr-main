@@ -128,13 +128,18 @@ public class LotManager {
 			Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
 			BigDecimal trapOneLotPerBidder= BigDecimal.ZERO;
 			
-			Lot delta_l = this.applyLotRules(l);
+			Lot delta_l = this.applyLotRules(l, a);
 			
-			List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(delta_l.getLot_id());
+			//List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(delta_l.getLot_id());
 			
 			HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(a.getAuction_id());
 			
 			HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(a.getAuction_id());
+			
+			AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+			
+			HashMap<String, AuctionUserBiddingMax> aubmLotUserHM = aubmMngr.getAuctionUserBiddingMaxHMByAuctionIdSetLotIdAndUser(a.getAuction_id());
+			
 			
 			List<BigDecimal> favList = null;
 			
@@ -162,12 +167,19 @@ public class LotManager {
 			//		if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 			}else{
 				
+				if(aubmLotUserHM.get(delta_l.getLot_id()+"_"+user_id)!=null){
+					delta_l.setUserHadBid(1); 
+					if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_l.getLot_id();
+				}
+				
+				/*
 				AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
 				ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(delta_l.getLot_id(), user_id);
 				if(aubmUser.size() > 0){
 					delta_l.setUserHadBid(1); 
 					if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_l.getLot_id();
 				}
+				*/
 				
 			}
 			
@@ -965,6 +977,18 @@ public class LotManager {
 		return lList;
 		
 	}
+	
+	public ArrayList<Lot> getActiveLotListByAuctionIdLatest(BigDecimal auction_id){
+		
+		ArrayList<Lot> lList = new ArrayList<Lot>();
+
+		LotDao ld = new LotDao();
+
+		lList = ld.getActiveLotListByAuctionId(auction_id);
+		
+		return lList;
+		
+	}
 
 	public List<Lot> getLotListByTypeAndActive(Integer lotType){
 		
@@ -982,14 +1006,20 @@ public class LotManager {
 		return new LotDao().getLotByAuctionIdAndLotNo(auction_id, lot_no);
 	}
 	
+	/*
+	public Lot getLotByAuctionId(BigDecimal auction_id) {
+		return new LotDao().getLotByAuctionIdAndLotNo(auction_id);
+	}
+	*/
+	
 	public Lot applyLotRules(Lot l) {
 		AuctionManager aMngr = new AuctionManager(req,res);
 		AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
-		LotManager lMngr = new LotManager(req,res);
-		ItemManager iMngr = new ItemManager(req,res);
+		//LotManager lMngr = new LotManager(req,res);
+		//ItemManager iMngr = new ItemManager(req,res);
 		LotRangeManager lrMngr = new LotRangeManager();
 		
-		
+		//asdf
 		Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
 		BigDecimal increment_amount = BigDecimal.ZERO;
 		BigDecimal base_amount = BigDecimal.ZERO;
@@ -1044,6 +1074,72 @@ public class LotManager {
 
 		return l;
 	}
+	
+	
+	public Lot applyLotRules(Lot l, Auction a) {
+		//AuctionManager aMngr = new AuctionManager(req,res);
+		AuctionRangeManager arMngr = new AuctionRangeManager(req,res);
+		//LotManager lMngr = new LotManager(req,res);
+		//ItemManager iMngr = new ItemManager(req,res);
+		LotRangeManager lrMngr = new LotRangeManager();
+		
+		//asdf
+		//Auction a = aMngr.getAuctionByAuctionId(l.getAuction_id());
+		BigDecimal increment_amount = BigDecimal.ZERO;
+		BigDecimal base_amount = BigDecimal.ZERO;
+		
+		
+		if(l.getBid_count()==0) {
+			//No bids on lot yet. Determine the correct starting bid amount
+			if(l.getIs_bid()==1) {
+				base_amount = l.getAmount_bid();
+			} else if(l.getIs_buy()==1) {
+				base_amount =l.getAmount_buy();
+			}
+			
+			if(base_amount==null)base_amount = BigDecimal.ZERO;
+			if(l.getStarting_bid_amount() == null) l.setStarting_bid_amount(BigDecimal.ZERO);
+			
+			//Check for stupidity where they set the Amount on bid or buy 
+			// if less than required starting bid!
+			if(l.getStarting_bid_amount().compareTo(base_amount)>1) {
+				base_amount = l.getStarting_bid_amount();
+			}
+			
+			if(base_amount==null)base_amount = BigDecimal.ZERO;
+			
+			l.setAmount_bid_next(base_amount);
+		} else {
+			//There is more than one bid on lot. User bid increment rules
+
+			//Check if there is lot level bid increment else use auction level value
+			increment_amount = lrMngr.getIncrementAmountByLotId(l.getLot_id(), l.getAmount_bid());
+			if(increment_amount.equals(BigDecimal.ZERO)) {
+				System.out.println("Using auction bid increment for lot");
+				increment_amount = arMngr.getIncrementAmountByAuctionId(a.getAuction_id(), l.getAmount_bid());
+			}
+			BigDecimal amount_bid_next =  increment_amount.add(l.getAmount_bid());
+			
+			if(amount_bid_next==null)amount_bid_next = BigDecimal.ZERO;
+			
+			l.setAmount_bid_next(amount_bid_next);
+		}
+		
+		
+		if(l.getEnd_date_time() == null) {
+			l.setEnd_date_time(a.getEnd_date_time());
+		}
+		
+		//check if the end time is expired
+		if(l.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+			l.setIs_bid(0);
+			l.setIs_buy(0);
+		} 
+
+		return l;
+	}
+	
+	
 	
 	public ArrayList<Lot> getLotListJoinAuctionUserWishlistByUserId(Integer user_id){
 		return new LotDao().getLotListJoinAuctionUserWishlistByUserId(user_id);

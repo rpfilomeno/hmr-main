@@ -677,10 +677,13 @@ public class BiddingTransactionDao extends DBConnection {
 	public int insertBiddingTransaction(Integer lotId, BigDecimal amountBid, BigDecimal amountBuy,BigDecimal amountOffer, Integer actionTaken, Integer userId, Integer qty, String offerNote) {
 		
 		BigDecimal auction_id = new BigDecimal("0");
+		
+		Lot lot = null;
+				
 		try {
 		
 		LotManager lMngr = new LotManager();
-		Lot lot = lMngr.getLotByLotId(new BigDecimal(lotId));
+		lot = lMngr.getLotByLotId(new BigDecimal(lotId));
 		auction_id = lot.getAuction_id();
 		
 		} catch(Exception ex){
@@ -689,36 +692,39 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		int i = 0;
 		
-		
-		Connection conn = null;
-		
-		DBConnection dbConn = null;
-		
-		Statement stmt = null;
-		
-		try {
+		if(lot.getAmount_bid().doubleValue() < amountBid.doubleValue()){
 
-			dbConn = new DBConnection();
+			Connection conn = null;
 			
-			conn = dbConn.getConnection3();
-
-			stmt = conn.createStatement();
+			DBConnection dbConn = null;
 			
-			String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`,`amount_offer`, `action_taken`, `user_id`, `qty`, `date_created`,`note_offer`,`auction_id` ) "+
-					"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+amountOffer.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"','"+ qty.toString() +"',NOW(),'"+offerNote+"', '"+auction_id.toString()+"');";
-			i = stmt.executeUpdate(Sql);
+			Statement stmt = null;
 			
-			System.out.println("Sql "+Sql);
-			
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-				conn.close();
-				} catch (SQLException e) {}
-			}
-		} 
+			try {
+	
+				dbConn = new DBConnection();
+				
+				conn = dbConn.getConnection3();
+	
+				stmt = conn.createStatement();
+				
+				String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`,`amount_offer`, `action_taken`, `user_id`, `qty`, `date_created`,`note_offer`,`auction_id` ) "+
+						"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+amountOffer.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"','"+ qty.toString() +"',NOW(),'"+offerNote+"', '"+auction_id.toString()+"');";
+				i = stmt.executeUpdate(Sql);
+				
+				System.out.println("Sql "+Sql);
+				
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			} finally {
+				if (conn != null) {
+					try {
+					conn.close();
+					} catch (SQLException e) {}
+				}
+			} 
+		
+		}
 		return i;
 	}
 	
@@ -965,11 +971,11 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		sb.append(" from bidding_transaction");
 		
-		sb.append(" where lot_id="+lot_id);
+		sb.append(" where lot_id="+lot_id+ " and status = 0");
 
 		sb.append(" order by amount_bid DESC, date_created DESC");
 		
-		sb.append(" limit 3");
+		sb.append(" limit 5");
 
 		Connection conn = null;
 		
@@ -1046,7 +1052,7 @@ public class BiddingTransactionDao extends DBConnection {
 
 		sb.append(" order by amount_bid DESC, date_created DESC");
 		
-		sb.append(" limit 5");
+		sb.append(" limit 4");
 
 		Connection conn = null;
 		
@@ -1558,7 +1564,7 @@ public class BiddingTransactionDao extends DBConnection {
 
 			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection2();
+			conn = dbConn.getConnection9();
 
 			stmt = conn.createStatement();
 
@@ -1604,4 +1610,83 @@ public class BiddingTransactionDao extends DBConnection {
 		
 		return bt;
 	}
+	
+	
+	public BiddingTransaction getBiddingTransactionLatestByDate(Date dtStart, Date dtEnd) {
+		ArrayList<BiddingTransaction> btList = new ArrayList<BiddingTransaction>();
+		
+		StringBuilder sb = new StringBuilder("Select id, lot_id, amount_bid, amount_buy, amount_offer, action_taken");
+
+		sb.append(", status, user_id");
+		
+		sb.append(", date_created, date_updated, created_by, updated_by");
+		
+		sb.append(" from bidding_transaction");
+		
+		sb.append(" where date_created BETWEEN TIMESTAMP(DATE_SUB(NOW(), INTERVAL 3 MINUTE)) AND TIMESTAMP(NOW())");
+
+		sb.append(" order by amount_bid DESC, date_created DESC");
+		
+		sb.append(" limit 10");
+
+		BiddingTransaction bt = null;
+		
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection9();
+
+			stmt = conn.createStatement();
+
+			System.out.println("sql : "+sb.toString());
+			
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			
+
+			while(rs.next()){
+				bt = new BiddingTransaction();
+				bt.setId(rs.getBigDecimal("id"));
+				bt.setLot_id(rs.getBigDecimal("lot_id"));
+				bt.setAmount_bid(rs.getBigDecimal("amount_bid"));
+				bt.setAmount_buy(rs.getBigDecimal("amount_buy"));
+				bt.setAmount_offer(rs.getBigDecimal("amount_offer"));
+
+				bt.setAction_taken(rs.getInt("action_taken"));
+				bt.setStatus(rs.getInt("status"));
+				bt.setUser_id(rs.getInt("user_id"));
+				
+				//SystemBean - start
+				bt.setDate_created(rs.getTimestamp("date_created"));
+				bt.setDate_updated(rs.getTimestamp("date_updated"));
+				bt.setCreated_by(rs.getInt("created_by"));
+				bt.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				btList.add(bt);
+			}
+
+			//rs.close();
+			//stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return bt;
+	}
+	
+	
 }

@@ -208,7 +208,7 @@
 											  <% imgNum = imgNum+1; 
 
 										      if(imgNum>=1 && imgNum <=2){
-										    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
+										    	  imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
 										    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR/";
 										      }	else {
 										    	  imgNum = 0;
@@ -233,12 +233,12 @@
 												<% if (auction.getAuction_type()== 15) { %>
 													<div class="product-detail">Description: <%=l.getLot_desc()%></div>
 												<%if(l.getAmount_bid().doubleValue() >=  1 ){%>
-												<div class="product-detail product-price">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
+												<div class="product-detail product-price" id="divAsking<%=l.getLot_id()%>">Asking Price: <%=df.format(l.getAmount_bid_next())%> <%=currency%></div>
 												<%}else{%>
-												<div class="product-detail product-price">Asking Price: <%=df.format(l.getStarting_bid_amount())%> <%=currency%></div>
+												<div class="product-detail product-price" id="divAsking<%=l.getLot_id()%>">Asking Price: <%=df.format(l.getStarting_bid_amount())%> <%=currency%></div>
 												<%}%>
-													<div class="product-detail">Highest Bid: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
-													<div class="product-detail">Bids: <%=l.getBid_count()%></div>
+													<div class="product-detail" id="divHighest<%=l.getLot_id()%>">Highest Bid: <%=df.format(l.getAmount_bid())%> <%=currency%></div>
+													<div class="product-detail" id="divBids<%=l.getLot_id()%>">Bids: <%=l.getBid_count()%></div>
 												<% } else if (auction.getAuction_type() == 16) { %>
 													<div class="product-detail">Description: <%=l.getLot_desc()%></div>
 													<div class="product-detail product-price">Buy Price: <%=df.format(l.getBuy_price())%> <%=currency%></div>
@@ -287,9 +287,9 @@
 									                            <% } %>     
 									                            <% } else { %>
 									                            	<%if(l.getAmount_bid().doubleValue() > 0){ %>
-										                            <button class="btn btn-primary btn-block autorefresh" data-bid-lotId="<%=l.getLot_id()%>" data-bid-amount="<%=l.getAmount_bid_next()%>"  onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
+										                            <button class="btn btn-primary btn-block autorefresh" data-bid-lId="<%=l.getId()%>" data-bid-lotId="<%=l.getLot_id()%>" data-bid-amount="<%=l.getAmount_bid_next()%>"  onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
 										                            <%}else if(l.getAmount_bid().doubleValue() == 0){ %>
-										                            <button class="btn btn-primary btn-block autorefresh" data-bid-lotId="<%=l.getLot_id()%>" data-bid-amount="<%=l.getStarting_bid_amount()%>" onclick="submitPage('BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
+										                            <button class="btn btn-primary btn-block autorefresh" data-bid-lId="<%=l.getId()%>" data-bid-lotId="<%=l.getLot_id()%>" data-bid-amount="<%=l.getStarting_bid_amount()%>" onclick="submitPage('BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
 										                             <% } %>
 										                            <button class="btn btn-primary btn-block" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
 										                            
@@ -307,7 +307,7 @@
 						                                <% }%> 
 						                            <% } else if(l.getLastBidder()!=null || l.getLastBidder().equals(user_id) ){  %>
 						                            	<% if(l.getIs_bid() == 1){ %>
-						                            		<button class="btn btn-primary btn-block autorefresh" >YOU BID <%=df.format(l.getAmount_bid())%></button>
+						                            		<button class="btn btn-primary btn-block autorefresh" data-bid-lId="<%=l.getId()%>" data-bid-lotId="<%=l.getLot_id()%>" data-bid-amount="<%=l.getAmount_bid_next()%>"  >YOU BID <%=df.format(l.getAmount_bid())%> <%=currency%></button>
 						                            		<button class="btn btn-primary btn-block" onclick="showMaxBidForm('SET-MAXIMUM-BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','qty_<%=l.getId()%>')">SET MAX BID</button>
 						                            				<%if(auction.getAuction_id().equals(new BigDecimal("797")) || auction.getAuction_id().equals(new BigDecimal("804"))){  %>
 										                            	<div class="product-detail product-price" style="font-size: 12px; font-weight: bold;">* All prices are subject to 12% VAT</div>
@@ -793,7 +793,13 @@ jQuery(window).on('load', function(){
 	
 	$('body').on('propertychange input', 'input[type="number"]', forceNumeric);
 	
+	$(document).ready(function(){
 	
+		function numberWithCommas(x) {
+		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}	
+		
+		
 	(function poll() {
 	    $.ajax({
 	        url: "<%=baseURL%>api?auctionId=<%=auction.getAuction_id()%>&UserId=<%=user_id%>",
@@ -802,23 +808,46 @@ jQuery(window).on('load', function(){
 	        	$.each(data, function(index, element) {
 	    	    	var bidButton = $('.autorefresh[data-bid-lotid="'+element.id+'"]');
 	    	    	var lastAmount = bidButton.attr('data-bid-amount');
+	    	    	var lot_id = bidButton.attr('data-bid-lotId');
+	    	    	var lid = bidButton.attr('data-bid-lId');
+	    	    	
 	    	    	var amount = parseFloat(element.bid);
+	    	    	var bidcnt = parseFloat(element.bidcnt);
+	    	    	var curbid = parseFloat(element.curbid);
+	    	    	
+	    	    	
+	    	    	console.log("amount from DB : "+amount + " - "+"lastAmount from DB : "+lastAmount+" - bidcnt from DB : "+bidcnt);
+	    	    	
 	    	    	if(element.bid != lastAmount) {
-	    	    		var labelHtml = 'BID ' + amount.toFixed(2) + ' <%=currency%>';
+	    	    		
+	    	    		console.log("amount.toFixed(2) "+amount.toFixed(2));
+	    	    		
+	    	    		document.getElementById("divAsking"+lot_id).innerHTML = "Asking Price: "+numberWithCommas(amount.toFixed(2))+ ' <%=currency%>';
+	    	    		
+	    	    		document.getElementById("divHighest"+lot_id).innerHTML = "Highest Bid: "+numberWithCommas(curbid) + ' <%=currency%>';
+	    	    		
+	    	    		document.getElementById("divBids"+lot_id).innerHTML = "Bids: "+bidcnt;
+	    	    		
+	    	    		var labelHtml = 'BID ' + numberWithCommas(amount.toFixed(2)) + '<%=currency%>';
+	    	    		
 		    	    	bidButton.attr("data-bid-amount",amount.toFixed(2));
+		    	    	
+		    	    	bidButton.attr("onclick","submitPage('BID', '"+amount.toFixed(2)+"','"+lot_id+"','"+lid+"','qty_"+lid+"','')");
+		    	    	
 		    	    	bidButton.html(labelHtml);
-		    	    	bidButton.fadeIn(1000).fadeOut(1000).fadeIn(500).fadeOut(500).fadeIn(250);
+		    	    	
+		    	    	bidButton.fadeIn(3000).fadeOut(3000).fadeIn(2000).fadeOut(2000).fadeIn(1000);
 	    	    	}
 	    	    	console.log("#" + index + " Lot-Id: " + element.id + " Name: "+element.name + " Bid: " +amount.toFixed(2));
 	    	    });
 	        },
 	        dataType: "json",
-	        complete: setTimeout(function() {poll()}, 5000),
-	        timeout: 2000
+	        complete: setTimeout(function() {poll()}, 15000),
+	        timeout: 10000
 	    })
 	})();
 
-
+	});
 
 	
 });

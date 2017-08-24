@@ -337,7 +337,7 @@ public Auction getAuctionByToken(String token){
 
 			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection10();
 
 			stmt = conn.createStatement();
 
@@ -392,6 +392,7 @@ public Auction getAuctionByToken(String token){
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			/*
 			if (conn != null) {
 				try {
 				//System.out.println("conn closing : "+conn);
@@ -400,6 +401,7 @@ public Auction getAuctionByToken(String token){
 				//System.out.println("conn after closing : "+conn);
 				} catch (SQLException e) {}
 			}
+			*/
 			/*
 			if (stmt != null) {
 				try {
@@ -1476,6 +1478,109 @@ public Auction getAuctionByToken(String token){
 		
 		return aList;
 	}
+	
+	
+	public List<Auction> getAuctionListByTypeAndActiveMultiple(String auctionTypeClause){
+
+		List<Auction> aList = new ArrayList<Auction>();
+		
+		StringBuilder sb = new StringBuilder("Select id, auction_name, auction_no, location, bid_deposit_amount, start_date_time, end_date_time");
+	
+		sb.append(", auction_desc, terms_and_conditions, coordinator, visibility, auction_item_closing, auction_type, active, auction_id");
+		
+		sb.append(", no_of_lots, no_of_items, auction_item_increment_time, bid_deposit, date_sync, status, category_level_1, one_lot_per_bidder");
+		
+		sb.append(", one_start_bid, bid_qualifier_price, token, auto_send_post_notification");
+		
+		sb.append(", date_created, created_by, date_updated, updated_by");
+		
+		sb.append(" from auction where auction_type in("+auctionTypeClause+") and active = 1 and start_date_time is not null and end_date_time is not null");
+		
+		sb.append(" order by end_date_time asc");
+
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
+		try {
+
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection3();
+			
+			System.out.println("sql : "+sb.toString());
+		
+			stmt = conn.createStatement();
+
+			ResultSet rs = stmt.executeQuery(sb.toString());
+
+			Auction a = null;
+
+			while(rs.next()){
+				a = new Auction();
+				a.setId(rs.getBigDecimal("id"));
+				a.setAuction_name(rs.getString("auction_name"));
+				a.setAuction_no(rs.getBigDecimal("auction_no"));
+				a.setLocation(rs.getString("location"));
+				a.setBid_deposit_amount(rs.getBigDecimal("bid_deposit_amount"));
+				a.setStart_date_time(rs.getTimestamp("start_date_time"));
+				a.setEnd_date_time(rs.getTimestamp("end_date_time"));
+				a.setAuction_desc(rs.getString("auction_desc"));
+				a.setTerms_and_condition(rs.getString("terms_and_conditions"));	
+				a.setCoordinator(rs.getInt("coordinator"));
+				a.setVisibility(rs.getInt("visibility"));
+				a.setAuction_item_closing(rs.getInt("auction_item_closing"));
+				a.setAuction_type(rs.getInt("auction_type"));
+				a.setAuction_id(rs.getBigDecimal("auction_id"));
+            	a.setStatus(rs.getInt("status"));
+            	a.setActive(rs.getInt("active"));
+				a.setNo_of_lots(rs.getInt("no_of_lots"));
+				a.setNo_of_items(rs.getInt("no_of_items"));
+				a.setAuction_item_increment_time(rs.getInt("auction_item_increment_time"));
+				a.setBid_deposit(rs.getInt("bid_deposit"));
+				a.setDate_sync(rs.getTimestamp("date_sync"));
+				a.setCategory_level_1(rs.getInt("category_level_1"));
+				a.setOne_lot_per_bidder(rs.getInt("one_lot_per_bidder"));
+				a.setOne_start_bid(rs.getInt("one_start_bid"));
+				a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+				a.setToken(rs.getString("token"));
+				a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
+				
+            	//a.setImageBytes(rs.getBytes("image"));
+            	//a.setImageSmallBytes(rs.getBytes("image_small"));
+
+				//SystemBean - start
+				a.setDate_created(rs.getTimestamp("date_created"));
+				a.setDate_updated(rs.getTimestamp("date_updated"));
+				a.setCreated_by(rs.getInt("created_by"));
+				a.setUpdated_by(rs.getInt("updated_by"));
+				//SystemBean - end
+				
+				aList.add(a);
+			}
+
+			//rs.close();
+			//stmt.close();
+		} catch (SQLException e) {
+			//throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				//System.out.println("conn closing : "+conn);
+				conn.close();
+				conn = null;
+				//System.out.println("conn after closing : "+conn);
+				} catch (SQLException e) {}
+			}
+			
+
+		}
+		
+		return aList;
+	}
+	
 	
 	
 	public List<Auction> getAuctionListEndingTodayActiveOpen(){

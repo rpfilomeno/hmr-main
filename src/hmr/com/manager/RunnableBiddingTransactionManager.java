@@ -61,11 +61,10 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    	  if("btAutoPlaySetMax".equals(threadName) && !"".equals(lot_id) ){
 	    		  
 	    		  LotManager lotMngr = new LotManager();
-	    		  Lot lotex = lotMngr.getLotByLotId(new BigDecimal(lot_id));
+	    		  //Lot lotex = lotMngr.getLotByLotId(new BigDecimal(lot_id));
 	    		  
-	    		  Integer bidder_id = lotex.getBidder_id();
-	    		  
-	    		  
+	    		  //Integer bidder_id = lotex.getBidder_id();
+
 	    		  boolean cont = true;
 	    		  for(int z = 0; z < 3; z ++){
 	    			  
@@ -73,7 +72,7 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    			  
 	    		  
 	    		  
-	    		  Thread.sleep(5000);
+	    		  Thread.sleep(10000);
 	    		  System.out.println("btAutoPlaySetMax - Start");
 	    		  
 	    		    AuctionManager aucMngr = new AuctionManager();
@@ -185,7 +184,7 @@ public class RunnableBiddingTransactionManager implements Runnable {
 
 		    		  //if(cont){
 		    			  
-		    		  
+		    		  /*
 		    		  BiddingTransactionManager btMngr = new BiddingTransactionManager();
 						ArrayList<BiddingTransaction> BTList = btMngr.getLatestBiddingTransactionByLotId(new BigDecimal(lot_id));
 							
@@ -219,7 +218,7 @@ public class RunnableBiddingTransactionManager implements Runnable {
 								//btMngr.updateBiddingTransactionStatus(status, bt.getId());
 							//}
 						}
-						
+						*/
 					
 		    		  }
 	    		    

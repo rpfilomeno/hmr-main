@@ -528,6 +528,9 @@ public class Bid extends HttpServlet {
 				page = uMngr.doUserManager();
 				
 			}else if("auctionBidDetails".equals(action)){
+				
+				System.out.println("auctionBidDetails");
+				
 				LotManager lMngr = new LotManager(req,res);
 				ItemManager iMngr = new ItemManager(req,res);
 				List<Lot> lList = new ArrayList<Lot>();
@@ -549,6 +552,10 @@ public class Bid extends HttpServlet {
 				HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(a.getAuction_id());
 				
 				HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(a.getAuction_id());
+
+				AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+				
+				HashMap<String, AuctionUserBiddingMax> aubmLotUserHM = aubmMngr.getAuctionUserBiddingMaxHMByAuctionIdSetLotIdAndUser(a.getAuction_id());
 				
 				for(Lot lot : lotList){
 					
@@ -560,15 +567,15 @@ public class Bid extends HttpServlet {
 						
 					}
 					
-					delta_lot = lMngr.applyLotRules(lot);
+					delta_lot = lMngr.applyLotRules(lot, a);
 					
 					if(btHM.get(lot.getLot_id())==null){
-						List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
+						//List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
 						
-						if(!btList.isEmpty()){
+						//if(!btList.isEmpty()){
 							//get the last bidder
-							delta_lot.setLastBidder(btList.get(0).getUser_id());
-						}
+						//	delta_lot.setLastBidder(btList.get(0).getUser_id());
+						//}
 					}else{
 						BiddingTransaction bt = btHM.get(lot.getLot_id());
 						delta_lot.setLastBidder(bt.getUser_id());
@@ -584,12 +591,18 @@ public class Bid extends HttpServlet {
 					//		if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 					}else{
 						
-						AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+						if(aubmLotUserHM.get(delta_lot.getLot_id()+"_"+user_id)!=null){
+							delta_lot.setUserHadBid(1); 
+							if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+						}
+						
+						/*
 						ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(delta_lot.getLot_id(), user_id);
 						if(aubmUser.size() > 0){
 							delta_lot.setUserHadBid(1); 
 							if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 						}
+						*/
 						
 					}
 					
@@ -839,10 +852,18 @@ public class Bid extends HttpServlet {
 						req.setAttribute("msgbgcol", "green");
 						req.setAttribute("msgInfo", "Lot added to Watch List.");
 					} else if(doAction.equals("BID")) {
-						btMngr.insertBiddingTransactionMakeBid(lotId, amount, u.getId(), unit_qty);
-						req.setAttribute("msgbgcol", "green");
-						req.setAttribute("msgInfo", "Bid submitted.");
+						
+						boolean isApproved = btMngr.insertBiddingTransactionMakeBid(lotId, amount, u.getId(), unit_qty);
+						
+						if(isApproved){
+							req.setAttribute("msgbgcol", "green");
+							req.setAttribute("msgInfo", "Bid submitted.");
+						}else{
+							req.setAttribute("msgbgcol", "red");
+							req.setAttribute("msgInfo", "Bid outbided.");
+						}
 
+						
 						RunnableBiddingTransactionManager rbtm = new RunnableBiddingTransactionManager("btAutoPlaySetMax", lotId );
 						rbtm.start();
 						
@@ -934,6 +955,10 @@ public class Bid extends HttpServlet {
 						
 						HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(a.getAuction_id());
 						
+						AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+						
+						HashMap<String, AuctionUserBiddingMax> aubmLotUserHM = aubmMngr.getAuctionUserBiddingMaxHMByAuctionIdSetLotIdAndUser(a.getAuction_id());
+						
 						List<BigDecimal> favList = null;
 						
 						int favCnt = 0;
@@ -966,12 +991,19 @@ public class Bid extends HttpServlet {
 							//		if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 							}else{
 								
+								if(aubmLotUserHM.get(delta_lot.getLot_id()+"_"+user_id)!=null){
+									delta_lot.setUserHadBid(1); 
+									if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
+								}
+								
+								/*
 								AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
 								ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(delta_lot.getLot_id(), user_id);
 								if(aubmUser.size() > 0){
 									delta_lot.setUserHadBid(1); 
 									if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 								}
+								*/
 								
 							}
 						
@@ -1033,6 +1065,10 @@ public class Bid extends HttpServlet {
 						
 						HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(a.getAuction_id());
 						
+						AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
+						
+						HashMap<String, AuctionUserBiddingMax> aubmLotUserHM = aubmMngr.getAuctionUserBiddingMaxHMByAuctionIdSetLotIdAndUser(a.getAuction_id());
+						
 						
 						Lot delta_l = lMngr.applyLotRules(l);
 						
@@ -1077,12 +1113,19 @@ public class Bid extends HttpServlet {
 							//		if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = delta_lot.getLot_id();
 							}else{
 								
+								
+								if(aubmLotUserHM.get(delta_l.getLot_id()+"_"+user_id)!=null){
+									delta_l.setUserHadBid(1); 
+									if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
+								}
+								/*
 								AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
 								ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(lot.getLot_id(), user_id);
 								if(aubmUser.size() > 0){
 									delta_l.setUserHadBid(1); 
 									if(trapOneLotPerBidder.compareTo(BigDecimal.ZERO)==0)trapOneLotPerBidder = lot.getLot_id();
 								}
+								*/
 								
 							}
 							
@@ -1329,7 +1372,9 @@ public class Bid extends HttpServlet {
 		if(req.getSession().getAttribute("user-id")!=null )	user_id =  (Integer) req.getSession().getAttribute("user-id");
 		
 		//Listings
-		List<Auction> aL = null;
+		//List<Auction> aL = null;
+		
+		List<Auction> aLAll = null;
         
         List<Auction> activeOnlineAuctionList = new ArrayList<Auction>();
         List<Auction> activeNegotiatedAuctionList = new ArrayList<Auction>();
@@ -1340,42 +1385,53 @@ public class Bid extends HttpServlet {
         List<Auction> activeLiveAuctionListPrivate = new ArrayList<Auction>();
         
         
-        aL = aMngr.getAuctionListByTypeAndActive(15);
-        for(Auction x : aL) {
-        	if(x.getVisibility()==33) {
-        		activeOnlineAuctionList.add(x);
-        	}else if( x.getVisibility()==34 && auMngr.isUserApprovedOnAuction(new BigDecimal(user_id), x.getAuction_id())){
-        		activeOnlineAuctionList.add(x);
-        	} else {
-        		activeOnlineAuctionListPrivate.add(x);
-        	}
+        aLAll = aMngr.getAuctionListByTypeAndActiveMultiple("15,16,185");
+        
+        //aL = aMngr.getAuctionListByTypeAndActive(15);
+        //for(Auction x : aL) {
+        for(Auction x : aLAll) {
+        	if(x.getAuction_type()==15){
+            	if(x.getVisibility()==33) {
+            		activeOnlineAuctionList.add(x);
+            	}else if( x.getVisibility()==34 && auMngr.isUserApprovedOnAuction(new BigDecimal(user_id), x.getAuction_id())){
+            		activeOnlineAuctionList.add(x);
+            	} else {
+            		activeOnlineAuctionListPrivate.add(x);
+            	}
+        	}      	
         }
         	
 
     	req.getSession().setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
     	req.setAttribute("ACTIVE-ONLINE-AUCTION-LIST", activeOnlineAuctionList);
         
-        aL = aMngr.getAuctionListByTypeAndActive(16);
-        for(Auction y : aL) {
-        	if(y.getVisibility()==33) {
-        		activeNegotiatedAuctionList.add(y);
-        	}else if( y.getVisibility()==34 && auMngr.isUserApprovedOnAuction(new BigDecimal(user_id), y.getAuction_id())){
-        		activeNegotiatedAuctionList.add(y);
-        	} else {
-        		activeNegotiatedAuctionListPrivate.add(y);
+        //aL = aMngr.getAuctionListByTypeAndActive(16);
+        //for(Auction x : aL) {
+        for(Auction y : aLAll) {
+        	if(y.getAuction_type()==16){
+	        	if(y.getVisibility()==33) {
+	        		activeNegotiatedAuctionList.add(y);
+	        	}else if( y.getVisibility()==34 && auMngr.isUserApprovedOnAuction(new BigDecimal(user_id), y.getAuction_id())){
+	        		activeNegotiatedAuctionList.add(y);
+	        	} else {
+	        		activeNegotiatedAuctionListPrivate.add(y);
+	        	}
         	}
         }
     	req.getSession().setAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST", activeNegotiatedAuctionList);
     	req.setAttribute("ACTIVE-NEGOTIATED-AUCTION-LIST", activeNegotiatedAuctionList);
         
-    	aL = aMngr.getAuctionListByTypeAndActive(185);
-        for(Auction z : aL) {
-        	if(z.getVisibility()==33) {
-        		activeLiveAuctionList.add(z);
-        	}else if( z.getVisibility()==34 && auMngr.isUserApprovedOnAuction(new BigDecimal(user_id), z.getAuction_id())){
-        		activeLiveAuctionList.add(z);
-        	} else {
-        		activeLiveAuctionListPrivate.add(z);
+    	//aL = aMngr.getAuctionListByTypeAndActive(185);
+        //for(Auction x : aL) {
+        for(Auction z : aLAll) {
+	        	if(z.getAuction_type()==185){
+	        	if(z.getVisibility()==33) {
+	        		activeLiveAuctionList.add(z);
+	        	}else if( z.getVisibility()==34 && auMngr.isUserApprovedOnAuction(new BigDecimal(user_id), z.getAuction_id())){
+	        		activeLiveAuctionList.add(z);
+	        	} else {
+	        		activeLiveAuctionListPrivate.add(z);
+	        	}
         	}
         }
     	req.getSession().setAttribute("ACTIVE-LIVE-AUCTION-LIST", activeLiveAuctionList);
