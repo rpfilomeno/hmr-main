@@ -90,8 +90,51 @@ public class ImageDao extends DBConnection {
 				i.setImageBytes(rs.getBytes("image"));
 				iList.add(i);
 			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			//throw new RuntimeException(e);
+			try {
+				
+				Thread.sleep(2000);
+				
+				dbConn = new DBConnection();
+
+				if(dbConn.getConnection7()!=null && !dbConn.getConnection7().isClosed()){
+					conn = dbConn.getConnection7();
+				}
+				
+				//System.out.println("conn : "+conn);
+				
+				if(conn==null){
+					dbConn = new DBConnection();
+					conn = dbConn.getConnection();
+				}
+
+				stmt = conn.createStatement();
+
+				if(stmt==null || stmt.isClosed()){
+					stmt = conn.createStatement();
+				}
+				
+				System.out.println("sql : "+sb.toString());		
+				ResultSet rs = stmt.executeQuery(sb.toString());
+				Image i = null;
+				while(rs.next()){
+					i = new Image();
+					i.setId(rs.getBigDecimal("id"));
+					i.setAuction_id(rs.getBigDecimal("auction_id"));
+					i.setLot_id(rs.getBigDecimal("lot_id"));
+					i.setItem_id(rs.getBigDecimal("item_id"));
+					i.setActive(rs.getInt("active"));
+					i.setImageBytes(rs.getBytes("image"));
+					iList.add(i);
+				}
+			} catch (SQLException ex2) {} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
+			
 		} finally {
 
 

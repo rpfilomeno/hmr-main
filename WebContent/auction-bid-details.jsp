@@ -208,7 +208,7 @@
 											  <% imgNum = imgNum+1; 
 
 										      if(imgNum>=1 && imgNum <=2){
-										    	  imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
+										    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
 										    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR/";
 										      }	else {
 										    	  imgNum = 0;
@@ -380,7 +380,15 @@
 												<a class="btn btn-primary btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
 												<a class="btn btn-primary btn-block" href="bid?mngr=get&a=login">LOGIN</a>
 											<% } %>
-
+ <% if(l.getEnd_date_time().before(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
+				                            	<%if(auction.getAuction_id().equals(new BigDecimal("797")) || auction.getAuction_id().equals(new BigDecimal("804"))){  %>
+				                            	<% if(l.getBid_count() > 0){%>
+				                                <button class="btn btn-primary btn-block btn-warning" onclick="viewLot('<%=l.getId()%>')">FOR VALIDATION</button>
+				                            	<% }else { %>
+				                            	<button class="btn btn-primary btn-block" onclick="viewLot('<%=l.getId()%>')">NO SALE</button>	
+				                            		<% } %>
+				                            	<% } %>
+				                            <% }  %>
 											<div class="clearfix top10"></div>
 										</div>
 										<div class="clearfix top10"></div>
@@ -816,9 +824,11 @@ jQuery(window).on('load', function(){
 	    	    	var bidcnt = parseInt(element.bidcnt);
 	    	    	var curbid = parseFloat(element.curbid);
 	    	    	var bidder = parseInt(element.bidder);
+	    	    	//var endDT = element.endDT;
 	    	    	
 	    	    	
-	    	    	console.log("amount from DB : "+amount + " - "+"lastAmount from DB : "+lastAmount+" - bidcnt from DB : "+bidcnt);
+	    	    	
+	    	    	console.log("amount from DB : "+amount + " - "+"lastAmount from DB : "+lastAmount+" - bidcnt from DB : "+bidcnt+ " endDT from DB : "+endDT);
 	    	    	
 	    	    	if(element.bid != lastAmount) {
 	    	    		
@@ -852,8 +862,8 @@ jQuery(window).on('load', function(){
 	    	    });
 	        },
 	        dataType: "json",
-	        complete: setTimeout(function() {poll()}, 15000),
-	        timeout: 10000
+	        complete: setTimeout(function() {poll()}, 8000),
+	        timeout: 5000
 	    })
 	})();
 
@@ -864,6 +874,8 @@ jQuery(window).on('load', function(){
 
 
 $(document).ready(function(){
+try{
+	
 
 	$('.countdown').each(function() {
 		var $this = $(this);
@@ -889,7 +901,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
+}catch(e){}
 	
 	
 	

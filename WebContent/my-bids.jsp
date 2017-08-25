@@ -303,7 +303,15 @@
 												<a class="btn btn-primary btn-block" href="bid?mngr=get&a=registration">REGISTER</a>
 												<a class="btn btn-primary btn-block" href="bid?mngr=get&a=login">LOGIN</a>
 											<% } %>
-
+     										<% if(l.getEnd_date_time().before(new Timestamp(System.currentTimeMillis())) && l.getActive()>0){ %>
+				                            	<%if(auction.getAuction_id().equals(new BigDecimal("797")) || auction.getAuction_id().equals(new BigDecimal("804"))){  %>
+				                            	<% if(l.getBid_count() > 0){%>
+				                                <button class="btn btn-primary btn-block btn-warning" onclick="viewLot('<%=l.getId()%>')">FOR VALIDATION</button>
+				                            	<% }else { %>
+				                            	<button class="btn btn-primary btn-block" onclick="viewLot('<%=l.getId()%>')">NO SALE</button>	
+				                            		<% } %>
+				                            	<% } %>
+				                            <% }  %>
 											<div class="clearfix top10"></div>
 										</div>
 										<div class="clearfix top10"></div>

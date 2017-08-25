@@ -551,7 +551,7 @@
 								      <% imgNum = imgNum+1; 
 
 								      if(imgNum>=1 && imgNum <=2){
-								    	  imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
+								    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR"+imgNum+"/";
 								    	  //imgDom = "http://onlinebid.hmrphils.com:9000/HMR/";
 								      }	else {
 								    	  imgNum = 0;

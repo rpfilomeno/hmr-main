@@ -227,9 +227,9 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    		  //}
 	    	  }else if("btSetStatus".equals(threadName) && !"".equals(lot_id) ){
 	    		  
-	    		  Thread.sleep(10000);
+	    		  Thread.sleep(15000);
 	    		  BiddingTransactionManager btMngr = new BiddingTransactionManager();
-					ArrayList<BiddingTransaction> BTList = btMngr.getLatestBiddingTransactionByLotId(new BigDecimal(lot_id));
+					ArrayList<BiddingTransaction> BTList = btMngr.getLatestBiddingTransactionByLotIdOnSetStatus(new BigDecimal(lot_id));
 						
 					
 					int first = 0;
@@ -262,6 +262,8 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    		  
 	    		  
 	    	  }else if ("btExtendTime".equals(threadName) && !"".equals(lot_id)) {
+	    		  
+	    		        Thread.sleep(20000);
 	    		    	//String lot_id_str = args[0];
 	    		    	BigDecimal lot_id_ = new BigDecimal(lot_id);
 	    		    	AuctionDao aDao = new AuctionDao();

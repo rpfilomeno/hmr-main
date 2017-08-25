@@ -1083,7 +1083,7 @@ public class Bid extends HttpServlet {
 						HashMap<String, AuctionUserBiddingMax> aubmLotUserHM = aubmMngr.getAuctionUserBiddingMaxHMByAuctionIdSetLotIdAndUser(a.getAuction_id());
 						
 						
-						Lot delta_l = lMngr.applyLotRules(l);
+						Lot delta_l = lMngr.applyLotRules(l,a);
 						
 						/*
 						List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(delta_l.getLot_id());

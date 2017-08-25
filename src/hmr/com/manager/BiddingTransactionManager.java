@@ -787,6 +787,13 @@ public class BiddingTransactionManager {
 	}
 	
 	
+	public ArrayList<BiddingTransaction> getLatestBiddingTransactionByLotIdOnSetStatus(BigDecimal lot_id){
+		return new BiddingTransactionDao().getLatestBiddingTransactionByLotIdOnSetStatus(lot_id);
+		
+	}
+	
+	
+	
 	
 	
 	
