@@ -272,6 +272,7 @@ public class LoginManager {
 	*/
 	
 	
+	@SuppressWarnings("unchecked")
 	private void setLovValues(HttpServletRequest req, HttpServletResponse res, User u){
 		
 
@@ -294,32 +295,33 @@ public class LoginManager {
 		*/
 		try {
 			
-			System.out.println("USER-ROLE-HM : " + req.getSession().getAttribute("USER-ROLE-HM"));
-			System.out.println("USER-ROLE-LIST : " + req.getSession().getAttribute("USER-ROLE-LIST"));
-			System.out.println("GENDER-HM : " + req.getSession().getAttribute("GENDER-HM"));
-			System.out.println("GENDER-LIST : " + req.getSession().getAttribute("GENDER-LIST"));
-			System.out.println("USER-STATUS-HM : " + req.getSession().getAttribute("USER-STATUS-HM"));
-			System.out.println("USER-STATUS-LIST : " + req.getSession().getAttribute("USER-STATUS-LIST"));
+			//System.out.println("USER-ROLE-HM : " + req.getSession().getAttribute("USER-ROLE-HM"));
+			//System.out.println("USER-ROLE-LIST : " + req.getSession().getAttribute("USER-ROLE-LIST"));
+			//System.out.println("GENDER-HM : " + req.getSession().getAttribute("GENDER-HM"));
+			//System.out.println("GENDER-LIST : " + req.getSession().getAttribute("GENDER-LIST"));
+			//System.out.println("USER-STATUS-HM : " + req.getSession().getAttribute("USER-STATUS-HM"));
+			//System.out.println("USER-STATUS-LIST : " + req.getSession().getAttribute("USER-STATUS-LIST"));
 
-			if(req.getSession().getAttribute("USER-ROLE-HM")==null ){
+			if(req.getSession().getAttribute("USER-ROLE-HM")==null && (HashMap<Integer,Lov>)req.getSession().getAttribute("USER-ROLE-HM")==null){
 				userRoleLovHM = lovMngr.getLovHM("USER-ROLE");
 				req.getSession().setAttribute("USER-ROLE-HM", userRoleLovHM);
 			}else{
 				userRoleLovHM = (HashMap<Integer,Lov>)req.getSession().getAttribute("USER-ROLE-HM");
 			}
 			
-			if(req.getSession().getAttribute("USER-ROLE-LIST")==null ){
+			if(req.getSession().getAttribute("USER-ROLE-LIST")==null && (List<Lov>)req.getSession().getAttribute("USER-ROLE-LIST")==null){
 				userRoleLovList = lovMngr.getLovList("USER-ROLE");
 				req.getSession().setAttribute("USER-ROLE-LIST", userRoleLovList);
 			}else{
 				userRoleLovList = (List<Lov>)req.getSession().getAttribute("USER-ROLE-LIST");
 			}
 			
-			if(req.getSession().getAttribute("GENDER-HM")==null ){
+			if(req.getSession().getAttribute("GENDER-HM")==null && (HashMap<Integer,Lov>)req.getSession().getAttribute("GENDER-HM")==null){
 				genderLovHM = lovMngr.getLovHM("GENDER");
 				req.getSession().setAttribute("GENDER-HM", genderLovHM);
 			}else{
 				genderLovHM = (HashMap<Integer,Lov>)req.getSession().getAttribute("GENDER-HM");
+				req.getSession().setAttribute("GENDER-HM", genderLovHM);
 			}
 			
 			if(req.getSession().getAttribute("GENDER-LIST")==null ){
@@ -330,18 +332,20 @@ public class LoginManager {
 			}
 			
 			
-			if(req.getSession().getAttribute("USER-STATUS-HM")==null ){
+			if(req.getSession().getAttribute("USER-STATUS-HM")==null && (HashMap<Integer,Lov>)req.getSession().getAttribute("USER-STATUS-HM")==null){
 				userStatusLovHM = lovMngr.getLovHM("USER-STATUS");
 				req.getSession().setAttribute("USER-STATUS-HM", userStatusLovHM);
 			}else{
 				userStatusLovHM = (HashMap<Integer,Lov>)req.getSession().getAttribute("USER-STATUS-HM");
+				req.getSession().setAttribute("USER-STATUS-HM", userStatusLovHM);
 			}
 			
-			if(req.getSession().getAttribute("USER-STATUS-LIST")==null ){
+			if(req.getSession().getAttribute("USER-STATUS-LIST")==null && (List<Lov>)req.getSession().getAttribute("USER-STATUS-LIST")==null){
 				userStatusLovList = lovMngr.getLovList("USER-STATUS");
 				req.getSession().setAttribute("USER-STATUS-LIST", userStatusLovList);
 			}else{
 				userStatusLovList = (List<Lov>)req.getSession().getAttribute("USER-STATUS-LIST");
+				req.getSession().setAttribute("USER-STATUS-LIST", userStatusLovList);
 			}
 
 			System.out.println("User Role : "+u.getRole());
@@ -357,6 +361,7 @@ public class LoginManager {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	private void setUserValues(HttpServletRequest req, HttpServletResponse res){
 
 		UserManager uMngr = new UserManager(req, res);
@@ -372,39 +377,44 @@ public class LoginManager {
 		
 		try {
 			
-			System.out.println("COORDINATOR-USER-HM : " + req.getSession().getAttribute("COORDINATOR-USER-HM"));
-			System.out.println("COORDINATOR-USER-LIST : " + req.getSession().getAttribute("COORDINATOR-USER-LIST"));
-			System.out.println("BIDDER-USER-HM : " + req.getSession().getAttribute("BIDDER-USER-HM"));
-			System.out.println("BIDDER-USER-LIST : " + req.getSession().getAttribute("BIDDER-USER-LIST"));
-			System.out.println("ALL-USER-HM : " + req.getSession().getAttribute("ALL-USER-HM"));
-			System.out.println("ALL-USER-LIST : " + req.getSession().getAttribute("ALL-USER-LIST"));
+			//System.out.println("COORDINATOR-USER-HM : " + req.getSession().getAttribute("COORDINATOR-USER-HM"));
+			//System.out.println("COORDINATOR-USER-LIST : " + req.getSession().getAttribute("COORDINATOR-USER-LIST"));
+			//System.out.println("BIDDER-USER-HM : " + req.getSession().getAttribute("BIDDER-USER-HM"));
+			//System.out.println("BIDDER-USER-LIST : " + req.getSession().getAttribute("BIDDER-USER-LIST"));
+			//System.out.println("ALL-USER-HM : " + req.getSession().getAttribute("ALL-USER-HM"));
+			//System.out.println("ALL-USER-LIST : " + req.getSession().getAttribute("ALL-USER-LIST"));
 			
-			if(req.getSession().getAttribute("COORDINATOR-USER-HM")==null ){
+			if(req.getSession().getAttribute("COORDINATOR-USER-HM")==null && (HashMap<Integer,User>)req.getSession().getAttribute("COORDINATOR-USER-HM")==null){
 				coordinatorUserHM = uMngr.getUserHMByRole(5);
 				req.getSession().setAttribute("COORDINATOR-USER-HM", coordinatorUserHM);
 			}else{
 				coordinatorUserHM = (HashMap<Integer,User>)req.getSession().getAttribute("COORDINATOR-USER-HM");
+				req.getSession().setAttribute("COORDINATOR-USER-HM", coordinatorUserHM);
+				req.getSession().setAttribute("COORDINATOR-USER-HM", coordinatorUserHM);
 			}
 			
-			if(req.getSession().getAttribute("COORDINATOR-USER-LIST")==null ){
+			if(req.getSession().getAttribute("COORDINATOR-USER-LIST")==null && (List<User>)req.getSession().getAttribute("COORDINATOR-USER-LIST")==null){
 				coordinatorUserList = uMngr.getUserListByRole(5);
 				req.getSession().setAttribute("COORDINATOR-USER-LIST", coordinatorUserList);
 			}else{
 				coordinatorUserList = (List<User>)req.getSession().getAttribute("COORDINATOR-USER-LIST");
+				req.setAttribute("COORDINATOR-USER-LIST", coordinatorUserList);
 			}
 			
-			if(req.getSession().getAttribute("BIDDER-USER-HM")==null ){
+			if(req.getSession().getAttribute("BIDDER-USER-HM")==null && (HashMap<Integer,User>)req.getSession().getAttribute("BIDDER-USER-HM")==null){
 				bidderUserHM = uMngr.getUserHMByRole(2);
 				req.getSession().setAttribute("BIDDER-USER-HM", bidderUserHM);
 			}else{
 				bidderUserHM = (HashMap<Integer,User>)req.getSession().getAttribute("BIDDER-USER-HM");
+				req.setAttribute("BIDDER-USER-HM", bidderUserHM);
 			}
 			
-			if(req.getSession().getAttribute("BIDDER-USER-LIST")==null ){
+			if(req.getSession().getAttribute("BIDDER-USER-LIST")==null && (List<User>)req.getSession().getAttribute("BIDDER-USER-LIST") ==null ){
 				bidderUserList = uMngr.getUserListByRole(2);
 				req.getSession().setAttribute("BIDDER-USER-LIST", bidderUserList);
 			}else{
 				bidderUserList = (List<User>)req.getSession().getAttribute("BIDDER-USER-LIST");
+				req.setAttribute("BIDDER-USER-LIST", bidderUserList);
 			}
 			
 			

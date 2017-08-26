@@ -1002,6 +1002,18 @@ public class LotManager {
 		
 	}
 	
+	public Lot getActiveLotListByLotIdwithBidder(BigDecimal lot_id){
+		
+		Lot lot = new Lot();
+
+		LotDao ld = new LotDao();
+
+		lot = ld.getActiveLotListByLotIdwithBidder(lot_id);
+		
+		return lot;
+		
+	}
+	
 	
 	public ArrayList<Lot> getActiveLotListByAuctionIdLatest(BigDecimal auction_id){
 		

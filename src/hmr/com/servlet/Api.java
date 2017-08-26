@@ -32,8 +32,11 @@ public class Api extends HttpServlet {
 		Lot delta_lot = null;
 		
 		String auctionId = req.getParameter("auctionId")!=null ? (String)req.getParameter("auctionId") : "";
+		String lotId = req.getParameter("lotId")!=null ? (String)req.getParameter("lotId") : "";
 		String UserId = req.getParameter("UserId")!=null ? (String)req.getParameter("UserId") : "";
-		Integer user_id = Integer.parseInt(UserId);
+		
+		
+		Integer user_id = !"".equals(UserId) ?  Integer.parseInt(UserId) : null;
 		
 		AuctionManager aMngr = new AuctionManager();
 		LotManager lMngr = new LotManager();
@@ -43,35 +46,55 @@ public class Api extends HttpServlet {
 		//List<Lot> lotList = lMngr.getActiveLotListByAuctionId(new BigDecimal(auctionId) );
 		
 		
-		List<Lot> lotList = lMngr.getActiveLotListByAuctionIdwithBidder(new BigDecimal(auctionId) );
-		//HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(new BigDecimal(auctionId));
-		HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(new BigDecimal(auctionId));
-		Auction a = aMngr.getAuctionByAuctionId(new BigDecimal(auctionId));
+		List<Lot> lotList = null;
 		
-		//System.out.println("user_id "+user_id);
+		Lot l = null;
 		
-		//HashMap<BigDecimal,BigDecimal> hmLotId = new HashMap<BigDecimal,BigDecimal>();
+		if(!"".equals(lotId) && user_id!=null){
+			try{
+				l = lMngr.getActiveLotListByLotIdwithBidder(new BigDecimal(lotId) );
+			}catch(Exception e){
+				
+			}
+		}else if(!"".equals(auctionId) && user_id!=null){
+			try{
+				lotList = lMngr.getActiveLotListByAuctionIdwithBidder(new BigDecimal(auctionId) );
+			}catch(Exception e){
+				
+			}
+		}
 		
-		for(Lot lot : lotList){
+		
+		System.out.println("API auctionId "+auctionId);
+		System.out.println("API lotId "+lotId);
+
+		
+		if(!"".equals(lotId) && user_id!=null){
 			
+			auctionId = String.valueOf(l.getAuction_id());
+			
+			HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(new BigDecimal(auctionId));
+			Auction a = aMngr.getAuctionByAuctionId(new BigDecimal(auctionId));
+			
+
 			//if(hmLotId.get(lot.getLot_id())==null){
-				delta_lot = lMngr.applyLotRules(lot, a);
+				delta_lot = lMngr.applyLotRules(l, a);
 			//}
 			
 			
 			ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(delta_lot.getLot_id(), user_id);
 			
 			//check if user is last bidder
-			List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
+			List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(l.getLot_id());
 			if(!btList.isEmpty()){
 				if (btList.get(0).getUser_id() == user_id) {
-					continue; //don't update
+					//continue; //don't update
 				}
 			}
 			
 			//check if the end time is expired
 			if(delta_lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
-				continue; //don't update
+				//continue; //don't update
 			}
 			
 			//check one bidder per lot setting
@@ -80,13 +103,13 @@ public class Api extends HttpServlet {
 				if(btLotIdUserIdHM.get(delta_lot.getLot_id()+"_"+UserId)!=null){
 					lList.add(delta_lot);
 				}
-				continue;
+				//continue;
 			} 
 			
 			//check if user has max-bid for this lot
 			if(!aubmUser.isEmpty()){
 				lList.add(delta_lot);
-				continue;
+				//continue;
 			}
 			
 			
@@ -94,7 +117,64 @@ public class Api extends HttpServlet {
 			lList.add(delta_lot);
 			
 			
-		}//loop
+		}else if(!"".equals(auctionId) && user_id!=null){
+			
+			//HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(new BigDecimal(auctionId));
+			HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(new BigDecimal(auctionId));
+			Auction a = aMngr.getAuctionByAuctionId(new BigDecimal(auctionId));
+			
+			//System.out.println("user_id "+user_id);
+			
+			//HashMap<BigDecimal,BigDecimal> hmLotId = new HashMap<BigDecimal,BigDecimal>();
+
+			for(Lot lot : lotList){
+				
+				//if(hmLotId.get(lot.getLot_id())==null){
+					delta_lot = lMngr.applyLotRules(lot, a);
+				//}
+				
+				
+				ArrayList<AuctionUserBiddingMax> aubmUser = aubmMngr.getAuctionUserBiddingMaxListByLotIdAndUser(delta_lot.getLot_id(), user_id);
+				
+				//check if user is last bidder
+				List<BiddingTransaction> btList = btMngr.getLatestBiddingTransactionLotId(lot.getLot_id());
+				if(!btList.isEmpty()){
+					if (btList.get(0).getUser_id() == user_id) {
+						continue; //don't update
+					}
+				}
+				
+				//check if the end time is expired
+				if(delta_lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+					continue; //don't update
+				}
+				
+				//check one bidder per lot setting
+				if(new AuctionManager().getAuctionByAuctionId(new BigDecimal(auctionId)).getOne_lot_per_bidder()==1 ){
+					//user is a bidder of this lot
+					if(btLotIdUserIdHM.get(delta_lot.getLot_id()+"_"+UserId)!=null){
+						lList.add(delta_lot);
+					}
+					continue;
+				} 
+				
+				//check if user has max-bid for this lot
+				if(!aubmUser.isEmpty()){
+					lList.add(delta_lot);
+					continue;
+				}
+				
+				
+				//for everything else
+				lList.add(delta_lot);
+				
+				
+			}//loop
+			
+		}
+
+		
+		System.out.println("API lList "+lList.size());
 		
 		req.setAttribute("lList", lList);
 		

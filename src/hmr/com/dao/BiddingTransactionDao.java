@@ -792,8 +792,49 @@ public class BiddingTransactionDao extends DBConnection {
 
 			//rs.close();
 			//stmt.close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			
+			try {
+
+				dbConn = new DBConnection();
+				
+				conn = dbConn.getConnection3();
+
+				stmt = conn.createStatement();
+
+				System.out.println("sql : "+sb.toString());
+				
+				ResultSet rs = stmt.executeQuery(sb.toString());
+
+				BiddingTransaction bt = null;
+
+				while(rs.next()){
+					bt = new BiddingTransaction();
+					bt.setId(rs.getBigDecimal("id"));
+					bt.setLot_id(rs.getBigDecimal("lot_id"));
+					bt.setAmount_bid(rs.getBigDecimal("amount_bid"));
+					bt.setAmount_buy(rs.getBigDecimal("amount_buy"));
+					bt.setAmount_offer(rs.getBigDecimal("amount_offer"));
+
+					bt.setAction_taken(rs.getInt("action_taken"));
+					bt.setStatus(rs.getInt("status"));
+					bt.setUser_id(rs.getInt("user_id"));
+					
+					//SystemBean - start
+					bt.setDate_created(rs.getTimestamp("date_created"));
+					bt.setDate_updated(rs.getTimestamp("date_updated"));
+					bt.setCreated_by(rs.getInt("created_by"));
+					bt.setUpdated_by(rs.getInt("updated_by"));
+					//SystemBean - end
+					
+					btList.add(bt);
+				}
+
+				//rs.close();
+				//stmt.close();
+			} catch (Exception ex) {}
+			
+			//throw new RuntimeException(e);
 		} finally {
 			/*
 			if (conn != null) {
