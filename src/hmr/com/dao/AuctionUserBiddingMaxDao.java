@@ -349,7 +349,7 @@ public class AuctionUserBiddingMaxDao extends DBConnection {
 			//rs.close();
 			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 			if (conn != null) {
 				try {

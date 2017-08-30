@@ -552,16 +552,24 @@ public class ItemDao extends DBConnection {
 				BigDecimal itemId_wip
 			){
 		
-		Connection conn = null;
 		
 		int affectedRows = 0;
 		
 		Item i = null;
 	
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		PreparedStatement stmt = null;
+		
 		try {
-			DBConnection dbConn = new DBConnection();
+
+			dbConn = new DBConnection();
 			
-			conn = dbConn.getConnection();
+			conn = dbConn.getConnection10();
+
+
 
 			StringBuilder sb = new StringBuilder("UPDATE item SET lot_id=?, item_id=?, auction_id=?, reference_no=?, target_price=?");
 
@@ -579,7 +587,7 @@ public class ItemDao extends DBConnection {
 		    String sql = sb.toString();
 		    
 	        //PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        stmt = conn.prepareStatement(sql);
 	        
 	        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        java.sql.Timestamp sqlDate_t = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
@@ -934,10 +942,19 @@ public class ItemDao extends DBConnection {
 		
 		sb.append(" order by id desc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			conn = getConnection();
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection7();
+
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -1014,20 +1031,19 @@ public class ItemDao extends DBConnection {
 		
 		sb.append(" order by item_desc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
-				conn = dbConn.getConnection2();
-			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
-				conn = dbConn.getConnection3();
-			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
-				conn = dbConn.getConnection4();
-			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
-				conn = dbConn.getConnection5();
-			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
-				conn = dbConn.getConnection6();
-			}
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection9();
+
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			
@@ -1104,20 +1120,19 @@ public class ItemDao extends DBConnection {
 		
 		sb.append(" order by item_desc");
 
+		Connection conn = null;
+		
+		DBConnection dbConn = null;
+		
+		Statement stmt = null;
+		
 		try {
-			if(dbConn.getConnection2()!=null && !dbConn.getConnection2().isClosed()){
-				conn = dbConn.getConnection2();
-			}else if(dbConn.getConnection3()!=null && !dbConn.getConnection3().isClosed()){
-				conn = dbConn.getConnection3();
-			}else if(dbConn.getConnection4()!=null && !dbConn.getConnection4().isClosed()){
-				conn = dbConn.getConnection4();
-			}else if(dbConn.getConnection5()!=null && !dbConn.getConnection5().isClosed()){
-				conn = dbConn.getConnection5();
-			}else if(dbConn.getConnection6()!=null && !dbConn.getConnection6().isClosed()){
-				conn = dbConn.getConnection6();
-			}
 
-			java.sql.Statement stmt = conn.createStatement();
+			dbConn = new DBConnection();
+			
+			conn = dbConn.getConnection10();
+
+			stmt = conn.createStatement();
 
 			System.out.println("sql : "+sb.toString());
 			

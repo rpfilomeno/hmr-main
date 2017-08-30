@@ -58,7 +58,11 @@
 
     DecimalFormat df = new DecimalFormat("#,###,##0.00");
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm");
-	SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+	SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	
+	Timestamp tsNow = request.getAttribute("tsNow")!=null ? (Timestamp)request.getAttribute("tsNow") : new Timestamp(System.currentTimeMillis());
+	
+	String nowDT = sdfTimer.format(tsNow);
 	
 	List<Image> auction_images = (List<Image>)request.getAttribute("auction_images");
 	
@@ -246,7 +250,7 @@
 													<div class="product-detail">Offers: <%=l.getBid_count()%></div>
 												<% } %>
 												<div class="card-snippet-wrap" id="countdown<%=l.getLot_id()%>">
-													<div class="countdown" id="timer-<%=auction.getId() %>" 
+													<div class="countdown" id="timer-<%=l.getLot_id()%>" 
 														data-startdate="<%=sdfTimer.format(auction.getStart_date_time()) %>" 
 														data-enddate="<%=sdfTimer.format(l.getEnd_date_time()) %>">
 													</div>
@@ -288,6 +292,7 @@
 									                            <% } else { %>
 									                            	<%if(l.getAmount_bid().doubleValue() > 0){ %>
 										                            <button class="btn btn-primary btn-block autorefresh" data-bid-bidderId="<%=l.getBidder_id()%>" data-bid-lId="<%=l.getId()%>" data-bid-lotId="<%=l.getLot_id()%>" data-bid-amount="<%=l.getAmount_bid_next()%>"  onclick="submitPage('BID', '<%=l.getAmount_bid_next()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getAmount_bid_next())%> <%=currency%></button>
+
 										                            <%}else if(l.getAmount_bid().doubleValue() == 0){ %>
 										                            <button class="btn btn-primary btn-block autorefresh" data-bid-bidderId="<%=l.getBidder_id()%>"  data-bid-lId="<%=l.getId()%>" data-bid-lotId="<%=l.getLot_id()%>" data-bid-amount="<%=l.getStarting_bid_amount()%>" onclick="submitPage('BID', '<%=l.getStarting_bid_amount()%>','<%=l.getLot_id()%>','<%=l.getId()%>','qty_<%=l.getId()%>','')">BID <%=df.format(l.getStarting_bid_amount())%> <%=currency%></button>
 										                             <% } %>
@@ -431,6 +436,7 @@ function viewLot(id) {
 	$('input[name="manager"]').val("lot-manager");
 	$('input[name="action"]').val("lotBidDetails");
 	$('input[name="lotId_wip"]').val(id);
+	$('input[name="doaction"]').val("");
 	$( "#frm" ).submit();
 }
 
@@ -807,7 +813,7 @@ jQuery(window).on('load', function(){
 		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}	
 		
-		
+		console.log("<%=baseURL%>api?auctionId=<%=auction.getAuction_id()%>&UserId=<%=user_id%>");
 	(function poll() {
 	    $.ajax({
 	        url: "<%=baseURL%>api?auctionId=<%=auction.getAuction_id()%>&UserId=<%=user_id%>",
@@ -819,9 +825,8 @@ jQuery(window).on('load', function(){
 	    	    	var lot_id = bidButton.attr('data-bid-lotId');
 	    	    	var lid = bidButton.attr('data-bid-lId');
 	    	    	var bidderId = bidButton.attr('data-bid-bidderId');
-	    	    	
-	    	    	
-	    	    	var cntdwnObj = $('.countdown[data-bid-lotid="'+element.id+'"]');
+
+	    	    	var cntdwnObj = $('.countdown[id="timer-'+element.id+'"]');
 	    	    	var startDt = cntdwnObj.attr('data-startdate');
 	    	    	var endDt = cntdwnObj.attr('data-enddate');
 	    	    	
@@ -830,14 +835,21 @@ jQuery(window).on('load', function(){
 	    	    	var curbid = parseFloat(element.curbid);
 	    	    	var bidder = parseInt(element.bidder);
 	    	    	var endDT = element.endDT;
+	    	    	var bidStatus = element.bidStatus;
+	    	    	var nowDT = element.nowDT;
 	    	    	var endDTA = endDt;
 	    	    	
 	    	    	
-	    	    	console.log("amount from DB : "+amount + " - "+"lastAmount from DB : "+lastAmount+" - bidcnt from DB : "+bidcnt+ " endDT from DB : "+endDT);
+	    	    	console.log("amount from DB : "+amount + " - "+"lastAmount from DB : "+lastAmount+" - bidcnt from DB : "+bidcnt+ " endDT from DB : "+endDT+" = "+endDTA);
 	    	    	
 	    	    	//cntdwnObj.html("");
+	    	    	
 	    	    	if(endDT!=endDTA){
-	    	    		document.getElementById("countdown"+element.id).innerHTML = "<div class=\"countdown\" data-bid-lotid=\""+element.id+"\" id=\"timer-<%=auction.getId()%>\" data-startdate=\"<%=auction.getStart_date_time()%>\" data-enddate=\""+endDT+"\"></div>";
+	    	    		document.getElementById("countdown"+element.id).innerHTML = "<div class=\"countdown\" data-bid-lotid=\""+element.id+"\" id=\"timer-"+element.id+"\" data-startdate=\"<%=sdfTimer.format(auction.getStart_date_time())%>\" data-enddate=\""+endDT+"\"></div>";
+	    	    		
+	    	    		cntdwnObj.attr('data-enddate', endDT);
+	    	    		//cntdwnObj.html = "";
+	    	    	
 	    	    	}
 	    	    	
 	    	    	console.log(" -- ");
@@ -845,6 +857,7 @@ jQuery(window).on('load', function(){
 
 	    	    	$(document).ready(function(){
 	    	    		
+	    	    		setTimeout(function() {
 
 	    	    			try{
 	    	    				
@@ -856,7 +869,8 @@ jQuery(window).on('load', function(){
 	    	    					var eDate = $(this).data('enddate');
 	    	    					var startDate = new Date(sDate);
 	    	    					var endDate  = new Date(eDate);
-	    	    					var today = new Date();
+	    	    					console.log("startDate "+startDate);
+	    	    					var today = new Date(nowDT);
 	    	    					var targetDate;
 	    	    					  
 	    	    					if(today < startDate) {
@@ -877,7 +891,7 @@ jQuery(window).on('load', function(){
 	    	    				
 	    	    			}catch(e){}
 	    	    			
-	    	    			
+	    	    		}, 2000);
 	    	    				
 	    	    			});
 	    	    		
@@ -885,18 +899,38 @@ jQuery(window).on('load', function(){
 	    	    	
 	    	    	if(element.bid != lastAmount) {
 	    	    		
-	    	    		console.log("amount.toFixed(2) "+amount.toFixed(2));
+						console.log("amount.toFixed(2) "+amount.toFixed(2)+" bidder ==  "+bidder+ " parseInt(bidderId) "+parseInt(bidderId));
 	    	    		
-	    	    		document.getElementById("divAsking"+lot_id).innerHTML = "Asking Bid: "+numberWithCommas(amount.toFixed(2))+ ' <%=currency%>';
+	    	    		try{
+	    	    			if(document.getElementById("divAsking"+lot_id)!=null){
+			    	    		document.getElementById("divAsking"+lot_id).innerHTML = "Asking Bid: "+numberWithCommas(amount.toFixed(2))+ ' <%=currency%>';
+	    	    			}
+
+	    	    		}catch(e){
+	    	    			
+	    	    		}
 	    	    		
-	    	    		document.getElementById("divHighest"+lot_id).innerHTML = "Highest Bid: "+numberWithCommas(curbid.toFixed(2)) + ' <%=currency%>';
+	    	    		try{
+	    	    			if(document.getElementById("divHighest"+lot_id)!=null){
+		    	    			document.getElementById("divHighest"+lot_id).innerHTML = "Highest Bid: "+numberWithCommas(curbid.toFixed(2)) + ' <%=currency%>';
+	    	    			}
+	    	    		}catch(e){
+	    	    			
+	    	    		}
 	    	    		
-	    	    		document.getElementById("divBids"+lot_id).innerHTML = "Bids: "+bidcnt;
+	    	    		
+	    	    		try{
+	    	    			if(document.getElementById("divBids"+lot_id)!=null){
+		    	    			document.getElementById("divBids"+lot_id).innerHTML = "Bids: "+bidcnt;
+	    	    			}
+	    	    		}catch(e){
+	    	    			
+	    	    		}
 	    	    		
 	    	    		var labelHtml = "";
 	    	    		
-	    	    		if(bidder > 0 && bidder == parseInt(bidderId) && parseFloat(lastAmount) != amount){
-	    	    			labelHtml = 'YOU BID ' + numberWithCommas(amount.toFixed(2)) + ' <%=currency%>';
+	    	    		if(bidder > 0 && parseInt(bidder) == parseInt(bidderId) && parseFloat(lastAmount) != amount){
+	    	    			labelHtml = 'YOU BID ' + numberWithCommas(curbid.toFixed(2)) + ' <%=currency%>';
 			    	    	bidButton.html(labelHtml);		    	    	
 			    	    	//bidButton.fadeIn(3000).fadeOut(3000).fadeIn(2000).fadeOut(2000).fadeIn(1000);
 	    	    		}else{
@@ -904,7 +938,16 @@ jQuery(window).on('load', function(){
 			    	    	bidButton.attr("data-bid-amount",amount.toFixed(2));
 			    	    	bidButton.attr("onclick","submitPage('BID', '"+amount.toFixed(2)+"','"+lot_id+"','"+lid+"','qty_"+lid+"','')");
 			    	    	bidButton.html(labelHtml);		    	    	
-			    	    	//bidButton.fadeIn(3000).fadeOut(3000).fadeIn(2000).fadeOut(2000).fadeIn(1000);
+			    	    	bidButton.fadeIn(3000).fadeOut(2500).fadeIn(2000).fadeOut(1500).fadeIn(1000);
+	    	    		}
+
+	    	    		
+	    	    		if(bidStatus!="BID"){
+	    	    			labelHtml = bidStatus;
+			    	    	bidButton.attr("onclick","");
+			    	    	bidButton.html(labelHtml);	
+	    	    		}else{
+	    	    			
 	    	    		}
 
 		    	    	
@@ -915,8 +958,8 @@ jQuery(window).on('load', function(){
 	    	    });
 	        },
 	        dataType: "json",
-	        complete: setTimeout(function() {poll()}, 8000),
-	        timeout: 5000
+	        complete: setTimeout(function() {poll()}, 20000),
+	        timeout: 15000
 	    })
 	})();
 
@@ -927,6 +970,9 @@ jQuery(window).on('load', function(){
 
 
 $(document).ready(function(){
+	
+	setTimeout(function(){
+	
 try{
 	$('.countdown').each(function() {
 		var $this = $(this);
@@ -935,7 +981,7 @@ try{
 		var eDate = $(this).data('enddate');
 		var startDate = new Date(sDate);
 		var endDate  = new Date(eDate);
-		var today = new Date();
+		var today = new Date("<%=nowDT%>");
 		var targetDate;
 		  
 		if(today < startDate) {
@@ -954,7 +1000,7 @@ try{
 	});
 }catch(e){}
 	
-	
+	},3000);
 	
 	
 });
@@ -986,5 +1032,101 @@ try{
 </form>
 
 
+<script type='text/javascript'>
+
+$(document).ready(function(){
+	
+	
+  $("#frm").submit(function(event) {
+	  
+	    var doaction = $('input[name="doaction"]').val();
+	    
+	    if(doaction=='BID'){
+	    	
+
+	        /* stop form from submitting normally */
+	        event.preventDefault();
+
+	        /* get the action attribute from the <form action=""> element */
+	        var $form = $("#frm"),
+	            url = $form.attr('action');
+	        /*
+	        
+	        var amount = $('input[name="amount"]').val();
+	        var doaction = $('input[name="doaction"]').val();
+	        var doaction = $('input[name="doaction"]').val();
+	        var doaction = $('input[name="doaction"]').val();
+	        
+	        alert("url "+url+" doaction "+doaction);
+	        */
+	        
+	        var queryString = $('#frm').serialize();
+	        var bidderId = $('input[name="user-id"]').val();
+	        var lotId = $('input[name="lotId"]').val();
+	        /*
+	        	$('input[name="manager"]').val("bid-manager");
+		$('input[name="doaction"]').val(action);
+		$('input[name="amount"]').val(value);
+		$('input[name="lotId"]').val(lot);
+		$('input[name="lotId_wip"]').val(id);
+		$('input[name="unit_qty"]').val(unit_qty);
+		$('input[name="note"]').val(note);
+	        
+	        */
+	    	var bidButton = $('.autorefresh[data-bid-lotid="'+lotId+'"]');
+			bidButton.attr('onclick',"");
+			var labelHtml = 'PROCESSING BID.';
+			bidButton.html(labelHtml);
+	        
+			console.log(url+"?"+queryString);
+			
+	        //alert(url+"?"+queryString);
+	        //alert();
+	        /* Send the data using post with element id name and name2*/
+	        var posting = $.post( url+"?"+queryString, { manager: "bid-manager", isajax : true, action_source:"auction-bid-details" } );
+	        
+	        //var posting = $.post( url, { manager: "bid-manager" } );
+
+	        /* Alerts the results */
+	        posting.done(function( data ) {
+	        	//setTimeout(function(){
+	        	
+		    	var bidButton = $('.autorefresh[data-bid-lotid="'+data.lot_id+'"]');
+		    	bidButton.attr('data-bid-bidderId',data.bidder_id);
+	    		bidButton.attr('data-bid-amount',data.amount_bid);
+	    		bidButton.attr('onclick',"");
+	    		var labelHtml = 'PROCESSING BID..';
+	    		bidButton.html(labelHtml);
+		    	
+		    	
+		    	//alert(parseInt(data.bidder_id) + "  " +parseInt(bidderId) + " - "+data.amount_bid);
+		    	if(parseInt(data.bidder_id)==parseInt(bidderId)){
+		    		bidButton.attr('data-bid-amount',data.amount_bid);
+		    		bidButton.attr('onclick',"");
+		    		var labelHtml = 'PROCESSING BID...';
+		    		bidButton.html(labelHtml);
+		    		//var labelHtml = 'YOU BID ' + data.amount_bid.toFixed(2) + ' <//%=currency%>';
+		    		//bidButton.html(labelHtml);
+		    		
+		    	}else{
+		    		//alert("iba");
+		    		bidButton.attr('data-bid-amount',data.amount_bid_next);
+		    	}
+		    	
+	        	//}
+		    	//, 3000);
+	        	
+	          //alert('success');
+	        });
+	    	
+	    	
+	    }else{
+	    	
+	    }
+	    
+      });
+
+});
+</script>
 </body>
 </html>

@@ -96,7 +96,7 @@ public class AuctionUserWatchlistDao extends DBConnection {
 	            }
 	        }
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
 		}
 		return affectedRows;
@@ -111,7 +111,7 @@ public class AuctionUserWatchlistDao extends DBConnection {
 		sb.append(" AND auction_id=" + auction_id);
 		Connection conn = null;
 		try {
-			conn = getConnection6();
+			conn = getConnection10();
 
 			java.sql.Statement stmt = conn.createStatement();
 
@@ -119,7 +119,7 @@ public class AuctionUserWatchlistDao extends DBConnection {
 			
 			ResultSet rs = stmt.executeQuery(sb.toString());
 
-			Lot l = null;
+			//Lot l = null;
 
 			while(rs.next()){
 				lotids.add(rs.getBigDecimal("lot_id"));

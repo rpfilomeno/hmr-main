@@ -263,7 +263,7 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    		  
 	    	  }else if ("btExtendTime".equals(threadName) && !"".equals(lot_id)) {
 	    		  
-	    		        Thread.sleep(20000);
+	    		        Thread.sleep(3000);
 	    		    	//String lot_id_str = args[0];
 	    		    	BigDecimal lot_id_ = new BigDecimal(lot_id);
 	    		    	AuctionDao aDao = new AuctionDao();
@@ -311,17 +311,19 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    		        			
 	    		        			Calendar cal1 = Calendar.getInstance();
 	    		        			cal1.setTime(p_end_date_time);
-	    		        			cal1.add(Calendar.MINUTE, -2);
+	    		        			cal1.add(Calendar.MINUTE, -1);
 	    		        			System.out.println("1 reference date: "+cal1.getTime());
 
 	    		        			Calendar cal2 = Calendar.getInstance();
 	    		        			cal2.setTime(p_end_date_time);
-	    		        			cal2.add(Calendar.MINUTE, 2);
+	    		        			//cal2.add(Calendar.MINUTE, 1);
 	    		        			System.out.println("2 reference date: "+cal2.getTime());
 	    		        			
 	    		        			Calendar cal3 = Calendar.getInstance();
 	    		        			cal3.setTime(dtNow);
 	    		        			cal3.add(Calendar.MINUTE, 1);
+	    		        			//cal3.add(Calendar.SECOND, -dtNow.getSeconds());
+	    		        			
 	    		        			System.out.println("3 reference date: "+cal3.getTime());
 	    		        			
 	    		        			if(createdBTCal.after(cal1) && createdBTCal.before(cal2)){
@@ -334,8 +336,7 @@ public class RunnableBiddingTransactionManager implements Runnable {
 	    		        			    	Integer user_id = Integer.valueOf("1");
 	    		        			    	
 	    		        			    	//BigDecimal user_id = new BigDecimal(1);
-	    		        			    	
-	    		        			    	
+
 	    		        			    	lDao.updateLot_End_date_time_OnBatchBiddingExtend(end_date_time, user_id, l.getId());
 	    		        			    	
 	    		        			    	btDao.updateBiddingTransaction_is_extended_OnBatchBiddingExtend(1, user_id, bt.getId());

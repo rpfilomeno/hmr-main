@@ -6,7 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 //import java.io.OutputStream;
-
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 
 import java.sql.Timestamp;
@@ -19,6 +20,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import org.json.simple.JSONObject;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.json.simple.JSONObject;
 
 import hmr.com.manager.AuctionManager;
 import hmr.com.manager.AuctionRangeManager;
@@ -65,6 +68,9 @@ public class Bid extends HttpServlet {
 	String actionGet = null;
 	String userIdGet = null;
 	String vekGet = null;
+	String GAction = null;
+	String GActionSource = null;
+	Boolean isAjax = null;
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -185,7 +191,7 @@ public class Bid extends HttpServlet {
 	            req.getSession().setAttribute("ADMIN_EMAIL_ADD_CC", ADMIN_EMAIL_ADD_CC);
 	            req.getSession().setAttribute("SERVER_DIRECTORY_HMR_IMAGES", SERVER_DIRECTORY_HMR_IMAGES);
 	            
-	            
+	            /*
 	            System.out.println("HOST_NAME = "+HOST_NAME);
 	            System.out.println("SERVER_DIRECTORY = "+SERVER_DIRECTORY);
 	            System.out.println("PROTOCOL = "+PROTOCOL);
@@ -196,7 +202,7 @@ public class Bid extends HttpServlet {
 	            System.out.println("ADMIN_MOBILE_NO = "+ADMIN_MOBILE_NO);
 	            System.out.println("ADMIN_EMAIL_ADD_CC = "+ADMIN_EMAIL_ADD_CC);
 	            System.out.println("SERVER_DIRECTORY_HMR_IMAGES = "+SERVER_DIRECTORY_HMR_IMAGES);
-  
+  */
 
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
@@ -216,6 +222,8 @@ public class Bid extends HttpServlet {
 		String action_id = req.getParameter("action_id")!=null ? (String)req.getParameter("action_id") : "";
 		List<FileItem> files = new ArrayList<FileItem>();
 		
+		
+		Boolean isajax = req.getParameter("isajax")!=null ? Boolean.valueOf(req.getParameter("isajax")) : false;
 		
 		
 		String page = null;
@@ -835,6 +843,12 @@ public class Bid extends HttpServlet {
 				String reqamount = req.getParameter("amount")!=null ? (String)req.getParameter("amount") : "";
 				String requnitqty = req.getParameter("unit_qty")!=null ? (String)req.getParameter("unit_qty") : "0";
 				String note = req.getParameter("note")!=null ? (String)req.getParameter("note") : "";
+				GActionSource = req.getParameter("action_source")!=null ? (String)req.getParameter("action_source") : "";
+				
+				GAction = doAction;
+				
+				
+				
 				
 				if(reqlotId!="" && reqamount!="") {
 					UserDao ud = new UserDao();
@@ -863,6 +877,10 @@ public class Bid extends HttpServlet {
 						boolean isApproved = btMngr.insertBiddingTransactionMakeBid(lotId, amount, u.getId(), unit_qty);
 						
 						if(isApproved){
+							
+							Lot lot = lMngr.getLotByLotId(new BigDecimal(lotId));
+							
+							req.setAttribute("lot", lot);
 							req.setAttribute("msgbgcol", "green");
 							req.setAttribute("msgInfo", "Bid submitted.");
 						}else{
@@ -1172,6 +1190,11 @@ public class Bid extends HttpServlet {
 						req.setAttribute("auction", a);
 						req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder);
 						
+						
+						Timestamp tsNow = new Timestamp(System.currentTimeMillis());
+						
+						req.setAttribute("tsNow", tsNow);
+						
 						page = "lot-bid-details.jsp";
 					}
 				}
@@ -1454,19 +1477,95 @@ public class Bid extends HttpServlet {
 			page = "index.jsp";
 		}
 		
-		try {
-    		Pattern regex = Pattern.compile("^redirect://(.*)");
-    		Matcher regexMatcher = regex.matcher(page);
-    		if (regexMatcher.find()) {
-    			page = regexMatcher.group(1);
-    			res.sendRedirect(page);
-    		} else {
-    			RequestDispatcher rd = req.getRequestDispatcher(page);
-    			rd.forward(req, res);
-    		}
-    	} catch (PatternSyntaxException ex) {
-    		// Syntax error in the regular expression
-    	}
+		
+		if("BID".equals(GAction) && GActionSource!=null && "bid-manager".equals(manager) && isajax){
+
+			
+			if("lot-bid-details".equals(GActionSource)){
+
+				JSONObject jsonObj = new JSONObject();
+				StringWriter sout = new StringWriter();
+
+					try {
+						
+						
+						Lot lot = req.getAttribute("lot")!=null ? (Lot)req.getAttribute("lot") : null;
+				        //LOVManager lovMngr = new LOVManager();
+				        //HashMap<Integer,LOV> lovHM_rate_unit = (HashMap<Integer,LOV>)lovMngr.getLOVHM("RATE-UNIT");
+				        jsonObj.put("lot_id", lot.getLot_id());
+				        jsonObj.put("amount_bid", lot.getAmount_bid());
+				        jsonObj.put("amount_bid_next", lot.getAmount_bid_next());
+				        jsonObj.put("bidder_id", lot.getBidder_id());
+				        
+						jsonObj.writeJSONString(sout);
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+			    //System.out.println(sout.toString());
+				res.setContentType("application/json");
+				PrintWriter out = res.getWriter();
+				out.print(sout.toString());
+				out.flush();
+			}else if("auction-bid-details".equals(GActionSource)){
+				
+				
+				JSONObject jsonObj = new JSONObject();
+				StringWriter sout = new StringWriter();
+
+					try {
+						
+						
+						Lot lot = req.getAttribute("lot")!=null ? (Lot)req.getAttribute("lot") : null;
+				        //LOVManager lovMngr = new LOVManager();
+				        //HashMap<Integer,LOV> lovHM_rate_unit = (HashMap<Integer,LOV>)lovMngr.getLOVHM("RATE-UNIT");
+				        jsonObj.put("lot_id", lot.getLot_id());
+				        jsonObj.put("amount_bid", lot.getAmount_bid());
+				        jsonObj.put("amount_bid_next", lot.getAmount_bid_next());
+				        jsonObj.put("bidder_id", lot.getBidder_id());
+				        
+						jsonObj.writeJSONString(sout);
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+			    //System.out.println(sout.toString());
+				res.setContentType("application/json");
+				PrintWriter out = res.getWriter();
+				out.print(sout.toString());
+				out.flush();
+				
+			}
+			
+		}else{
+
+
+			try {
+	    		Pattern regex = Pattern.compile("^redirect://(.*)");
+	    		Matcher regexMatcher = regex.matcher(page);
+	    		if (regexMatcher.find()) {
+	    			page = regexMatcher.group(1);
+	    			res.sendRedirect(page);
+	    		} else {
+	    			RequestDispatcher rd = req.getRequestDispatcher(page);
+	    			rd.forward(req, res);
+	    		}
+	    	} catch (PatternSyntaxException ex) {
+	    		// Syntax error in the regular expression
+	    	}
+			
+			
+			
+		}
+		
+		
+		
+		
+		
 		
 		System.out.println("");
 		System.out.println("Controller - end");

@@ -1,14 +1,25 @@
-<%@ page import="hmr.com.bean.Lot"
+<%@ page import="hmr.com.bean.Auction"
+         import="hmr.com.bean.Lot"
 		 import="java.math.BigDecimal"
 		 import="java.util.List"
+		 import="java.sql.Timestamp"
+		 import="java.text.SimpleDateFormat" 
   
 %>
 <%
 List<Lot> lList = request.getAttribute("lList")!=null ? (List<Lot>)request.getAttribute("lList") : null;
+Auction auction = request.getAttribute("auction")!=null ? (Auction) request.getAttribute("auction") : null;
+Timestamp tsNow = request.getAttribute("tsNow")!=null ? (Timestamp) request.getAttribute("tsNow") : new Timestamp(System.currentTimeMillis());
+
+
 Integer lotSize = lList.size();
 Integer i = 0;
 String bid = "0.00";
 String curbid = "0.00";
+String bidStatus = "";
+SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+String endDT = "";
+String nowDT = "";
 %>
 
 [
@@ -27,6 +38,43 @@ String curbid = "0.00";
   		}else if(l.getAmount_bid().doubleValue() == 0){
   			curbid = String.format( "%.2f",l.getStarting_bid_amount().doubleValue());
   		}
+  		
+  		if(l.getEnd_date_time()!=null){
+  			endDT = sdfTimer.format(l.getEnd_date_time());
+  		}
+  		
+  		nowDT = sdfTimer.format(tsNow);
+  		
+  		if(l.getEnd_date_time()!=null && l.getEnd_date_time().after(tsNow) && l.getIs_bid() > 0){
+  			bidStatus = "BID";
+  		}else if(l.getEnd_date_time()==null && auction.getEnd_date_time().after(tsNow) && l.getIs_bid() > 0){
+  			bidStatus = "BID";
+  		}else if(l.getEnd_date_time()!=null && l.getEnd_date_time().before(tsNow) && l.getIs_bid() > 0){
+  		//(lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis())) 
+  			System.out.println("aaaaaaaaaaaaa "+l.getEnd_date_time());
+  				bidStatus = "BID";
+  			if(l.getBid_count() > 0){
+  				bidStatus = "SOLD";
+  			}else if(l.getBid_count() == 0){
+  				bidStatus = "NO SALE";
+  			}
+  		}else if(l.getEnd_date_time()==null && auction.getEnd_date_time().before(tsNow) && l.getIs_bid() > 0){
+  			System.out.println("asdf");
+  			
+  			bidStatus = "BID";
+  			if(l.getBid_count() > 0){
+  				bidStatus = "SOLD";
+  			}else if(l.getBid_count() == 0){
+  				bidStatus = "NO SALE";
+  			}
+  			if(auction.getAuction_id().equals(new BigDecimal("797")) || 
+  					auction.getAuction_id().equals(new BigDecimal("804"))){ 
+  				bidStatus = "FOR VALIDATION";
+  			}else{
+  				
+  			}
+  			
+  		}
   	%>
 	{
 	  "id": "<%=l.getLot_id() %>",
@@ -34,8 +82,10 @@ String curbid = "0.00";
       "bid": "<%=bid %>",
       "bidcnt": "<%=l.getBid_count() %>",
       "curbid": "<%=curbid%>",
-      "bidder": "<%=l.getBidder_id()%>"
-      
+      "bidder": "<%=l.getBidder_id()%>",
+      "endDT": "<%=endDT%>",
+      "bidStatus" : "<%=bidStatus%>",
+      "nowDT" : "<%=nowDT%>"
 	}<% if(i < lotSize){ %>,<% } %>
     <% } %>
 ]

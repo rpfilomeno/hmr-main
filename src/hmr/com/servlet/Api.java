@@ -34,15 +34,16 @@ public class Api extends HttpServlet {
 		String auctionId = req.getParameter("auctionId")!=null ? (String)req.getParameter("auctionId") : "";
 		String lotId = req.getParameter("lotId")!=null ? (String)req.getParameter("lotId") : "";
 		String UserId = req.getParameter("UserId")!=null ? (String)req.getParameter("UserId") : "";
-		
-		
 		Integer user_id = !"".equals(UserId) ?  Integer.parseInt(UserId) : null;
+		Timestamp tsNow = new Timestamp(System.currentTimeMillis());
+		
 		
 		AuctionManager aMngr = new AuctionManager();
 		LotManager lMngr = new LotManager();
 		BiddingTransactionManager btMngr = new BiddingTransactionManager();
 		AuctionUserBiddingMaxManager aubmMngr = new AuctionUserBiddingMaxManager();
 		
+		Auction a = null;
 		//List<Lot> lotList = lMngr.getActiveLotListByAuctionId(new BigDecimal(auctionId) );
 		
 		
@@ -64,17 +65,19 @@ public class Api extends HttpServlet {
 			}
 		}
 		
-		
+		System.out.println("lotList "+lotList);
 		System.out.println("API auctionId "+auctionId);
 		System.out.println("API lotId "+lotId);
+		System.out.println("API user_id "+user_id);
+		//System.out.println("API l.getAuction_id() "+l.getAuction_id());
 
 		
-		if(!"".equals(lotId) && user_id!=null){
+		if(!"".equals(lotId) && user_id!=null && l!=null && l.getAuction_id()!=null){
 			
 			auctionId = String.valueOf(l.getAuction_id());
 			
 			HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(new BigDecimal(auctionId));
-			Auction a = aMngr.getAuctionByAuctionId(new BigDecimal(auctionId));
+			a = aMngr.getAuctionByAuctionId(new BigDecimal(auctionId));
 			
 
 			//if(hmLotId.get(lot.getLot_id())==null){
@@ -93,7 +96,7 @@ public class Api extends HttpServlet {
 			}
 			
 			//check if the end time is expired
-			if(delta_lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+			if(delta_lot.getEnd_date_time().before(tsNow)) {
 				//continue; //don't update
 			}
 			
@@ -117,11 +120,11 @@ public class Api extends HttpServlet {
 			lList.add(delta_lot);
 			
 			
-		}else if(!"".equals(auctionId) && user_id!=null){
+		}else if(!"".equals(auctionId) && user_id!=null && lotList!=null){
 			
 			//HashMap<BigDecimal,BiddingTransaction> btHM = btMngr.getLatestBiddingTransactionHMByAuctionIdSetLotId(new BigDecimal(auctionId));
 			HashMap<String,BiddingTransaction> btLotIdUserIdHM = btMngr.getBiddingTransactionHMByAuctionIdSetLotIdUserId(new BigDecimal(auctionId));
-			Auction a = aMngr.getAuctionByAuctionId(new BigDecimal(auctionId));
+			a = aMngr.getAuctionByAuctionId(new BigDecimal(auctionId));
 			
 			//System.out.println("user_id "+user_id);
 			
@@ -145,7 +148,7 @@ public class Api extends HttpServlet {
 				}
 				
 				//check if the end time is expired
-				if(delta_lot.getEnd_date_time().before(new Timestamp(System.currentTimeMillis()))) {
+				if(delta_lot.getEnd_date_time().before(tsNow)) {
 					continue; //don't update
 				}
 				
@@ -172,11 +175,19 @@ public class Api extends HttpServlet {
 			}//loop
 			
 		}
+		
+		//AuctionManager aMngr = new AuctionManager();
+		
+		
 
 		
 		System.out.println("API lList "+lList.size());
 		
 		req.setAttribute("lList", lList);
+		
+		req.setAttribute("auction", a);
+		
+		req.setAttribute("tsNow", tsNow);
 		
 		
 		res.setContentType("application/json");
