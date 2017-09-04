@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -17,8 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import hmr.com.util.DBConnection;
+import hmr.com.bean.Auction;
 import hmr.com.bean.BiddingTransaction;
 import hmr.com.bean.Lot;
+import hmr.com.manager.AuctionManager;
 import hmr.com.manager.LotManager;
 
 public class BiddingTransactionDao extends DBConnection {
@@ -679,55 +682,73 @@ public class BiddingTransactionDao extends DBConnection {
 		BigDecimal auction_id = new BigDecimal("0");
 		
 		Lot lot = null;
-				
+		
+		Auction auction = null;
+		
+		Timestamp tsNow = new Timestamp(new Date().getTime());
+		
+		Timestamp tsEnd = null;
 		try {
 		
 			LotManager lMngr = new LotManager();
 			lot = lMngr.getLotByLotId(new BigDecimal(lotId));
 			auction_id = lot.getAuction_id();
-		
+			AuctionManager aMngr = new AuctionManager();
+			auction = aMngr.getAuctionByAuctionId(auction_id);
+			System.out.println("auction "+auction);
+			
+			
+			if(lot.getEnd_date_time()==null){
+				tsEnd = new Timestamp(auction.getEnd_date_time().getTime());
+			}else{
+				tsEnd = new Timestamp(lot.getEnd_date_time().getTime());
+			}
+			
+			
+			System.out.println("tsEnd / tsNow "+tsEnd+ " "+tsNow);
 		} catch(Exception ex){
 			
 		}
 		
 		int i = 0;
 		
-		if(lot.getAmount_bid().doubleValue() < amountBid.doubleValue() && (lot.getBidder_id() != userId) ){
-
-			Connection conn = null;
-			
-			DBConnection dbConn = null;
-			
-			Statement stmt = null;
-			
-			try {
-	
-				dbConn = new DBConnection();
+		if(!lot.getBidder_id().equals(userId) && tsEnd.after(tsNow) ){
+			if(lot.getAmount_bid().doubleValue() < amountBid.doubleValue()){
+				Connection conn = null;
 				
-				conn = dbConn.getConnection3();
-	
-				stmt = conn.createStatement();
+				DBConnection dbConn = null;
 				
-				String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`,`amount_offer`, `action_taken`, `user_id`, `qty`, `date_created`,`note_offer`,`auction_id` ) "+
-						"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+amountOffer.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"','"+ qty.toString() +"',NOW(),'"+offerNote+"', '"+auction_id.toString()+"');";
-				i = stmt.executeUpdate(Sql);
+				Statement stmt = null;
 				
-				System.out.println("Sql "+Sql);
-				
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			} finally {
-				
-				/*
-				if (conn != null) {
-					try {
-					conn.close();
-					} catch (SQLException e) {}
-				}
-				
-				*/
-			} 
+				try {
 		
+					dbConn = new DBConnection();
+					
+					conn = dbConn.getConnection3();
+		
+					stmt = conn.createStatement();
+					
+					String Sql ="INSERT INTO `bidding_transaction` (`lot_id`, `amount_bid`, `amount_buy`,`amount_offer`, `action_taken`, `user_id`, `qty`, `date_created`,`note_offer`,`auction_id` ) "+
+							"VALUES ('"+lotId.toString()+"', '"+amountBid.toString()+"', '"+amountBuy.toString()+"', '"+amountOffer.toString()+"', '"+actionTaken.toString()+"', '"+userId.toString()+"','"+ qty.toString() +"',NOW(),'"+offerNote+"', '"+auction_id.toString()+"');";
+					i = stmt.executeUpdate(Sql);
+					
+					System.out.println("Sql "+Sql);
+					
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				} finally {
+					
+					/*
+					if (conn != null) {
+						try {
+						conn.close();
+						} catch (SQLException e) {}
+					}
+					
+					*/
+				} 
+			
+			}
 		}
 		return i;
 	}

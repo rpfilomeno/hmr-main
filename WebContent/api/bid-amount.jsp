@@ -2,6 +2,7 @@
          import="hmr.com.bean.Lot"
 		 import="java.math.BigDecimal"
 		 import="java.util.List"
+		 import="java.util.Date"
 		 import="java.sql.Timestamp"
 		 import="java.text.SimpleDateFormat" 
   
@@ -9,8 +10,11 @@
 <%
 List<Lot> lList = request.getAttribute("lList")!=null ? (List<Lot>)request.getAttribute("lList") : null;
 Auction auction = request.getAttribute("auction")!=null ? (Auction) request.getAttribute("auction") : null;
-Timestamp tsNow = request.getAttribute("tsNow")!=null ? (Timestamp) request.getAttribute("tsNow") : new Timestamp(System.currentTimeMillis());
+Timestamp tsNow = request.getAttribute("tsNow")!=null ? (Timestamp) request.getAttribute("tsNow") : null;
 
+tsNow = new Timestamp(new Date().getTime());
+
+System.out.println("PAGE tsNow : "+tsNow);
 
 Integer lotSize = lList.size();
 Integer i = 0;
@@ -20,6 +24,8 @@ String bidStatus = "";
 SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 String endDT = "";
 String nowDT = "";
+
+nowDT = sdfTimer.format(new Date().getTime());
 %>
 
 [
@@ -39,11 +45,16 @@ String nowDT = "";
   			curbid = String.format( "%.2f",l.getStarting_bid_amount().doubleValue());
   		}
   		
+  		
+  		System.out.println("Bid Am "+l.getEnd_date_time());
+  		
   		if(l.getEnd_date_time()!=null){
   			endDT = sdfTimer.format(l.getEnd_date_time());
+  		}else{
+  			endDT = sdfTimer.format(auction.getEnd_date_time());
   		}
+  		System.out.println("endDT "+endDT);
   		
-  		nowDT = sdfTimer.format(tsNow);
   		
   		if(l.getEnd_date_time()!=null && l.getEnd_date_time().after(tsNow) && l.getIs_bid() > 0){
   			bidStatus = "BID";
@@ -77,6 +88,7 @@ String nowDT = "";
   		}
   	%>
 	{
+	
 	  "id": "<%=l.getLot_id() %>",
       "name": "<%=l.getLot_name() %>",
       "bid": "<%=bid %>",
@@ -86,7 +98,12 @@ String nowDT = "";
       "endDT": "<%=endDT%>",
       "bidStatus" : "<%=bidStatus%>",
       "nowDT" : "<%=nowDT%>"
+      
+      
+      
 	}<% if(i < lotSize){ %>,<% } %>
+	
+	
     <% } %>
 ]
 

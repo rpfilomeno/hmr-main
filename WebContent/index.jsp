@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ page import="hmr.com.bean.Auction"
 		 import="java.util.List"  
+		 import="java.util.Date"  
 		 import="java.text.SimpleDateFormat"
 		 import="java.math.BigDecimal"
 		 import="java.sql.Timestamp"
@@ -42,8 +43,14 @@
 	
 	List<Auction> activeLiveAuctionList = request.getAttribute("ACTIVE-LIVE-AUCTION-LIST")!=null ? (List<Auction>)request.getAttribute("ACTIVE-LIVE-AUCTION-LIST") : (List<Auction>)request.getSession().getAttribute("ACTIVE-LIVE-AUCTION-LIST");
 	
+
+	
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm");
-	SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+	SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	
+	Timestamp tsNow = request.getAttribute("tsNow")!=null ? (Timestamp)request.getAttribute("tsNow") : new Timestamp(new Date().getTime());
+	
+	String nowDT = sdfTimer.format(tsNow);
 	
 %>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -127,7 +134,7 @@
 														<div class="card-snippet-wrap">
 															Location: <%=activeOnlineAuction.getLocation()%>
 														</div>
-														<% if(activeOnlineAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+														<% if(activeOnlineAuction.getStart_date_time().after(tsNow)) {  %>
 															<div class="card-snippet-wrap">
 																Start: <%=sdf.format(activeOnlineAuction.getStart_date_time()) %>
 															</div>
@@ -137,13 +144,21 @@
 															<div class="card-snippet-wrap">
 																Upcoming Bidding
 															</div>
+															
 															<div class="card-snippet-wrap">
+															<%--
 																<div class="countdown" id="timer-<%=activeOnlineAuction.getId() %>" 
-																	data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time())%>" 
-																	data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>">Starts
+																	data-startdate="</%=sdfTimer.format(activeOnlineAuction.getStart_date_time())%>" 
+																	data-enddate="</%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>">Starts
 																</div>
+																--%>
+														<div id="countdowntimer"><span id="timer-<%=activeOnlineAuction.getId() %>"  
+														data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time())%>" 
+														data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>"><span></div>
+																
+																
 															</div>
-														<% }else if (activeOnlineAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+														<% }else if (activeOnlineAuction.getEnd_date_time().after(tsNow)) { %>
 															<div class="card-snippet-wrap">
 																Closing: <%=sdf.format(activeOnlineAuction.getEnd_date_time()) %>
 															</div>
@@ -151,10 +166,19 @@
 																Accepting Bids
 															</div>
 															<div class="card-snippet-wrap">
+															
+															<%--
 																<div class="countdown" id="timer-<%=activeOnlineAuction.getId()%>" 
 																	data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time()) %>" 
 																	data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>">
 																</div>
+																--%>
+																
+														<div id="countdowntimer"><span id="timer-<%=activeOnlineAuction.getId() %>"  
+														data-startdate="<%=sdfTimer.format(activeOnlineAuction.getStart_date_time())%>" 
+														data-enddate="<%=sdfTimer.format(activeOnlineAuction.getEnd_date_time()) %>"><span></div>
+																
+																
 															</div>
 														<% } else { %>
 															<div class="card-snippet-wrap">
@@ -195,7 +219,7 @@
 															<%=activeNegotiatedAuction.getLocation()%>
 														</div>
 														
-														<% if(activeNegotiatedAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+														<% if(activeNegotiatedAuction.getStart_date_time().after(tsNow)) {  %>
 															<div class="card-snippet-wrap">
 																Start: <%=sdf.format(activeNegotiatedAuction.getStart_date_time()) %>
 															</div>
@@ -203,13 +227,22 @@
 																Upcoming Bidding
 															</div>
 															<div class="card-snippet-wrap">
+															
+															<%--
 																<div class="countdown" id="timer-<%=activeNegotiatedAuction.getId() %>" 
 																	data-startdate="<%=sdfTimer.format(activeNegotiatedAuction.getStart_date_time()) %>" 
 																	data-enddate="<%=sdfTimer.format(activeNegotiatedAuction.getEnd_date_time()) %>">
 																</div>
+																--%>
+																
+																														<div id="countdowntimer"><span id="timer-<%=activeNegotiatedAuction.getId() %>"  
+														data-startdate="<%=sdfTimer.format(activeNegotiatedAuction.getStart_date_time())%>" 
+														data-enddate="<%=sdfTimer.format(activeNegotiatedAuction.getEnd_date_time()) %>"><span></div>
+																
+																
 															</div>
 																
-														<% }else if (activeNegotiatedAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+														<% }else if (activeNegotiatedAuction.getEnd_date_time().after(tsNow)) { %>
 															<div class="card-snippet-wrap">
 																Closing: <%=sdf.format(activeNegotiatedAuction.getEnd_date_time()) %>
 															</div>
@@ -217,11 +250,19 @@
 																Accepting Bids
 															</div>
 															<div class="card-snippet-wrap">
+															
+															<%--
 																<div class="countdown" id="timer-<%=activeNegotiatedAuction.getId() %>" 
 																	data-startdate="<%=sdfTimer.format(activeNegotiatedAuction.getStart_date_time()) %>" 
 																	data-enddate="<%=sdfTimer.format(activeNegotiatedAuction.getEnd_date_time()) %>">
 																</div>
+																--%>
+																
+<div id="countdowntimer"><span id="timer-<%=activeNegotiatedAuction.getId() %>"  
+														data-startdate="<%=sdfTimer.format(activeNegotiatedAuction.getStart_date_time())%>" 
+														data-enddate="<%=sdfTimer.format(activeNegotiatedAuction.getEnd_date_time()) %>"><span></div>
 															</div>
+															
 														<% } else { %>
 															<div class="card-snippet-wrap">
 																Completed
@@ -261,7 +302,7 @@
 															<%=activeLiveAuction.getLocation()%>
 														</div>
 														
-														<% if(activeLiveAuction.getStart_date_time().after(new Timestamp(System.currentTimeMillis()))) {  %>
+														<% if(activeLiveAuction.getStart_date_time().after(tsNow)) {  %>
 															<div class="card-snippet-wrap">
 																Start: <%=sdf.format(activeLiveAuction.getStart_date_time()) %>
 															</div>
@@ -269,12 +310,21 @@
 																Upcoming Bidding
 															</div>
 															<div class="card-snippet-wrap">
+																<%--
 																<div class="countdown" id="timer-<%=activeLiveAuction.getId() %>" 
 																	data-startdate="<%=sdfTimer.format(activeLiveAuction.getStart_date_time()) %>" 
 																	data-enddate="<%=sdfTimer.format(activeLiveAuction.getEnd_date_time()) %>">
 																</div>
+																
+																--%>
+																<div id="countdowntimer"><span id="timer-<%=activeLiveAuction.getId() %>"  
+														data-startdate="<%=sdfTimer.format(activeLiveAuction.getStart_date_time())%>" 
+														data-enddate="<%=sdfTimer.format(activeLiveAuction.getEnd_date_time()) %>"><span></div>
 															</div>
-														<% }else if (activeLiveAuction.getEnd_date_time().after(new Timestamp(System.currentTimeMillis()))) { %>
+																
+																
+															</div>
+														<% }else if (activeLiveAuction.getEnd_date_time().after(tsNow)) { %>
 															<div class="card-snippet-wrap">
 																Closing: <%=sdf.format(activeLiveAuction.getEnd_date_time()) %>
 															</div>
@@ -282,10 +332,19 @@
 																Accepting Bids
 															</div>
 															<div class="card-snippet-wrap">
+																<%--
 																<div class="countdown" id="timer-<%=activeLiveAuction.getId() %>" 
 																	data-startdate="<%=sdfTimer.format(activeLiveAuction.getStart_date_time()) %>" 
 																	data-enddate="<%=sdfTimer.format(activeLiveAuction.getEnd_date_time()) %>">
 																</div>
+																--%>
+																
+													<div id="countdowntimer"><span id="timer-<%=activeLiveAuction.getId() %>"  
+														data-startdate="<%=sdfTimer.format(activeLiveAuction.getStart_date_time())%>" 
+														data-enddate="<%=sdfTimer.format(activeLiveAuction.getEnd_date_time()) %>"><span></div>
+															</div>
+																
+																
 															</div>
 														<% } else { %>
 															<div class="card-snippet-wrap">
@@ -363,6 +422,115 @@ $(document).ready(function(){
 	showAlert(msgInfo, msgbgcol);
 	<%}%>
 	
+	
+	
+	<%for(Auction a : activeOnlineAuctionList) {%>	
+	$(function(){
+
+		var date1 = new Date("<%=nowDT%>");
+		var date2 = new Date("<%=a.getEnd_date_time()%>");
+		var timeDiff = date2.getTime() - date1.getTime();
+		var diffDays = timeDiff / (1000 * 3600 * 24); 
+		//alert(diffDays);
+		
+		var disRegPre = "Ends";
+		
+		<% if(a.getStart_date_time().after(tsNow)) {  %>
+		    disRegPre = "Starts"
+		<%}%>
+		
+		console.log("date1 "+date1+" date2 "+date2+" = "+diffDays);
+		
+		if(parseFloat(diffDays) >= 1){
+			dispReg = disRegPre + " $1<sup>days</sup> $2:$3:$4";
+		}else{
+			dispReg = disRegPre + " $2:$3:$4";
+		}
+	
+		$("#timer-<%=a.getId()%>").countdowntimer({
+	                startDate : "<%=nowDT%>" , 
+	                dateAndTime : "<%=a.getEnd_date_time()%>",
+	                regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+	                regexpReplaceWith: dispReg
+		});
+	});
+
+	//},10000);
+	
+	<% } %>
+	
+	<%for(Auction a : activeNegotiatedAuctionList) {%>	
+	$(function(){
+
+		var date1 = new Date("<%=nowDT%>");
+		var date2 = new Date("<%=a.getEnd_date_time()%>");
+		var timeDiff = date2.getTime() - date1.getTime();
+		var diffDays = timeDiff / (1000 * 3600 * 24); 
+		//alert(diffDays);
+		
+		var disRegPre = "Ends";
+		
+		<% if(a.getStart_date_time().after(tsNow)) {  %>
+		    disRegPre = "Starts"
+		<%}%>
+		
+		console.log("date1 "+date1+" date2 "+date2+" = "+diffDays);
+		
+		if(parseFloat(diffDays) >= 1){
+			dispReg = disRegPre + " $1<sup>days</sup> $2:$3:$4";
+		}else{
+			dispReg = disRegPre + " $2:$3:$4";
+		}
+	
+		$("#timer-<%=a.getId()%>").countdowntimer({
+	                startDate : "<%=nowDT%>" , 
+	                dateAndTime : "<%=a.getEnd_date_time()%>",
+	                regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+	                regexpReplaceWith: dispReg
+		});
+	});
+
+	//},10000);
+	
+	<% } %>
+	
+	<%for(Auction a : activeLiveAuctionList) {%>	
+	$(function(){
+
+		var date1 = new Date("<%=nowDT%>");
+		var date2 = new Date("<%=a.getEnd_date_time()%>");
+		var timeDiff = date2.getTime() - date1.getTime();
+		var diffDays = timeDiff / (1000 * 3600 * 24); 
+		//alert(diffDays);
+		
+		var disRegPre = "Ends";
+		
+		<% if(a.getStart_date_time().after(tsNow)) {  %>
+		    disRegPre = "Starts"
+		<%}%>
+		
+		console.log("date1 "+date1+" date2 "+date2+" = "+diffDays);
+		
+		if(parseFloat(diffDays) >= 1){
+			dispReg = disRegPre + " $1<sup>days</sup> $2:$3:$4";
+		}else{
+			dispReg = disRegPre + " $2:$3:$4";
+		}
+	
+		$("#timer-<%=a.getId()%>").countdowntimer({
+	                startDate : "<%=nowDT%>" , 
+	                dateAndTime : "<%=a.getEnd_date_time()%>",
+	                regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+	                regexpReplaceWith: dispReg
+		});
+	});
+
+	//},10000);
+	
+	<% } %>
+	
+	
+	/*
 	$('.countdown').each(function() {
 		var $this = $(this);
 		
@@ -387,6 +555,7 @@ $(document).ready(function(){
 			}
 		});
 	});
+	*/
 
 	
 });

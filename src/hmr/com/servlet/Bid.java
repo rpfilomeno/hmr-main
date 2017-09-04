@@ -653,6 +653,11 @@ public class Bid extends HttpServlet {
 				req.setAttribute("auction", a);
 				req.setAttribute("auction_images", auction_images);
 
+				Timestamp tsNow = new Timestamp(new Date().getTime());
+				
+				System.out.println("BID tsNow "+tsNow);
+				
+				req.setAttribute("tsNow", tsNow);
 				
 				page ="auction-bid-details.jsp";
 				
@@ -1191,7 +1196,9 @@ public class Bid extends HttpServlet {
 						req.setAttribute("trapOneLotPerBidder", trapOneLotPerBidder);
 						
 						
-						Timestamp tsNow = new Timestamp(System.currentTimeMillis());
+						Timestamp tsNow = new Timestamp(new Date().getTime());
+						
+						System.out.println("BID tsNow "+tsNow);
 						
 						req.setAttribute("tsNow", tsNow);
 						

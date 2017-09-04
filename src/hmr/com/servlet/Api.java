@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,9 +36,10 @@ public class Api extends HttpServlet {
 		String lotId = req.getParameter("lotId")!=null ? (String)req.getParameter("lotId") : "";
 		String UserId = req.getParameter("UserId")!=null ? (String)req.getParameter("UserId") : "";
 		Integer user_id = !"".equals(UserId) ?  Integer.parseInt(UserId) : null;
-		Timestamp tsNow = new Timestamp(System.currentTimeMillis());
+		//Timestamp tsNow = new Timestamp(System.currentTimeMillis());
 		
-		
+		Timestamp tsNow = new Timestamp(new Date().getTime());
+
 		AuctionManager aMngr = new AuctionManager();
 		LotManager lMngr = new LotManager();
 		BiddingTransactionManager btMngr = new BiddingTransactionManager();
@@ -149,7 +151,8 @@ public class Api extends HttpServlet {
 				
 				//check if the end time is expired
 				if(delta_lot.getEnd_date_time().before(tsNow)) {
-					continue; //don't update
+					//continue; //don't update
+					
 				}
 				
 				//check one bidder per lot setting
@@ -186,6 +189,8 @@ public class Api extends HttpServlet {
 		req.setAttribute("lList", lList);
 		
 		req.setAttribute("auction", a);
+		
+		System.out.println("tsNow API : "+tsNow);
 		
 		req.setAttribute("tsNow", tsNow);
 		

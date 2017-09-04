@@ -11,10 +11,12 @@
 <script src=assets/themes/hmr/js/vendor/url.min.js></script>
 <script src=assets/themes/hmr/js/vendor/msis.js></script>
 <script src=assets/themes/hmr/js/vendor/jquery.lazyload.min.js></script>
-<script src=assets/themes/hmr/js/main.js?v=79186204></script>
+<script src=assets/themes/hmr/js/main.js?v=33379186204></script>
 		
 <script src="assets/plugins/jquery-ui/jquery-ui-1.11.1.min.js"></script>
 <script src="assets/plugins/bootstrap-validator.min.js"></script>
 <script src="assets/plugins/jquery.bsAlerts.min.js"></script>
 <script src="assets/plugins/gallery/js/blueimp-gallery.min.js"></script>
 <script src="assets/plugins/jquery.countdown.min.js"></script>
+<script src="js/jquery.countdownTimer.js"></script>
+

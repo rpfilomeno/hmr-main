@@ -6,6 +6,7 @@
 		 import="hmr.com.bean.Image"
 		 import="hmr.com.manager.ImageManager"
 		 import="java.util.List"  
+		 import="java.util.Date"  
 		 import="java.math.BigDecimal"  
 		 import="java.util.HashMap"  
 		 import="java.text.DecimalFormat"
@@ -53,11 +54,13 @@
 	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy  HH:mm:ss");
 	SimpleDateFormat sdfTimer = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	
-	Timestamp tsNow = request.getAttribute("tsNow")!=null ? (Timestamp)request.getAttribute("tsNow") : new Timestamp(System.currentTimeMillis());
-	
-	String nowDT = sdfTimer.format(tsNow);
-	
+	Timestamp tsNow = request.getAttribute("tsNow")!=null ? (Timestamp)request.getAttribute("tsNow") : new Timestamp(new Date().getTime());
+
 	System.out.println("PAGE tsNow : "+tsNow);
+	
+	String nowDT = sdfTimer.format(new Date().getTime());
+	
+	
 	System.out.println("PAGE user_role_id : "+user_role_id);
 	
 	ImageManager iMngr = new ImageManager();
@@ -180,12 +183,12 @@
 							
 							
 							<div class="product-detail" id="countdown<%=lot.getLot_id()%>">
-									<div class="countdown" data-bid-lotid="<%=lot.getLot_id()%>" id="timer-<%=auction.getId() %>" 
-										data-startdate="<%=sdfTimer.format(auction.getStart_date_time()) %>" 
-										data-enddate="<%=sdfTimer.format(lot.getEnd_date_time()) %>">
-									</div>
-								</div>
-								
+							
+
+									<div id="countdowntimer"><span id="timer-<%=lot.getLot_id()%>" 
+														data-startdate="<%=nowDT %>" 
+														data-enddate="<%=sdfTimer.format(lot.getEnd_date_time()) %>"><span></div>
+											</div>
 
 								
 							<div class="product-details" id="buttons<%=lot.getLot_id()%>">
@@ -909,10 +912,10 @@ jQuery(window).on('load', function(){
 	    	    	var lid = bidButton.attr('data-bid-lId');
 	    	    	var bidderId = bidButton.attr('data-bid-bidderId');
 
-	    	    	var cntdwnObj = $('.countdown[id="timer-'+element.id+'"]');
+	    	    	var cntdwnObj = $('#timer-'+element.id);
 	    	    	var startDt = cntdwnObj.attr('data-startdate');
 	    	    	var endDt = cntdwnObj.attr('data-enddate');
-	    	    	//var cntdwHtml = cntdwnObj.html;
+	    	    	var cntdwHtml = cntdwnObj.html;
 	    	    	
 	    	    	console.log("startDt : "+startDt + " endDt "+endDt);
 	    	    	
@@ -927,94 +930,99 @@ jQuery(window).on('load', function(){
 	    	    	
 	    	    	
 	    	    	
-	    	    	console.log("bidder "+bidder+" amount from DB : "+amount + " - "+"lastAmount from DB : "+lastAmount+" - bidcnt from DB : "+bidcnt+ " endDT from DB : "+endDT+" = "+"<%=sdfTimer.format(auction.getEnd_date_time())%>  = "+endDTA+ " nowDT "+nowDT);
+	    	    	//console.log("bidder "+bidder+" amount from DB : "+amount + " - "+"lastAmount from DB : "+lastAmount+" - bidcnt from DB : "+bidcnt+ " endDT from DB : "+endDT+" = "+"</%=sdfTimer.format(auction.getEnd_date_time())%>  = "+endDTA+ " nowDT "+nowDT);
 
 	    	    	//cntdwnObj.attr('data-enddate',endDT);
 	    	    	
 	    	    	
 	    	    	//cntdwnObj.html("");
 	    	    	if(endDT!=endDTA){
-	    	    		document.getElementById("countdown"+element.id).innerHTML = "<div class=\"countdown\" data-bid-lotid=\""+element.id+"\" id=\"timer-"+element.id+"\" data-startdate=\"<%=sdfTimer.format(auction.getStart_date_time())%>\" data-enddate=\""+endDT+"\"></div>";
+	    	    		console.log("endDT!=endDTA "+endDT+" != "+endDTA);
+	    	    		//document.getElementById("countdown"+element.id).innerHTML = "<div class=\"countdown\" data-bid-lotid=\""+element.id+"\" id=\"timer-"+element.id+"\" data-startdate=\"</%=sdfTimer.format(auction.getStart_date_time())%>\" data-enddate=\""+endDT+"\"></div>";
+	    	    		document.getElementById("countdown"+element.id).innerHTML = "<div id=\"countdowntimer\"><span id=\"timer-"+element.id+"\" data-startdate=\"\" data-enddate=\"\" class=\"style colorDefinition size_sm\"></span></div>";
+	    	    		 
 	    	    		
+	    	    		cntdwnObj = $('#timer-'+element.id);
+	    	    		cntdwnObj.attr('data-startdate', nowDT);
 	    	    		cntdwnObj.attr('data-enddate', endDT);
-	    	    		//cntdwnObj.html = "";
-	    	    	
+
+	    	    		cntdwnObj.countdowntimer({
+	    	                startDate : nowDT , 
+	    	                dateAndTime : endDT,
+	    	                regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+	    	          		regexpReplaceWith: dispReg
+	    				});
+
 	    	    	}
 	    	    	
+	    	    	
+    	    		var today = new Date(nowDT);
+
+    	    		var date1 = new Date(nowDT);
+    	    		var date2 = new Date(endDT);
+    	    		var timeDiff = date2.getTime() - date1.getTime();
+    	    		var diffDays = timeDiff / (1000 * 3600 * 24); 
+    	    		//alert(diffDays);
+    	    		
+    	    		console.log("today "+today+" endDT "+endDT+" nowDT "+nowDT+" = "+diffDays);
+
+    	    		//console.log("date1 "+date1+" date2 "+date2+" = "+diffDays);
+    	    		
+    	    		if(parseFloat(diffDays) >= 1){
+    	    			dispReg = "Ends $1<sup>days</sup> $2:$3:$4";
+    	    		}else{
+    	    			dispReg = "Ends $2:$3:$4";
+    	    		}
+    	
+    	       		if(parseFloat(diffDays) <= parseFloat(0)){
+    	    			
+    	    			
+    	    			var labelHtml = "PROCESSING";
+		    	    	bidButton.attr("onclick","");
+		    	    	bidButton.html(labelHtml);	
+						
+		    	    	//setTimeout(function() {
+
+				    		if(bidcnt > 0){
+				    			document.getElementById("buttons"+<%=lot.getLot_id()%>).innerHTML = "<button class=\"btn btn-primary btn-block\">SOLD</button>";
+				    		}else if(bidcnt == 0){
+				    			document.getElementById("buttons"+<%=lot.getLot_id()%>).innerHTML = "<button class=\"btn btn-primary btn-block\">NO SALE</button>";
+				    		}
+				    		
+				    		<%if(auction.getAuction_id().equals(new BigDecimal("797")) || auction.getAuction_id().equals(new BigDecimal("804"))){  %>
+			    			document.getElementById("buttons"+<%=lot.getLot_id()%>).innerHTML = "<button class=\"btn btn-primary btn-block btn-warning\">FOR VALIDATION</button>";
+			    			<%}%>
+		    	    	
+		    	    	
+		    	    	//}, 1000)
+    	    			
+    	    			
+    	    		}
+    	    		
+    	    		/*
+    	    		setInterval(function() {
+	    	    	$(function(){
+	    	    		$("#timer-"+element.bid).countdowntimer({
+	    	    	                startDate : nowDT , 
+	    	    	                dateAndTime : endDT,
+	    	    	                regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+	    	    	          		regexpReplaceWith: dispReg
+	    	    		});
+	    	    		
+	    	    		
+	    	    		
+	    	    		
+	    	    		
+	    	    	});
+    	    		}, 2000);
+	    	    	*/
+	    	    	//var tiii = $("#timer-"+element.bid).attr('innerHTML');
+	    	    	//console.log(" tiii "+tiii);
+	    	    	//.attr('data-bid-lId');
 	    	    	console.log(" -- ");
 	    	    	
-
-	    	    	$(document).ready(function(){
-	    	    		
-	    	    		setTimeout(function() {
-
-	    	    			try{
-	    	    				
-	    	    				
-	    	    				$('.countdown').each(function() {
-	    	    					var $this = $(this);
-	    	    					
-	    	    					var sDate = $(this).data('startdate');
-	    	    					var eDate = $(this).data('enddate');
-	    	    					var startDate = new Date(sDate);
-	    	    					var endDate  = new Date(eDate);
-	    	    					var today = new Date(nowDT);
-	    	    					var targetDate;
-	    	    					  
-	    	    					if(today < startDate) {
-	    	    						targetDate = $(this).data('startdate');
-	    	    					} else if (today <= endDate) {
-	    	    						targetDate = $(this).data('enddate');
-	    	    					} 
-	    	    					$this.countdown(targetDate, function(event) {
-	    	    						var totalHours = event.offset.totalDays * 24 + event.offset.hours;
-	    	    						if(totalHours < 24) {
-	    	    							$(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
-	    	    							console.log("%D days %H:%M:%S "+event.strftime('%D days %H:%M:%S'));
-	    	    							if(event.strftime('%D:%H:%M:%S') == "00:00:00:00"){
-	    	    					
-	    	    								var labelHtml = "PROCESSING";
-	    	    				    	    	bidButton.attr("onclick","");
-	    	    				    	    	bidButton.html(labelHtml);	
-	    	    								
-	    	    				    	    	setTimeout(function() {
-
-		    	    					    		if(bidcnt > 0){
-		    	    					    			document.getElementById("buttons"+<%=lot.getLot_id()%>).innerHTML = "<button class=\"btn btn-primary btn-block\">SOLD</button>";
-		    	    					    		}else if(bidcnt == 0){
-		    	    					    			document.getElementById("buttons"+<%=lot.getLot_id()%>).innerHTML = "<button class=\"btn btn-primary btn-block\">NO SALE</button>";
-		    	    					    		}
-		    	    					    		
-		    	    					    		<%if(auction.getAuction_id().equals(new BigDecimal("797")) || !auction.getAuction_id().equals(new BigDecimal("804"))){  %>
-	    	    					    			document.getElementById("buttons"+<%=lot.getLot_id()%>).innerHTML = "<button class=\"btn btn-primary btn-block btn-warning\">FOR VALIDATION</button>";
-	    	    					    			<%}%>
-	    	    				    	    	
-	    	    				    	    	
-	    	    				    	    	}, 3000)
-	    	    								
-
-    	    					    			
-    	    					    			
-    	    					    			
-	    	    							}
-	    	    						} else {
-	    	    							$this.html('Ends ' + event.strftime('%D days %H:%M:%S'));
-	    	    							//console.log("%D days %H:%M:%S "+event.strftime('%D days %H:%M:%S'));
-	    	    						}
-	    	    					});
-	    	    				});
-	    	    				
-	    	    				
-	    	    			}catch(e){}
-	    	    			
-	    	    		}, 3000);
-	    	    				
-	    	    			});
-	    	    		
-	    	    		
 	    	    	
-	    	    	
-	    	    	if(element.bid != lastAmount) {
+	    	    	//if(element.bid != lastAmount) {
 	    	    		
 	    	    		console.log("amount.toFixed(2) "+amount.toFixed(2)+" bidder ==  "+bidder+ " parseInt(bidderId) "+parseInt(bidderId));
 
@@ -1047,19 +1055,23 @@ jQuery(window).on('load', function(){
 	    	    			
 	    	    		}
 
+	    	    		var curBidder = document.getElementById("user-id").value;
 
 	    	    		var labelHtml = "";
 	    	    		
-	    	    		if(bidder > 0 && parseInt(bidder) == parseInt(bidderId) && parseFloat(lastAmount) != amount){
+	    	    		if(parseInt(bidder) > 0 && parseInt(curBidder) == parseInt(bidder)){
+	    	    			
 	    	    			labelHtml = 'YOU BID ' + numberWithCommas(curbid.toFixed(2)) + ' <%=currency%>';
+	    	    			bidButton.attr('data-bid-bidderId', curBidder);
 			    	    	bidButton.html(labelHtml);		    	    	
 			    	    	//bidButton.fadeIn(3000).fadeOut(3000).fadeIn(2000).fadeOut(2000).fadeIn(1000);
 	    	    		}else{
 	    	    			labelHtml = 'BID ' + numberWithCommas(amount.toFixed(2)) + ' <%=currency%>';
+	    	    			bidButton.attr('data-bid-bidderId', bidder);
 			    	    	bidButton.attr("data-bid-amount",amount.toFixed(2));
 			    	    	bidButton.attr("onclick","submitPage('BID', '"+amount.toFixed(2)+"','"+lot_id+"','"+lid+"','qty_"+lid+"','')");
 			    	    	bidButton.html(labelHtml);		    	    	
-			    	    	bidButton.fadeIn(3000).fadeOut(2500).fadeIn(2000).fadeOut(1500).fadeIn(1000);
+			    	    	//bidButton.fadeIn(3000).fadeOut(2500).fadeIn(2000).fadeOut(1500).fadeIn(1000);
 	    	    		}
 
 	    	    		
@@ -1070,16 +1082,15 @@ jQuery(window).on('load', function(){
 	    	    		}else{
 	    	    			
 	    	    		}
+
 	    	    		
-	    	    		
-		    	    	
-	    	    	}
+	    	    	//}
 	    	    	console.log("#" + index + " Lot-Id: " + element.id + " Name: "+element.name + " Bid: " +amount.toFixed(2));
 	    	    });
 	        },
 	        dataType: "json",
-	        complete: setTimeout(function() {poll()}, 6000),
-	        timeout: 3000
+	        complete: setTimeout(function() {poll()}, 3000),
+	        timeout: 1000
 	    })
 	})();
 
@@ -1091,38 +1102,39 @@ jQuery(window).on('load', function(){
 
 $(document).ready(function(){
 	
+	$(function(){
 
-		try{
-			
-			
-			$('.countdown').each(function() {
-				var $this = $(this);
-				
-				var sDate = $(this).data('startdate');
-				var eDate = $(this).data('enddate');
-				var startDate = new Date(sDate);
-				var endDate  = new Date(eDate);
-				var today = new Date("<%=nowDT%>");
-				var targetDate;
-				  
-				if(today < startDate) {
-					targetDate = $(this).data('startdate');
-				} else if (today <= endDate) {
-					targetDate = $(this).data('enddate');
-				} 
-				$this.countdown(targetDate, function(event) {
-					var totalHours = event.offset.totalDays * 24 + event.offset.hours;
-					if(totalHours < 24) {
-						$(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
-					} else {
-						$this.html('Ends ' + event.strftime('%D days %H:%M:%S'));
-					}
-				});
-			});
-			
-			
-		}catch(e){}
+		var date1 = new Date("<%=nowDT%>");
+		var date2 = new Date("<%=lot.getEnd_date_time()%>");
+		var timeDiff = date2.getTime() - date1.getTime();
+		var diffDays = timeDiff / (1000 * 3600 * 24); 
+		//alert(diffDays);
 		
+		var disRegPre = "Ends";
+		
+		<% if(auction.getStart_date_time().after(tsNow)) {  %>
+		    disRegPre = "Starts"
+		<%}%>
+		
+		console.log("date1 "+date1+" date2 "+date2+" = "+diffDays);
+		
+		if(parseFloat(diffDays) >= 1){
+			dispReg = "Ends $1<sup>days</sup> $2:$3:$4";
+		}else{
+			dispReg = "Ends $2:$3:$4";
+		}
+	
+		$("#timer-<%=lot.getLot_id()%>").countdowntimer({
+	                startDate : "<%=nowDT%>" , 
+	                dateAndTime : "<%=lot.getEnd_date_time()%>",
+	                regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+	                regexpReplaceWith: dispReg
+		});
+	});
+
+
+
+	
 		
 			
 });

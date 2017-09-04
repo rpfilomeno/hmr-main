@@ -390,7 +390,65 @@ public Auction getAuctionByToken(String token){
 			//rs.close();
 			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			
+			try {
+
+				dbConn = new DBConnection();
+				
+				conn = dbConn.getConnection9();
+
+				stmt = conn.createStatement();
+
+				System.out.println("sql : "+sb.toString());	
+				
+				ResultSet rs = stmt.executeQuery(sb.toString());
+
+				while(rs.next()){
+					a = new Auction();
+
+					a.setId(rs.getBigDecimal("id"));
+
+					a.setAuction_name(rs.getString("auction_name"));	
+					a.setAuction_no(rs.getBigDecimal("auction_no"));
+					a.setLocation(rs.getString("location"));
+					a.setBid_deposit_amount(rs.getBigDecimal("bid_deposit_amount"));
+					a.setStart_date_time(rs.getTimestamp("start_date_time"));
+					a.setEnd_date_time(rs.getTimestamp("end_date_time"));
+					a.setAuction_desc(rs.getString("auction_desc"));
+					a.setTerms_and_condition(rs.getString("terms_and_conditions"));	
+					a.setCoordinator(rs.getInt("coordinator"));
+					a.setVisibility(rs.getInt("visibility"));
+					a.setAuction_item_closing(rs.getInt("auction_item_closing"));
+					a.setAuction_type(rs.getInt("auction_type"));
+					a.setAuction_id(rs.getBigDecimal("auction_id"));
+	            	a.setStatus(rs.getInt("status"));
+	            	a.setActive(rs.getInt("active"));
+					a.setNo_of_lots(rs.getInt("no_of_lots"));
+					a.setNo_of_items(rs.getInt("no_of_items"));
+					a.setAuction_item_increment_time(rs.getInt("auction_item_increment_time"));
+					a.setBid_deposit(rs.getInt("bid_deposit"));
+					a.setDate_sync(rs.getTimestamp("date_sync"));
+					a.setCategory_level_1(rs.getInt("category_level_1"));
+					a.setOne_lot_per_bidder(rs.getInt("one_lot_per_bidder"));
+					
+					a.setOne_start_bid(rs.getInt("one_start_bid"));
+					a.setBid_qualifier_price(rs.getInt("bid_qualifier_price"));
+					a.setToken(rs.getString("token"));
+					a.setAuto_send_post_notification(rs.getInt("auto_send_post_notification"));
+					a.setLot_per_auction_item_increment_time(rs.getInt("lot_per_auction_item_increment_time"));
+					
+		
+	            	a.setDate_created(rs.getTimestamp("date_created"));
+	            	a.setCreated_by(rs.getInt("created_by"));
+	            	a.setDate_updated(rs.getTimestamp("date_updated"));
+	            	a.setUpdated_by(rs.getInt("updated_by"));
+	            	
+				}
+
+				//rs.close();
+				//stmt.close();
+			} catch (Exception ex) {}
+			//throw new RuntimeException(e);
 		} finally {
 			/*
 			if (conn != null) {

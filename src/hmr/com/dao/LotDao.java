@@ -205,9 +205,9 @@ public class LotDao extends DBConnection {
 			//rs.close();
 			//stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} finally {
-			/*
+			
 			if (conn != null) {
 				try {
 				System.out.println("conn closing : "+conn);
@@ -225,7 +225,7 @@ public class LotDao extends DBConnection {
 				System.out.println("stmt after closing : "+stmt);
 				} catch (SQLException e) {}
 			}
-			*/
+			
 		}
 		
 		return l;

@@ -1162,7 +1162,7 @@ public class LotManager {
 			l.setAmount_bid_next(amount_bid_next);
 		}
 		
-		
+		System.out.println("Apply Bidd r "+l.getEnd_date_time());
 		if(l.getEnd_date_time() == null) {
 			l.setEnd_date_time(a.getEnd_date_time());
 		}
